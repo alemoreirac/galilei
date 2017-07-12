@@ -7,28 +7,17 @@ import java.util.List;
 import Enums.OrientacaoGeografica;
 import Enums.TipoVeiculo;
 
-/**
- * Created by Pefoce on 30/05/2017.
- */
-
 public class Veiculo extends SugarRecord<Veiculo>{
 
 
     TipoVeiculo tipoVeiculo;
-
-
-
     String placa;
-
-
     String modelo;
     Boolean isCulpado;
 
     OrientacaoGeografica orientacaoPartida;
     OrientacaoGeografica orientacaoChegada;
 
-
-    List<Dano> danos;
 
     public Veiculo(String placa) {
         this.placa = placa;
@@ -79,13 +68,6 @@ public class Veiculo extends SugarRecord<Veiculo>{
         this.orientacaoChegada = orientacaoChegada;
     }
 
-    public List<Dano> getDanos() {
-        return danos;
-    }
-
-    public void setDanos(List<Dano> danos) {
-        this.danos = danos;
-    }
 
 
     public String getModelo() {
@@ -95,9 +77,5 @@ public class Veiculo extends SugarRecord<Veiculo>{
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
-
-    /**
-     * Created by Pefoce on 23/06/2017.
-     */
 
 }

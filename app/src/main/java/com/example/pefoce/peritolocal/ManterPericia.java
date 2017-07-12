@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class ManterPericia extends AppCompatActivity implements StepperLayout.St
 
     public StepperLayout stepperLayout;
     public OcorrenciaTransito ocorrenciaTransito;
+    public Toolbar toolbar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,9 +38,13 @@ public class ManterPericia extends AppCompatActivity implements StepperLayout.St
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manter_pericia);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar_pericia);
+        setSupportActionBar(toolbar);
+
         stepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         stepperLayout.setAdapter(new ManterPericia.MyStepperAdapter(getSupportFragmentManager(), this));
         stepperLayout.setListener(this);
+
 
         CarregarOcorencia();
 
@@ -147,12 +153,9 @@ public class ManterPericia extends AppCompatActivity implements StepperLayout.St
                 case "Endereço" :
                     stepperLayout.setCurrentStepPosition(1);
                     break;
-
                 case "Vítima" :
                     stepperLayout.setCurrentStepPosition(2);
                     break;
-
-
                 default:
                     stepperLayout.setCurrentStepPosition(0);
                     break;
@@ -187,7 +190,6 @@ public class ManterPericia extends AppCompatActivity implements StepperLayout.St
                 break;
             default:
                 break;
-
         }
     }
 

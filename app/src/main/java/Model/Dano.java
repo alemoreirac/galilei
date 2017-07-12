@@ -41,10 +41,11 @@ public class Dano extends SugarRecord<Dano>
         Compatibilidade = compatibilidade;
     }
 
-    public TipoDano tipo;
+     public TipoDano tipo;
      public TercoDano terco;
      public SetorDano setor;
      public Boolean Compatibilidade;
+
 
      public Dano()
      { }

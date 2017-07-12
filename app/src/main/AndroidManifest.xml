@@ -82,6 +82,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ManterPericia"
             android:screenOrientation ="landscape"
+            android:windowSoftInputMode="stateHidden"
             />
 
     </application>

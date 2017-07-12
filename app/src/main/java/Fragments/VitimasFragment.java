@@ -194,7 +194,7 @@ public class VitimasFragment extends  android.support.v4.app.Fragment implements
 
     @Override
     public void onSelected() {
-
+        ((ManterPericia) getActivity()).toolbar.setTitle("Envolvidos");
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pefoce.peritolocal.ManterPericia;
 import com.example.pefoce.peritolocal.ManterVeiculoActivity;
 import com.example.pefoce.peritolocal.PericiaTransito;
 import com.example.pefoce.peritolocal.R;
@@ -118,7 +119,7 @@ public class VeiculoFragment extends  android.support.v4.app.Fragment implements
 
     @Override
     public void onSelected() {
-
+        ((ManterPericia) getActivity()).toolbar.setTitle("Ocorrência");
     }
 
     @Override

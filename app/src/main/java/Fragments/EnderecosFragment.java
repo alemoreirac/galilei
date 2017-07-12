@@ -113,7 +113,7 @@ OcorrenciaTransito ocorrenciaTransitoEndereco;
 
     @Override
     public void onSelected() {
-
+        ((ManterPericia) getActivity()).toolbar.setTitle("Endereços");
     }
 
     @Override

@@ -253,6 +253,8 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
     @Override
     public void onSelected()
     {
+        ((ManterPericia) getActivity()).toolbar.setTitle("Ocorrência");
+
         Bundle bd = getArguments();
 
         AssociarLayout(v);
@@ -266,6 +268,8 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
                 CarregarValores(ocorrenciaFragment, v);
             }
         }
+
+
     }
 
     @Override

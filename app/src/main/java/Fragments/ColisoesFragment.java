@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pefoce.peritolocal.ManterColisaoVeiculosActivity;
+import com.example.pefoce.peritolocal.ManterPericia;
 import com.example.pefoce.peritolocal.R;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -107,7 +108,7 @@ public class ColisoesFragment extends  android.support.v4.app.Fragment implement
 
     @Override
     public void onSelected() {
-
+        ((ManterPericia) getActivity()).toolbar.setTitle("Colisões");
     }
 
     @Override
