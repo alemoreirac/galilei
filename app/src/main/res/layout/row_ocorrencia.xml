@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_TipoDocumento"
+        android:text="teste"
+        android:textSize="16dp" android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_NumeroDocumento"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/txv_TipoDocumento" android:text="teste"
+        android:textSize="16dp" android:textStyle="bold"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_DataOcorrencia"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/txt_NumeroDocumento"
+
+        android:text="teste"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/txt_Placas"
+        android:layout_toRightOf="@+id/txt_DataOcorrencia"  android:text="teste"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_Endereco"
+        android:layout_below="@+id/txv_TipoDocumento"
+        android:layout_alignLeft="@+id/txv_TipoDocumento" android:text="teste"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_OrgaoOrigem"
+        android:layout_below="@+id/txt_Endereco"
+        android:layout_alignLeft="@+id/txt_Endereco" android:text="teste"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_OrgaoDestino"
+        android:layout_below="@+id/txt_OrgaoOrigem"
+        android:layout_alignLeft="@+id/txt_OrgaoOrigem" android:text="teste"
+        />
+
+</RelativeLayout>

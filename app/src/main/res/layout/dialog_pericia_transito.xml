@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    >
+
+    <TextView
+        android:id="@+id/txv_Titulo_Pericia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Nova Perícia"
+        android:layout_centerHorizontal="true"/>
+
+
+    <Spinner
+        android:id="@+id/spn_dialog_TipoDoc"
+        android:layout_below="@id/txv_Titulo_Pericia"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        />
+
+    <TextView
+        android:id="@+id/txv_dialog_TipoDoc"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tipo_documento"
+        android:layout_below="@id/txv_Titulo_Pericia"
+        android:layout_alignLeft="@id/spn_dialog_TipoDoc"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:id="@+id/txv_dialog_NumDoc"
+        android:text="@string/num_documento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spn_dialog_TipoDoc"
+        android:layout_alignLeft="@id/spn_dialog_TipoDoc"
+        android:layout_marginTop="10dp"/>
+
+<EditText
+    android:id="@+id/edt_dialog_NumDoc"
+    android:layout_width="220dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/txv_dialog_NumDoc"
+    android:layout_alignLeft="@+id/spn_dialog_TipoDoc"
+    android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/btn_dialog_IniciarPericia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/iniciar_pericia"
+        android:layout_alignLeft="@+id/spn_dialog_TipoDoc"
+        android:layout_below="@+id/edt_dialog_NumDoc"
+        />
+    <Button
+        android:id="@+id/btn_dialog_Cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/cancelar"
+        android:layout_alignRight="@id/spn_dialog_TipoDoc"
+        android:layout_below="@+id/edt_dialog_NumDoc"
+        />
+</RelativeLayout>
