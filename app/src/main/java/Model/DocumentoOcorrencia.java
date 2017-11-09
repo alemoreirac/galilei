@@ -1,5 +1,6 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 import Enums.DocumentoSolicitacao;
@@ -10,7 +11,9 @@ import Enums.DocumentoSolicitacao;
 
 public class DocumentoOcorrencia extends SugarRecord<DocumentoOcorrencia> {
 
+    @Expose
     DocumentoSolicitacao tipoDocumento;
+    @Expose
     String valor;
 
     public DocumentoOcorrencia(DocumentoSolicitacao tipodocumento, String valor) {

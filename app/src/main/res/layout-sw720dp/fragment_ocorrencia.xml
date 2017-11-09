@@ -1,0 +1,363 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="Fragments.OcorrenciaFragment"
+    android:layout_margin="10dp"
+    >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/txv_Num_Incidencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nº Dígito - Incidência"
+                android:layout_marginTop="5dp" />
+
+
+            <EditText
+                android:id="@+id/edt_Num_Incidencia"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Num_Incidencia"
+                android:layout_alignLeft="@+id/txv_Num_Incidencia"
+                android:maxLength="12"/>
+
+            <!--<TextView-->
+                <!--android:id="@+id/txv_Incidencia_Mask"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="I2017 "-->
+                <!--android:textSize="20dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_below="@id/txv_Num_Incidencia"-->
+                <!--android:layout_toRightOf="@id/edt_Num_Incidencia"/>-->
+
+            <TextView
+                android:id="@+id/txv_TipoDocumento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tipo_documento"
+                android:layout_below="@id/edt_Num_Incidencia"
+                android:layout_marginTop="25dp" />
+
+
+
+
+            <Spinner
+                android:id="@+id/spn_TipoDocumentoOcorrencia"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_TipoDocumento"
+                android:layout_alignLeft="@id/spn_TipoDocumentoOcorrencia"
+                android:layout_marginTop="15dp" />
+
+            <TextView
+                android:id="@+id/txv_ValorDocumento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nº Documento"
+                android:layout_alignBottom="@+id/txv_TipoDocumento"
+                android:layout_toRightOf="@+id/txv_TipoDocumento"
+                android:layout_marginLeft="140dp"
+                />
+
+            <EditText
+                android:id="@+id/edt_ValorDocumento"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_TipoDocumento"
+                android:layout_alignLeft="@+id/txv_ValorDocumento"
+                android:layout_alignBottom="@id/spn_TipoDocumentoOcorrencia"
+                />
+
+            <TextView
+                android:id="@+id/txv_Autoridade_Presente"
+                android:text="@string/autoridade_presente"
+                android:layout_below="@id/spn_TipoDocumentoOcorrencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"/>
+
+            <Spinner
+                android:id="@+id/spn_Autoridade_Presente"
+                android:layout_below="@+id/txv_Autoridade_Presente"
+                android:layout_alignLeft="@id/txv_Autoridade_Presente"
+                android:layout_width="150dp"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/txv_Comandante"
+                android:text="@string/autoridade_comandante"
+                android:layout_alignBottom="@id/txv_Autoridade_Presente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+
+                android:layout_toRightOf="@id/spn_Autoridade_Presente"/>
+
+            <EditText
+                android:id="@+id/edt_Autoridade_Comandante"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/spn_Autoridade_Presente"
+                android:layout_alignLeft="@id/txv_Comandante"
+                android:layout_below="@+id/txv_Comandante" />
+
+
+            <TextView
+                android:id="@+id/txv_Placa_Viatura"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/txv_Comandante"
+                android:layout_toRightOf="@id/edt_Autoridade_Comandante"
+                android:textSize="15dp"
+                android:layout_marginLeft="15dp"
+                android:text="@string/placa_viatura"/>
+
+            <EditText
+                android:id="@+id/edt_PlacaLetras_Viatura"
+                android:layout_width="55dp"
+                android:textAlignment="center"
+                android:textSize="25dp"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_alignLeft="@id/txv_Placa_Viatura"
+                android:hint="ABC"
+                android:maxLength="3"
+                android:inputType="text"
+                android:layout_alignBottom="@id/edt_Autoridade_Comandante" />
+
+            <EditText
+                android:id="@+id/edt_PlacaNumeros_Viatura"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:textAlignment="center"
+                android:textSize="25dp"
+                android:maxLength="4"
+                android:layout_alignBottom="@id/edt_Autoridade_Comandante"
+                android:hint="1234"
+                android:layout_marginLeft="20dp"
+                android:inputType="number"
+                android:layout_toRightOf="@id/edt_PlacaLetras_Viatura"  />
+
+
+<!--
+            <TextView
+                android:id="@+id/txv_Ocorrencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/spn_Autoridade_Presente"
+                android:text="@string/hora_ocorrencia"
+                />
+
+            <TextView
+                android:id="@+id/txv_HoraOcorrencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:onClick="TrocaHora"
+                android:layout_below="@id/txv_Ocorrencia"
+                android:layout_alignLeft="@id/txv_Ocorrencia"
+                android:clickable="true"
+                android:text="00:00"
+                android:layout_marginTop="6dp"
+                android:textSize="20dp" />
+
+-->
+
+            <TextView
+                android:id="@+id/txv_Chamado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hora_chamado"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/spn_Autoridade_Presente"/>
+
+            <TextView
+                android:id="@+id/txv_HoraChamado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="TrocaHora"
+                android:layout_below="@id/txv_Chamado"
+                android:layout_alignLeft="@id/txv_Chamado"
+                android:clickable="true"
+                android:text="00:00"
+                android:textSize="20dp"
+                android:layout_marginTop="6dp"
+                />
+
+
+            <TextView
+                android:id="@+id/txv_Hora_Atendimento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hora_atendimento"
+                android:layout_alignBottom="@id/txv_Chamado"
+                android:layout_marginLeft="35dp"
+                android:layout_toRightOf="@id/txv_Chamado"/>
+
+            <TextView
+                android:id="@+id/txv_Hora_Atendimento_Valor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:onClick="TrocaHora"
+                android:layout_below="@id/txv_Hora_Atendimento"
+                android:layout_alignLeft="@id/txv_Hora_Atendimento"
+                android:clickable="true"
+                android:textSize="20dp"
+                android:layout_marginTop="6dp"
+                android:text="00:00"/>
+
+
+            <TextView
+                android:id="@+id/txv_Data_Atendimento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/data_atendimento"
+                android:layout_alignBottom="@id/txv_Chamado"
+                android:layout_marginLeft="35dp"
+                android:layout_toRightOf="@id/txv_Hora_Atendimento"/>
+
+            <TextView
+                android:id="@+id/txv_Data_Atendimento_Valor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="TrocaData"
+                android:layout_below="@id/txv_Data_Atendimento"
+                android:layout_alignLeft="@id/txv_Data_Atendimento"
+                android:clickable="true"
+                android:textSize="20dp"
+                android:layout_marginTop="6dp"
+                android:text="01/01/2000"/>
+
+            <TextView
+                android:id="@+id/txv_Orgao_Origem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/orgao_origem"
+                android:layout_below="@id/txv_HoraChamado"
+                android:layout_alignLeft="@id/txv_Chamado"  />
+
+            <AutoCompleteTextView
+                android:id="@+id/auc_Orgao_Origem"
+                android:layout_width="340dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txv_Orgao_Origem"
+                android:layout_marginTop="6dp"
+
+                android:layout_alignLeft="@+id/txv_Orgao_Origem"  />
+
+            <!--
+
+            <TextView
+                android:id="@+id/txt_Motorista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txt_Atendimento"
+                android:layout_alignBottom="@+id/txt_Delegacia"
+                android:text="@string/motorista"
+                />
+
+            <Spinner
+                android:id="@+id/spn_Motorista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/spn_Delegacia"
+                android:layout_alignLeft="@+id/txt_Motorista" />
+
+            -->
+
+
+            <TextView
+                android:id="@+id/txv_Orgao_Destino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/orgao_destino"
+                android:layout_below="@+id/auc_Orgao_Origem"
+                android:layout_marginTop="15dp"
+                android:layout_alignLeft="@+id/txv_Orgao_Origem" />
+
+            <AutoCompleteTextView
+                android:id="@+id/auc_Orgao_Destino"
+                android:layout_width="340dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txv_Orgao_Destino"
+                android:layout_marginTop="6dp"
+                android:layout_alignLeft="@+id/txv_Orgao_Origem"
+                />
+
+
+
+            <TextView
+                android:id="@+id/txv_preservacaoLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/local_preservado"
+                android:layout_below="@id/auc_Orgao_Destino"
+                android:layout_alignLeft="@id/txv_Orgao_Origem" />
+
+            <Spinner
+                android:id="@+id/spn_PreservacaoLocal"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txv_preservacaoLocal"
+                android:layout_below="@id/txv_preservacaoLocal" />
+
+            <TextView
+                android:id="@+id/txv_Bairro_Delegacia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bairro (Somente para preencher Delegacia)"
+                android:layout_alignLeft="@id/txv_Placa_Viatura"
+                android:layout_alignBottom="@id/txv_Orgao_Origem"
+                />
+            <AutoCompleteTextView
+                android:id="@+id/auc_Bairro_Delegacia"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Bairro_Delegacia"
+                android:layout_below="@id/txv_Bairro_Delegacia"/>
+
+            <TextView
+                android:id="@+id/txv_AIS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AIS"
+                android:layout_below="@id/auc_Bairro_Delegacia"
+                android:layout_alignLeft="@id/txv_Bairro_Delegacia"
+                android:layout_marginTop="10dp"
+                />
+
+            <Spinner
+                android:id="@+id/spn_AIS"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_AIS"
+                android:layout_alignLeft="@id/txv_AIS"
+                />
+
+            <CheckBox
+                android:id="@+id/cxb_Ultima_Forma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Última Forma"
+                android:layout_toRightOf="@id/spn_PreservacaoLocal"
+                android:layout_alignBottom="@id/spn_PreservacaoLocal"
+                android:layout_alignLeft="@id/txv_Data_Atendimento"/>
+
+        </RelativeLayout>
+
+
+</ScrollView>

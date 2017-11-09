@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rltv_Fotos"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:context="Fragments.GerenciarFotos">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="300dp"
+        android:background="@drawable/stroke_border"
+        android:layout_height="match_parent"
+        android:id="@+id/lista_fotos">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lstv_Fotos"
+            android:choiceMode="singleChoice">
+        </ListView>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Foto"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/camera_white"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/lista_fotos"
+        android:focusableInTouchMode="true"
+        android:id="@+id/rltv_Detalhe_Foto">
+
+        <ImageView
+            android:id="@+id/imgv_Foto_Detalhe"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:src="@drawable/placeholder_no_image"/>
+
+
+        <EditText
+            android:id="@+id/edt_Foto_Titulo"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
+            android:layout_below="@id/imgv_Foto_Detalhe"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/txv_Foto_Titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Descrição da imagem"
+            android:layout_alignLeft="@id/edt_Foto_Titulo"
+            android:layout_below="@id/imgv_Foto_Detalhe"/>
+
+
+        <TextView
+            android:id="@+id/txv_Categoria_Foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categoria Foto"
+            android:layout_toRightOf="@id/edt_Foto_Titulo"
+            android:layout_alignBottom="@id/txv_Foto_Titulo"
+            />
+        <Spinner
+            android:id="@+id/spn_Categoria_Foto"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txv_Categoria_Foto"
+            android:layout_alignLeft="@id/txv_Categoria_Foto"/>
+
+
+
+
+        <Button
+            android:id="@+id/btn_Salvar_Foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Salvar"/>
+
+        <Button
+            android:id="@+id/btn_Cancelar_Foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignBottom="@id/btn_Salvar_Foto"
+            android:text="@string/cancelar"
+            android:layout_toRightOf="@id/btn_Salvar_Foto"
+            android:layout_marginLeft="60dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

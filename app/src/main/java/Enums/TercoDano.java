@@ -4,8 +4,10 @@ package Enums;
  * Created by Pefoce on 29/05/2017.
  */
 
-public enum TercoDano {
-    INFERIOR("Terço Inferior"),MEDIO("Terço Médio"),SUPERIOR("Terço Superior");
+public enum TercoDano
+
+{
+    INFERIOR("Inferior"),MEDIO("Médio"),SUPERIOR("Superior");
 
     String valor;
 

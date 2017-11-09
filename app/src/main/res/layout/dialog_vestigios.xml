@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Tipo_Vestigio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Tipo de Vestígio"
+        />
+
+    <Spinner
+        android:id="@+id/spn_dialog_Tipo_Vestigio"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_Tipo_Vestigio"
+        android:layout_alignLeft="@id/txv_dialog_Tipo_Vestigio"/>
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Area_Vestigio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/spn_dialog_Tipo_Vestigio"
+        android:text="Área"/>
+
+    <EditText
+        android:id="@+id/edt_dialog_Area_Vestigio"
+        android:layout_width="80dp"
+        android:inputType="numberDecimal"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_Area_Vestigio"
+        android:layout_alignLeft="@+id/txv_dialog_Area_Vestigio"/>
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Distancia_Vestigio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_toRightOf="@id/edt_dialog_Area_Vestigio"
+        android:layout_marginLeft="20dp"
+        android:text="Distância"/>
+
+    <EditText
+        android:id="@+id/edt_dialog_Distancia_Vestigio"
+        android:layout_width="80dp"
+        android:inputType="numberDecimal"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_Distancia_Vestigio"
+        android:layout_alignLeft="@id/txv_dialog_Distancia_Vestigio"/>
+
+    <CheckBox
+        android:id="@+id/cxb_dialog_Determinante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Determina o sítio da Colisão"
+
+        android:layout_below="@+id/edt_dialog_Area_Vestigio"/>
+
+    <ListView
+        android:id="@+id/lstv_dialog_Vestigios"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/cxb_dialog_Determinante"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_dialog_AddVestigio"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/fab_plus"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/edt_dialog_Distancia_Vestigio" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/lstv_dialog_Vestigios"
+        android:layout_below="@id/lstv_dialog_Vestigios"
+        android:text="Salvar"
+        android:id="@+id/btn_dialog_SalvarVestigio_Detalhe"/>
+
+
+
+    <Button
+        android:id="@+id/btn_dialog_LimparVestigios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/btn_dialog_AddVestigio"
+        android:layout_below="@id/lstv_dialog_Vestigios"
+        android:text="Limpar Vestígios"/>
+
+</RelativeLayout>

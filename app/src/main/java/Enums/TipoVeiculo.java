@@ -3,12 +3,12 @@ package Enums;
 /**
  * Created by Pefoce on 30/05/2017.
  */
-public enum TipoVeiculo {
-    MOTO("Moto")
-    ,CARRO("Carro")
+public enum TipoVeiculo
+{
+    CARRO("Carro")
+    ,MOTO("Moto")
     ,CAMINHAO("Caminhão")
     ,ONIBUS("Ônibus");
-
 
     String valor;
 

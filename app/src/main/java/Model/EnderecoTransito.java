@@ -1,11 +1,13 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 import Enums.CondicaoPista;
 import Enums.Iluminacao;
 import Enums.Logradouro;
 import Enums.OrientacaoGeografica;
+import Enums.OrientacaoGeograficaComposta;
 import Enums.Pavimentacao;
 import Enums.Semaforo;
 import Enums.SinalizacaoPare;
@@ -18,23 +20,49 @@ import Enums.Topografia;
 
 public class EnderecoTransito extends SugarRecord<EnderecoTransito> {
 
+    @Expose
     private Endereco endereco;
+    @Expose
     private TipoVia tipoVia;
+    @Expose
     private Topografia topografia;
+    @Expose
     private Logradouro logradouro;
+    @Expose
     private Pavimentacao pavimentacao;
+    @Expose
     private CondicaoPista condicao;
+    @Expose
     private Iluminacao iluminacao;
+    @Expose
     private SinalizacaoPare sinalizacaoPare;
+    @Expose
     private Semaforo semaforo;
+    @Expose
+    private OrientacaoGeograficaComposta sentidoVia;
+    @Expose
+    private int Angulo;
+    @Expose
+    private boolean isMaoDupla;
+    @Expose
     private boolean isPreferencial;
+    @Expose
     private boolean isCurva;
+    @Expose
     private boolean isMolhada;
-
+    @Expose
     private boolean isComposta;
-    int numFaixas;
+    @Expose
+    private int numFaixas;
+    @Expose
+    private int numPistas;
+    @Expose
+    String latitude;
+    @Expose
+    String longitude;
 
-
+    @Expose
+    Long largura;
 
 
     public EnderecoTransito(Endereco endereco) {
@@ -42,7 +70,9 @@ public class EnderecoTransito extends SugarRecord<EnderecoTransito> {
     }
 
     public EnderecoTransito() {
-        this.endereco = new Endereco(); }
+        this.endereco = new Endereco();
+
+    }
 
     public Endereco getEndereco() {
         return endereco;
@@ -156,5 +186,74 @@ public class EnderecoTransito extends SugarRecord<EnderecoTransito> {
         this.numFaixas = numFaixas;
     }
 
+    @Override
+    public String toString() {
+        if(endereco!= null)
+        return this.endereco.getDescricao();
+        else
+            return "(Sem Endereço)";
+    }
+
+    public int getAngulo() {
+        return Angulo;
+    }
+
+    public void setAngulo(int angulo) {
+        Angulo = angulo;
+    }
+
+    public boolean isMaoDupla() {
+        return isMaoDupla;
+    }
+
+    public void setMaoDupla(boolean maoDupla) {
+        isMaoDupla = maoDupla;
+    }
+
+    public int getNumPistas() {
+        return numPistas;
+    }
+
+    public void setNumPistas(int numPistas) {
+        this.numPistas = numPistas;
+    }
+
+    public OrientacaoGeograficaComposta getSentidoVia() {
+        return sentidoVia;
+    }
+
+    public void setSentidoVia(OrientacaoGeograficaComposta sentidoVia) {
+        this.sentidoVia = sentidoVia;
+    }
+
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String toStringDoc()
+    {
+        return this.tipoVia.getValor() + " " + endereco.getDescricao();
+    }
+
+    public Long getLargura() {
+        return largura;
+    }
+
+    public void setLargura(Long largura) {
+        this.largura = largura;
+    }
 
 }

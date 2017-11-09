@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/lightGray">
+
+
+    <TextView
+        android:id="@+id/txv_Titulo_Dano"
+        android:layout_height="wrap_content"
+        android:text="@string/inserir_dano"
+        android:layout_width="wrap_content"
+
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:text="@string/tipo"
+        android:layout_width="wrap_content"
+        android:id="@+id/txv_TipoDano"
+        android:layout_alignLeft="@+id/spn_TipoDano"
+        android:layout_below="@+id/txv_Titulo_Dano"/>
+
+    <Spinner
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spn_TipoDano"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/txv_TipoDano"/>
+
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:text="@string/terco"
+        android:layout_width="wrap_content"
+        android:id="@+id/txv_TercoDano"
+        android:layout_alignLeft="@id/spn_TipoDano"
+        android:layout_below="@+id/spn_TipoDano"/>
+
+    <Spinner
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spn_TercoDano"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txv_TercoDano"/>
+
+
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:text="@string/setor_dano"
+        android:layout_width="wrap_content"
+        android:id="@+id/txv_SetorDano"
+        android:layout_alignLeft="@id/spn_TipoDano"
+        android:layout_below="@+id/spn_TercoDano"/>
+
+    <Spinner
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spn_SetorDano"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txv_SetorDano"/>
+
+<CheckBox
+    android:id="@+id/cxb_Compatibilidade"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@id/spn_SetorDano"
+    android:hint="@string/compatibilidade_dano"/>
+
+<!--
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray"
+        android:clickable="true"
+        android:layout_below="@+id/cxb_Compatibilidade"
+        android:layout_alignLeft="@+id/cxb_Compatibilidade">
+
+        <ImageView
+            android:id="@+id/imgv_Salvar_Proprietario"
+            android:layout_margin="3dp"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/disk" />
+
+        <Button
+            android:id="@+id/btn_Salvar_Proprietario"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:background="@null"
+            android:text="Salvar"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray"
+        android:clickable="true"
+        android:layout_below="@+id/cxb_Compatibilidade"
+        android:layout_alignRight="@+id/cxb_Compatibilidade">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_margin="3dp"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/x" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:background="@null"
+            android:text="Cancelar"  />
+    </LinearLayout>
+-->
+</RelativeLayout>

@@ -5,16 +5,13 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="Fragments.ColisoesFragment">
+    android:layout_margin="50dp"
+    tools:context="Fragments.GerenciarColisoes">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+<!--
         <ListView
             android:id="@+id/lstv_Colisoes"
             android:layout_width="match_parent"
@@ -31,5 +28,13 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/fab_plus"/>
     </RelativeLayout>
+-->
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/desenvolvimento"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
 
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

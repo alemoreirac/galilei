@@ -10,13 +10,9 @@ import android.widget.TextView;
 import com.example.pefoce.peritolocal.R;
 
 import java.util.ArrayList;
-
-import Enums.SetorDano;
-import Enums.TercoDano;
 import Model.Dano;
 import ViewHolders.ViewHolderDano;
 
-import static Enums.SetorDano.ANTERIOR_DIREITO;
 
 /**
  * Created by Pefoce on 19/06/2017.

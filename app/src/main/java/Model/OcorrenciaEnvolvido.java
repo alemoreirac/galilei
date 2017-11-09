@@ -1,5 +1,6 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 /**
@@ -7,7 +8,10 @@ import com.orm.SugarRecord;
  */
 
 public class OcorrenciaEnvolvido extends SugarRecord<OcorrenciaEnvolvido> {
+
+    @Expose
     private OcorrenciaTransito ocorrenciaTransito;
+    @Expose
     private EnvolvidoTransito envolvidoTransito;
 
     public OcorrenciaEnvolvido() {

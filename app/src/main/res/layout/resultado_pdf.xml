@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="2115px"
+                android:layout_height="1500px"
+                android:background="@color/ms_white">
+    <TextView android:id="@+id/txv_corpo"
+              android:padding="6px"/>
+
+</RelativeLayout>

@@ -2,7 +2,6 @@ package Adapters;
 
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +20,14 @@ import ViewHolders.ViewHolderVeiculo;
  */
 
 public class AdapterVeiculo extends ArrayAdapter<Veiculo> implements View.OnClickListener
-
 {
-
     private ArrayList<Veiculo> dataSet;
 
     Context mContext;
 
     private int lastPosition = -1;
 
-    AdapterVeiculo(ArrayList<Veiculo> data,Context context)
+    public AdapterVeiculo(ArrayList<Veiculo> data, Context context)
     {
         super(context,R.layout.row_veiculo,data);
         this.mContext = context;
@@ -39,7 +36,7 @@ public class AdapterVeiculo extends ArrayAdapter<Veiculo> implements View.OnClic
 
     public View getView(int position,View convertView,ViewGroup parent)
     {
-        Veiculo veiculo = new Veiculo();
+        Veiculo veiculo = getItem(position);
         ViewHolderVeiculo viewHolder;
         if(convertView==null)
         {
@@ -50,6 +47,7 @@ public class AdapterVeiculo extends ArrayAdapter<Veiculo> implements View.OnClic
 
             viewHolder.setTxvModelo((TextView) convertView.findViewById(R.id.txv_row_Modelo));
             viewHolder.setTxvPlaca((TextView) convertView.findViewById(R.id.txv_row_Placa));
+            viewHolder.setTxvTipo((TextView) convertView.findViewById(R.id.txv_row_TipoVeiculo));
 
             convertView.setTag(viewHolder);
 
@@ -62,7 +60,13 @@ public class AdapterVeiculo extends ArrayAdapter<Veiculo> implements View.OnClic
         lastPosition = position;
 
         viewHolder.getTxvModelo().setText(veiculo.getModelo());
+        //viewHolder.getTxvPlaca().setText(veiculo.getId().toString());
         viewHolder.getTxvPlaca().setText(veiculo.getPlaca());
+
+        if(veiculo.getTipoVeiculo() != null)
+        viewHolder.getTxvTipo().setText(veiculo.getTipoVeiculo().toString());
+        else
+            viewHolder.getTxvTipo().setText("");
 
         return convertView;
 

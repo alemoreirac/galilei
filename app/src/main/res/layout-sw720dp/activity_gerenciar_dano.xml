@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:layout_width="780dp"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/carro_angulo"
+        android:id="@+id/imgv_Carro"  />
+
+<TextView
+    android:id="@+id/txv_Titulo_VeiculoDanos"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Danos do Veiculo"
+    android:textSize="30dp"
+    />
+
+    <TextView
+        android:id="@+id/txv_Subtitulo_Veiculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_below="@+id/txv_Titulo_VeiculoDanos"
+        android:layout_alignLeft="@+id/txv_Titulo_VeiculoDanos"
+        />
+
+
+    <TextView
+        android:onClick="Selecionar_Angulo"
+        android:text="LMD"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="620dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/txv_LMD"
+        android:layout_alignBaseline="@+id/txv_LAD"
+        android:layout_alignBottom="@+id/txv_LAD"
+         />
+
+    <TextView
+        android:onClick="Selecionar_Angulo"
+        android:text="LAD"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="470dp"
+        android:layout_marginTop="100dp"
+        android:id="@+id/txv_LAD"
+        android:layout_alignParentTop="true"
+         />
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="AAD"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txv_APD"
+        android:layout_marginLeft="330dp"
+        android:id="@+id/txv_AAD" />
+
+    <TextView
+        android:onClick="Selecionar_Angulo"
+        android:text="PAD"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txv_PPD"
+        android:layout_marginLeft="220dp"
+        android:id="@+id/txv_PAD" />
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="PAM"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_PAD"
+        android:id="@+id/txv_PAM"
+        android:layout_alignBottom="@+id/txv_PPM" />
+
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="PAE"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txv_PPE"
+        android:layout_alignLeft="@+id/txv_PAD"
+        android:id="@+id/txv_PAE" />
+
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="AAE"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txv_APE"
+        android:layout_alignLeft="@+id/txv_AAD"
+
+        android:id="@+id/txv_AAE" />
+
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="PPE"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_PPE"
+        android:layout_marginTop="65dp"
+        android:layout_below="@+id/txv_PPM"
+        android:layout_alignLeft="@+id/txv_PPD" />
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="APE"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_APE"
+        android:layout_marginTop="95dp"
+        android:layout_below="@+id/txv_PPE"
+        android:layout_toLeftOf="@+id/txv_PPE" />
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="LPE"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_LPE"
+        android:layout_marginTop="27dp"
+        android:layout_alignBottom="@+id/txv_APE"
+        android:layout_alignLeft="@+id/txv_LPD"
+        />
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="LME"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_LME"
+        android:layout_alignBottom="@+id/txv_APE"
+        android:layout_alignLeft="@+id/txv_LMD"
+        android:layout_marginRight="50dp"/>
+
+    <TextView
+        android:id="@+id/txv_LAE"
+        android:onClick="Selecionar_Angulo"
+        android:text="LAE"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:layout_alignBottom="@+id/txv_APE"
+        android:layout_alignLeft="@+id/txv_LAD"
+        android:layout_marginRight="50dp"/>
+
+    <Button
+        android:id="@+id/btn_SalvarDano_Veiculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voltar"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/imgv_Carro"
+
+        />
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_dialog_LimparDano_Veiculo"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Limpar Danos"-->
+        <!--android:layout_toRightOf="@id/btn_SalvarDano_Veiculo"-->
+        <!--android:layout_alignBottom="@+id/btn_SalvarDano_Veiculo"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--/>-->
+
+
+    <View
+        android:layout_alignLeft="@+id/txv_LAE"
+        android:layout_below="@+id/txv_LAE"
+        android:layout_width="370dp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
+
+
+    <View
+        android:layout_alignLeft="@+id/txv_LAD"
+        android:layout_marginTop="95dp"
+        android:layout_width="370dp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
+
+    <View
+
+        android:layout_alignTop="@+id/txv_PPD"
+        android:layout_toRightOf="@id/txv_PPD"
+        android:layout_marginLeft="15dp"
+        android:layout_width="1dp"
+        android:layout_height="230dp"
+        android:background="@android:color/black"/>
+
+    <View
+
+        android:layout_alignTop="@+id/txv_PAD"
+        android:layout_marginLeft="210dp"
+        android:layout_width="1dp"
+        android:layout_height="230dp"
+        android:background="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/txv_LadoEsquerdo_Veiculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LADO ESQUERDO"
+        android:layout_alignLeft="@id/txv_LAE"
+        android:layout_below="@id/txv_LME"
+        android:layout_marginTop="10dp"
+        android:onClick="Selecionar_Lado"
+        android:textSize="47dp"
+        />
+
+
+
+    <TextView
+        android:id="@+id/txv_Anterior_Veiculo"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:text="ANTERIOR"
+        android:textSize="25dp"
+        android:layout_alignTop="@id/txv_PAD"
+        android:layout_marginLeft="156dp"
+        android:onClick="Selecionar_Lado" />
+
+
+    <TextView
+        android:id="@+id/txv_Posterior_Veiculo"
+        android:layout_width="20dp"
+        android:layout_marginLeft="35dp"
+        android:layout_height="wrap_content"
+        android:text="POSTERIOR"
+        android:textSize="25dp"
+        android:layout_marginTop="232dp"
+        android:layout_toRightOf="@id/txv_PPD"
+        android:onClick="Selecionar_Lado"
+        />
+
+    <TextView
+        android:id="@+id/txv_LadoDireito_Veiculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LADO DIREITO"
+        android:layout_marginLeft="500dp"
+        android:textSize="47dp"
+        android:onClick="Selecionar_Lado"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:onClick="Selecionar_Angulo"
+        android:text="LPD"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="37dp"
+        android:id="@+id/txv_LPD"
+        android:layout_alignBaseline="@+id/txv_LMD"
+        android:layout_alignBottom="@+id/txv_LMD"
+        android:layout_toRightOf="@+id/txv_LME" />
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="APD"
+        android:textSize="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_APD"
+        android:layout_above="@+id/imgv_Carro"
+        android:layout_alignRight="@+id/imgv_Carro"
+        android:layout_marginRight="24dp" />
+
+    <TextView
+
+        android:onClick="Selecionar_Angulo"
+        android:text="PPD"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_PPD"
+        android:layout_marginTop="250dp"
+        android:layout_alignLeft="@+id/txv_APD"
+        android:layout_marginLeft="62dp"
+        />
+
+    <TextView
+        android:id="@+id/txv_PPM"
+        android:onClick="Selecionar_Angulo"
+        android:text="PPM"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txv_PPD"
+        android:layout_marginTop="50dp"
+        android:layout_alignLeft="@+id/txv_PPD" />
+
+
+</RelativeLayout>

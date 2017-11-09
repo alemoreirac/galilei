@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:context="Fragments.GerenciarEndereco">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="300dp"
+        android:background="@drawable/stroke_border"
+        android:layout_height="match_parent"
+        android:id="@+id/lista_enderecos">
+
+        <ListView
+            android:id="@+id/lstv_Enderecos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:choiceMode="singleChoice">
+
+        </ListView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Endereco"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/fab_plus"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/lista_enderecos"
+        android:id="@+id/rltv_Detalhe_Endereco" >
+
+
+        <TextView
+            android:id="@+id/txv_TipoVia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_via"  />
+
+        <Spinner
+            android:layout_width="100dp"
+            android:id="@+id/spn_TipoVia"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_TipoVia"/>
+
+        <TextView
+            android:id="@+id/txv_Endereco"
+            android:layout_toRightOf="@id/spn_TipoVia"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/endereco_transito"/>
+
+        <EditText
+            android:id="@+id/edt_Endereco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Endereco"
+            android:layout_toRightOf="@id/spn_TipoVia"
+            android:layout_marginLeft="20dp"
+            android:maxLines = "1"
+            android:layout_marginTop="5dp"/>
+
+
+    <TextView
+        android:id="@+id/txv_Cidade"
+        android:text="@string/tipoVia"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/edt_Endereco"
+        android:layout_height="wrap_content" />
+
+    <AutoCompleteTextView
+        android:id="@+id/auc_Cidade"
+        android:layout_width="200dp"
+        android:layout_below="@id/txv_Cidade"
+        android:layout_alignLeft="@+id/txv_Cidade"
+        android:maxLines = "1"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/txv_Bairro"
+        android:text="@string/bairro"
+        android:layout_toRightOf="@id/auc_Cidade"
+        android:layout_alignBottom="@id/txv_Cidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <AutoCompleteTextView
+        android:id="@+id/auc_Bairro"
+        android:layout_width="200dp"
+        android:layout_alignBottom="@id/auc_Cidade"
+        android:layout_alignLeft="@+id/txv_Bairro"
+        android:layout_height="wrap_content"
+        android:maxLines = "1"
+        />
+
+
+        <TextView
+            android:id="@+id/txv_Semaforo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/semaforo"
+            android:layout_below="@id/auc_Cidade"
+            android:layout_marginTop="35dp"/>
+
+        <Spinner
+            android:layout_width="150dp"
+            android:id="@+id/spn_Semaforo"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/spn_TipoVia"
+            android:layout_below="@id/txv_Semaforo"/>
+
+    <Spinner
+        android:layout_width="150dp"
+        android:id="@+id/spn_Pavimentacao"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/spn_Semaforo"
+        android:layout_toRightOf="@id/spn_Semaforo"
+        android:layout_marginLeft="40dp"  />
+
+    <TextView
+        android:id="@+id/txv_Pavimentacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pavimentacao"
+        android:layout_alignBottom="@id/txv_Semaforo"
+        android:layout_alignLeft="@id/spn_Pavimentacao"/>
+
+
+
+    <TextView
+        android:id="@+id/txv_Iluminacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/iluminacao_via"
+        android:layout_alignLeft="@id/spn_Semaforo"
+        android:layout_below="@id/spn_Semaforo"
+        android:layout_marginTop="15dp"/>
+
+
+
+        <Spinner
+        android:layout_width="150dp"
+        android:id="@+id/spn_Iluminacao"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_Iluminacao"
+        android:layout_alignLeft="@id/txv_Iluminacao"
+        android:layout_marginTop="5dp"  />
+
+
+        <Spinner
+            android:layout_width="150dp"
+            android:id="@+id/spn_CondicaoVia"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/spn_Iluminacao"
+            android:layout_toRightOf="@id/spn_Pavimentacao"
+            android:layout_marginLeft="15dp"   />
+
+        <TextView
+            android:id="@+id/txv_CondicaoVia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/condicao_via"
+            android:layout_alignBottom="@id/txv_Iluminacao"
+            android:layout_alignLeft="@id/spn_CondicaoVia" />
+    <Spinner
+        android:layout_width="150dp"
+        android:id="@+id/spn_SinalPare"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/spn_Iluminacao"
+        android:layout_toRightOf="@id/spn_Iluminacao"
+        android:layout_marginLeft="40dp" />
+
+    <TextView
+        android:id="@+id/txv_SinalPare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sinalizacao_pare"
+        android:layout_alignBottom="@id/txv_Iluminacao"
+        android:layout_alignLeft="@id/spn_SinalPare" />
+
+
+
+        <ImageButton
+            android:id="@+id/imgb_Coordenadas"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignTop="@id/txv_Bairro"
+            android:layout_toRightOf="@id/auc_Bairro"
+            android:scaleType="centerCrop"
+            android:background="@drawable/pin_icon" />
+
+        <EditText
+        android:id="@+id/edt_latitude"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgb_Coordenadas"
+        android:layout_alignBottom="@id/imgb_Coordenadas"
+        android:hint="@string/latitude"/>
+
+        <TextView
+            android:id="@+id/txv_Coordenadas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coordenadas"
+            android:layout_alignBottom="@+id/txv_Bairro"
+            android:layout_alignLeft="@id/edt_latitude"/>
+
+    <EditText
+        android:id="@+id/edt_longitude"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/edt_latitude"
+        android:layout_alignBottom="@id/imgb_Coordenadas"
+        android:hint="@string/longitude"/>
+
+<!--
+    <TextView
+        android:id="@+id/txv_SentidoVia_Origem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sentido_via_origem"
+        android:layout_alignLeft="@id/txv_Semaforo"
+        android:layout_alignBottom="@id/edt_latitude"
+        />
+
+    <Spinner
+
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spn_SentidoVia_Origem"
+        android:layout_alignLeft="@+id/txv_SentidoVia_Origem"
+        android:layout_below="@+id/txv_SentidoVia_Origem"/>
+-->
+
+    <TextView
+        android:id="@+id/txv_SentidoVia_Direcao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Direção da Via"
+        android:layout_alignBottom="@id/txv_Semaforo"
+        android:layout_alignLeft="@id/txv_CondicaoVia"
+
+        />
+
+    <Spinner
+        android:id="@+id/spn_SentidoVia_Direcao"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_SentidoVia_Direcao"
+        android:layout_below="@id/txv_SentidoVia_Direcao"
+        />
+
+
+
+
+    <CheckBox
+        android:id="@+id/cxb_ViaComposta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/via_composta"
+        android:layout_alignLeft="@id/spn_Iluminacao"
+        android:layout_below="@id/spn_Iluminacao"
+        />
+
+    <com.travijuu.numberpicker.library.NumberPicker
+        android:id="@+id/npck_Faixas"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        numberpicker:min="1"
+        numberpicker:max="5"
+        numberpicker:value="1"
+        numberpicker:unit="1"
+        numberpicker:focusable="false"
+        numberpicker:custom_layout="@layout/number_picker_layout"
+        android:layout_toRightOf="@id/cxb_ViaComposta"
+        android:layout_alignBottom="@id/cxb_ViaComposta"
+        android:layout_marginLeft="55dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Faixas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/faixas"
+            android:layout_above="@+id/npck_Faixas"
+            android:layout_alignLeft="@+id/npck_Faixas" />
+
+
+        <com.travijuu.numberpicker.library.NumberPicker
+            android:id="@+id/npck_Pistas"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            numberpicker:min="1"
+            numberpicker:max="5"
+            numberpicker:value="1"
+            numberpicker:unit="1"
+            numberpicker:focusable="false"
+            numberpicker:custom_layout="@layout/number_picker_layout"
+            android:layout_toRightOf="@id/npck_Faixas"
+            android:layout_alignBottom="@id/cxb_ViaComposta"
+            android:layout_marginLeft="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Pistas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pistas"
+            android:layout_above="@+id/npck_Pistas"
+            android:layout_alignLeft="@+id/npck_Pistas" />
+
+
+        <TextView
+            android:id="@+id/txv_Topografia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/topografia"
+            android:layout_alignLeft="@id/cxb_ViaComposta"
+            android:layout_marginTop="40dp"
+            android:layout_below="@id/cxb_ViaComposta" />
+
+
+        <Spinner
+            android:layout_width="150dp"
+            android:id="@+id/spn_Topografia"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Topografia"
+            android:layout_alignLeft="@id/txv_Topografia"
+            android:layout_margin="10dp"
+            />
+
+
+        <TextView
+            android:id="@+id/txv_Topografia_Graus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ângulo"
+            android:layout_above="@+id/edt_Topografia_Angulo"
+            android:layout_alignLeft="@+id/edt_Topografia_Angulo" />
+
+        <EditText
+            android:id="@+id/edt_Topografia_Angulo"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines = "1"
+            android:maxLength="2"
+            android:enabled="false"
+            android:layout_alignBottom="@+id/spn_Topografia"
+            android:layout_alignLeft="@id/npck_Faixas" />
+
+
+        <TextView
+            android:id="@+id/txv_Largura_Via"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Largura da Via (m)"
+            android:layout_above="@+id/edt_Largura_Via"
+            android:layout_alignLeft="@+id/edt_Largura_Via" />
+
+        <EditText
+            android:id="@+id/edt_Largura_Via"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines = "1"
+            android:maxLength="2"
+            android:enabled="false"
+            android:layout_alignBottom="@+id/spn_Topografia"
+            android:layout_toRightOf="@id/edt_Topografia_Angulo"
+            android:layout_marginLeft="50dp"/>
+
+        <Button
+            android:id="@+id/btn_Salvar_Endereco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@id/cxb_ViaComposta"
+            android:text="@string/salvar_sair"/>
+
+        <Button
+            android:id="@+id/btn_Cancelar_Endereco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignBottom="@id/btn_Salvar_Endereco"
+            android:text="@string/cancelar"
+            android:layout_toRightOf="@id/btn_Salvar_Endereco"
+            android:layout_marginLeft="60dp"/>
+
+
+        <CheckBox
+            android:id="@+id/cxb_Preferencial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/preferencia"
+            android:layout_alignLeft="@id/spn_Iluminacao"
+            android:layout_below="@id/spn_Topografia"
+            android:layout_marginTop="15dp" />
+
+
+        <CheckBox
+            android:id="@+id/cxb_Tracado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/curva"
+            android:layout_toRightOf="@id/cxb_Preferencial"
+            android:layout_alignBottom="@id/cxb_Preferencial"
+            android:layout_marginLeft="15dp"/>
+
+
+        <CheckBox
+            android:id="@+id/cxb_Humidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/humidade_via"
+            android:layout_toRightOf="@id/cxb_Tracado"
+            android:layout_alignBottom="@id/cxb_Preferencial"
+            android:layout_marginLeft="15dp"/>
+
+        <CheckBox
+            android:id="@+id/cxb_MaoDupla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Mão Dupla"
+            android:layout_toRightOf="@id/cxb_Humidade"
+            android:layout_alignBottom="@id/cxb_Preferencial"
+            android:layout_marginLeft="15dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Foto_Endereco"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@+id/cxb_MaoDupla"
+            android:layout_alignBottom="@id/cxb_MaoDupla"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/camera_white"/>
+
+    </RelativeLayout>
+</RelativeLayout>

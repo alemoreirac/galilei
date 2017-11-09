@@ -16,5 +16,24 @@ public class ViewHolderEndereco {
     }
 
     TextView endereco;
+    TextView bairro;
+    TextView tipoVia;
+
+
+    public TextView getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(TextView bairro) {
+        this.bairro = bairro;
+    }
+
+    public TextView getTipoVia() {
+        return tipoVia;
+    }
+
+    public void setTipoVia(TextView tipoVia) {
+        this.tipoVia = tipoVia;
+    }
 
 }

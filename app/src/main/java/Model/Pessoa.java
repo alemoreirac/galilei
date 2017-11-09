@@ -1,5 +1,6 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
@@ -26,10 +27,12 @@ public class Pessoa extends SugarRecord<Pessoa> implements Serializable {
 
     public Pessoa(String login, String nome, String senha) {
         String dtStart = "29/01/1994";
+
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
         try {
             Date date = format.parse(dtStart);
- this.nascimento = date;
+            this.nascimento = date;
             System.out.println(date);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -40,8 +43,11 @@ public class Pessoa extends SugarRecord<Pessoa> implements Serializable {
         this.senha = senha;
     }
 
+    @Expose
     private String login;
+    @Expose
     private String nome;
+    @Expose
     private Date nascimento;
     private String senha;
 

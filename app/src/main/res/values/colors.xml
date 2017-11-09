@@ -6,4 +6,6 @@
     <color name="gray">#d3d3d3</color>
     <color name="backgroundgray">#929292</color>
     <color name="lightGray">#f2f2f2</color>
+    <color name="DefaultTextColor">#808080</color>
+    <color name="pressed_color">#aeaeae</color>
 </resources>

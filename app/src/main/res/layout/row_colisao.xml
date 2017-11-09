@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:background="@drawable/selector"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/imgv_row_TipoInteracao"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@color/colorLightGray"
+        android:background="@drawable/border_gray"/>
+
+    <TextView
+        android:id="@+id/txv_row_Ator1"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imgv_row_TipoInteracao"
+        android:layout_marginLeft="15dp"
+        android:layout_alignTop="@id/imgv_row_TipoInteracao"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/txv_row_Ator2"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_alignLeft="@id/txv_row_Ator1"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/txv_row_Ator1"
+        />
+
+    <!--
+    <TextView
+        android:id="@+id/txv_row_Ator1_Sentido"
+        android:text="Veiculo 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_below="@id/txv_row_Ator1"
+        android:layout_alignLeft="@id/txv_row_Ator1"/>
+
+    <TextView
+        android:id="@+id/txv_row_Ator2_Sentido"
+        android:text="Sentido Ator 2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txv_row_Ator1_Sentido"
+        android:layout_alignLeft="@id/txv_row_Ator2"/>
+        -->
+    <TextView
+        android:id="@+id/txv_row_TipoInteracao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text=""
+        android:layout_alignBottom="@id/imgv_row_TipoInteracao"
+        android:layout_alignLeft="@+id/txv_row_Ator1"
+
+        />
+    <ImageView
+        android:id="@+id/imgv_row_AudioColisao"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/microfone_apagado"/>
+
+
+</RelativeLayout>

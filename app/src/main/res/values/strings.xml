@@ -14,6 +14,8 @@
     <string name="motorista">Motorista</string>
     <string name="delegacia">Delegacia</string>
     <string name="sitio_colisao">Sítio da Colisão</string>
+    <string name="search_title">Search Title</string>
+    <string name="search_hint">Search Hint</string>
     <string name="local_preservado">Preservação do Local</string>
     <string name="tipo_documento">Tipo de Documento</string>
     <string name="num_documento">Número de Documento</string>
@@ -36,7 +38,7 @@
     <string name="compatibilidade_dano">O dano é compatível com a colisão?</string>
     <string name="endereco_veiculo">Endereço Veículo</string>
     <string name="veiculos">Veículos</string>
-    <string name="endereco">Endereço</string>
+    <string name="endereco_transito">Endereço</string>
     <string name="tipo_via">Tipo de Via</string>
     <string name="topografia">Topografia</string>
     <string name="pavimentacao">Pavimentação</string>
@@ -69,7 +71,7 @@
     <string name="anterior">Anterior</string>
     <string name="proxima">Próxima</string>
     <string name="data_atendimento">Data Atendimento</string>
-    <string name="cidade">Cidade</string>
+    <string name="tipoVia">Cidade</string>
     <string name="bairro">Bairro</string>
     <string name="via_composta">Via Composta</string>
     <string name="faixas">Núm. Faixas</string>
@@ -81,4 +83,19 @@
     <string name="autoridade_comandante">Comandante</string>
     <string name="humidade_via">Humidade</string>
     <string name="placa_viatura">Placa Viatura</string>
+    <string name="tipo_veiculo">Tipo Veículo</string>
+    <string name="cor_veiculo">Cor Veículo</string>
+    <string name="vitima_desconhecida">Vítima Desconhecida</string>
+    <string name="genero">Gênero</string>
+
+    <drawable name="clr_normal">#ffffff</drawable>
+    <drawable name="clr_pressed">#c6c6c6</drawable>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <attr name="sc_corner_radius" format="dimension" />
+    <attr name="sc_border_width" format="dimension" />
+    <attr name="sc_tint_color" format="color" />
+    <attr name="sc_checked_text_color" format="color" />
 </resources>

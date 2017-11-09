@@ -7,7 +7,8 @@ package Enums;
 public enum SinalizacaoPare {
     VERTICAL("Vertical")
     ,HORIZONTAL("Horizontal")
-    ,HORIZONTAL_APAGADO("Horizontal Apagado")
+    ,VERTICAL_E_HORIZONTAL("Vertical e Horizontal")
+    ,MAS_CONDICOES("Más Condições")
     ,AUSENTE("Ausente");
 
     String valor;

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:context="Fragments.GerenciarEnvolvido">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="300dp"
+        android:background="@drawable/stroke_border"
+        android:layout_height="match_parent"
+        android:id="@+id/lista_envolvidos">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lstv_Envolvidos"
+            android:choiceMode="singleChoice"
+            >
+
+        </ListView>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Envolvido"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/fab_plus"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:layout_toRightOf="@id/lista_envolvidos"
+    android:focusableInTouchMode="true"
+    android:id="@+id/rltv_Detalhe_Envolvido" >
+
+    <CheckBox
+        android:id="@+id/cxb_Envolvido_Desconhecido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desconhecido(a)"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/txv_NomeEnvolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cxb_Envolvido_Desconhecido"
+        android:layout_marginTop="15dp"
+        android:text="@string/nome"/>
+
+    <EditText
+        android:id="@+id/edt_NomeEnvolvido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txv_NomeEnvolvido"  />
+
+
+    <TextView
+        android:id="@+id/txv_TipoDocEnvolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tipo_documento"
+        android:layout_below="@id/edt_NomeEnvolvido"
+        android:layout_marginTop="10dp"/>
+    <Spinner
+        android:id="@+id/spn_TipoDocumentoEnvolvido"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_TipoDocEnvolvido"
+        android:layout_alignLeft="@id/txv_TipoDocEnvolvido"
+        android:layout_marginTop="5dp"/>
+<!--
+    <TextView
+        android:id="@+id/txv_TipoCNHEnvolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo CNH"
+        android:layout_below="@id/spn_TipoDocumentoEnvolvido"
+        android:layout_marginTop="10dp"/>-->
+
+    <TextView
+        android:id="@+id/txv_NumDocEnvolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/num_doc"
+        android:layout_toRightOf="@id/spn_TipoDocumentoEnvolvido"
+        android:layout_alignBottom="@id/txv_TipoDocEnvolvido"
+        android:layout_marginLeft="10dp"/>
+
+    <EditText
+        android:id="@+id/edt_NumDocEnvolvido"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_NumDocEnvolvido"
+        android:layout_alignLeft="@id/txv_NumDocEnvolvido"/>
+
+
+    <View
+        android:id="@+id/view_divisoria"
+        android:layout_height="3dp"
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:layout_marginTop="20dp"
+        android:alpha="0.2"
+        android:layout_below="@id/spn_TipoDocumentoEnvolvido">
+    </View>
+
+
+    <TextView
+        android:id="@+id/txv_EnvolvidoGenero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/genero"
+        android:layout_alignLeft="@id/txv_TipoDocEnvolvido"
+        android:layout_below="@id/view_divisoria"
+        android:layout_marginTop="30dp"/>
+
+    <Spinner
+        android:id="@+id/spn_EnvolvidoGenero"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_EnvolvidoGenero"
+        android:layout_alignLeft="@id/txv_EnvolvidoGenero"/>
+
+    <TextView
+        android:id="@+id/txv_DataNascimento_Envolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/txv_NumDocEnvolvido"
+        android:layout_alignBottom="@+id/txv_NumDocEnvolvido"
+        android:text="@string/data_nascimento"
+        android:layout_marginLeft="150dp"/>
+
+    <TextView
+        android:id="@+id/txv_DataNascimento_Envolvido_Valor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_alignLeft="@id/txv_DataNascimento_Envolvido"
+        android:layout_below="@id/txv_DataNascimento_Envolvido"
+        android:clickable="true"
+        android:text="00/00/0000"
+        android:layout_marginTop="6dp"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/txv_Lesao"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_NumDocEnvolvido"
+        android:layout_alignBottom="@+id/txv_EnvolvidoGenero"
+        android:text="Lesão"/>
+
+    <Spinner
+        android:id="@+id/spn_Lesao"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Lesao"
+        android:layout_alignBottom="@id/spn_EnvolvidoGenero"/>
+
+
+    <TextView
+        android:id="@+id/txv_Envolvido_Tipo"
+        android:text="Tipo de Envolvimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spn_EnvolvidoGenero"
+        android:layout_marginTop="30dp"
+        />
+
+    <Spinner
+        android:id="@+id/spn_Tipo_Envolvido"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Envolvido_Tipo"
+        android:layout_below="@+id/txv_Envolvido_Tipo"/>
+
+
+    <TextView
+        android:id="@+id/txv_Envolvido_Veiculo"
+        android:text="Veiculo Envolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Lesao"
+        android:layout_below="@id/spn_EnvolvidoGenero"
+        android:layout_marginTop="30dp"/>
+
+    <Spinner
+        android:id="@+id/spn_Veiculo_Envolvido"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Envolvido_Veiculo"
+        android:layout_alignBottom="@+id/spn_Tipo_Envolvido"/>
+
+
+    <!--
+    <CheckBox
+        android:id="@+id/cxb_Envolvido_Condutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spn_Veiculo_Envolvido"
+        android:layout_toRightOf="@id/spn_Veiculo_Envolvido"
+        android:layout_marginLeft="20dp"
+        android:hint="Condutor"/>
+-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_Foto_Envolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camera_white"
+        android:layout_below="@id/spn_Veiculo_Envolvido"
+        android:layout_alignLeft="@id/spn_Tipo_Envolvido"
+        android:layout_marginTop="20dp"/>
+
+
+    <Button
+        android:id="@+id/btn_Salvar_Envolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/txv_NomeEnvolvido"
+        android:onClick="Salvar_Fechar"
+        android:text="Salvar"/>
+
+    <Button
+        android:id="@+id/btn_Cancelar_Envolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignBottom="@id/btn_Salvar_Envolvido"
+        android:text="Desfazer"
+        android:layout_toRightOf="@id/btn_Salvar_Envolvido"
+        android:layout_marginLeft="60dp"/>
+
+</RelativeLayout>
+
+</RelativeLayout>

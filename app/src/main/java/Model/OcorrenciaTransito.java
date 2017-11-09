@@ -1,13 +1,14 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import Enums.AreaIntegradaSeguranca;
 import Enums.DocumentoSolicitacao;
 import Enums.EstadoSitioColisao;
 import Enums.Orgao;
@@ -19,40 +20,53 @@ import Util.TempoUtil;
  * Created by Pefoce on 29/05/2017.
  */
 
-public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
+public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
+{
 
-    private List<Veiculo> veiculos;
-
-    private List<EnderecoTransito> enderecos;
-    private List<EnvolvidoTransito> vitimas;
-
+    @Expose
+    Long ocorrenciaID;
+    @Expose
     private Date dataOcorrencia;
-    private Date dataChamado;
+    @Expose
     private Date dataAtendimento;
-
-    private CarroVitima carroVitima;
-    private CarroCarro carroCarro;
-
-    private List<Foto> fotos;
-
+    @Expose
     private String Observacoes;
-
+    @Expose
     private DocumentoOcorrencia documentoOcorrencia;
-
+    @Expose
+    private String numIncidencia;
+    @Expose
+    private AreaIntegradaSeguranca ais;
+    @Expose
     private EstadoSitioColisao estadoSitioColisao;
-    
+    @Expose
     private PreservacaoLocal preservacaoLocal;
-
-    private Pessoa perito;
-
+    @Expose
     private String orgaoOrigem;
-
+    @Expose
     private String orgaoDestino;
-
-
+    @Expose
     private Orgao orgaoPresente;
+    @Expose
     private String Viatura;
+    @Expose
     private String Comandante;
+    @Expose
+    public Gravacao gravacaoConclusao;
+    @Expose
+    private boolean ultimaForma;
+
+
+    public boolean getUltimaForma()
+    {
+        return ultimaForma;
+    }
+
+    public void setUltimaForma(boolean ultimaForma)
+    {
+        this.ultimaForma = ultimaForma;
+    }
+
 
     public Orgao getOrgaoPresente() {
         return orgaoPresente;
@@ -78,13 +92,21 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
         Comandante = comandante;
     }
 
+    public Gravacao getGravacaoConclusao() {
+        return gravacaoConclusao;
+    }
 
+    public void setGravacaoConclusao(Gravacao gravacaoConclusao) {
+        this.gravacaoConclusao = gravacaoConclusao;
+    }
 
     public OcorrenciaTransito()
     {
             this.dataAtendimento = TempoUtil.stringToDate("01/01/2000");
-            this.dataChamado = TempoUtil.stringToDate("01/01/2000");
+            //this.dataChamado = TempoUtil.stringToDate("01/01/2000");
             this.dataOcorrencia = TempoUtil.stringToDate("01/01/2000");
+            this.setViatura("");
+
     }
 
     public String getOrgaoDestino() {
@@ -96,40 +118,7 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
     }
 
 
-    public List<Veiculo> getVeiculos() {
-        return veiculos;
-    }
 
-    public void setVeiculos(List<Veiculo> veiculos) {
-        this.veiculos = veiculos;
-    }
-
-    public List<EnderecoTransito> getEnderecos() {
-        return enderecos;
-    }
-
-    public List<EnvolvidoTransito> getVitimas() {
-        return vitimas;
-    }
-
-    public void setVitimas(List<EnvolvidoTransito> vitimas) {
-        this.vitimas = vitimas;
-    }
-
-    public Date getDataChamado() {
-
-        return dataChamado;
-    }
-
-    public String getHoraChamadoString()
-    {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        return timeFormat.format(this.dataChamado);
-    }
-
-    public void setDataChamado(Date dataChamado) {
-        this.dataChamado = dataChamado;
-    }
 
 
     public Date getDataAtendimento() {
@@ -140,28 +129,16 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
         this.dataAtendimento = dataAtendimento;
     }
 
-    public String getDataAtendimentoString(){
-
-        // Get Current Date
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        final Calendar c = Calendar.getInstance();
-        c.setTime(this.getDataAtendimento());
-
-
-        String data = Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + Calendar.YEAR;
-
-        data = format.format(c.getTime());
-
-        return data;
+    public String getDataAtendimentoString()
+    {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return timeFormat.format(this.dataAtendimento);
     }
 
-    public String getHoraAtendimentoString()
+    public String getDataPath()
     {
-
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        return timeFormat.format(this.getDataAtendimento());
-
+            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy/MM/dd");
+            return timeFormat.format(this.dataAtendimento);
     }
 
     public void setHoraAtendimento(String s)
@@ -212,12 +189,14 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
     }
 
 
-    public void setEnderecos(List<EnderecoTransito> enderecos) {
-        this.enderecos = enderecos;
-    }
-
     public Date getDataOcorrencia() {
         return dataOcorrencia;
+    }
+
+    public String getHoraAtendimentoString()
+    {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        return timeFormat.format(this.dataAtendimento)+"h ";
     }
 
     public String getHoraOcorrenciaString()
@@ -230,29 +209,7 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
     }
 
 
-    public CarroVitima getCarroVitima() {
-        return carroVitima;
-    }
 
-    public void setCarroVitima(CarroVitima carroVitima) {
-        this.carroVitima = carroVitima;
-    }
-
-    public CarroCarro getCarroCarro() {
-        return carroCarro;
-    }
-
-    public void setCarroCarro(CarroCarro carroCarro) {
-        this.carroCarro = carroCarro;
-    }
-
-    public List<Foto> getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(List<Foto> fotos) {
-        this.fotos = fotos;
-    }
 
     public String getObservacoes() {
         return Observacoes;
@@ -262,13 +219,7 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
         Observacoes = observacoes;
     }
 
-    public Pessoa getPerito() {
-        return perito;
-    }
 
-    public void setPerito(Pessoa perito) {
-        this.perito = perito;
-    }
 
     public DocumentoOcorrencia getDocumentoOcorrencia() {
         return documentoOcorrencia;
@@ -304,4 +255,29 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito> {
 
     public void setEstadoSitioColisao(DocumentoSolicitacao documentoSolicitacao) {
     }
+
+    public String getNumIncidencia() {
+        return numIncidencia;
+    }
+
+    public void setNumIncidencia(String numIncidencia) {
+        this.numIncidencia = numIncidencia;
+    }
+
+    public AreaIntegradaSeguranca getAis() {
+        return ais;
+    }
+
+    public void setAis(AreaIntegradaSeguranca ais) {
+        this.ais = ais;
+    }
+
+    public Long getOcorrenciaID() {
+        return ocorrenciaID;
+    }
+
+    public void setOcorrenciaID(Long ocorrenciaID) {
+        this.ocorrenciaID = ocorrenciaID;
+    }
+
 }

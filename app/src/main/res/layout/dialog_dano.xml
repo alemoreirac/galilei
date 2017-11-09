@@ -69,7 +69,7 @@
     android:layout_below="@id/spn_SetorDano"
     android:hint="@string/compatibilidade_dano"/>
 
-
+<!--
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,5 +119,5 @@
             android:background="@null"
             android:text="Cancelar"  />
     </LinearLayout>
-
+-->
 </RelativeLayout>

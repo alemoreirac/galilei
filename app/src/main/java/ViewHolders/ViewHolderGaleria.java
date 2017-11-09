@@ -9,22 +9,22 @@ import android.widget.TextView;
 
 
 public class ViewHolderGaleria {
-    TextView imageTitle;
-    ImageView image;
+    TextView txvTitulo;
+    ImageView imgvFoto;
 
-    public TextView getImageTitle() {
-        return imageTitle;
+    public TextView getTxvTitulo() {
+        return txvTitulo;
     }
 
-    public void setImageTitle(TextView imageTitle) {
-        this.imageTitle = imageTitle;
+    public void setTxvTitulo(TextView txvTitulo) {
+        this.txvTitulo = txvTitulo;
     }
 
-    public ImageView getImage() {
-        return image;
+    public ImageView getImgvFoto() {
+        return imgvFoto;
     }
 
-    public void setImage(ImageView image) {
-        this.image = image;
+    public void setImgvFoto(ImageView imgvFoto) {
+        this.imgvFoto = imgvFoto;
     }
 }

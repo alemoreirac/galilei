@@ -5,10 +5,10 @@ package Enums;
  */
 
 public enum TipoDano {
-    CONTUSO ("Dano Contuso"),
-    FRICCAO ("Dano de Fricção"),
-    CORTANTE ("Dano Cortante"),
-    PERFURANTE("Dano Perfurante");
+    CONTUSO ("Contuso"),
+    FRICCAO ("Fricção"),
+    CORTANTE ("Cortante"),
+    PERFURANTE("Perfurante");
 
 
     String valor;

@@ -16,25 +16,47 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nome"/>
-    <EditText
-        android:id="@+id/edt_NomeVitima"
-        android:layout_width="match_parent"
+
+
+    <CheckBox
+        android:id="@+id/cxb_Vitima_Desconhecida"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txv_NomeVitima"
-        android:layout_alignLeft="@id/txv_NomeVitima"/>
+        android:text="@string/vitima_desconhecida"
+        android:layout_alignLeft="@+id/edt_NomeVitima"
+        android:layout_below="@+id/edt_NomeVitima"
+        android:layout_marginTop="10dp"/>
+
     <TextView
         android:id="@+id/txv_TipoDocVitima"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tipo_documento"
-        android:layout_below="@id/edt_NomeVitima"/>
+        android:layout_below="@id/cxb_Vitima_Desconhecida"
+        android:layout_marginTop="10dp"/>
     <Spinner
         android:id="@+id/spn_TipoDocumentoVitima"
-        android:layout_width="150dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/txv_TipoDocVitima"
         android:layout_alignLeft="@id/txv_TipoDocVitima"
         android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/txv_TipoCNHVitima"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo CNH"
+        android:layout_below="@id/spn_TipoDocumentoVitima"
+        android:layout_marginTop="10dp"/>
+    <Spinner
+        android:id="@+id/spn_TipoCNHVitima"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_TipoCNHVitima"
+        android:layout_alignLeft="@id/txv_TipoCNHVitima"
+        android:layout_marginTop="5dp"/>
+
     <TextView
         android:id="@+id/txv_NumDocVitima"
         android:layout_width="wrap_content"
@@ -51,6 +73,20 @@
         android:layout_alignLeft="@id/txv_NumDocVitima"/>
 
 
+    <TextView
+        android:id="@+id/txv_VitimaGenero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/genero"
+        android:layout_toRightOf="@id/edt_NumDocVitima"
+        android:layout_alignBottom="@id/txv_TipoDocVitima"
+        android:layout_marginLeft="10dp"/>
+    <Spinner
+        android:id="@+id/spn_VitimaGenero"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_NumDocVitima"
+        android:layout_alignLeft="@id/txv_VitimaGenero"/>
 
     <TextView
         android:id="@+id/txv_DataNascimentoVitima"
@@ -58,7 +94,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/edt_NumDocVitima"
+        android:layout_below="@+id/spn_TipoCNHVitima"
         android:text="@string/data_nascimento" />
 
     <TextView
@@ -84,6 +120,8 @@
         android:layout_alignBottom="@id/txv_DataNascimentoVitima_Valor"    />
 
 
+
+
     <Button
         android:id="@+id/btn_Salvar_Vitima"
         android:layout_width="wrap_content"
@@ -102,5 +140,12 @@
         android:text="@string/cancelar"
         android:layout_toRightOf="@id/btn_Salvar_Vitima"
         android:layout_marginLeft="60dp"/>
+
+    <EditText
+        android:id="@+id/edt_NomeVitima"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txv_NomeVitima"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

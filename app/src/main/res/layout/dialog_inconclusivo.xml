@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/cxb_dialog_Inconclusivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:hint="Inconclusivo"/>
+
+
+    <Spinner
+        android:id="@+id/spn_dialog_Justificativa"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/cxb_dialog_Inconclusivo"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/txv_dialog_Justificativa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Justificativa"
+        android:layout_below="@id/cxb_dialog_Inconclusivo"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@id/spn_dialog_Justificativa"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/txv_dialog_Evadido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ator Evadido"
+        android:layout_below="@id/spn_dialog_Justificativa"
+        android:layout_alignLeft="@id/txv_dialog_Justificativa"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"/>
+
+    <Spinner
+        android:id="@+id/spn_dialog_Evadido"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_dialog_Justificativa"
+        android:layout_below="@id/txv_dialog_Evadido"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/btn_dialog_Salvar_Inconclusivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/spn_dialog_Evadido"
+        android:layout_below="@id/spn_dialog_Evadido"
+        android:text="@string/salvar"
+        />
+    <Button
+        android:id="@+id/btn_dialog_Cancelar_Inconclusivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/spn_dialog_Evadido"
+        android:layout_below="@id/spn_dialog_Evadido"
+        android:text="@string/cancelar"/>
+</RelativeLayout>

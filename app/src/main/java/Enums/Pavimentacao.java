@@ -4,7 +4,8 @@ package Enums;
  * Created by Pefoce on 30/05/2017.
  */
 
-public enum Pavimentacao {
+public enum Pavimentacao
+{
     ASFALTO("Asfalto")
     ,PARALELEPIPEDO("Paralelepipedo")
     ,CONCRETO("Concreto")

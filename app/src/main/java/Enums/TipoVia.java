@@ -7,7 +7,8 @@ package Enums;
 public enum TipoVia {
     RUA("Rua")
     ,AVENIDA("Avenida")
-    ,ESTRADA("Estrada");
+    ,CE("CE")
+    ,BR("BR");
 
 
 

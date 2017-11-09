@@ -11,7 +11,7 @@ public class ViewHolderOcorrencia {
     TextView txtTipoDoc;
     TextView txtNumeroDoc;
     TextView txtData;
-    TextView txtPlacas;
+    TextView txtTipoOcorrencia;
     TextView txtEndereco;
     TextView txtOrigem;
     TextView txtDestino;
@@ -40,12 +40,12 @@ public class ViewHolderOcorrencia {
         this.txtData = txtData;
     }
 
-    public TextView getTxtPlacas() {
-        return txtPlacas;
+    public TextView getTxtTipoOcorrencia() {
+        return txtTipoOcorrencia;
     }
 
-    public void setTxtPlacas(TextView txtPlacas) {
-        this.txtPlacas = txtPlacas;
+    public void setTxtTipoOcorrencia(TextView txtTipoOcorrencia) {
+        this.txtTipoOcorrencia = txtTipoOcorrencia;
     }
 
     public TextView getTxtEndereco() {

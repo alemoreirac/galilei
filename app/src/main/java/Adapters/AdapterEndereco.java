@@ -12,9 +12,7 @@ import com.example.pefoce.peritolocal.R;
 import java.util.ArrayList;
 
 import Model.EnderecoTransito;
-import Model.OcorrenciaTransito;
 import ViewHolders.ViewHolderEndereco;
-import ViewHolders.ViewHolderOcorrencia;
 
 /**
  * Created by Pefoce on 28/06/2017.
@@ -59,6 +57,8 @@ public class AdapterEndereco extends ArrayAdapter<EnderecoTransito> implements V
             convertView = inflater.inflate(R.layout.row_endereco,parent,false);
 
             viewHolder.setEndereco((TextView) convertView.findViewById(R.id.txv_row_Endereco));
+            viewHolder.setBairro((TextView) convertView.findViewById(R.id.txv_row_Bairro));
+            viewHolder.setTipoVia((TextView) convertView.findViewById(R.id.txv_row_TipoVia));
 
             convertView.setTag(viewHolder);
         }
@@ -70,7 +70,17 @@ public class AdapterEndereco extends ArrayAdapter<EnderecoTransito> implements V
         lastPosition = position;
 
         if(enderecoTransito.getEndereco()!= null)
+        {
             viewHolder.getEndereco().setText(enderecoTransito.getEndereco().getDescricao());
+            viewHolder.getBairro().setText(enderecoTransito.getEndereco().getBairro());
+        }
+
+        if(enderecoTransito.getTipoVia()!= null)
+            viewHolder.getTipoVia().setText(enderecoTransito.getTipoVia().getValor());
+
+
+
+
 
         return convertView;
 

@@ -13,22 +13,21 @@ import com.example.pefoce.peritolocal.R;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-import Model.OcorrenciaTransito;
-import Model.Veiculo;
+import Model.Ocorrencia;
 import ViewHolders.ViewHolderOcorrencia;
 
 /**
  * Created by Pefoce on 12/06/2017.
  */
 
-public class AdapterOcorrencia extends ArrayAdapter<OcorrenciaTransito> implements View.OnClickListener {
+public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.OnClickListener {
 
-    private ArrayList<OcorrenciaTransito> dataSet;
+    private ArrayList<Ocorrencia> dataSet;
 
     Context mContext;
 
 
-    public AdapterOcorrencia(ArrayList<OcorrenciaTransito> data,Context context)
+    public AdapterOcorrencia(ArrayList<Ocorrencia> data,Context context)
     {
         super(context,R.layout.row_ocorrencia,data);
         this.dataSet = data;
@@ -37,17 +36,17 @@ public class AdapterOcorrencia extends ArrayAdapter<OcorrenciaTransito> implemen
 
     @Override
     public void onClick(View v) {
-        int position = (Integer) v.getTag();
-        Object object = getItem(position);
-        OcorrenciaTransito ocorrencia = (OcorrenciaTransito) object;
-
+//        int position = (Integer) v.getTag();
+//        Object object = getItem(position);
+//        OcorrenciaTransito ocorrencia = (OcorrenciaTransito) object;
+//
     }
 
     private int lastPosition = -1;
 
     public View getView(int position,View convertView,ViewGroup parent)
     {
-        OcorrenciaTransito ocorrenciaTransito = getItem(position);
+        Ocorrencia ocorrencia = getItem(position);
         ViewHolderOcorrencia viewHolder;
 
         if(convertView == null)
@@ -59,11 +58,10 @@ public class AdapterOcorrencia extends ArrayAdapter<OcorrenciaTransito> implemen
             viewHolder.setTxtTipoDoc((TextView) convertView.findViewById(R.id.txv_TipoDocumento));
             viewHolder.setTxtNumeroDoc ((TextView) convertView.findViewById(R.id.txt_NumeroDocumento));
             viewHolder.setTxtData ((TextView) convertView.findViewById(R.id.txt_DataOcorrencia));
-            viewHolder.setTxtPlacas( (TextView) convertView.findViewById(R.id.txt_Placas));
-            viewHolder.setTxtEndereco ( (TextView) convertView.findViewById(R.id.txt_Endereco));
-            viewHolder.setTxtOrigem ( (TextView) convertView.findViewById(R.id.txt_OrgaoOrigem));
-            viewHolder.setTxtDestino ( (TextView) convertView.findViewById(R.id.txt_OrgaoDestino));
-
+            viewHolder.setTxtTipoOcorrencia((TextView) convertView.findViewById(R.id.txt_TipoOcorrencia));
+            viewHolder.setTxtEndereco ((TextView) convertView.findViewById(R.id.txt_Endereco));
+            viewHolder.setTxtOrigem ((TextView) convertView.findViewById(R.id.txt_OrgaoOrigem));
+            viewHolder.setTxtDestino ((TextView) convertView.findViewById(R.id.txt_OrgaoDestino));
 
             convertView.setTag(viewHolder);
         }
@@ -74,48 +72,29 @@ public class AdapterOcorrencia extends ArrayAdapter<OcorrenciaTransito> implemen
 
         lastPosition = position;
 
-        if(ocorrenciaTransito.getDocumentoOcorrencia().getTipodocumento() != null)
-        viewHolder.getTxtTipoDoc().setText(ocorrenciaTransito.getDocumentoOcorrencia().getTipodocumento().toString());
-
-        if(ocorrenciaTransito.getDocumentoOcorrencia().getValor() != null)
-        viewHolder.getTxtNumeroDoc().setText(ocorrenciaTransito.getDocumentoOcorrencia().getValor());
-
-        String placas = "";
-        if(ocorrenciaTransito.getVeiculos() != null)
+        if(ocorrencia.getOcorrenciaTransito() != null)
         {
+            if(ocorrencia.getOcorrenciaTransito().getNumIncidencia() != null)
+                viewHolder.getTxtTipoDoc().setText(ocorrencia.getOcorrenciaTransito().getNumIncidencia());
 
-            for(Veiculo v : ocorrenciaTransito.getVeiculos())
-            {
-                placas += v.getPlaca();
-                placas += ", ";
-            }
-            placas = placas.substring(0, placas.lastIndexOf(", "));
+            if(ocorrencia.getTipoOcorrencia() != null)
+                viewHolder.getTxtTipoOcorrencia().setText(ocorrencia.getTipoOcorrencia().getValor());
 
-            viewHolder.getTxtPlacas().setText(placas);
+
+            DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
+
+            viewHolder.getTxtData().setText(dateFormat.getDateInstance().format(ocorrencia.getOcorrenciaTransito().getDataOcorrencia()));
+
+            if(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem() != null)
+                viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem());
+
+            if(ocorrencia.getOcorrenciaTransito().getOrgaoDestino() != null)
+                viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaTransito().getOrgaoDestino());
+
+            if(ocorrencia.getOcorrenciaTransito().getDataAtendimento()!= null)
+                viewHolder.getTxtData().setText(ocorrencia.getOcorrenciaTransito().getDataAtendimentoString());
+
         }
-        else
-        {
-            viewHolder.getTxtPlacas().setText(placas);
-        }
-
-
-
-        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
-
-        viewHolder.getTxtData().setText(dateFormat.getDateInstance().format(ocorrenciaTransito.getDataOcorrencia()));
-
-        if(ocorrenciaTransito.getEnderecos() != null)
-            viewHolder.getTxtEndereco().setText(ocorrenciaTransito.getEnderecos().get(0).getEndereco().getDescricao());
-
-        if(ocorrenciaTransito.getOrgaoOrigem() != null)
-            viewHolder.getTxtOrigem().setText(ocorrenciaTransito.getOrgaoOrigem());
-
-        if(ocorrenciaTransito.getOrgaoDestino() != null)
-            viewHolder.getTxtDestino().setText(ocorrenciaTransito.getOrgaoDestino());
-
-        if(ocorrenciaTransito.getDataAtendimento()!= null)
-            viewHolder.getTxtData().setText(ocorrenciaTransito.getDataAtendimentoString());
-
         return convertView;
     }
 }

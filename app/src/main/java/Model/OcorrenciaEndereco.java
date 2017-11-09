@@ -1,5 +1,6 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 /**
@@ -7,30 +8,31 @@ import com.orm.SugarRecord;
  */
 
 public class OcorrenciaEndereco extends SugarRecord<OcorrenciaEndereco> {
+
+
+    @Expose
     private OcorrenciaTransito ocorrenciaTransito;
-    private EnderecoTransito enderecoTransito;
+    @Expose
+    private EnderecoTransito endereco;
+
+    public OcorrenciaTransito getOcorrencia() {
+        return ocorrenciaTransito;
+    }
+
+    public void setOcorrencia(OcorrenciaTransito ocorrencia) {
+        this.ocorrenciaTransito = ocorrencia;
+    }
+
+    public EnderecoTransito getEnderecoTransito() {
+        return endereco;
+    }
+
+    public void setEndereco(EnderecoTransito endereco_transito) {
+        this.endereco = endereco_transito;
+    }
+
 
     public OcorrenciaEndereco() {
     }
 
-    public OcorrenciaEndereco(OcorrenciaTransito ocorrenciaTransito, EnderecoTransito enderecoTransito) {
-        this.ocorrenciaTransito = ocorrenciaTransito;
-        this.enderecoTransito = enderecoTransito;
-    }
-
-    public OcorrenciaTransito getOcorrenciaTransito() {
-        return ocorrenciaTransito;
-    }
-
-    public void setOcorrenciaTransito(OcorrenciaTransito ocorrenciaTransito) {
-        this.ocorrenciaTransito = ocorrenciaTransito;
-    }
-
-    public EnderecoTransito getEnderecoTransito() {
-        return enderecoTransito;
-    }
-
-    public void setEnderecoTransito(EnderecoTransito enderecoTransito) {
-        this.enderecoTransito = enderecoTransito;
-    }
 }

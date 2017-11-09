@@ -6,7 +6,7 @@ package Enums;
 
 public enum CondicaoPista {
     BOA("Boa")
-    ,RUIM("Ruim");
+    ,RUIM("Má");
 
 
 

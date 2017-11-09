@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/lightGray"  >
+
+
+    <View
+        android:id="@+id/view_media_proprietario"
+        android:layout_height="240dp"
+        android:layout_width="3dp"
+        android:background="@color/colorAccent"
+        android:layout_centerHorizontal="true">
+    </View>
+
+
+    <!--
+<Spinner
+    android:id="@+id/spn_EnvolvidoProprietario"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/txv_envolvido"
+  android:layout_centerHorizontal="true"   />
+
+    <TextView
+        android:id="@+id/txv_envolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Envolvido"
+        android:layout_alignLeft="@id/spn_EnvolvidoProprietario"   />
+    -->
+
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_Nome_Proprietario"
+        android:layout_toLeftOf="@id/view_media_proprietario"
+        android:layout_marginRight="50dp"
+        android:textSize="18dp"
+        android:text= "Nome Proprietário"/>
+
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_Nome_Proprietario"
+        android:layout_alignLeft="@id/txv_Nome_Proprietario"
+
+        android:id="@+id/edt_NomeProprietario"  />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_CNH_Proprietario"
+        android:layout_below="@id/edt_NomeProprietario"
+        android:text="CNH Proprietário"
+        android:layout_alignLeft="@+id/edt_ProprietarioCNH"   />
+    <EditText
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/edt_NomeProprietario"
+        android:layout_below="@id/txv_CNH_Proprietario"
+        android:id="@+id/edt_ProprietarioCNH"  />
+
+
+    <Spinner
+        android:id="@+id/spn_CNH_Proprietario_720"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/edt_NomeProprietario"
+        android:layout_below="@id/txv_CNH_Proprietario"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/categoria"
+        android:layout_below="@id/edt_NomeProprietario"
+        android:layout_alignLeft="@id/spn_CNH_Proprietario_720"   />
+
+
+    <CheckBox
+        android:id="@+id/cxb_Proprietario_Nao_Habilitado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_ProprietarioCNH"
+        android:hint="Proprietário Não Habilitado"
+        android:layout_alignLeft="@+id/edt_ProprietarioCNH"
+        />
+
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_Nome_Condutor"
+        android:layout_toRightOf="@+id/view_media_proprietario"
+        android:layout_alignBottom="@id/txv_Nome_Proprietario"
+        android:text="Nome Condutor"
+        android:textSize="18dp"
+        android:layout_marginLeft="10dp"
+        />
+
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_Nome_Condutor"
+        android:layout_alignLeft="@id/txv_Nome_Condutor"
+        android:id="@+id/edt_Nome_Condutor"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txv_CNH_Condutor"
+        android:layout_below="@id/edt_Nome_Condutor"
+        android:text="CNH Condutor"
+        android:layout_alignLeft="@+id/edt_CondutorCNH"   />
+    <EditText
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/edt_Nome_Condutor"
+        android:layout_below="@id/txv_CNH_Condutor"
+        android:id="@+id/edt_CondutorCNH"  />
+
+
+    <Spinner
+        android:id="@+id/spn_CNH_Condutor_720"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/edt_Nome_Condutor"
+        android:layout_below="@id/txv_CNH_Condutor"/>
+
+
+    <TextView
+        android:id="@+id/txv_Categoria_Condutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/categoria"
+        android:layout_below="@id/edt_Nome_Condutor"
+        android:layout_alignLeft="@id/spn_CNH_Condutor_720"/>
+
+
+    <CheckBox
+        android:id="@+id/cxb_Condutor_Nao_Habilitado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_CondutorCNH"
+        android:hint="Condutor Não Habilitado"
+        android:layout_alignLeft="@+id/edt_CondutorCNH"
+        />
+
+
+    <CheckBox
+        android:id="@+id/cxb_Proprietario_Nao_Identificado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cxb_Proprietario_Nao_Habilitado"
+        android:hint="Proprietario Não Identificado"
+        android:layout_alignLeft="@+id/cxb_Proprietario_Nao_Habilitado"
+        android:textColorHint="@color/colorAccent"
+        android:layout_marginTop="10dp"
+        />
+    <CheckBox
+        android:id="@+id/cxb_Proprietario_igual_Condutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cxb_Proprietario_Nao_Identificado"
+        android:hint="Proprietario é o Condutor"
+        android:layout_alignLeft="@+id/cxb_Proprietario_Nao_Habilitado"
+        android:textColorHint="@color/colorAccent"
+        android:layout_marginTop="10dp"
+
+        />
+
+    <Button
+        android:id="@+id/btn_Salvar_Proprietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cxb_Proprietario_igual_Condutor"
+        android:layout_toLeftOf="@id/view_media_proprietario"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="20dp"
+        android:text="Salvar"/>
+
+    <Button
+        android:id="@+id/btn_Cancelar_Proprietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancelar"
+        android:layout_alignBottom="@id/btn_Salvar_Proprietario"
+        android:layout_marginLeft="100dp"
+        android:layout_toRightOf="@+id/view_media_proprietario"/>
+
+    <CheckBox
+        android:id="@+id/cxb_Condutor_Nao_Identificado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Condutor Não Identificado"
+        android:textColorHint="@color/colorAccent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/cxb_Condutor_Nao_Habilitado"
+        android:layout_alignLeft="@+id/cxb_Condutor_Nao_Habilitado"
+        android:layout_alignStart="@+id/cxb_Condutor_Nao_Habilitado"/>
+
+    <TextView
+        android:id="@+id/txv_Condutor_Proprietario"
+        android:text="O condutor é o proprietário."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spn_CNH_Condutor_720"
+        android:layout_toRightOf="@+id/view_media_proprietario"
+        android:layout_marginLeft="10dp"
+        android:visibility="invisible"
+        android:textSize="20dp"/>
+</RelativeLayout>

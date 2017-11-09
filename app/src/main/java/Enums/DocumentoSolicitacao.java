@@ -6,7 +6,7 @@ package Enums;
 
 public enum DocumentoSolicitacao {
       IP("Inquérito Policial")
-      , BOC("Boletim de Ocorrência")
+      ,BO("Boletim de Ocorrência")
       ,TCO("Termo Circunstanciado de Ocorrência");
 
       String valor;

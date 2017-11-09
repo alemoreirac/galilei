@@ -1,5 +1,6 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 import Enums.SetorDano;
@@ -9,6 +10,18 @@ import Enums.TipoDano;
 
 public class Dano extends SugarRecord<Dano>
 {
+    @Expose
+     public TipoDano tipo;
+    @Expose
+     public TercoDano terco;
+    @Expose
+     public SetorDano setor;
+    @Expose
+     public Boolean Compatibilidade;
+
+
+    //TODO trocar para varios tipos de dano
+
     public TipoDano getTipo() {
         return tipo;
     }
@@ -41,11 +54,6 @@ public class Dano extends SugarRecord<Dano>
         Compatibilidade = compatibilidade;
     }
 
-     public TipoDano tipo;
-     public TercoDano terco;
-     public SetorDano setor;
-     public Boolean Compatibilidade;
-
 
      public Dano()
      { }
@@ -58,5 +66,22 @@ public class Dano extends SugarRecord<Dano>
          this.Compatibilidade = compatibilidade;
      }
 
+    @Override
+    public String toString()
+    {
+        if(this.getCompatibilidade())
+            return "Dano "+ this.tipo.getValor() + "; Terço " + this.terco.getValor() + "; Compatível com a Colisão" + " - " + this.setor.getValor();
+
+        else
+            return "Dano "+ this.tipo.getValor() + "; Terço: " + this.terco.getValor() + "; Incompatível com a Colisão" + " - " + this.setor.getValor();
+    }
+
+    public String exportarLaudo()
+    {
+        if(this.getCompatibilidade())
+            return "Do tipo "+ this.tipo.getValor() + ", situado na seção " + this.setor.getValor() + ", compatível com a Colisão.";
+        else
+            return "Do tipo "+ this.tipo.getValor() + ", situado na seção " + this.setor.getValor() + ", incompatível com a Colisão.";
+    }
  }
 

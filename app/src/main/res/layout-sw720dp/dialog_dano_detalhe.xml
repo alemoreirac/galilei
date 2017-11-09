@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo de Dano"
+        android:id="@+id/txv_dialog_TipoDano"    />
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_TipoDano"
+        android:layout_alignLeft="@id/txv_dialog_TipoDano"
+        android:id="@+id/spn_dialog_TipoDano"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Tipo de Dano"
+        android:id="@+id/txv_dialog_TercoDano"
+        android:layout_toRightOf="@id/spn_dialog_TipoDano"/>
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_TercoDano"
+        android:layout_alignLeft="@id/txv_dialog_TercoDano"
+        android:id="@+id/spn_dialog_TercoDano"/>
+
+    <CheckBox
+        android:id="@+id/cxb_dialog_CompatibilidadeDano"
+        android:layout_alignLeft="@+id/spn_dialog_TipoDano"
+        android:layout_below="@+id/spn_dialog_TipoDano"
+        android:layout_width="wrap_content"
+        android:checked="true"
+        android:layout_height="wrap_content"
+        android:hint="Compativel com o Acidente"/>
+
+    <ListView
+        android:layout_below="@id/cxb_dialog_CompatibilidadeDano"
+        android:layout_alignLeft="@id/txv_dialog_TipoDano"
+        android:id="@+id/lstv_dialog_ListDanos"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/lstv_dialog_ListDanos"
+        android:layout_below="@id/lstv_dialog_ListDanos"
+        android:text="Salvar"
+        android:id="@+id/btn_dialog_SalvarDano_Detalhe"/>
+
+
+    <Button
+        android:id="@+id/btn_dialog_AddDano"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/btn_add"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/spn_dialog_TercoDano" />
+
+    <Button
+        android:id="@+id/btn_dialog_LimparDano"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/btn_dialog_AddDano"
+        android:layout_below="@id/lstv_dialog_ListDanos"
+        android:text="Limpar Danos"/>
+</RelativeLayout>

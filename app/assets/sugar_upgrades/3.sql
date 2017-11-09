@@ -1,0 +1,1 @@
+alter table VEIUCLO add MARCA TEXT;

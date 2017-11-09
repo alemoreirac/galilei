@@ -1,13 +1,17 @@
 package Util;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import Enums.AreaIntegradaSeguranca;
 import Model.Bairro;
 import Model.Cidade;
+import Model.DadosTerritoriais;
 import Model.Delegacia;
 import Model.Pessoa;
 import Model.Veiculo;
@@ -16,197 +20,402 @@ import Model.Veiculo;
  * Created by Pefoce on 21/06/2017.
  */
 
-public class Initializer {
-    public static void InicializarPessoas(){
-
+public class Initializer
+{
+    public static void InicializarPessoas()
+    {
         String dtStart = "29/01/1994";
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        try {
+        try
+        {
             Date date = format.parse(dtStart);
 
-            Pessoa p = new Pessoa("05704656307","Alessandro Moreira Collado",date,"ale123");
+            Pessoa p = new Pessoa("123", "José 123", date, "123");
             p.save();
+
+            Pessoa p2 = new Pessoa("456", "João 456", date, "456");
+            p2.save();
+
+            Pessoa p3 = new Pessoa("789", "Pedro 789", date, "789");
+            p3.save();
             System.out.println(date);
-        } catch (ParseException e) {
+        } catch (ParseException e)
+        {
             e.printStackTrace();
         }
 
-        ArrayList<Bairro> bairros = new ArrayList<>();
-
-        bairros.add(new Bairro("Acaracuzinho"));
-        bairros.add(new Bairro("Aerolândia"));
-        bairros.add(new Bairro("Aeroporto"));
-        bairros.add(new Bairro("Água Fria"));
-        bairros.add(new Bairro("Alagadiço"));
-        bairros.add(new Bairro("Aldeota"));
-        bairros.add(new Bairro("Alto Alegre"));
-        bairros.add(new Bairro("Alto da Balança"));
-        bairros.add(new Bairro("Álvaro Weyne"));
-        bairros.add(new Bairro("Amadeu Furtado"));
-        bairros.add(new Bairro("Ancuri"));
-        bairros.add(new Bairro("Antônio Bezerra"));
-        bairros.add(new Bairro("Antônio Diogo"));
-        bairros.add(new Bairro("Araturi"));
-        bairros.add(new Bairro("Arenópolis"));
-        bairros.add(new Bairro("Autran Nunes"));
-        bairros.add(new Bairro("Bairro de Lourdes"));
-        bairros.add(new Bairro("Barra do Ceará"));
-        bairros.add(new Bairro("Barroso"));
-        bairros.add(new Bairro("Bela Vista"));
-        bairros.add(new Bairro("Benfica"));
-        bairros.add(new Bairro("Boa Vista"));
-        bairros.add(new Bairro("Boa Vista Castelão"));
-        bairros.add(new Bairro("Bom Futuro"));
-        bairros.add(new Bairro("Bom Jardim"));
-        bairros.add(new Bairro("Bonsucesso"));
-        bairros.add(new Bairro("Cais do Porto"));
-        bairros.add(new Bairro("Cajazeiras"));
-        bairros.add(new Bairro("Cambeba"));
-        bairros.add(new Bairro("Canindezinho"));
-        bairros.add(new Bairro("Canto Verde"));
-        bairros.add(new Bairro("Carlito Maia"));
-        bairros.add(new Bairro("Carlito Pamplona"));
-        bairros.add(new Bairro("Casa Porto"));
-        bairros.add(new Bairro("Castelo Encantado"));
-        bairros.add(new Bairro("Centro"));
-        bairros.add(new Bairro("Cidade 2000"));
-        bairros.add(new Bairro("Cidade dos Funcionários"));
-        bairros.add(new Bairro("Coaçu"));
-        bairros.add(new Bairro("Coco"));
-        bairros.add(new Bairro("Conjunto Ceará"));
-        bairros.add(new Bairro("Conjunto Esperança"));
-        bairros.add(new Bairro("Conjunto Habitacional Aeronáutica"));
-        bairros.add(new Bairro("Conjunto Nova Assunção"));
-        bairros.add(new Bairro("Conjunto Nova Perimetral"));
-        bairros.add(new Bairro("Conjunto Novo Oriente"));
-        bairros.add(new Bairro("Conjunto Palmeiras"));
-        bairros.add(new Bairro("Conjunto Parque Ipiranga"));
-        bairros.add(new Bairro("Conjunto Planalto Pici"));
-        bairros.add(new Bairro("Conjunto Prefeito José Walter"));
-        bairros.add(new Bairro("Conjunto Sol Poente"));
-        bairros.add(new Bairro("Conjunto Vila Velha Iv"));
-        bairros.add(new Bairro("Couto Fernandes"));
-        bairros.add(new Bairro("Cristo Redentor"));
-        bairros.add(new Bairro("Curió"));
-        bairros.add(new Bairro("Damas"));
-        bairros.add(new Bairro("Demócrito Rocha"));
-        bairros.add(new Bairro("Dendê"));
-        bairros.add(new Bairro("Dias Macedo"));
-        bairros.add(new Bairro("Dionísio Torres"));
-        bairros.add(new Bairro("Distrito Industrial"));
-        bairros.add(new Bairro("Distrito Industrial I"));
-        bairros.add(new Bairro("Distrito Industrial III"));
-        bairros.add(new Bairro("Dom Lustosa"));
-        bairros.add(new Bairro("Dunas"));
-        bairros.add(new Bairro("Edson Queiroz"));
-        bairros.add(new Bairro("Engenheiro Luciano Cavalcante"));
-        bairros.add(new Bairro("Farias Brito"));
-        bairros.add(new Bairro("Fátima"));
-        bairros.add(new Bairro("Floresta"));
-        bairros.add(new Bairro("Granja Lisboa"));
-        bairros.add(new Bairro("Granja Portugal"));
-        bairros.add(new Bairro("Guajiru"));
-        bairros.add(new Bairro("Guaramiranga"));
-        bairros.add(new Bairro("Guararapes"));
-        bairros.add(new Bairro("Henrique Jorge"));
-        bairros.add(new Bairro("Industrial"));
-        bairros.add(new Bairro("Itaóca"));
-        bairros.add(new Bairro("Itaperi"));
-        bairros.add(new Bairro("Jaboti"));
-        bairros.add(new Bairro("Jacarecanga"));
-        bairros.add(new Bairro("Jangurussu"));
-        bairros.add(new Bairro("Jardim América"));
-        bairros.add(new Bairro("Jardim Cearense"));
-        bairros.add(new Bairro("Jardim das Oliveiras"));
-        bairros.add(new Bairro("Jardim Guanabara"));
-        bairros.add(new Bairro("Jardim Iracema"));
-        bairros.add(new Bairro("Jardim Jatobá"));
-        bairros.add(new Bairro("João Xxiii"));
-        bairros.add(new Bairro("Joaquim Távora"));
-        bairros.add(new Bairro("Jóquei Clube"));
-        bairros.add(new Bairro("José Bonifácio"));
-        bairros.add(new Bairro("José de Alencar"));
-        bairros.add(new Bairro("Lago Verde"));
-        bairros.add(new Bairro("Lagoa Redonda"));
-        bairros.add(new Bairro("Loteamento Alfha Village"));
-        bairros.add(new Bairro("Loteamento Araturi"));
-        bairros.add(new Bairro("Loteamento Esplanada Castelão"));
-        bairros.add(new Bairro("Loteamento Esplanada Messejana"));
-        bairros.add(new Bairro("Loteamento Grande Aldeota"));
-        bairros.add(new Bairro("Loteamento Jardim Bandeirantes"));
-        bairros.add(new Bairro("Loteamento Jurema Park"));
-        bairros.add(new Bairro("Loteamento Parque Dom Pedro"));
-        bairros.add(new Bairro("Loteamento Parque Elisabeth"));
-        bairros.add(new Bairro("Loteamento Parque Montenegro"));
-        bairros.add(new Bairro("Loteamento Planalto João Xxiii"));
-        bairros.add(new Bairro("Loteamento Planalto Mondubim"));
-        bairros.add(new Bairro("Loteamento Sítio Santa Sofia"));
-        bairros.add(new Bairro("Manoel Dias Branco"));
-        bairros.add(new Bairro("Manuel Satiro"));
-        bairros.add(new Bairro("Maraponga"));
-        bairros.add(new Bairro("Meireles"));
-        bairros.add(new Bairro("Messejana"));
-        bairros.add(new Bairro("Mondubim"));
-        bairros.add(new Bairro("Monte Castelo"));
-        bairros.add(new Bairro("Montese"));
-        bairros.add(new Bairro("Moura Brasil"));
-        bairros.add(new Bairro("Mucuripe"));
-        bairros.add(new Bairro("Novo Mondubim"));
-        bairros.add(new Bairro("Olavo Oliveira"));
-        bairros.add(new Bairro("Padre Andrade"));
-        bairros.add(new Bairro("Pajuçara"));
-        bairros.add(new Bairro("Pan Americano"));
-        bairros.add(new Bairro("Papicu"));
-        bairros.add(new Bairro("Parangaba"));
-        bairros.add(new Bairro("Parque Alto Alegre"));
-        bairros.add(new Bairro("Parque Araxá"));
-        bairros.add(new Bairro("Parque Dois Irmãos"));
-        bairros.add(new Bairro("Parque Genibau"));
-        bairros.add(new Bairro("Parque Iracema"));
-        bairros.add(new Bairro("Parque Jerusalém"));
-        bairros.add(new Bairro("Parque Manibura"));
-        bairros.add(new Bairro("Parque Novo Mondubim"));
-        bairros.add(new Bairro("Parque Potira"));
-        bairros.add(new Bairro("Parque Presidente Vargas"));
-        bairros.add(new Bairro("Parque Santa Maria"));
-        bairros.add(new Bairro("Parque Santa Rosa"));
-        bairros.add(new Bairro("Parque São José"));
-        bairros.add(new Bairro("Parque São Vicente"));
-        bairros.add(new Bairro("Parquelândia"));
-        bairros.add(new Bairro("Parreão"));
-        bairros.add(new Bairro("Passaré"));
-        bairros.add(new Bairro("Patriolino Ribeiro"));
-        bairros.add(new Bairro("Paupina"));
-        bairros.add(new Bairro("Pedras"));
-        bairros.add(new Bairro("Pici"));
-        bairros.add(new Bairro("Pirambu"));
-        bairros.add(new Bairro("Planalto Ayrton Senna"));
-        bairros.add(new Bairro("Praia de Iracema"));
-        bairros.add(new Bairro("Praia Iracema"));
-        bairros.add(new Bairro("Prefeito José Walter"));
-        bairros.add(new Bairro("Presidente Kennedy"));
-        bairros.add(new Bairro("Presidente Tancredo Neves"));
-        bairros.add(new Bairro("Quintino Cunha"));
-        bairros.add(new Bairro("Rodolfo Teófilo"));
-        bairros.add(new Bairro("Sabiaguaba"));
-        bairros.add(new Bairro("Salinas"));
-        bairros.add(new Bairro("Santa Maria"));
-        bairros.add(new Bairro("Santa Rosa"));
-        bairros.add(new Bairro("São Bento"));
-        bairros.add(new Bairro("São Gerardo"));
-        bairros.add(new Bairro("São João do Tauape"));
-        bairros.add(new Bairro("Sapiranga"));
-        bairros.add(new Bairro("Serrinha"));
-        bairros.add(new Bairro("Siqueira"));
-        bairros.add(new Bairro("Varjota"));
-        bairros.add(new Bairro("Vicente Pinzon"));
-        bairros.add(new Bairro("Vila Ellery"));
-        bairros.add(new Bairro("Vila Peri"));
-        bairros.add(new Bairro("Vila União"));
-        bairros.add(new Bairro("Vila Velha"));
+        ArrayList<DadosTerritoriais> dadosTerritoriais = new ArrayList<>();
 
 
+        //AIS 1
+        // Cais do Porto, Vicente Pinzón, Mucuripe, Aldeota, Varjota, Praia de Iracema e Meireles.
 
+        dadosTerritoriais.add(new DadosTerritoriais("9º Distrito Policial", "Vicente Pinzón", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("9º Distrito Policial", "Cais do Porto", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "Praia de Iracema", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("2º Distrito Policial", "Meireles", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("2º Distrito Policial", "Aldeota", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("2º Distrito Policial", "Varjota", AreaIntegradaSeguranca.AIS_1));
+
+
+        // AIS 2
+        // Conjunto Ceará I e II, Genibaú, Granja Portugal, Bom Jardim, Granja Lisboa e Siqueira
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("12º Distrito Policial", "Conjunto Ceará I", AreaIntegradaSeguranca.AIS_2));
+        dadosTerritoriais.add(new DadosTerritoriais("12º Distrito Policial", "Conjunto Ceará II", AreaIntegradaSeguranca.AIS_2));
+        dadosTerritoriais.add(new DadosTerritoriais("12º Distrito Policial", "Parque Genibaú", AreaIntegradaSeguranca.AIS_2));
+        dadosTerritoriais.add(new DadosTerritoriais("32º Distrito Policial", "Bom Jardim", AreaIntegradaSeguranca.AIS_2));
+        dadosTerritoriais.add(new DadosTerritoriais("32º Distrito Policial", "Granja Lisboa", AreaIntegradaSeguranca.AIS_2));
+        dadosTerritoriais.add(new DadosTerritoriais("32º Distrito Policial", "Siqueira", AreaIntegradaSeguranca.AIS_2));
+        dadosTerritoriais.add(new DadosTerritoriais("12º Distrito Policial", "Granja Portugal", AreaIntegradaSeguranca.AIS_2));
+
+        //AIS 3
+        // Messejana,Ancuri, Pedras, Barroso, Jangurussu, Conjunto Palmeiras,  Curió, Lagoa Redonda, Guajeru,  SãoBento, Palpina, Parque Santa Maria e Coaçu
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Messejana", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Barroso", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Pedras", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("30º Distrito Policial", "Jangurussu", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("30º Distrito Policial", "Conjunto Palmeiras", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Curió", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Ancuri", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Lagoa Redonda", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Guajeru", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "São Bento", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Paupina", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Parque Santa Maria", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Coaçu", AreaIntegradaSeguranca.AIS_3));
+
+        //AIS 4
+        //Centro,Moura  Brasil, Carlito Pamplona,  Álvaro Weyne, Vila Ellery, Monte Castelo, Farias Brito, São Gerardo, Jacarecanga.
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("34º Distrito Policial", "Centro", AreaIntegradaSeguranca.AIS_4));
+        dadosTerritoriais.add(new DadosTerritoriais("1º Distrito Policial", "Carlito Pamplona", AreaIntegradaSeguranca.AIS_4));
+        dadosTerritoriais.add(new DadosTerritoriais("1º Distrito Policial", "Àlvaro Weyne", AreaIntegradaSeguranca.AIS_4));
+        dadosTerritoriais.add(new DadosTerritoriais("1º Distrito Policial", "Vila Ellery", AreaIntegradaSeguranca.AIS_4));
+        dadosTerritoriais.add(new DadosTerritoriais("1º Distrito Policial", "Monte Castelo", AreaIntegradaSeguranca.AIS_4));
+        dadosTerritoriais.add(new DadosTerritoriais("3º Distrito Policial", "Farias Brito", AreaIntegradaSeguranca.AIS_4));
+        dadosTerritoriais.add(new DadosTerritoriais("3º Distrito Policial", "São Gerardo", AreaIntegradaSeguranca.AIS_4));
+        dadosTerritoriais.add(new DadosTerritoriais("3º Distrito Policial", "Jacarecanga", AreaIntegradaSeguranca.AIS_4));
+
+        //AIS 5
+        //Parangaba, Vila Pery, Itaoca,Itaperi, Dendê, Pan Americano, Jardim América,
+        // Benfica, Demócrito Rocha, Couto Fernandes,Montese,Damas,Bom Futuro,Vila União, José Bonifácio, Parreão, Fátima, Serrinha, Aeroporto.
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("5º Distrito Policial", "Parangaba", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("5º Distrito Policial", "Itaoca", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("5º Distrito Policial", "Itaperi", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("5º Distrito Policial", "Dendê", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Panamericano", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Benfica", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Demócrito Rocha", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Jardim América", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Couto Fernandes", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Montese", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Damas", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("11º Distrito Policial", "Bom Futuro", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("25º Distrito Policial", "Vila União", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("25º Distrito Policial", "José Bonifácio", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("25º Distrito Policial", "Parreão", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("25º Distrito Policial", "Bairro de Fátima", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("5º Distrito Policial", "Vila Pery", AreaIntegradaSeguranca.AIS_5));
+
+
+        //AIS 6
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Antônio Bezerra", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Quintino Cunha", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Olavo Oliveira", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Padre Andrade", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Bela Vista", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Presidente Kennedy", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Parquelândia", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Amadeu Furtado", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Parque Araxá", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("10º Distrito Policial", "Rodolfo Teófilo", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("27º Distrito Policial", "Bom Sucesso", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("27º Distrito Policial", "João XXIII", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("27º Distrito Policial", "Jóquei Clube", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("27º Distrito Policial", "Henrique Jorge", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("27º Distrito Policial", "Autran Nunes", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("27º Distrito Policial", "Pici", AreaIntegradaSeguranca.AIS_5));
+        dadosTerritoriais.add(new DadosTerritoriais("27º Distrito Policial", "Dom Lustosa", AreaIntegradaSeguranca.AIS_5));
+
+
+        //AIS 7
+
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "Edson Queiroz", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "Sabiaguaba", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "Cambeba", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "José de Alencar", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "Parque Iracema", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "Parque Manibura", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("26º Distrito Policial", "Sapiranga", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("13º Distrito Policial", "Cidade dos Funcionários", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("13º Distrito Policial", "Alto da Balança", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("13º Distrito Policial", "Cajazeiras", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("16º Distrito Policial", "Parque Dois Irmãos", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("16º Distrito Policial", "Passaré", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("13º Distrito Policial", "Aerolândia", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("16º Distrito Policial", "Boa Vista", AreaIntegradaSeguranca.AIS_7));
+        dadosTerritoriais.add(new DadosTerritoriais("16º Distrito Policial", "Dias Macêdo", AreaIntegradaSeguranca.AIS_7));
+
+
+        //AIS 8
+
+        dadosTerritoriais.add(new DadosTerritoriais("33º Distrito Policial", "Barra do Ceará", AreaIntegradaSeguranca.AIS_8));
+        dadosTerritoriais.add(new DadosTerritoriais("17º Distrito Policial", "Vila Velha", AreaIntegradaSeguranca.AIS_8));
+        dadosTerritoriais.add(new DadosTerritoriais("17º Distrito Policial", "Jardim Guanabara", AreaIntegradaSeguranca.AIS_8));
+        dadosTerritoriais.add(new DadosTerritoriais("7º Distrito Policial", "Cristo Redentor", AreaIntegradaSeguranca.AIS_8));
+        dadosTerritoriais.add(new DadosTerritoriais("7º Distrito Policial", "Floresta", AreaIntegradaSeguranca.AIS_8));
+        dadosTerritoriais.add(new DadosTerritoriais("7", "Jardim Iracema", AreaIntegradaSeguranca.AIS_8));
+        dadosTerritoriais.add(new DadosTerritoriais("7º Distrito Policial", "Pirambu", AreaIntegradaSeguranca.AIS_8));
+
+        //AIS 9
+
+        dadosTerritoriais.add(new DadosTerritoriais("19º Distrito Policial", "Conjunto Esperança", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("19º Distrito Policial", "Vila Manoel Sátiro", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("19º Distrito Policial", "Presidente Vargas", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("19º Distrito Policial", "Parque São José", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("19º Distrito Policial", "Maraponga", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("19º Distrito Policial", "Jardim Cearense", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("19º Distrito Policial", "Parque Santa Rosa", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("8º Distrito Policial", "Mondubim", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("8º Distrito Policial", "Planalto Ayrton Senna", AreaIntegradaSeguranca.AIS_9));
+        dadosTerritoriais.add(new DadosTerritoriais("8º Distrito Policial", "Conjunto José Walter", AreaIntegradaSeguranca.AIS_9));
+
+
+        //AIS 10
+
+        dadosTerritoriais.add(new DadosTerritoriais("15º Distrito Policial", "Papicu", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("15º Distrito Policial", "Lourdes", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("15º Distrito Policial", "Cidade 2000", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("15º Distrito Policial", "Praia do Futuro I", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("15º Distrito Policial", "Praia do Futuro II", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("15º Distrito Policial", "Manoel Dias Branco", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("4º Distrito Policial", "Engenheiro Luciano Cavalcante", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("4º Distrito Policial", "São João do Tauape", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("4º Distrito Policial", "Salinas", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("4º Distrito Policial", "Joaquim Távora", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("4º Distrito Policial", "Dionísio Torres", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("4º Distrito Policial", "Guararapes", AreaIntegradaSeguranca.AIS_10));
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("14º Distrito Policial", "Conjunto Industrial", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("14º Distrito Policial", "Esplanada Mondubim", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("14º Distrito Policial", "Aracapé", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Parque Tijuca", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Conjunto Acaracuzinho", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Santo Sátiro", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Santa Marta", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Alto Alegre I", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Alto Alegre II", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Jaçanaú", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("20º Distrito Policial", "Siqueira - Maracanaú", AreaIntegradaSeguranca.AIS_10));
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("21º Distrito Policial", "Conjunto Timbó", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("21º Distrito Policial", "Distrito Industrial I", AreaIntegradaSeguranca.AIS_10));
+
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Mucunã", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Parque Luzardo Viana", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Residencial Maracanaú", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Jenipapeiro", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Coqueiral", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Cágado", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Maracananzinho", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Novo Maracanaú", AreaIntegradaSeguranca.AIS_10));
+        dadosTerritoriais.add(new DadosTerritoriais("28º Distrito Policial", "Pau Serrado", AreaIntegradaSeguranca.AIS_10));
+
+
+        dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Mutirão Vida Nova", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Colônia Antônio Justa", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Alto da Mangueira", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Olho D'Água", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Horto Florestal", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Jereissate I", AreaIntegradaSeguranca.AIS_1));
+        dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Jereissate II", AreaIntegradaSeguranca.AIS_1));
+
+
+//
+//        bairros.add(new Bairro("Acaracuzinho"));
+//        bairros.add(new Bairro("Aerolândia"));
+//        bairros.add(new Bairro("Aeroporto"));
+//        bairros.add(new Bairro("Água Fria"));
+//        bairros.add(new Bairro("Alagadiço"));
+//        bairros.add(new Bairro("Aldeota"));
+//        bairros.add(new Bairro("Alto Alegre"));
+//        bairros.add(new Bairro("Alto da Balança"));
+//        bairros.add(new Bairro("Álvaro Weyne"));
+//        bairros.add(new Bairro("Amadeu Furtado"));
+//        bairros.add(new Bairro("Ancuri"));
+//        bairros.add(new Bairro("Antônio Bezerra"));
+//        bairros.add(new Bairro("Antônio Diogo"));
+//        bairros.add(new Bairro("Araturi"));
+//        bairros.add(new Bairro("Arenópolis"));
+//        bairros.add(new Bairro("Autran Nunes"));
+//        bairros.add(new Bairro("Bairro de Lourdes"));
+//        bairros.add(new Bairro("Barra do Ceará"));
+//        bairros.add(new Bairro("Barroso"));
+//        bairros.add(new Bairro("Bela Vista"));
+//        bairros.add(new Bairro("Benfica"));
+//        bairros.add(new Bairro("Boa Vista"));
+//        bairros.add(new Bairro("Boa Vista Castelão"));
+//        bairros.add(new Bairro("Bom Futuro"));
+//        bairros.add(new Bairro("Bom Jardim"));
+//        bairros.add(new Bairro("Bonsucesso"));
+//        bairros.add(new Bairro("Cais do Porto"));
+//        bairros.add(new Bairro("Cajazeiras"));
+//        bairros.add(new Bairro("Cambeba"));
+//        bairros.add(new Bairro("Canindezinho"));
+//        bairros.add(new Bairro("Canto Verde"));
+//        bairros.add(new Bairro("Carlito Maia"));
+//        bairros.add(new Bairro("Carlito Pamplona"));
+//        bairros.add(new Bairro("Casa Porto"));
+//        bairros.add(new Bairro("Castelo Encantado"));
+//        bairros.add(new Bairro("Centro"));
+//        bairros.add(new Bairro("Cidade 2000"));
+//        bairros.add(new Bairro("Cidade dos Funcionários"));
+//        bairros.add(new Bairro("Coaçu"));
+//        bairros.add(new Bairro("Coco"));
+//        bairros.add(new Bairro("Conjunto Ceará"));
+//        bairros.add(new Bairro("Conjunto Esperança"));
+//        bairros.add(new Bairro("Conjunto Habitacional Aeronáutica"));
+//        bairros.add(new Bairro("Conjunto Nova Assunção"));
+//        bairros.add(new Bairro("Conjunto Nova Perimetral"));
+//        bairros.add(new Bairro("Conjunto Novo Oriente"));
+//        bairros.add(new Bairro("Conjunto Palmeiras"));
+//        bairros.add(new Bairro("Conjunto Parque Ipiranga"));
+//        bairros.add(new Bairro("Conjunto Planalto Pici"));
+//        bairros.add(new Bairro("Conjunto Prefeito José Walter"));
+//        bairros.add(new Bairro("Conjunto Sol Poente"));
+//        bairros.add(new Bairro("Conjunto Vila Velha Iv"));
+//        bairros.add(new Bairro("Couto Fernandes"));
+//        bairros.add(new Bairro("Cristo Redentor"));
+//        bairros.add(new Bairro("Curió"));
+//        bairros.add(new Bairro("Damas"));
+//        bairros.add(new Bairro("Demócrito Rocha"));
+//        bairros.add(new Bairro("Dendê"));
+//        bairros.add(new Bairro("Dias Macedo"));
+//        bairros.add(new Bairro("Dionísio Torres"));
+//        bairros.add(new Bairro("Distrito Industrial"));
+//        bairros.add(new Bairro("Distrito Industrial I"));
+//        bairros.add(new Bairro("Distrito Industrial III"));
+//        bairros.add(new Bairro("Dom Lustosa"));
+//        bairros.add(new Bairro("Dunas"));
+//        bairros.add(new Bairro("Edson Queiroz"));
+//        bairros.add(new Bairro("Engenheiro Luciano Cavalcante"));
+//        bairros.add(new Bairro("Farias Brito"));
+//        bairros.add(new Bairro("Fátima"));
+//        bairros.add(new Bairro("Floresta"));
+//        bairros.add(new Bairro("Granja Lisboa"));
+//        bairros.add(new Bairro("Granja Portugal"));
+//        bairros.add(new Bairro("Guajiru"));
+//        bairros.add(new Bairro("Guaramiranga"));
+//        bairros.add(new Bairro("Guararapes"));
+//        bairros.add(new Bairro("Henrique Jorge"));
+//        bairros.add(new Bairro("Industrial"));
+//        bairros.add(new Bairro("Itaóca"));
+//        bairros.add(new Bairro("Itaperi"));
+//        bairros.add(new Bairro("Jaboti"));
+//        bairros.add(new Bairro("Jacarecanga"));
+//        bairros.add(new Bairro("Jangurussu"));
+//        bairros.add(new Bairro("Jardim América"));
+//        bairros.add(new Bairro("Jardim Cearense"));
+//        bairros.add(new Bairro("Jardim das Oliveiras"));
+//        bairros.add(new Bairro("Jardim Guanabara"));
+//        bairros.add(new Bairro("Jardim Iracema"));
+//        bairros.add(new Bairro("Jardim Jatobá"));
+//        bairros.add(new Bairro("João Xxiii"));
+//        bairros.add(new Bairro("Joaquim Távora"));
+//        bairros.add(new Bairro("Jóquei Clube"));
+//        bairros.add(new Bairro("José Bonifácio"));
+//        bairros.add(new Bairro("José de Alencar"));
+//        bairros.add(new Bairro("Lago Verde"));
+//        bairros.add(new Bairro("Lagoa Redonda"));
+//        bairros.add(new Bairro("Loteamento Alfha Village"));
+//        bairros.add(new Bairro("Loteamento Araturi"));
+//        bairros.add(new Bairro("Loteamento Esplanada Castelão"));
+//        bairros.add(new Bairro("Loteamento Esplanada Messejana"));
+//        bairros.add(new Bairro("Loteamento Grande Aldeota"));
+//        bairros.add(new Bairro("Loteamento Jardim Bandeirantes"));
+//        bairros.add(new Bairro("Loteamento Jurema Park"));
+//        bairros.add(new Bairro("Loteamento Parque Dom Pedro"));
+//        bairros.add(new Bairro("Loteamento Parque Elisabeth"));
+//        bairros.add(new Bairro("Loteamento Parque Montenegro"));
+//        bairros.add(new Bairro("Loteamento Planalto João Xxiii"));
+//        bairros.add(new Bairro("Loteamento Planalto Mondubim"));
+//        bairros.add(new Bairro("Loteamento Sítio Santa Sofia"));
+//        bairros.add(new Bairro("Manoel Dias Branco"));
+//        bairros.add(new Bairro("Manuel Satiro"));
+//        bairros.add(new Bairro("Maraponga"));
+//        bairros.add(new Bairro("Meireles"));
+//        bairros.add(new Bairro("Messejana"));
+//        bairros.add(new Bairro("Mondubim"));
+//        bairros.add(new Bairro("Monte Castelo"));
+//        bairros.add(new Bairro("Montese"));
+//        bairros.add(new Bairro("Moura Brasil"));
+//        bairros.add(new Bairro("Mucuripe"));
+//        bairros.add(new Bairro("Novo Mondubim"));
+//        bairros.add(new Bairro("Olavo Oliveira"));
+//        bairros.add(new Bairro("Padre Andrade"));
+//        bairros.add(new Bairro("Pajuçara"));
+//        bairros.add(new Bairro("Pan Americano"));
+//        bairros.add(new Bairro("Papicu"));
+//        bairros.add(new Bairro("Parangaba"));
+//        bairros.add(new Bairro("Parque Alto Alegre"));
+//        bairros.add(new Bairro("Parque Araxá"));
+//        bairros.add(new Bairro("Parque Dois Irmãos"));
+//        bairros.add(new Bairro("Parque Genibau"));
+//        bairros.add(new Bairro("Parque Iracema"));
+//        bairros.add(new Bairro("Parque Jerusalém"));
+//        bairros.add(new Bairro("Parque Manibura"));
+//        bairros.add(new Bairro("Parque Novo Mondubim"));
+//        bairros.add(new Bairro("Parque Potira"));
+//        bairros.add(new Bairro("Parque Presidente Vargas"));
+//        bairros.add(new Bairro("Parque Santa Maria"));
+//        bairros.add(new Bairro("Parque Santa Rosa"));
+//        bairros.add(new Bairro("Parque São José"));
+//        bairros.add(new Bairro("Parque São Vicente"));
+//        bairros.add(new Bairro("Parquelândia"));
+//        bairros.add(new Bairro("Parreão"));
+//        bairros.add(new Bairro("Passaré"));
+//        bairros.add(new Bairro("Patriolino Ribeiro"));
+//        bairros.add(new Bairro("Paupina"));
+//        bairros.add(new Bairro("Pedras"));
+//        bairros.add(new Bairro("Pici"));
+//        bairros.add(new Bairro("Pirambu"));
+//        bairros.add(new Bairro("Planalto Ayrton Senna"));
+//        bairros.add(new Bairro("Praia de Iracema"));
+//        bairros.add(new Bairro("Praia Iracema"));
+//        bairros.add(new Bairro("Prefeito José Walter"));
+//        bairros.add(new Bairro("Presidente Kennedy"));
+//        bairros.add(new Bairro("Presidente Tancredo Neves"));
+//        bairros.add(new Bairro("Quintino Cunha"));
+//        bairros.add(new Bairro("Rodolfo Teófilo"));
+//        bairros.add(new Bairro("Sabiaguaba"));
+//        bairros.add(new Bairro("Salinas"));
+//        bairros.add(new Bairro("Santa Maria"));
+//        bairros.add(new Bairro("Santa Rosa"));
+//        bairros.add(new Bairro("São Bento"));
+//        bairros.add(new Bairro("São Gerardo"));
+//        bairros.add(new Bairro("São João do Tauape"));
+//        bairros.add(new Bairro("Sapiranga"));
+//        bairros.add(new Bairro("Serrinha"));
+//        bairros.add(new Bairro("Siqueira"));
+//        bairros.add(new Bairro("Varjota"));
+//        bairros.add(new Bairro("Vicente Pinzon"));
+//        bairros.add(new Bairro("Vila Ellery"));
+//        bairros.add(new Bairro("Vila Peri"));
+//        bairros.add(new Bairro("Vila União"));
+//        bairros.add(new Bairro("Vila Velha"));
+//
+//
 
 
         ArrayList<Cidade> cidades = new ArrayList<>();
@@ -398,6 +607,7 @@ public class Initializer {
 
         ArrayList<Delegacia> delegas = new ArrayList<Delegacia>();
 
+        delegas.add(new Delegacia("CIOPS - Coordenadoria Integrada de Operações de Segurança"));
         delegas.add(new Delegacia("Delegacia Metropolitana de Caucaia "));
         delegas.add(new Delegacia("Delegacia Metropolitana de Pacatuba "));
         delegas.add(new Delegacia("Delegacia Metropolitana de Guaiuba "));
@@ -577,7 +787,7 @@ public class Initializer {
         delegas.add(new Delegacia("Delegacia de Protecao Ao Turista "));
         delegas.add(new Delegacia("Delegacia Central de Flagrantes "));
         delegas.add(new Delegacia("Delegacia de Repressao a Entorpecentes "));
-        delegas.add(new Delegacia("Delegacia Metropolitana de Maracanau "));
+        //delegas.add(new Delegacia("Delegacia Metropolitana de Maracanau"));
         delegas.add(new Delegacia("Delegacia Metropolitana de Aquiraz "));
         delegas.add(new Delegacia("Delegacia Municipal de Arneiroz "));
         delegas.add(new Delegacia("Delegacia Municipal de Banabuiu "));
@@ -629,15 +839,18 @@ public class Initializer {
         delegas.add(new Delegacia("Delegacia de Policia Federal Em Mossoro "));
         delegas.add(new Delegacia("Delegacia de Narcoticos"));
 
-        for(Bairro b : bairros)
-        b.save();
+        //   for(Bairro b : bairros)
+        //   b.save();
 
-        for(Cidade c : cidades)
-        c.save();
+        for (DadosTerritoriais dt : dadosTerritoriais)
+            dt.save();
 
-        for(Delegacia de : delegas)
+        for (Cidade c : cidades)
+            c.save();
+
+        for (Delegacia de : delegas)
             de.save();
 
 
-}
+    }
 }

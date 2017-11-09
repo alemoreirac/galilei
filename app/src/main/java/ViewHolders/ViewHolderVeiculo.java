@@ -26,4 +26,14 @@ public class ViewHolderVeiculo  {
     TextView txvModelo;
     TextView txvPlaca;
 
+    public TextView getTxvTipo() {
+        return txvTipo;
+    }
+
+    public void setTxvTipo(TextView txvTipo) {
+        this.txvTipo = txvTipo;
+    }
+
+    TextView txvTipo;
+
 }

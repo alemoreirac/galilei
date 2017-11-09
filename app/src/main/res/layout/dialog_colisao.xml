@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="650dp"
+
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/imgv_dialog_Veiculo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/veiculo_veiculo"
+        android:background="@drawable/border_gray"
+        android:onClick="Selecionar"
+        />
+
+    <TextView
+        android:id="@+id/txv_dialog_Veiculo"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Veiculo"
+        android:layout_below="@+id/imgv_dialog_Veiculo"
+        android:textSize="20dp"
+        android:layout_alignRight="@+id/imgv_dialog_Veiculo"
+        android:gravity="center" />
+
+    <ImageView
+
+        android:id="@+id/imgv_dialog_Objeto"
+
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/veiculo_objeto"
+        android:background="@drawable/border_gray"
+        android:layout_toRightOf="@+id/imgv_dialog_Veiculo"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txv_dialog_Objeto"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Objeto"
+        android:textSize="20dp"
+        android:layout_below="@+id/imgv_dialog_Objeto"
+        android:layout_alignRight="@+id/imgv_dialog_Objeto"
+        android:gravity="center" />
+
+    <ImageView
+        android:id="@+id/imgv_dialog_Animal"
+
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/veiculo_animal"
+        android:background="@drawable/border_gray"
+        android:layout_toRightOf="@+id/imgv_dialog_Objeto"
+        android:layout_marginLeft="10dp"
+        />
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Animal"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Animal"
+        android:layout_below="@+id/imgv_dialog_Animal"
+        android:layout_alignRight="@+id/imgv_dialog_Animal"
+        android:textSize="20dp"
+        android:gravity="center" />
+
+    <ImageView
+        android:id="@+id/imgv_dialog_Pedestre"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/pedestre"
+        android:background="@drawable/border_gray"
+        android:layout_toRightOf="@+id/imgv_dialog_Animal"
+        android:layout_marginLeft="10dp"/>
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Pedestre"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Pedestre"
+        android:layout_below="@+id/imgv_dialog_Pedestre"
+        android:layout_alignLeft="@+id/imgv_dialog_Pedestre"
+        android:textSize="20dp"
+        android:gravity="center" />
+
+    <ImageView
+        android:id="@+id/imgv_dialog_Nenhum"
+
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/veiculo"
+        android:background="@drawable/border_gray"
+        android:layout_toRightOf="@+id/imgv_dialog_Pedestre"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txv_dialog_Nenhum"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Adernamento"
+        android:layout_below="@+id/imgv_dialog_Nenhum"
+        android:layout_alignLeft="@+id/imgv_dialog_Nenhum"
+        android:gravity="center"
+        android:textSize="18dp"/>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package ViewHolders;
 
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -38,6 +39,7 @@ public class ViewHolderEnvolvidoTransito {
     public void setTxvIdade(TextView txvIdade) {
         this.txvIdade = txvIdade;
     }
+
 
     TextView txvNome;
     TextView txvTipo;

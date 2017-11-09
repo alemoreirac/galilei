@@ -5,14 +5,28 @@ package Enums;
  */
 
 public enum SetorDano {
-    FRONTAL("Setor Frontal"),
-    POSTERIOR("Setor Posterior"),
-    LATERAL_ESQUERDO ("Setor Lateral Esquerdo"),
-    LATERAL_DIREITO("Setor Lateral Direito"),
-    ANTERIOR_ESQUERDO("Setor Anterior Esquerdo"),
-    ANTERIOR_DIREITO("Setor Anterior Direito"),
-    POSTERIOR_ESQUERDO("Setor Posterior Esquerdo"),
-    POSTERIOR_DIREITO ("Setor Posterior Direito");
+
+    PAM("Porção Anterior Mediana"),
+    PAD("Porção Anterior Direita"),
+    PAE("Porção Anterior Esquerda"),
+
+    AAD("Ângulo Anterior Direito"),
+    LAD("Lateral Anterior Direita"),
+    LMD("Lateral Mediana Direita"),
+    LPD("Lateral Posterior Direita"),
+    APD("Ângulo Posterior Direito"),
+
+    PPD("Porção Posterior Direita"),
+    PPM("Porção Posterior Mediana"),
+    PPE("Porção Posterior Esquerda"),
+
+    APE("Ângulo Posterior Esquerdo"),
+    LPE("Lateral Posterior Esquerda"),
+    LME("Lateral Mediana Esquerda"),
+    LAE("Lateral Anterior Esquerda"),
+    AAE("Ângulo Anterior Esquerdo");
+
+
 
     String valor;
 

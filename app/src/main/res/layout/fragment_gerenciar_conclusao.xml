@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ms_white"
+    tools:context="com.example.pefoce.peritolocal.Fragments.GerenciarConclusao">
+
+<TextView
+    android:background="@drawable/border_gray"
+    android:id="@+id/txv_Conclusao_Text"
+    android:layout_width="900dp"
+    android:layout_height="450dp"
+    android:layout_centerHorizontal="true"
+    android:maxLines = "30"
+    android:scrollbars = "vertical"
+    android:padding="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_Gerar_ODT"
+        android:layout_below="@id/txv_Conclusao_Text"
+        android:drawableLeft="@drawable/veiculo_icon"
+        style="@android:style/Widget.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/documento" />
+
+        <TextView
+            android:id="@+id/image_button_2_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="Gerar ODT" />
+        </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/txv_Arquivos_Path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ll_Gerar_ODT"
+        android:layout_marginTop="20dp"
+        android:text="Clique no botão APÓS CONFERIR AS INFORMAÇÕES para gerar o laudo." />
+
+</RelativeLayout>

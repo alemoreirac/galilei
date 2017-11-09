@@ -17,7 +17,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import Adapters.AdapterDano;
 import Enums.DocumentoPessoa;
+import Enums.Genero;
 import Model.EnvolvidoTransito;
 import Model.OcorrenciaTransito;
 import Model.OcorrenciaEnvolvido;
@@ -28,8 +30,10 @@ public class ManterVitimaActivity extends AppCompatActivity {
 
     EditText edtNome= null;
     CheckBox cxbFatal = null;
+    CheckBox cxbDesconhecido = null;
     TextView txvNascimento = null;
     Spinner spnTipoDocumento = null;
+    Spinner spnGenero = null;
     EditText edtNumDocumento = null;
 
     EnvolvidoTransito  vitima = null;
@@ -43,6 +47,7 @@ public class ManterVitimaActivity extends AppCompatActivity {
 
         AssociarLayout();
         PovoarSpinner(this);
+
         Intent it = getIntent();
 
         if(it.getLongExtra("OcorrenciaId",0) != 0)
@@ -86,7 +91,6 @@ public class ManterVitimaActivity extends AppCompatActivity {
         });
 
 
-
         Button btnCancel = (Button) findViewById(R.id.btn_Cancelar_Vitima);
 
         btnCancel.setOnClickListener(new View.OnClickListener()
@@ -100,6 +104,27 @@ public class ManterVitimaActivity extends AppCompatActivity {
                 startActivity(it);
             }
         });
+
+        cxbDesconhecido = (CheckBox) findViewById(R.id.cxb_Vitima_Desconhecida);
+        cxbDesconhecido.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+               if(cxbDesconhecido.isChecked())
+               {
+                   edtNome.setEnabled(false);
+                   edtNome.setText("Desconhecido(a)");
+               }
+                else
+               {
+                   edtNome.setEnabled(true);
+                   edtNome.setText("");
+               }
+            }
+        });
+
+
 
 
     }
@@ -118,7 +143,7 @@ public class ManterVitimaActivity extends AppCompatActivity {
         if(vitima.getDocumentoTipo()!= null)
         spnTipoDocumento.setSelection(BuscadorEnum.getIndex(spnTipoDocumento,vitima.getDocumentoTipo().getValor()));
 
-        cxbFatal.setChecked(vitima.isFatal());
+
 
     }
 
@@ -126,7 +151,10 @@ public class ManterVitimaActivity extends AppCompatActivity {
     {
         edtNome = (EditText) findViewById(R.id.edt_NomeVitima);
         edtNumDocumento = (EditText) findViewById(R.id.edt_NumDocVitima);
+
         spnTipoDocumento = (Spinner) findViewById(R.id.spn_TipoDocumentoVitima);
+        spnGenero = (Spinner) findViewById(R.id.spn_VitimaGenero);
+
         txvNascimento = (TextView) findViewById(R.id.txv_DataNascimentoVitima_Valor);
         cxbFatal = (CheckBox) findViewById(R.id.cxb_VitimaFatal);
     }
@@ -141,15 +169,25 @@ public class ManterVitimaActivity extends AppCompatActivity {
         }
 
         spnTipoDocumento.setAdapter(new ArrayAdapter<String>(ctx,android.R.layout.simple_spinner_dropdown_item,tipoDocumento));
+
+        ArrayList<String> generos = new ArrayList<>();
+
+        for(Genero g : Genero.values())
+        {
+            generos.add(g.getValor());
+        }
+
+        spnGenero.setAdapter(new ArrayAdapter<String>(ctx,android.R.layout.simple_spinner_dropdown_item,generos));
     }
 
     private void SalvarEnvolvido()
     {
         vitima.setNome(edtNome.getText().toString());
         vitima.setDocumentoValor(edtNumDocumento.getText().toString());
-        vitima.setFatal(cxbFatal.isChecked());
+        //vitima.setFatal(cxbFatal.isChecked());
         vitima.setDataNascimentoString(txvNascimento.getText().toString());
         vitima.setDocumentoTipo(BuscadorEnum.BuscarTipoDocumento(spnTipoDocumento.getSelectedItem().toString()));
+        vitima.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
 
         vitima.save();
 
@@ -160,8 +198,5 @@ public class ManterVitimaActivity extends AppCompatActivity {
 
     }
 
-    public void SetNascimento(View v)
-    {
-        TempoUtil.setDate(txvNascimento,this);
-    }
+
 }

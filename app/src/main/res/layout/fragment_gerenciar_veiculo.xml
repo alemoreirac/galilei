@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="Fragments.GerenciarEndereco">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="300dp"
+        android:background="@drawable/stroke_border"
+        android:layout_height="match_parent"
+        android:id="@+id/lista_veiculos">
+
+        <ListView
+            android:id="@+id/lstv_Veiculos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:listSelector="@drawable/selector"
+            android:choiceMode="singleChoice"
+            >
+
+        </ListView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Veiculo"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/fab_plus"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/rltv_Detalhe_Veiculo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/lista_veiculos"
+        android:padding="15dp"
+        >
+
+
+
+        <TextView
+            android:id="@+id/txv_Modelo_Veiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="@string/modelo_carro"/>
+
+
+        <EditText
+            android:id="@+id/edt_Modelo_Veiculo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/edt_PlacaNumeros_Envolvido"
+            android:layout_alignLeft="@+id/txv_Modelo_Veiculo" />
+
+        <TextView
+            android:id="@+id/txv_Marca_Veiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_toRightOf="@id/edt_Modelo_Veiculo"
+            android:layout_marginLeft="30dp"
+            android:text="Marca"/>
+
+        <EditText
+            android:id="@+id/edt_Marca_Veiculo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/edt_PlacaNumeros_Envolvido"
+            android:layout_alignLeft="@+id/txv_Marca_Veiculo" />
+
+
+        <TextView
+            android:id="@+id/txv_Placa_Veiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textSize="15dp"
+            android:layout_toRightOf="@id/edt_Marca_Veiculo"
+            android:text="@string/placa_carro"/>
+
+        <EditText
+
+            android:id="@+id/edt_PlacaLetras_Envolvido"
+            android:layout_width="60dp"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:textSize="30dp"
+            android:hint="ABC"
+            android:maxLength="3"
+
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/txv_Placa_Veiculo"
+            android:layout_alignLeft="@id/txv_Placa_Veiculo"
+            />
+
+        <EditText
+            android:id="@+id/edt_PlacaNumeros_Envolvido"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:maxLength="4"
+            android:inputType="number"
+            android:layout_alignBottom="@id/edt_PlacaLetras_Envolvido"
+            android:hint="1234"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/edt_PlacaLetras_Envolvido"  />
+
+
+
+        <CheckBox
+            android:id="@+id/cxb_Veiculo_Desconhecido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Desconhecido"
+            android:layout_toRightOf="@id/edt_PlacaNumeros_Envolvido"
+            android:layout_alignTop="@id/edt_PlacaNumeros_Envolvido"
+            android:layout_marginLeft="8dp"
+            />
+
+
+        <TextView
+            android:id="@+id/txv_TipoVeiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="@string/tipo_veiculo"
+            android:layout_below="@id/edt_Modelo_Veiculo"
+            android:layout_marginTop="30dp"/>
+
+
+        <Spinner
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_TipoVeiculo"
+            android:layout_below="@id/txv_TipoVeiculo"
+            android:id="@+id/spn_TipoVeiculo" />
+
+
+
+        <TextView
+            android:id="@+id/txv_CorVeiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_alignBottom="@id/txv_TipoVeiculo"
+            android:text="@string/cor_veiculo"
+            android:layout_toRightOf="@id/spn_TipoVeiculo"
+            android:layout_marginLeft="10dp" />
+
+
+        <Spinner
+            android:id="@+id/spn_CorVeiculo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_CorVeiculo"
+            android:layout_alignBottom="@+id/spn_TipoVeiculo"/>
+
+
+        <TextView
+            android:id="@+id/txv_Ano_Veiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_below="@id/spn_TipoVeiculo"
+            android:layout_alignLeft="@+id/txv_TipoVeiculo"
+            android:text="Ano do Veículo"
+            android:layout_marginTop="10dp"
+            />
+
+        <Spinner
+            android:id="@+id/spn_Ano_Veiculo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Ano_Veiculo"
+            android:layout_below="@id/txv_Ano_Veiculo"/>
+
+        <TextView
+            android:id="@+id/txv_Ano_Veiculo_Fabricacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_alignLeft="@+id/txv_CorVeiculo"
+
+            android:layout_alignBottom="@id/txv_Ano_Veiculo"
+
+            android:text="Fabricação do Veículo"/>
+
+        <Spinner
+            android:id="@+id/spn_Ano_Veiculo_Fabricacao"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/spn_Ano_Veiculo"
+            android:layout_alignLeft="@id/txv_Ano_Veiculo_Fabricacao"/>
+
+
+
+
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Foto_Veiculo"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/camera_white"
+            android:layout_marginTop="27dp"
+            android:layout_marginLeft="15dp"
+            />
+
+        <TextView
+            android:layout_alignLeft="@+id/txv_Placa_Veiculo"
+            android:layout_alignBottom="@+id/txv_CorVeiculo"
+            android:id="@+id/txv_Dados_Proprietario_Condutor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Proprietário e Condutor"
+            android:layout_marginTop="15dp"
+            android:textSize="20dp"/>
+
+
+        <RelativeLayout
+            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/stroke_border"
+            android:layout_below="@id/txv_Dados_Proprietario_Condutor"
+            android:layout_alignLeft="@+id/txv_Dados_Proprietario_Condutor"
+            android:id="@+id/rltv_Proprietario_Condutor">
+
+            <TextView
+                android:id="@+id/txv_Proprietario_Titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proprietário: "
+                android:textSize="15dp"
+                />
+
+            <TextView
+                android:id="@+id/txv_Proprietario_Nome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Sem Proprietário Definido)"
+                android:layout_below="@+id/txv_Proprietario_Titulo"
+                android:textSize="15dp"
+                android:layout_alignLeft="@id/txv_Proprietario_Titulo"
+                android:layout_marginTop="2dp"
+                />
+
+
+            <TextView
+                android:id="@+id/txv_Proprietario_Documento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Nº Registro)"
+                android:layout_below="@+id/txv_Proprietario_Nome"
+                android:layout_alignLeft="@id/txv_Proprietario_Nome"
+                android:layout_marginTop="2dp"/>
+
+
+            <TextView
+                android:id="@+id/txv_Condutor_Titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Condutor: "
+                android:layout_toRightOf="@+id/txv_Proprietario_Titulo"
+
+                android:textSize="15dp"
+                android:layout_marginLeft="160dp"/>
+
+            <TextView
+                android:id="@+id/txv_Condutor_Nome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Sem Condutor Definido)"
+                android:layout_below="@+id/txv_Condutor_Titulo"
+                android:textSize="15dp"
+                android:layout_alignLeft="@id/txv_Condutor_Titulo"
+                android:layout_marginTop="2dp"/>
+
+
+            <TextView
+                android:id="@+id/txv_Condutor_Documento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Nº Registro)"
+                android:layout_below="@+id/txv_Condutor_Nome"
+                android:layout_alignLeft="@id/txv_Condutor_Nome"
+                android:layout_marginTop="2dp"/>
+
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:layout_below="@id/spn_Ano_Veiculo"
+            android:id="@+id/txv_DanosVeiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Danos do Veículo"
+            android:layout_marginTop="55dp"
+            android:textSize="20dp"/>
+
+
+        <ListView
+            android:id="@+id/lstv_Danos_Veiculo"
+            android:layout_width="750dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/stroke_border"
+            android:layout_height="160dp"
+            android:layout_alignLeft="@+id/txv_DanosVeiculo"
+            android:layout_below="@id/txv_DanosVeiculo"
+            ></ListView>
+
+
+        <Button
+            android:id="@+id/btn_Salvar_Veiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/btn_Add_Dano"
+            android:onClick="Salvar_Fechar"
+            android:text="@string/salvar_sair"/>
+
+        <Button
+            android:id="@+id/btn_Cancelar_Veiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignBottom="@id/btn_Salvar_Veiculo"
+            android:text="@string/cancelar"
+            android:layout_toRightOf="@id/btn_Salvar_Veiculo"
+            android:layout_marginLeft="60dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/btn_Add_Dano"
+            android:layout_below="@id/lstv_Danos_Veiculo"
+            android:drawableLeft="@drawable/veiculo_icon"
+            style="@android:style/Widget.Button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/veiculo_icon" />
+
+            <TextView
+                android:id="@+id/image_button_2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="Danos" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

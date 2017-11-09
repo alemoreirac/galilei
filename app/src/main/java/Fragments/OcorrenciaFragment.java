@@ -1,46 +1,40 @@
 package Fragments;
 
-import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pefoce.peritolocal.MainActivity;
 import com.example.pefoce.peritolocal.ManterPericia;
-import com.example.pefoce.peritolocal.PericiaTransito;
 import com.example.pefoce.peritolocal.R;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
 import java.util.ArrayList;
 
+import Enums.AreaIntegradaSeguranca;
 import Enums.DocumentoSolicitacao;
-import Enums.EstadoSitioColisao;
 import Enums.Orgao;
 import Enums.PreservacaoLocal;
-import Model.Delegacia;
+import Model.DadosTerritoriais;
 import Model.DocumentoOcorrencia;
+import Model.Ocorrencia;
 import Model.OcorrenciaTransito;
+import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.TempoUtil;
 
@@ -48,155 +42,62 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
 
 
     OcorrenciaTransito ocorrenciaFragment = null;
+    Ocorrencia ocorrencia = null;
+
     Spinner spnLocal = null;
-    Spinner spnColisao = null;
     Spinner spnDocumento = null;
     Spinner spnOrgaoPresente = null;
-
+    Spinner spnAIS = null;
 
     EditText edtValorDocumento = null;
     EditText edtComandante = null;
     EditText edtPlacaViatura_Numeros = null;
     EditText edtPlacaViatura_Letras = null;
+    EditText edtIncidencia = null;
 
-
+//    TextView txvIncidenciaMask = null;
     TextView txvDataAtendimento = null;
     TextView txvChamado = null;
-    TextView txvOcorrencia = null;
     TextView txvAtendimento = null;
 
     AutoCompleteTextView autocOrgaoDestino = null;
     AutoCompleteTextView autocOrgaoOrigem = null;
+    AutoCompleteTextView autocBairro = null;
+
+    CheckBox cxbUltimaForma = null;
 
     View v= null;
 
     public OcorrenciaFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-
         super.onViewCreated(view, savedInstanceState);
         v=view;
-     //   ImageView imgv = (ImageView) toolbar.findViewById(R.id.action_anterior);
-//
-     //   imgv.setOnClickListener(new View.OnClickListener()
-     //   {
-     //       @Override
-     //       public void onClick(View v)
-     //       {
-//
-     //      //     SalvarOcorrencia();
-//
-     //           Toast.makeText(v.getContext(), "Ocorrência salva com Sucesso!", Toast.LENGTH_LONG).show();
-//
-     //      //  Intent it = new Intent(v.getContext(),MainActivity.class);
-     //      //  it.putExtra("PeritoId",ocorrenciaFragment.getPerito().getId());
-     //      //  startActivity(it);
-//
-     //       }
-     //   });
 
-
-     //  Button btnSalvar = (Button) getActivity().findViewById(R.id.btn_Salvar_Pericia);
-
-     //  btnSalvar.setOnClickListener(new View.OnClickListener()
-     //  {
-     //      @Override
-     //      public void onClick(View v)
-     //      {
-
-     //          SalvarOcorrencia();
-
-     //          Toast.makeText(v.getContext(), "Ocorrência salva com Sucesso!", Toast.LENGTH_LONG).show();
-
-     //          Intent it = new Intent(v.getContext(),MainActivity.class);
-     //          it.putExtra("PeritoId",ocorrenciaFragment.getPerito().getId());
-     //          startActivity(it);
-
-     //      }
-     //  });
-
-     //  Button btnCancelar = (Button) getActivity().findViewById(R.id.btn_Cancelar_Pericia);
-
-     //  btnCancelar.setOnClickListener(new View.OnClickListener()
-     //  {
-     //      @Override
-     //      public void onClick(final View v)
-     //      {
-     //          AlertDialog.Builder builder;
-     //          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-     //              builder = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_Material_Dialog_Alert);
-     //          } else {
-     //              builder = new AlertDialog.Builder(v.getContext());
-     //          }
-     //          builder.setTitle("Cancelar Ocorrência")
-     //                  .setMessage("Você deseja cancelar as alterações desta Ocorrência?")
-     //                  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-     //                      public void onClick(DialogInterface dialog, int which) {
-     //                          Intent it = new Intent(v.getContext(),MainActivity.class);
-     //                          it.putExtra("PeritoId",ocorrenciaFragment.getPerito().getId());
-//   //                            it.putExtra("OcorrenciaId",0);
-     //                          startActivity(it);
-     //                      }
-     //                  })
-     //                  .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-     //                      public void onClick(DialogInterface dialog, int which) {
-     //                          dialog.dismiss();
-     //                      }
-     //                  })
-     //                  .show();
-     //      }
-     //  });
-//
-//        Button btnProxima = (Button) getActivity().findViewById(R.id.btn_Proxima_Pericia);
-//
-//        btnProxima.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(final View v)
-//            {
-//                Toast.makeText(v.getContext(), "Ocorrência salva com Sucesso!", Toast.LENGTH_LONG).show();
-//
-//                SalvarOcorrencia();
-//
-//                // Pega o FragmentManager
-//                FragmentManager fm = getActivity().getFragmentManager();
-//
-//                // Abre uma transação e adiciona
-//                FragmentTransaction ft = fm.beginTransaction();
-//
-//                EnderecosFragment fragment = new EnderecosFragment();
-//                Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-//                ft.replace(R.id.fragment_content,fragment);
-//                ft.commit();
-//                toolbar.setTitle("Endereços");
-//            }
-//        });
+        if (view != null)
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        // Inflate the layout for this fragment
        final View view = inflater.inflate(R.layout.fragment_ocorrencia,
                 container, false);
+
+
 
         return inflater.inflate(R.layout.fragment_ocorrencia, container, false);
     }
 
     private void PopularSpinners(View view)
     {
-
-        ArrayList<String> sitioColisao = new ArrayList<String>();
-
-        for(EstadoSitioColisao esc : EstadoSitioColisao.values())
-        {
-            sitioColisao.add(esc.getValor());
-        }
 
         ArrayList<String> preservacaoLocal = new ArrayList<String>();
 
@@ -207,13 +108,11 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
 
         spnLocal.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, preservacaoLocal));
 
-        //SPINNER CONDIÇÕES DA COLISÃO
 
-        spnColisao.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, sitioColisao));
 
-        autocOrgaoDestino.setAdapter(getDelegacias(view.getContext()));
+        autocOrgaoDestino.setAdapter(AutoCompleteUtil.getDelegacias(view.getContext()));
 
-        autocOrgaoOrigem.setAdapter(getDelegacias(view.getContext()));
+        autocOrgaoOrigem.setAdapter(AutoCompleteUtil.getDelegacias(view.getContext()));
 
         ArrayList<String> docs = new ArrayList<String>();
 
@@ -228,18 +127,33 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
         ArrayList<String> orgao = new ArrayList<String>();
 
         for(Orgao o : Orgao.values())
-        {
             orgao.add(o.getValor());
-        }
 
         spnOrgaoPresente.setAdapter(new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_spinner_dropdown_item,orgao));
+
+        ArrayList<String> arrayAIS = new ArrayList<>();
+
+        for(AreaIntegradaSeguranca ais : AreaIntegradaSeguranca.values())
+            arrayAIS.add(ais.getValor());
+
+        spnAIS.setAdapter(new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_spinner_dropdown_item,arrayAIS));
     }
 
     @Override
     public VerificationError verifyStep() {
-
         try
         {
+            txvChamado.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+            txvAtendimento.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+
+
+            if(TempoUtil.HoraAntesDe(txvAtendimento.getText().toString(),txvChamado.getText().toString()))
+            {
+                txvAtendimento.setTextColor(Color.RED);
+                VerificationError ve = new VerificationError("Hora do atendimento antes do Chamado!");
+                return ve;
+            }
+
             SalvarOcorrencia();
         }
         catch (Exception e)
@@ -253,7 +167,8 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
     @Override
     public void onSelected()
     {
-        ((ManterPericia) getActivity()).toolbar.setTitle("Ocorrência");
+        //((ManterPericia) getActivity()).toolbar.setTitle("Ocorrência");
+        ((ManterPericia) getActivity()).txvToolbarTitulo.setText("Ocorrência");
 
         Bundle bd = getArguments();
 
@@ -265,10 +180,12 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
             if(bd.getLong("OcorrenciaId",0)!= 0)
             {
                 ocorrenciaFragment = OcorrenciaTransito.findById(OcorrenciaTransito.class, bd.getLong("OcorrenciaId", 0));
+
+                ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaFragment.getOcorrenciaID());
+
                 CarregarValores(ocorrenciaFragment, v);
             }
         }
-
 
     }
 
@@ -281,19 +198,22 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
     {
         AssociarLayout(v);
 
-        txvChamado.setText(ot.getHoraChamadoString());
-
-        txvOcorrencia.setText(ot.getHoraOcorrenciaString());
+//        txvChamado.setText(ocorrenciaTransito.getHoraChamadoString());
+        txvChamado.setText(ocorrencia.getHoraChamadoString());
+       // txvOcorrencia.setText(ocorrenciaTransito.getHoraOcorrenciaString());
 
         txvAtendimento.setText(ot.getHoraAtendimentoString());
 
         txvDataAtendimento.setText(ot.getDataAtendimentoString());
 
+        cxbUltimaForma.setChecked(ot.getUltimaForma());
+
+        if(ot.getNumIncidencia() != null)
+            edtIncidencia.setText(ot.getNumIncidencia());
+
         if(ot.getDocumentoOcorrencia().getValor() != null)
             edtValorDocumento.setText(ot.getDocumentoOcorrencia().getValor().toString());
 
-        if(ot.getEstadoSitioColisao() != null)
-            spnColisao.setSelection(BuscadorEnum.getIndex(spnColisao,ot.getEstadoSitioColisao().getValor()));
         if(ot.getPreservacaoLocal() != null)
             spnLocal.setSelection(BuscadorEnum.getIndex(spnLocal,ot.getPreservacaoLocal().getValor()));
 
@@ -301,32 +221,34 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
             spnDocumento.setSelection(BuscadorEnum.getIndex(spnDocumento,ot.getDocumentoOcorrencia().getTipodocumento().getValor()));
 
         if(ot.getOrgaoPresente() != null)
-            spnOrgaoPresente.setSelection(BuscadorEnum.getIndex(spnOrgaoPresente,ot.getOrgaoPresente().getValor()));
+        spnOrgaoPresente.setSelection(BuscadorEnum.getIndex(spnOrgaoPresente,ot.getOrgaoPresente().getValor()));
 
-        autocOrgaoOrigem.setText((ot.getOrgaoOrigem() == null) ? "" : ot.getOrgaoOrigem());
+        if(ot.getAis() != null)
+            spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS,ot.getAis().getValor()));
+
+        autocOrgaoOrigem.setText((ot.getOrgaoOrigem() == null) ? "CIOPS - Coordenadoria Integrada de Operações de Segurança" : ot.getOrgaoOrigem());
 
         autocOrgaoDestino.setText((ot.getOrgaoDestino() == null) ? "" : ot.getOrgaoDestino());
 
         if(ot.getComandante()!=null)
         edtComandante.setText(ot.getComandante());
 
-        if(ot.getViatura()!=null)
+
+        if(ot.getViatura().length()>=8)
         {
             edtPlacaViatura_Letras.setText(ot.getViatura().substring(0,3));
             edtPlacaViatura_Numeros.setText(ot.getViatura().substring(4,8));
         }
-
-
-
     }
 
     private void SalvarOcorrencia()
     {
-        ocorrenciaFragment.setEstadoSitioColisao(BuscadorEnum.BuscarEstadoColisao(spnColisao.getSelectedItem().toString()));
         ocorrenciaFragment.setPreservacaoLocal(BuscadorEnum.BuscarPreservacaoLocal(spnLocal.getSelectedItem().toString()));
         ocorrenciaFragment.setOrgaoPresente(BuscadorEnum.BuscarOrgao(spnOrgaoPresente.getSelectedItem().toString()));
-
+        ocorrenciaFragment.setAis(BuscadorEnum.BuscarAIS(spnAIS.getSelectedItem().toString()));
+        ocorrenciaFragment.setNumIncidencia(edtIncidencia.getText().toString());
         ocorrenciaFragment.getDocumentoOcorrencia().setValor(edtValorDocumento.getText().toString());
+        ocorrenciaFragment.setUltimaForma(cxbUltimaForma.isChecked());
 
         DocumentoOcorrencia docOcorrencia = DocumentoOcorrencia.findById(DocumentoOcorrencia.class,ocorrenciaFragment.getDocumentoOcorrencia().getId());
 
@@ -338,32 +260,36 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
         ocorrenciaFragment.setDocumentoOcorrencia(docOcorrencia);
 
         if(txvChamado.getText().toString() != null)
-            ocorrenciaFragment.setDataChamado( TempoUtil.stringToTime(txvChamado.getText().toString()));
+            ocorrencia.setDataChamado( TempoUtil.stringToTime(txvChamado.getText().toString()));
 
-        if(txvOcorrencia.getText().toString() != null)
-            ocorrenciaFragment.setDataOcorrencia( TempoUtil.stringToTime(txvOcorrencia.getText().toString()));
+     //   if(txvOcorrencia.getText().toString() != null)
+    //        ocorrenciaFragment.setDataChamado( TempoUtil.stringToTime(txvOcorrencia.getText().toString()));
 
         if(txvAtendimento.getText().toString() != null)
             ocorrenciaFragment.setHoraAtendimento(txvAtendimento.getText().toString());
 
         if(txvDataAtendimento.getText().toString() != null)
+        {
             ocorrenciaFragment.setDataAtendimento((txvDataAtendimento.getText().toString()));
-
+            ocorrencia.setDataChamado((txvDataAtendimento.getText().toString()));
+        }
         if(autocOrgaoDestino.getText().toString() != null)
-        ocorrenciaFragment.setOrgaoOrigem(autocOrgaoDestino.getText().toString());
+            ocorrenciaFragment.setOrgaoDestino(autocOrgaoDestino.getText().toString());
 
         if(autocOrgaoOrigem.getText().toString() != null)
-        ocorrenciaFragment.setOrgaoDestino(autocOrgaoOrigem.getText().toString());
+            ocorrenciaFragment.setOrgaoOrigem(autocOrgaoOrigem.getText().toString());
+
 
 
         if(edtComandante.getText().toString() != null)
-        ocorrenciaFragment.setComandante(edtComandante.getText().toString());
+            ocorrenciaFragment.setComandante(edtComandante.getText().toString());
 
 
         if(edtPlacaViatura_Letras.getText().toString() != null && edtPlacaViatura_Numeros.getText().toString() != null )
-        ocorrenciaFragment.setViatura(edtPlacaViatura_Letras.getText().toString() +"-"+ edtPlacaViatura_Numeros.getText().toString());
+            ocorrenciaFragment.setViatura(edtPlacaViatura_Letras.getText().toString() +"-"+ edtPlacaViatura_Numeros.getText().toString());
 
         ocorrenciaFragment.save();
+        ocorrencia.save();
 
         ((ManterPericia) getActivity()).ocorrenciaTransito = ocorrenciaFragment;
 
@@ -371,42 +297,98 @@ public class OcorrenciaFragment extends android.support.v4.app.Fragment implemen
 
     private void AssociarLayout(View view)
     {
-
         txvChamado = (TextView) view.findViewById(R.id.txv_HoraChamado);
-        txvOcorrencia= (TextView) view.findViewById(R.id.txv_HoraOcorrencia);
         txvAtendimento = (TextView) view.findViewById(R.id.txv_Hora_Atendimento_Valor);
         txvDataAtendimento = (TextView)view.findViewById(R.id.txv_Data_Atendimento_Valor);
+        //txvIncidenciaMask = (TextView) view.findViewById(R.id.txv_Incidencia_Mask);
 
         edtValorDocumento = (EditText) view.findViewById(R.id.edt_ValorDocumento);
+        edtIncidencia = (EditText) view.findViewById(R.id.edt_Num_Incidencia);
 
         spnLocal = (Spinner)view.findViewById(R.id.spn_PreservacaoLocal);
-        spnColisao = (Spinner)view.findViewById(R.id.spn_SitioColisao);
         spnDocumento = (Spinner) view.findViewById(R.id.spn_TipoDocumentoOcorrencia);
         spnOrgaoPresente = (Spinner) view.findViewById(R.id.spn_Autoridade_Presente);
+        spnAIS = (Spinner) view.findViewById(R.id.spn_AIS);
 
         edtComandante = (EditText)view.findViewById(R.id.edt_Autoridade_Comandante);
 
-        edtPlacaViatura_Numeros = (EditText)view.findViewById(R.id.edt_PlacaNumeros);
-        edtPlacaViatura_Letras = (EditText)view.findViewById(R.id.edt_PlacaLetras);
-        edtPlacaViatura_Letras.setFilters(new InputFilter[] {new InputFilter.AllCaps(),new InputFilter.LengthFilter(3)});
+        edtPlacaViatura_Numeros = (EditText)view.findViewById(R.id.edt_PlacaNumeros_Viatura);
+        edtPlacaViatura_Letras = (EditText)view.findViewById(R.id.edt_PlacaLetras_Viatura);
 
-
+        autocBairro = (AutoCompleteTextView) view.findViewById(R.id.auc_Bairro_Delegacia);
         autocOrgaoOrigem = (AutoCompleteTextView) view.findViewById(R.id.auc_Orgao_Origem);
         autocOrgaoDestino = (AutoCompleteTextView) view.findViewById(R.id.auc_Orgao_Destino);
+
+        cxbUltimaForma = (CheckBox) view.findViewById(R.id.cxb_Ultima_Forma);
+
+        InputFilter filter = new InputFilter()
+        {
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend)
+            {
+                for (int i = start; i < end; i++)
+                {
+                    if (!Character.isLetter(source.charAt(i)))
+                    {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+
+
+        edtPlacaViatura_Letras.setFilters(new InputFilter[] {new InputFilter.AllCaps(),new InputFilter.LengthFilter(3),filter});
+
+    //   edtIncidencia.addTextChangedListener(new TextWatcher() {
+
+    //       StringBuilder incidencia = new StringBuilder("0000000");
+
+    //       @Override
+    //       public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    //       }
+    //       @Override
+    //       public void beforeTextChanged(CharSequence s, int start, int count,
+    //                                     int after) {
+
+    //       }
+    //       @Override
+    //       public void afterTextChanged(Editable s)
+    //       {
+    //           incidencia.setLength(0);
+    //           incidencia.insert(0,"0000000");
+    //           incidencia.replace(incidencia.length() - s.length(), incidencia.length(), s.toString());
+
+    //           txvIncidenciaMask.setText("I"+ Calendar.getInstance().get(Calendar.YEAR)+" "+
+    //                   incidencia.toString());
+    //       }
+    //   });
+
+        autocBairro.setAdapter(AutoCompleteUtil.getBairros(view.getContext()));
+
+autocBairro.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+    @Override
+    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                            long arg3) {
+
+
+        Toast.makeText(v.getContext(),  autocBairro.getText().toString(), Toast.LENGTH_LONG).show();
+
+        try
+        {
+            DadosTerritoriais dt = DadosTerritoriais.find(DadosTerritoriais.class, "bairro = ?", autocBairro.getText().toString()).get(0);
+            autocOrgaoDestino.setText(dt.getDelegacia());
+            spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS,dt.getAis().getValor()));
+        }
+        catch(Exception e )
+        {
+            Toast.makeText(v.getContext(), "Bairro não encontrado", Toast.LENGTH_LONG).show();
+        }
     }
+    });
 
-    private ArrayAdapter<String> getDelegacias(Context context) {
-     ArrayList<Delegacia> delegas = (ArrayList<Delegacia>) Delegacia.listAll(Delegacia.class);
-
-     String[] delegs = new String[delegas.size()];
-
-       for (int i = 0; i<delegas.size();i++)
-       {
-           delegs[i] = delegas.get(i).getDescricao();
-       }
-
-     return new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, delegs);
-   }
-
+    }
 
 }

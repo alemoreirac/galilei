@@ -1,5 +1,6 @@
 package Model;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 /**
@@ -12,11 +13,16 @@ public class Endereco extends SugarRecord<Endereco> {
     }
 
     public Endereco() {
+        this.cidade = "";
+        this.bairro = "";
+        this.descricao = "";
     }
 
+    @Expose
     String cidade;
-
+    @Expose
     String bairro;
+    @Expose
     String descricao;
 
     public String getCidade() {

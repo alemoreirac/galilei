@@ -18,13 +18,6 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
-    @Test
-    public void getValorTeste(){
-        String actual = SetorDano.ANTERIOR_DIREITO.getValor();
-        String expected = "Setor Anterior Direito!";
-        assertEquals(actual,expected);
-
-    }
     public ExampleUnitTest()
     {
 
