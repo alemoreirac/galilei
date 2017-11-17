@@ -54,23 +54,23 @@ import java.util.List;
 
 import Adapters.AdapterEndereco;
 import Enums.CategoriaFoto;
-import Enums.CondicaoPista;
-import Enums.Iluminacao;
+import Enums.Transito.CondicaoPista;
+import Enums.IluminacaoVia;
 import Enums.OrientacaoGeograficaComposta;
-import Enums.Pavimentacao;
-import Enums.Semaforo;
-import Enums.SinalizacaoPare;
-import Enums.TipoVia;
-import Enums.Topografia;
-import Model.ColisaoTransito;
+import Enums.Transito.Pavimentacao;
+import Enums.Transito.Semaforo;
+import Enums.Transito.SinalizacaoPare;
+import Enums.Transito.TipoVia;
+import Enums.Transito.Topografia;
+import Model.Transito.ColisaoTransito;
 import Model.Endereco;
-import Model.EnderecoTransito;
+import Model.Transito.EnderecoTransito;
 import Model.Foto;
 import Model.Gravacao;
 import Model.Ocorrencia;
-import Model.OcorrenciaEndereco;
-import Model.OcorrenciaFoto;
-import Model.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoEndereco;
+import Model.Transito.OcorrenciaTransitoFoto;
+import Model.Transito.OcorrenciaTransito;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.ViewUtil;
@@ -106,10 +106,10 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
     CheckBox cxbCurva = null;
     CheckBox cxbHumidade = null;
     CheckBox cxbMaoDupla = null;
-    List<OcorrenciaEndereco> ocorrenciaEnderecos = null;
+    List<OcorrenciaTransitoEndereco> ocorrenciaEnderecos = null;
     ArrayList<EnderecoTransito> enderecoTransitoModel = null;
     OcorrenciaTransito ocorrenciaTransitoEndereco = null;
-    OcorrenciaEndereco ocorrenciaEndereco = null;
+    OcorrenciaTransitoEndereco ocorrenciaEndereco = null;
     EditText edtLatitude = null;
     EditText edtLongitude = null;
     RelativeLayout rltv_Endereco = null;
@@ -117,7 +117,7 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
     private MagicalCamera magicalCamera;
     private MagicalPermissions magicalPermissions;
     private static final int RESIZE_PHOTO_PIXELS_PERCENTAGE = 50;
-    private OcorrenciaFoto ocorrenciaFoto;
+    private OcorrenciaTransitoFoto ocorrenciaFoto;
     Ocorrencia ocorrencia;
     private String pathImagem;
     private LocationManager locationManager;
@@ -170,11 +170,11 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoEndereco.getOcorrenciaID());
 
-        ocorrenciaEnderecos = OcorrenciaEndereco.find(OcorrenciaEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransitoEndereco.getId().toString());
+        ocorrenciaEnderecos = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransitoEndereco.getId().toString());
 
         enderecoTransitoModel = new ArrayList<>();
 
-        for (OcorrenciaEndereco oe : ocorrenciaEnderecos)
+        for (OcorrenciaTransitoEndereco oe : ocorrenciaEnderecos)
         {
             if (oe.getEnderecoTransito() != null)
             {
@@ -330,7 +330,7 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
                 foto = new Foto("Foto do Endereço".toString(), pathImagem, CategoriaFoto.ENDERECOS);
 
             foto.save();
-            ocorrenciaFoto = new OcorrenciaFoto();
+            ocorrenciaFoto = new OcorrenciaTransitoFoto();
             ocorrenciaFoto.setFoto(foto);
             ocorrenciaFoto.setOcorrenciaTransito(ocorrenciaTransitoEndereco);
             ocorrenciaFoto.save();
@@ -372,9 +372,17 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
         endereco.setComposta(cxbComposta.isChecked());
         endereco.setPreferencial(cxbPreferencial.isChecked());
 
-        if (edtLargura.getText().toString().length() > 0)
-            endereco.setLargura(Long.valueOf(edtLargura.getText().toString()));
 
+        if (edtLargura.getText().toString().length() > 0)
+        {
+            try
+            {
+                endereco.setLargura(Long.valueOf(edtLargura.getText().toString()));
+            } catch (Exception e)
+            {
+                endereco.setLargura(1l);
+            }
+        }
         if (cxbComposta.isChecked())
         {
             endereco.setNumFaixas(nmbFaixas.getValue());
@@ -589,6 +597,10 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
 
         ocorrenciaTransito.setGravacaoConclusao(new Gravacao());
 
+        //3.43.6.67704 S
+        //38.32.8.42712 W
+
+
     }
 
     private void AssociarEventos()
@@ -611,10 +623,10 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
                 CarregarEndereco();
                 try
                 {
-                    ocorrenciaEndereco = OcorrenciaEndereco.find(OcorrenciaEndereco.class, "ocorrencia_transito = ? and endereco = ?", ocorrenciaTransitoEndereco.getId().toString(), endereco.getId().toString()).get(0);
+                    ocorrenciaEndereco = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ? and endereco = ?", ocorrenciaTransitoEndereco.getId().toString(), endereco.getId().toString()).get(0);
                 } catch (Exception e)
                 {
-                    ocorrenciaEndereco = new OcorrenciaEndereco();
+                    ocorrenciaEndereco = new OcorrenciaTransitoEndereco();
                 }
             }
         });
@@ -640,7 +652,7 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
                             public void onClick(DialogInterface dialog, int which)
                             {
 
-                                OcorrenciaEndereco ocorrenciaEndereco = ocorrenciaEnderecos.get(position);
+                                OcorrenciaTransitoEndereco ocorrenciaEndereco = ocorrenciaEnderecos.get(position);
 
                                 if (ColisaoTransito.find(ColisaoTransito.class, "enderecoveiculo1 = ?", ocorrenciaEndereco.getEnderecoTransito().getId().toString()).size() > 0
                                         || ColisaoTransito.find(ColisaoTransito.class, "enderecoveiculo2 = ?", ocorrenciaEndereco.getEnderecoTransito().getId().toString()).size() > 0)
@@ -695,7 +707,7 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
                 endereco = new EnderecoTransito();
                 endereco.setEndereco(new Endereco());
 
-                ocorrenciaEndereco = new OcorrenciaEndereco();
+                ocorrenciaEndereco = new OcorrenciaTransitoEndereco();
 
                 endereco.save();
 
@@ -860,7 +872,7 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
 
         ArrayList<String> iluminacaoAdapter = new ArrayList<String>();
 
-        for (Iluminacao ilu : Iluminacao.values())
+        for (IluminacaoVia ilu : IluminacaoVia.values())
         {
             iluminacaoAdapter.add(ilu.getValor());
         }
@@ -922,8 +934,6 @@ public class GerenciarEndereco extends android.support.v4.app.Fragment implement
 
     private Location getLocation()
     {
-
-
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         // provider = locationManager.getBestProvider(criteria, false);

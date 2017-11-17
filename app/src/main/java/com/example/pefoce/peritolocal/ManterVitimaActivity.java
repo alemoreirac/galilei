@@ -1,6 +1,5 @@
 package com.example.pefoce.peritolocal;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,14 +15,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import Adapters.AdapterDano;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
-import Model.EnvolvidoTransito;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaEnvolvido;
+import Model.Transito.EnvolvidoTransito;
+import Model.Transito.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoEnvolvido;
 import Util.BuscadorEnum;
-import Util.TempoUtil;
 
 public class ManterVitimaActivity extends AppCompatActivity {
 
@@ -37,7 +33,7 @@ public class ManterVitimaActivity extends AppCompatActivity {
     EditText edtNumDocumento = null;
 
     EnvolvidoTransito  vitima = null;
-    OcorrenciaEnvolvido ocorrenciaEnvolvido = null;
+    OcorrenciaTransitoEnvolvido ocorrenciaEnvolvido = null;
     OcorrenciaTransito ocorrenciaTransito = null;
 
     @Override
@@ -63,11 +59,11 @@ public class ManterVitimaActivity extends AppCompatActivity {
         else
         vitima = new EnvolvidoTransito();
         try{
-            ocorrenciaEnvolvido = OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class,"ocorrencia_transito = ? and envolvido_transito = ?",ocorrenciaTransito.getId().toString(),vitima.getId().toString()).get(0);
+            ocorrenciaEnvolvido = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,"ocorrencia_transito = ? and envolvido_transito = ?",ocorrenciaTransito.getId().toString(),vitima.getId().toString()).get(0);
         }
         catch (Exception e)
         {
-            ocorrenciaEnvolvido = new OcorrenciaEnvolvido();
+            ocorrenciaEnvolvido = new OcorrenciaTransitoEnvolvido();
         }
 
 
@@ -196,6 +192,12 @@ public class ManterVitimaActivity extends AppCompatActivity {
 
         ocorrenciaEnvolvido.save();
 
+    }
+
+    public void onBackPressed()
+    {
+//        Intent it = new Intent(this, MainActivity.class);
+//        startActivity(it);
     }
 
 

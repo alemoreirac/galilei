@@ -9,13 +9,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,36 +21,12 @@ import com.stepstone.stepper.VerificationError;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.logging.ErrorManager;
 
-import Enums.AtoresColisao;
-import Enums.Conclusao;
-import Enums.Genero;
-import Enums.Iluminacao;
-import Enums.Lesao;
-import Enums.Logradouro;
-import Enums.TipoCNH;
-import Enums.Topografia;
-import Model.ColisaoTransito;
-import Model.Dano;
-import Model.DanoVeiculo;
-import Model.EnderecoTransito;
-import Model.EnvolvidoTransito;
 import Model.Ocorrencia;
-import Model.OcorrenciaColisao;
-import Model.OcorrenciaEndereco;
-import Model.OcorrenciaEnvolvido;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaVeiculo;
-import Model.Veiculo;
+import Model.Transito.OcorrenciaTransito;
 import Util.BuilderConclusao;
 
 

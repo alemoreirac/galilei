@@ -33,7 +33,7 @@ import Enums.PreservacaoLocal;
 import Model.DadosTerritoriais;
 import Model.DocumentoOcorrencia;
 import Model.Ocorrencia;
-import Model.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransito;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.TempoUtil;

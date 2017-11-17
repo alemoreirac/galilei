@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import Model.ColisaoTransito;
+import Model.Transito.ColisaoTransito;
 import ViewHolders.ViewHolderColisao;
 
 

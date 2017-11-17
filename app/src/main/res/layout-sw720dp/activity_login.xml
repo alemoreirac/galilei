@@ -51,18 +51,5 @@
         android:id="@+id/btn_login"
         />
 
-    <me.panavtec.drawableview.DrawableView
-        android:id="@+id/dv_Teste"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/body"
-        />
 
-    <ImageView
-        android:layout_alignParentRight="true"
-
-        android:id="@+id/imgv_result"
-        android:layout_width="200dp"
-        android:layout_height="200dp"/>
-        <!---->
 </RelativeLayout>

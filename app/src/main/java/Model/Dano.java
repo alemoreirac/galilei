@@ -3,9 +3,9 @@ package Model;
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
-import Enums.SetorDano;
-import Enums.TercoDano;
-import Enums.TipoDano;
+import Enums.Transito.SetorDano;
+import Enums.Transito.TercoDano;
+import Enums.Transito.TipoDano;
 
 
 public class Dano extends SugarRecord<Dano>

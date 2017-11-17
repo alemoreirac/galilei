@@ -2,58 +2,31 @@ package com.example.pefoce.peritolocal;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.stepstone.stepper.Step;
-import com.stepstone.stepper.VerificationError;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import Adapters.AdapterVeiculo;
-import Enums.Cor;
-import Enums.SetorDano;
-import Enums.TercoDano;
-import Enums.TipoCNH;
-import Enums.TipoDano;
-import Enums.TipoVeiculo;
+import Enums.Transito.SetorDano;
+import Enums.Transito.TercoDano;
+import Enums.Transito.TipoDano;
 import Model.Dano;
-import Model.DanoVeiculo;
-import Model.EnderecoTransito;
-import Model.EnderecoVeiculo;
-import Model.OcorrenciaEndereco;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaVeiculo;
-import Model.Veiculo;
+import Model.Transito.DanoVeiculo;
+import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
-import Util.ViewUtil;
 
 public class GerenciarDano extends AppCompatActivity
 {
@@ -666,5 +639,9 @@ public class GerenciarDano extends AppCompatActivity
 
     }
 
-
+    public void onBackPressed()
+    {
+//        Intent it = new Intent(this, MainActivity.class);
+//        startActivity(it);
+    }
 }

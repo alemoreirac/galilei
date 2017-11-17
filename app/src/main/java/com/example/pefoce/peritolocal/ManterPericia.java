@@ -12,9 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +21,6 @@ import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 
-import Enums.AtoresColisao;
 import Fragments.GerenciarColisoes;
 import Fragments.GerenciarConclusao;
 import Fragments.GerenciarEndereco;
@@ -32,11 +29,8 @@ import Fragments.GerenciarFotos;
 import Fragments.GerenciarVeiculo;
 import Fragments.OcorrenciaFragment;
 import Model.Ocorrencia;
-import Model.OcorrenciaFoto;
-import Model.OcorrenciaTransito;
-import Model.Pessoa;
+import Model.Transito.OcorrenciaTransito;
 import Util.TempoUtil;
-import Util.ViewUtil;
 
 public class ManterPericia extends AppCompatActivity implements StepperLayout.StepperListener
 {

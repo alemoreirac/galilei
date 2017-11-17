@@ -27,10 +27,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
-import Model.ColisaoTransito;
+import Model.Transito.ColisaoTransito;
 import Model.Gravacao;
 import Model.Ocorrencia;
-import Model.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransito;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;

@@ -11,7 +11,7 @@ import com.example.pefoce.peritolocal.R;
 
 import java.util.ArrayList;
 
-import Model.EnderecoTransito;
+import Model.Transito.EnderecoTransito;
 import ViewHolders.ViewHolderEndereco;
 
 /**

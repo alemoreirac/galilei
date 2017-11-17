@@ -43,26 +43,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Adapters.AdapterColisao;
-import Enums.AtoresColisao;
-import Enums.Conclusao;
-import Enums.LocalObjeto;
-import Enums.LocalPedestre;
-import Enums.NomeclaturaFaixas_1;
-import Enums.NomeclaturaFaixas_2;
-import Enums.NomeclaturaFaixas_3;
-import Enums.NomeclaturaFaixas_4;
-import Enums.NomeclaturaFaixas_5;
+import Enums.Transito.AtoresColisao;
+import Enums.ConclusaoTransito;
+import Enums.Transito.LocalObjeto;
+import Enums.Transito.LocalPedestre;
+import Enums.Transito.NomeclaturaFaixas_1;
+import Enums.Transito.NomeclaturaFaixas_2;
+import Enums.Transito.NomeclaturaFaixas_3;
+import Enums.Transito.NomeclaturaFaixas_4;
+import Enums.Transito.NomeclaturaFaixas_5;
 import Enums.OrientacaoGeograficaComposta;
 import Enums.TipoInteracao;
-import Model.ColisaoTransito;
-import Model.EnderecoTransito;
-import Model.EnvolvidoTransito;
-import Model.OcorrenciaColisao;
-import Model.OcorrenciaEndereco;
-import Model.OcorrenciaEnvolvido;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaVeiculo;
-import Model.Veiculo;
+import Model.Transito.ColisaoTransito;
+import Model.Transito.EnderecoTransito;
+import Model.Transito.EnvolvidoTransito;
+import Model.Transito.OcorrenciaTransitoColisao;
+import Model.Transito.OcorrenciaTransitoEndereco;
+import Model.Transito.OcorrenciaTransitoEnvolvido;
+import Model.Transito.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoVeiculo;
+import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
 import Util.ViewUtil;
 import info.hoang8f.android.segmented.SegmentedGroup;
@@ -132,17 +132,17 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
     ListView listColisoes = null;
     View mView = null;
     OcorrenciaTransito ocorrenciaTransitoColisao = null;
-    List<OcorrenciaEndereco> enderecosList = null;
+    List<OcorrenciaTransitoEndereco> enderecosList = null;
     ArrayList<EnderecoTransito> enderecoModel = null;
     ArrayList<Veiculo> veiculosModel = null;
-    List<OcorrenciaVeiculo> veiculosList = null;
-    List<OcorrenciaEnvolvido> envolvidosList = null;
-    List<OcorrenciaColisao> colisoesList = null;
+    List<OcorrenciaTransitoVeiculo> veiculosList = null;
+    List<OcorrenciaTransitoEnvolvido> envolvidosList = null;
+    List<OcorrenciaTransitoColisao> colisoesList = null;
     ArrayList<EnvolvidoTransito> envolvidosModel = null;
     ArrayList<ColisaoTransito> colisaoTransitoModel = null;
     RelativeLayout rltvBase = null;
     ColisaoTransito colisaoTransito = null;
-    OcorrenciaColisao ocorrenciaColisao = null;
+    OcorrenciaTransitoColisao ocorrenciaColisao = null;
     AdapterColisao adp = null;
     AudioDialog dialogFragment = null;
     ArrayList<String> tipoColisaoAdapter = null;
@@ -218,23 +218,23 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
         fragment = this;
         ocorrenciaTransitoColisao = ((ManterPericia) getActivity()).ocorrenciaTransito;
 
-        envolvidosList = OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
+        envolvidosList = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
 
         envolvidosModel = new ArrayList<>();
 
-        enderecosList = OcorrenciaEndereco.find(OcorrenciaEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
+        enderecosList = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
 
         enderecoModel = new ArrayList<>();
 
-        veiculosList = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
+        veiculosList = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
 
         veiculosModel = new ArrayList<>();
 
-        colisoesList = OcorrenciaColisao.find(OcorrenciaColisao.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
+        colisoesList = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
 
         colisaoTransitoModel = new ArrayList<>();
 
-        for (OcorrenciaColisao oc : colisoesList)
+        for (OcorrenciaTransitoColisao oc : colisoesList)
             colisaoTransitoModel.add(oc.getColisaoTransito());
 
         AssociarLayout(mView);
@@ -460,13 +460,13 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
 
                 try
                 {
-                    ocorrenciaColisao = OcorrenciaColisao.find(OcorrenciaColisao.class,
+                    ocorrenciaColisao = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class,
                             "ocorrencia_transito = ? and colisao_transito = ?",
                             ocorrenciaTransitoColisao
                                     .getId().toString(), colisaoTransito.getId().toString()).get(0);
                 } catch (Exception e)
                 {
-                    ocorrenciaColisao = new OcorrenciaColisao();
+                    ocorrenciaColisao = new OcorrenciaTransitoColisao();
                 }
             }
         });
@@ -492,7 +492,7 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
                             public void onClick(DialogInterface dialog, int which)
                             {
 
-                                OcorrenciaColisao ocorrenciaColisao = colisoesList.get(position);
+                                OcorrenciaTransitoColisao ocorrenciaColisao = colisoesList.get(position);
 
                                 adp.remove(ocorrenciaColisao.getColisaoTransito());
 
@@ -1279,14 +1279,14 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
 
     private void PovoarSpinners(Context ctx)
     {
-        for (OcorrenciaEndereco ot : enderecosList)
+        for (OcorrenciaTransitoEndereco ot : enderecosList)
         {
             enderecoModel.add(ot.getEnderecoTransito());
         }
         spnEndereco1.setAdapter(new ArrayAdapter<EnderecoTransito>(ctx, android.R.layout.simple_spinner_dropdown_item, enderecoModel));
         spnEndereco2.setAdapter(new ArrayAdapter<EnderecoTransito>(ctx, android.R.layout.simple_spinner_dropdown_item, enderecoModel));
 
-        for (OcorrenciaVeiculo ov : veiculosList)
+        for (OcorrenciaTransitoVeiculo ov : veiculosList)
         {
             veiculosModel.add(ov.getVeiculo());
         }
@@ -1311,14 +1311,14 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
         spnObjeto_Local.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, localObjeto));
         spnAnimal_Local.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, localObjeto));
 
-        for (OcorrenciaEnvolvido oe : envolvidosList)
+        for (OcorrenciaTransitoEnvolvido oe : envolvidosList)
         {
             envolvidosModel.add(oe.getEnvolvidoTransito());
         }
         spnEnvolvido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(ctx, android.R.layout.simple_spinner_dropdown_item, envolvidosModel));
 
         ArrayList<String> conclusoes = new ArrayList<>();
-        for (Conclusao c : Conclusao.values())
+        for (ConclusaoTransito c : ConclusaoTransito.values())
         {
             conclusoes.add(c.getValor());
         }
@@ -1493,9 +1493,9 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
             AssociarLayout();
             AssociarEventos();
 
-            List<OcorrenciaVeiculo> ocorrenciaVeiculos = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class, "ocorrencia_transito = ?", ot.getId().toString());
+            List<OcorrenciaTransitoVeiculo> ocorrenciaVeiculos = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ?", ot.getId().toString());
 
-            List<OcorrenciaEnvolvido> ocorrenciaEnvolvidos = OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class, "ocorrencia_transito = ?", ot.getId().toString());
+            List<OcorrenciaTransitoEnvolvido> ocorrenciaEnvolvidos = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class, "ocorrencia_transito = ?", ot.getId().toString());
 
             if (ocorrenciaVeiculos.size() == 1)
             {
@@ -1593,7 +1593,7 @@ public class GerenciarColisoes extends android.support.v4.app.Fragment implement
         public void salvarNovaColisao()
         {
             colisaoTransito.save();
-            ocorrenciaColisao = new OcorrenciaColisao();
+            ocorrenciaColisao = new OcorrenciaTransitoColisao();
             ocorrenciaColisao.setOcorrenciaTransito(ocorrenciaTransitoColisao);
             ocorrenciaColisao.setColisaoTransito(colisaoTransito);
             ocorrenciaColisao.save();

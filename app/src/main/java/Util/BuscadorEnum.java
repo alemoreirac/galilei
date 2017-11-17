@@ -5,43 +5,43 @@ import android.widget.Spinner;
 import java.util.List;
 
 import Enums.AreaIntegradaSeguranca;
-import Enums.AtoresColisao;
+import Enums.Transito.AtoresColisao;
 import Enums.CategoriaFoto;
-import Enums.Conclusao;
-import Enums.CondicaoPista;
+import Enums.ConclusaoTransito;
+import Enums.Transito.CondicaoPista;
 import Enums.Cor;
 import Enums.DocumentoPessoa;
 import Enums.DocumentoSolicitacao;
-import Enums.EstadoSitioColisao;
+import Enums.Transito.EstadoSitioColisao;
 import Enums.Genero;
-import Enums.Iluminacao;
-import Enums.Lesao;
-import Enums.LocalObjeto;
-import Enums.LocalPedestre;
+import Enums.IluminacaoVia;
+import Enums.Transito.Lesao;
+import Enums.Transito.LocalObjeto;
+import Enums.Transito.LocalPedestre;
 import Enums.Orgao;
 import Enums.OrientacaoGeografica;
 import Enums.OrientacaoGeograficaComposta;
-import Enums.Pavimentacao;
+import Enums.Transito.Pavimentacao;
 import Enums.PreservacaoLocal;
-import Enums.Semaforo;
-import Enums.SetorDano;
-import Enums.SinalizacaoPare;
-import Enums.TercoDano;
-import Enums.TipoCNH;
-import Enums.TipoDano;
+import Enums.Transito.Semaforo;
+import Enums.Transito.SetorDano;
+import Enums.Transito.SinalizacaoPare;
+import Enums.Transito.TercoDano;
+import Enums.Transito.TipoCNH;
+import Enums.Transito.TipoDano;
 import Enums.TipoInteracao;
-import Enums.TipoJustificativa_Inconclusao;
+import Enums.Transito.TipoJustificativa_Inconclusao;
 import Enums.TipoOcorrencia;
-import Enums.TipoVeiculo;
-import Enums.TipoVestigio;
-import Enums.TipoVia;
-import Enums.TipoEnvolvidoTransito;
-import Enums.Topografia;
-import Model.ColisaoTransito;
-import Model.EnderecoTransito;
-import Model.EnvolvidoTransito;
+import Enums.Transito.TipoVeiculo;
+import Enums.Transito.TipoVestigioTransito;
+import Enums.Transito.TipoVia;
+import Enums.Transito.TipoEnvolvidoTransito;
+import Enums.Transito.Topografia;
+import Model.Transito.ColisaoTransito;
+import Model.Transito.EnderecoTransito;
+import Model.Transito.EnvolvidoTransito;
 import Model.Foto;
-import Model.Veiculo;
+import Model.Transito.Veiculo;
 
 /**
  * Created by Pefoce on 22/06/2017.
@@ -60,44 +60,44 @@ public class BuscadorEnum {
         return null;
     }
 
-    public static TipoVestigio BuscarTipoVestigio(String value)
+    public static TipoVestigioTransito BuscarTipoVestigio(String value)
     {
         if(value == "Derrapagem")
-            return TipoVestigio.DERRAPAGEM;
+            return TipoVestigioTransito.DERRAPAGEM;
         if(value == "Derrapagem em curva")
-            return TipoVestigio.DERRAPAGEM_CURVA;
+            return TipoVestigioTransito.DERRAPAGEM_CURVA;
         if(value == "Fragmentos metálicos")
-            return TipoVestigio.FRAGMENTOS_METALICOS;
+            return TipoVestigioTransito.FRAGMENTOS_METALICOS;
         if(value == "Fragmentos vítreos")
-            return TipoVestigio.FRAGMENTOS_VITREOS;
+            return TipoVestigioTransito.FRAGMENTOS_VITREOS;
         if(value == "Sulcagem")
-            return TipoVestigio.SULCAGEM;
+            return TipoVestigioTransito.SULCAGEM;
         if(value == "Frenagem")
-            return TipoVestigio.FRENAGEM;
+            return TipoVestigioTransito.FRENAGEM;
         if(value == "Marcas de sangue")
-            return TipoVestigio.SANGUE;
+            return TipoVestigioTransito.SANGUE;
         return null;
     }
 
 
-    public static Conclusao BuscarConclusao(String value)
+    public static ConclusaoTransito BuscarConclusao(String value)
     {
         if(value == "ao Condutor estar desatento às condições de tráfego à frente")
-            return Conclusao.CONDUTOR_DESATENTO;
+            return ConclusaoTransito.CONDUTOR_DESATENTO;
         if(value == "ao avanço de preferencial em cruzamento")
-            return Conclusao.AVANCO_PREFERENCIAL;
+            return ConclusaoTransito.AVANCO_PREFERENCIAL;
         if(value == "à mudança de faixa definida pelo local dos danos")
-            return Conclusao.MUDANCA_FAIXA;
+            return ConclusaoTransito.MUDANCA_FAIXA;
         if(value == "à conversão em momento inapropriado")
-            return Conclusao.CONVERSAO_INAPROPRIADA;
+            return ConclusaoTransito.CONVERSAO_INAPROPRIADA;
         if(value == "ao veiculo se deslocar na contra-mão")
-            return Conclusao.CONTRA_MAO;
+            return ConclusaoTransito.CONTRA_MAO;
         if(value == "à ultrapassagem mal executada")
-            return Conclusao.ULTRAPASSAGEM_INDEVIDA;
+            return ConclusaoTransito.ULTRAPASSAGEM_INDEVIDA;
         if(value == "à manobra de retorno em momento inapropriado")
-            return Conclusao.RETORNO_INAPROPRIADO;
+            return ConclusaoTransito.RETORNO_INAPROPRIADO;
         if(value == "O condutor não teve responsabilidade no ocorrido")
-            return Conclusao.CONDUTOR_ISENTO;
+            return ConclusaoTransito.CONDUTOR_ISENTO;
 
             return null;
     }
@@ -432,14 +432,14 @@ public class BuscadorEnum {
     }
 
 
-    public static Iluminacao BuscarIluminacao (String value)
+    public static IluminacaoVia BuscarIluminacao (String value)
     {
         if(value == "Ausente")
-            return Iluminacao.AUSENTE;
+            return IluminacaoVia.AUSENTE;
         if(value == "Boa")
-            return Iluminacao.BOA;
+            return IluminacaoVia.BOA;
         if(value == "Ruim")
-            return Iluminacao.RUIM;
+            return IluminacaoVia.RUIM;
         else
             return null;
     }
@@ -636,9 +636,10 @@ public class BuscadorEnum {
     {
         for (int i=0;i<spinner.getCount();i++)
         {
-            if (((Veiculo)spinner.getItemAtPosition(i)).getId() == id)
+            if(((Veiculo)spinner.getItemAtPosition(i)).getId()!=null)
             {
-                return i;
+                if (((Veiculo) spinner.getItemAtPosition(i)).getId().equals(id))
+                    return i;
             }
         }
         return null;
@@ -660,10 +661,11 @@ public class BuscadorEnum {
     {
         for (int i=0;i<spinner.getCount();i++)
         {
-            if (((EnderecoTransito)spinner.getItemAtPosition(i)).getId() == id)
-            {
-                return i;
-            }
+           if(((EnderecoTransito)spinner.getItemAtPosition(i)).getId()!= null)
+           {
+               if (((EnderecoTransito) spinner.getItemAtPosition(i)).getId().equals(id))
+                   return i;
+           }
         }
         return null;
     }
@@ -672,12 +674,13 @@ public class BuscadorEnum {
     {
         for(int i = 0; i<veiculos.size();i++)
         {
-            if(veiculos.get(i).getId().equals(v.getId()))
+            if(veiculos.get(i).getId()!=null)
             {
-                return i;
+                if (veiculos.get(i).getId().equals(v.getId()))
+                    return i;
             }
         }
-        return -1;
+        return 0;
     }
     public static int PegarPosicaoEndereco(List<EnderecoTransito> enderecos, EnderecoTransito et)
     {

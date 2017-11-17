@@ -19,7 +19,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
-import android.view.ActionProvider;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,22 +53,20 @@ import java.util.List;
 import Adapters.AdapterVeiculo;
 import Enums.CategoriaFoto;
 import Enums.Cor;
-import Enums.TercoDano;
-import Enums.TipoCNH;
-import Enums.TipoDano;
-import Enums.TipoVeiculo;
-import Model.ColisaoTransito;
+import Enums.Transito.TercoDano;
+import Enums.Transito.TipoCNH;
+import Enums.Transito.TipoDano;
+import Enums.Transito.TipoVeiculo;
+import Model.Transito.ColisaoTransito;
 import Model.Dano;
-import Model.DanoVeiculo;
-import Model.EnderecoTransito;
-import Model.EnderecoVeiculo;
+import Model.Transito.DanoVeiculo;
+import Model.Transito.EnderecoVeiculo;
 import Model.Foto;
 import Model.Ocorrencia;
-import Model.OcorrenciaEndereco;
-import Model.OcorrenciaFoto;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaVeiculo;
-import Model.Veiculo;
+import Model.Transito.OcorrenciaTransitoFoto;
+import Model.Transito.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoVeiculo;
+import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
 import Util.ViewUtil;
 
@@ -117,12 +113,12 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
     Button btnSelecionarOk = null;
 
     Veiculo veiculo = null;
-    OcorrenciaVeiculo ocorrenciaVeiculo = null;
+    OcorrenciaTransitoVeiculo ocorrenciaVeiculo = null;
     EnderecoVeiculo enderecoVeiculo = null;
 
     List<DanoVeiculo> danosVeiculo = null;
 
-    List<OcorrenciaVeiculo> ocorrenciaVeiculos = null;
+    List<OcorrenciaTransitoVeiculo> ocorrenciaVeiculos = null;
 
     FloatingActionButton fabFotoVeiculo = null;
     ArrayList<String> anos = new ArrayList<String>();
@@ -135,6 +131,7 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
     RelativeLayout rltv_Veiculo = null;
 
     RelativeLayout rltvProprietario = null;
+    View mView;
 
     public GerenciarVeiculo()
     {
@@ -160,7 +157,44 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
                              Bundle savedInstanceState)
     {
         final View root = inflater.inflate(R.layout.fragment_gerenciar_veiculo, container, false);
+        mView = root;
 
+
+
+
+        return root;
+    }
+
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+    }
+
+
+    @Override
+    public VerificationError verifyStep()
+    {
+        if (rltv_Veiculo.getChildAt(0).isEnabled())
+        {
+            try
+            {
+                SalvarVeiculo();
+            } catch (Exception e)
+            {
+                VerificationError ve = new VerificationError(e.getMessage());
+                return ve;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void onSelected()
+    {
+        //((ManterPericia) getActivity()).toolbar.setTitle("Veículos");
+        ((ManterPericia) getActivity()).txvToolbarTitulo.setText("Veículos");
 
         View view = getActivity().getCurrentFocus();
         if (view != null)
@@ -168,7 +202,7 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        AssociarLayout(root);
+        AssociarLayout(mView);
         PovoarSpinner(getContext());
         AssociarEventos();
 
@@ -179,11 +213,11 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoVeiculo.getOcorrenciaID());
 
-        ocorrenciaVeiculos = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransitoVeiculo.getId().toString());
+        ocorrenciaVeiculos = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransitoVeiculo.getId().toString());
 
         veiculosModel = new ArrayList<>();
 
-        for (OcorrenciaVeiculo ov : ocorrenciaVeiculos)
+        for (OcorrenciaTransitoVeiculo ov : ocorrenciaVeiculos)
         {
             if (ov.getVeiculo() != null)
                 veiculosModel.add(ov.getVeiculo());
@@ -204,7 +238,7 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
         lstvVeiculos.setAdapter(adp);
 
 
-//        ocorrenciaEnderecos = OcorrenciaEndereco.find(OcorrenciaEndereco.class,"ocorrencia_transito = ?",ocorrenciaTransitoVeiculo.getId().toString());
+//        ocorrenciaEnderecos = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class,"ocorrencia_transito = ?",ocorrenciaTransitoVeiculo.getId().toString());
 //
 //        if(ocorrenciaEnderecos == null )
 //        {
@@ -243,40 +277,6 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
             carregarDadosVeiculo();
         }
 
-
-        return root;
-    }
-
-
-    @Override
-    public void onAttach(Context context)
-    {
-        super.onAttach(context);
-    }
-
-
-    @Override
-    public VerificationError verifyStep()
-    {
-        if (rltv_Veiculo.getChildAt(0).isEnabled())
-        {
-            try
-            {
-                SalvarVeiculo();
-            } catch (Exception e)
-            {
-                VerificationError ve = new VerificationError(e.getMessage());
-                return ve;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void onSelected()
-    {
-        //((ManterPericia) getActivity()).toolbar.setTitle("Veículos");
-        ((ManterPericia) getActivity()).txvToolbarTitulo.setText("Veículos");
     }
 
     @Override
@@ -340,10 +340,10 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
         try
         {
             String[] args = {veiculo.getId().toString(), ocorrenciaTransitoVeiculo.getId().toString()};
-            ocorrenciaVeiculo = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class, "veiculo = ? and ocorrencia_transito = ?", args).get(0);
+            ocorrenciaVeiculo = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "veiculo = ? and ocorrencia_transito = ?", args).get(0);
         } catch (Exception e)
         {
-            ocorrenciaVeiculo = new OcorrenciaVeiculo(ocorrenciaTransitoVeiculo, veiculo);
+            ocorrenciaVeiculo = new OcorrenciaTransitoVeiculo(ocorrenciaTransitoVeiculo, veiculo);
         }
 
         ocorrenciaVeiculo.save();
@@ -456,7 +456,7 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
                 foto = new Foto("Foto do Veiculo".toString(), pathImagem, CategoriaFoto.VEICULOS);
 
             foto.save();
-            OcorrenciaFoto ocorrenciaFoto = new OcorrenciaFoto();
+            OcorrenciaTransitoFoto ocorrenciaFoto = new OcorrenciaTransitoFoto();
             ocorrenciaFoto.setFoto(foto);
             ocorrenciaFoto.setOcorrenciaTransito(ocorrenciaTransitoVeiculo);
             ocorrenciaFoto.save();
@@ -588,10 +588,10 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
 
                 try
                 {
-                    ocorrenciaVeiculo = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class, "ocorrencia_transito = ? , veiculo = ?", ocorrenciaTransitoVeiculo.getId().toString(), veiculo.getId().toString()).get(0);
+                    ocorrenciaVeiculo = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ? , veiculo = ?", ocorrenciaTransitoVeiculo.getId().toString(), veiculo.getId().toString()).get(0);
                 } catch (Exception e)
                 {
-                    ocorrenciaVeiculo = new OcorrenciaVeiculo();
+                    ocorrenciaVeiculo = new OcorrenciaTransitoVeiculo();
                 }
                 try
                 {
@@ -631,12 +631,12 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                OcorrenciaVeiculo ocorrenciaVeiculo = ocorrenciaVeiculos.get(position);
+                                OcorrenciaTransitoVeiculo ocorrenciaVeiculo = ocorrenciaVeiculos.get(position);
 
                                 if (ColisaoTransito.find(ColisaoTransito.class, "veiculo2 = ?", ocorrenciaVeiculo.getVeiculo().getId().toString()).size() > 0
                                         || ColisaoTransito.find(ColisaoTransito.class, "veiculo1 = ?", ocorrenciaVeiculo.getVeiculo().getId().toString()).size() > 0)
                                 {
-                                    Toast.makeText(getContext(), "Não foi possível excluir! O endereço está atrelado à uma Colisão!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Não foi possível excluir! O veículo está atrelado à uma Colisão!", Toast.LENGTH_LONG).show();
                                     dialog.dismiss();
                                     return;
                                 }
@@ -697,7 +697,7 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
                 //5
 
                 veiculo = new Veiculo();
-                ocorrenciaVeiculo = new OcorrenciaVeiculo();
+                ocorrenciaVeiculo = new OcorrenciaTransitoVeiculo();
 
                 veiculo.save();
 
@@ -1211,8 +1211,10 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
 
     private void PovoarSpinner(Context ctx)
     {
-        if (anos.size() == 0)
-        {
+        if (anos.size() >0)
+            anos.clear();
+
+//        {
             int esteAno = Calendar.getInstance().get(Calendar.YEAR);
             for (int i = esteAno; i >= 1920; i--)
             {
@@ -1224,7 +1226,7 @@ public class GerenciarVeiculo extends android.support.v4.app.Fragment implements
             spnAnoVeiculo.setAdapter(adapterAno);
 
             spnAnoFabricacao.setAdapter(adapterAno);
-        }
+     //   }
         //     if(ocorrenciaEnderecos != null)
         //     {
         //         for(int i = 0; i<ocorrenciaEnderecos.size();i++)

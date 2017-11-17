@@ -28,12 +28,12 @@ import com.example.pefoce.peritolocal.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import Enums.TipoVestigio;
-import Model.ColisaoTransito;
+import Enums.Transito.TipoVestigioTransito;
+import Model.Transito.ColisaoTransito;
 import Model.Ocorrencia;
-import Model.OcorrenciaTransito;
-import Model.Vestigio;
-import Model.VestigioColisao;
+import Model.Transito.OcorrenciaTransito;
+import Model.Transito.VestigioTransito;
+import Model.Transito.VestigioColisao;
 import Util.BuscadorEnum;
 
 
@@ -52,8 +52,8 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
     public EditText edtAreaVestigio, edtDistanciaVestigio;
     public OcorrenciaTransito ocorrenciaTransito;
     public Ocorrencia ocorrencia;
-    public ArrayAdapter<Vestigio> adapterVestigio;
-    public ArrayList<Vestigio> vestigioModel;
+    public ArrayAdapter<VestigioTransito> adapterVestigio;
+    public ArrayList<VestigioTransito> vestigioModel;
     public List<VestigioColisao> vestigioColisaoModel;
     public CheckBox cxbDeterminante;
 
@@ -111,7 +111,7 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
 
         ArrayList<String> tiposVestigio = new ArrayList<>();
 
-        for (TipoVestigio tipoVestigio : TipoVestigio.values())
+        for (TipoVestigioTransito tipoVestigio : TipoVestigioTransito.values())
             tiposVestigio.add(tipoVestigio.getValor());
 
         spnTIpoVestigio.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, tiposVestigio));
@@ -125,12 +125,12 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
         if(vestigioColisaoModel==null)
             vestigioColisaoModel = new ArrayList<>();
 
-        vestigioModel = new ArrayList<Vestigio>();
+        vestigioModel = new ArrayList<VestigioTransito>();
 
         for (VestigioColisao vc : vestigioColisaoModel)
-            vestigioModel.add(Vestigio.findById(Vestigio.class,vc.getVestigioId()));
+            vestigioModel.add(VestigioTransito.findById(VestigioTransito.class,vc.getVestigioId()));
 
-        adapterVestigio = new ArrayAdapter<Vestigio>(getActivity(), android.R.layout.simple_spinner_dropdown_item, vestigioModel);
+        adapterVestigio = new ArrayAdapter<VestigioTransito>(getActivity(), android.R.layout.simple_spinner_dropdown_item, vestigioModel);
 
         lstvVestigios.setAdapter(adapterVestigio);
 
@@ -145,7 +145,7 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
             @Override
             public void onClick(View v)
             {
-                Vestigio vestigio = new Vestigio();
+                VestigioTransito vestigio = new VestigioTransito();
 
                 try
                 {
@@ -191,13 +191,13 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
             {
                 if (colisaoTransito == null)
                     dismiss();
-                Vestigio vestigioDelete;
+                VestigioTransito vestigioDelete;
                 for (VestigioColisao vc : vestigioColisaoModel)
                 {
                     if(vc.getVestigioId()!=null)
                     //vc.getVestigio().delete();
                     {
-                        vestigioDelete = Vestigio.findById(Vestigio.class, vc.getVestigioId());
+                        vestigioDelete = VestigioTransito.findById(VestigioTransito.class, vc.getVestigioId());
 
                         if(vestigioDelete!=null)
                             vestigioDelete.delete();
@@ -207,7 +207,7 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
 
                 VestigioColisao vestigioColisao ;
 
-Vestigio vestigio;
+VestigioTransito vestigio;
 
                 for (int i = 0; i < adapterVestigio.getCount(); i++)
                 {
@@ -229,21 +229,21 @@ Vestigio vestigio;
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
             {
-                if (spnTIpoVestigio.getSelectedItem() == TipoVestigio.DERRAPAGEM.getValor()
-                        || spnTIpoVestigio.getSelectedItem() == TipoVestigio.DERRAPAGEM_CURVA.getValor()
-                        || spnTIpoVestigio.getSelectedItem() == TipoVestigio.FRENAGEM.getValor()
-                        || spnTIpoVestigio.getSelectedItem() == TipoVestigio.SULCAGEM.getValor())
+                if (spnTIpoVestigio.getSelectedItem() == TipoVestigioTransito.DERRAPAGEM.getValor()
+                        || spnTIpoVestigio.getSelectedItem() == TipoVestigioTransito.DERRAPAGEM_CURVA.getValor()
+                        || spnTIpoVestigio.getSelectedItem() == TipoVestigioTransito.FRENAGEM.getValor()
+                        || spnTIpoVestigio.getSelectedItem() == TipoVestigioTransito.SULCAGEM.getValor())
                 {
                     edtDistanciaVestigio.setEnabled(true);
                     edtAreaVestigio.setEnabled(false);
                 }
-                if (spnTIpoVestigio.getSelectedItem() == TipoVestigio.SANGUE.getValor())
+                if (spnTIpoVestigio.getSelectedItem() == TipoVestigioTransito.SANGUE.getValor())
                 {
                     edtDistanciaVestigio.setEnabled(true);
                     edtAreaVestigio.setEnabled(true);
                 }
-                if (spnTIpoVestigio.getSelectedItem() == TipoVestigio.FRAGMENTOS_VITREOS.getValor()
-                        || spnTIpoVestigio.getSelectedItem() == TipoVestigio.FRAGMENTOS_METALICOS.getValor())
+                if (spnTIpoVestigio.getSelectedItem() == TipoVestigioTransito.FRAGMENTOS_VITREOS.getValor()
+                        || spnTIpoVestigio.getSelectedItem() == TipoVestigioTransito.FRAGMENTOS_METALICOS.getValor())
                 {
                     edtDistanciaVestigio.setEnabled(false);
                     edtAreaVestigio.setEnabled(true);

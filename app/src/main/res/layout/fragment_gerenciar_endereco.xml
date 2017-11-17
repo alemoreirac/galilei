@@ -267,7 +267,6 @@
 
 
 
-
     <CheckBox
         android:id="@+id/cxb_ViaComposta"
         android:layout_width="wrap_content"
@@ -380,7 +379,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:maxLines = "1"
-            android:maxLength="2"
+            android:maxLength="3"
             android:enabled="false"
             android:layout_alignBottom="@+id/spn_Topografia"
             android:layout_toRightOf="@id/edt_Topografia_Angulo"

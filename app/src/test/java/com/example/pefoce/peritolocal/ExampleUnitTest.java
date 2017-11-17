@@ -1,9 +1,6 @@
 package com.example.pefoce.peritolocal;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import Enums.SetorDano;
 
 import static org.junit.Assert.*;
 

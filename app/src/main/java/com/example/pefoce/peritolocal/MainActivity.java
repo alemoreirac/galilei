@@ -29,22 +29,19 @@ import java.util.List;
 import Adapters.AdapterOcorrencia;
 import Enums.DocumentoSolicitacao;
 import Enums.TipoOcorrencia;
-import Model.Dano;
-import Model.DanoVeiculo;
+import Model.Transito.DanoVeiculo;
 import Model.DocumentoOcorrencia;
-import Model.EnderecoTransito;
-import Model.EnderecoVeiculo;
-import Model.EnvolvidoTransito;
+import Model.Transito.EnderecoVeiculo;
 import Model.Ocorrencia;
-import Model.OcorrenciaColisao;
-import Model.OcorrenciaEndereco;
-import Model.OcorrenciaEnvolvido;
-import Model.OcorrenciaFoto;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaVeiculo;
+import Model.Transito.OcorrenciaTransitoColisao;
+import Model.Transito.OcorrenciaTransitoEndereco;
+import Model.Transito.OcorrenciaTransitoEnvolvido;
+import Model.Transito.OcorrenciaTransitoFoto;
+import Model.Transito.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoVeiculo;
 import Model.Pessoa;
-import Model.Vestigio;
-import Model.VestigioColisao;
+import Model.Transito.VestigioTransito;
+import Model.Transito.VestigioColisao;
 import Util.BuscadorEnum;
 
 public class MainActivity extends AppCompatActivity
@@ -144,14 +141,14 @@ public class MainActivity extends AppCompatActivity
 //
 //                List<EnvolvidoTransito> envolvidoTransitoList = EnvolvidoTransito.find(EnvolvidoTransito.class,"nome = ?",nome);
 //
-//                ArrayList<OcorrenciaEnvolvido> ocorrenciaEnvolvidos = new ArrayList<OcorrenciaEnvolvido>();
+//                ArrayList<OcorrenciaTransitoEnvolvido> ocorrenciaEnvolvidos = new ArrayList<OcorrenciaTransitoEnvolvido>();
 //
 //                for(EnvolvidoTransito envolvido : envolvidoTransitoList)
 //                {
-//                    ocorrenciaEnvolvidos.addAll(OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class,"envolvido_transito = ?",envolvido.getId().toString()));
+//                    ocorrenciaEnvolvidos.addAll(OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,"envolvido_transito = ?",envolvido.getId().toString()));
 //                }
 //
-//                for(OcorrenciaEnvolvido oe : ocorrenciaEnvolvidos)
+//                for(OcorrenciaTransitoEnvolvido oe : ocorrenciaEnvolvidos)
 //
 //                oe.getOcorrenciaTransito().getOcorrenciaID();
 //
@@ -446,9 +443,9 @@ public void DeletarOcorrencia(int position)
     adapter.notifyDataSetChanged();
 
 
-    //Deletar Entidades envolvidas com endereço: EnderecoTransito, Endereco, EnderecoVeiculo e OcorrenciaEndereco
+    //Deletar Entidades envolvidas com endereço: EnderecoTransito, Endereco, EnderecoVeiculo e OcorrenciaTransitoEndereco
 
-    List<OcorrenciaEndereco> ocorrenciaEnderecos = OcorrenciaEndereco.find(OcorrenciaEndereco.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+    List<OcorrenciaTransitoEndereco> ocorrenciaEnderecos = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
 
     List<EnderecoVeiculo> enderecosVeiculo = null;
 
@@ -463,22 +460,22 @@ public void DeletarOcorrencia(int position)
         ocorrenciaEnderecos.get(i).delete();
     }
 
-    //Deletar Entidades relacionadas ao Envolvido: EnvolvidoTransito e OcorrenciaEnvolvido
+    //Deletar Entidades relacionadas ao Envolvido: EnvolvidoTransito e OcorrenciaTransitoEnvolvido
 
-    List<OcorrenciaEnvolvido> ocorrenciasEnvolvido = OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+    List<OcorrenciaTransitoEnvolvido> ocorrenciasEnvolvido = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
 
-    for(OcorrenciaEnvolvido oe : ocorrenciasEnvolvido)
+    for(OcorrenciaTransitoEnvolvido oe : ocorrenciasEnvolvido)
     {
         oe.getEnvolvidoTransito().delete();
         oe.delete();
     }
 
 
-    List<OcorrenciaVeiculo> ocorrenciasVeiculo = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+    List<OcorrenciaTransitoVeiculo> ocorrenciasVeiculo = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
 
     List<DanoVeiculo> danosVeiculo = null;
 
-    for(OcorrenciaVeiculo ov : ocorrenciasVeiculo)
+    for(OcorrenciaTransitoVeiculo ov : ocorrenciasVeiculo)
     {
         danosVeiculo = DanoVeiculo.find(DanoVeiculo.class,"veiculo = ?",ov.getVeiculo().getId().toString());
         for(DanoVeiculo dv : danosVeiculo)
@@ -491,25 +488,25 @@ public void DeletarOcorrencia(int position)
     }
 
 
-    List<OcorrenciaFoto> ocorrenciaFotos = OcorrenciaFoto.find(OcorrenciaFoto.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+    List<OcorrenciaTransitoFoto> ocorrenciaFotos = OcorrenciaTransitoFoto.find(OcorrenciaTransitoFoto.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
 
-    for(OcorrenciaFoto of : ocorrenciaFotos)
+    for(OcorrenciaTransitoFoto of : ocorrenciaFotos)
     {
         of.getFoto().delete();
         of.delete();
     }
 
-    List<OcorrenciaColisao> ocorrenciaColisoes = OcorrenciaColisao.find(OcorrenciaColisao.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+    List<OcorrenciaTransitoColisao> ocorrenciaColisoes = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
 
     List<VestigioColisao> vestigioColisoes = null;
-    for(OcorrenciaColisao oc : ocorrenciaColisoes)
+    for(OcorrenciaTransitoColisao oc : ocorrenciaColisoes)
     {
         vestigioColisoes = VestigioColisao.find(VestigioColisao.class,"colisao_transito = ?",oc.getColisaoTransito().getId().toString());
         for(VestigioColisao vc : vestigioColisoes)
         {
             if(vc.getVestigioId()!= null)
             {
-                Vestigio v = Vestigio.findById(Vestigio.class,vc.getVestigioId());
+                VestigioTransito v = VestigioTransito.findById(VestigioTransito.class,vc.getVestigioId());
                 v.delete();
             }
             vc.delete();
@@ -535,5 +532,9 @@ public void DeletarOcorrencia(int position)
 
     }
 
-
+    public void onBackPressed()
+    {
+//        Intent it = new Intent(this, MainActivity.class);
+//        startActivity(it);
+    }
 }

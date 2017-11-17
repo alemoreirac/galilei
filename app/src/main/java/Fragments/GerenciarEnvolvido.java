@@ -45,17 +45,17 @@ import Adapters.AdapterEnvolvidoTransito;
 import Enums.CategoriaFoto;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
-import Enums.Lesao;
-import Enums.TipoEnvolvidoTransito;
-import Model.ColisaoTransito;
-import Model.EnvolvidoTransito;
+import Enums.Transito.Lesao;
+import Enums.Transito.TipoEnvolvidoTransito;
+import Model.Transito.ColisaoTransito;
+import Model.Transito.EnvolvidoTransito;
 import Model.Foto;
 import Model.Ocorrencia;
-import Model.OcorrenciaEnvolvido;
-import Model.OcorrenciaFoto;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaVeiculo;
-import Model.Veiculo;
+import Model.Transito.OcorrenciaTransitoEnvolvido;
+import Model.Transito.OcorrenciaTransitoFoto;
+import Model.Transito.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoVeiculo;
+import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
 import Util.TempoUtil;
 import Util.ViewUtil;
@@ -88,10 +88,10 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
     Button btnSave = null;
     TextView txvVeiculo = null;
     EnvolvidoTransito envolvido = null;
-    OcorrenciaEnvolvido ocorrenciaEnvolvido = null;
+    OcorrenciaTransitoEnvolvido ocorrenciaEnvolvido = null;
     Ocorrencia ocorrencia;
 
-    List<OcorrenciaEnvolvido> ocorrenciaEnvolvidos = null;
+    List<OcorrenciaTransitoEnvolvido> ocorrenciaEnvolvidos = null;
 
     OcorrenciaTransito ocorrenciaTransitoEnvolvido;
 
@@ -134,7 +134,7 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
                 foto = new Foto("Foto do Endereço".toString(), pathImagem, CategoriaFoto.ENVOLVIDOS);
 
             foto.save();
-            OcorrenciaFoto ocorrenciaFoto = new OcorrenciaFoto();
+            OcorrenciaTransitoFoto ocorrenciaFoto = new OcorrenciaTransitoFoto();
             ocorrenciaFoto.setFoto(foto);
             ocorrenciaFoto.setOcorrenciaTransito(ocorrenciaTransitoEnvolvido);
             ocorrenciaFoto.save();
@@ -246,9 +246,9 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
 
         veiculos = new ArrayList<>();
 
-        List<OcorrenciaVeiculo> ocorrenciaVeiculos = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString());
+        List<OcorrenciaTransitoVeiculo> ocorrenciaVeiculos = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString());
 
-        for (OcorrenciaVeiculo ov : ocorrenciaVeiculos)
+        for (OcorrenciaTransitoVeiculo ov : ocorrenciaVeiculos)
             veiculos.add(ov.getVeiculo());
 
         spnVeiculo.setAdapter(new ArrayAdapter<Veiculo>(ctx, android.R.layout.simple_spinner_dropdown_item, veiculos));
@@ -286,9 +286,11 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
         if (envolvido.getLesao() != null)
             spnLesao.setSelection(BuscadorEnum.getIndex(spnLesao, envolvido.getLesao().getValor()));
 
-        if (envolvido.getVeiculoEnvolvido() != null)
-            spnVeiculo.setSelection(BuscadorEnum.getVeiculoIndexById(spnVeiculo, envolvido.getVeiculoEnvolvido().getId()));
-
+        if(!(envolvido.getTipoEnvolvido().equals(TipoEnvolvidoTransito.NAO_IDENTIFICADO) || envolvido.getTipoEnvolvido().equals(TipoEnvolvidoTransito.PEDESTRE)))
+        {
+            if (envolvido.getVeiculoEnvolvido() != null)
+                spnVeiculo.setSelection(BuscadorEnum.getVeiculoIndexById(spnVeiculo, envolvido.getVeiculoEnvolvido().getId()));
+        }
         //cxbCondutor.setChecked(envolvido.getCondutor());
         if (envolvido.getTipoEnvolvido() != null)
             spnTipoEnvolvido.setSelection(BuscadorEnum.getIndex(spnTipoEnvolvido, envolvido.getTipoEnvolvido().getValor()));
@@ -350,10 +352,10 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
                 CarregarEnvolvido();
                 try
                 {
-                    ocorrenciaEnvolvido = OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class, "ocorrencia_transito = ? and envolvido_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString(), envolvido.getId().toString()).get(0);
+                    ocorrenciaEnvolvido = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class, "ocorrencia_transito = ? and envolvido_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString(), envolvido.getId().toString()).get(0);
                 } catch (Exception e)
                 {
-                    ocorrenciaEnvolvido = new OcorrenciaEnvolvido();
+                    ocorrenciaEnvolvido = new OcorrenciaTransitoEnvolvido();
                 }
 
 
@@ -391,7 +393,7 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
                             public void onClick(DialogInterface dialog, int which)
                             {
 
-                                OcorrenciaEnvolvido ocorrenciaEnvolvido = ocorrenciaEnvolvidos.get(position);
+                                OcorrenciaTransitoEnvolvido ocorrenciaEnvolvido = ocorrenciaEnvolvidos.get(position);
 
                                 if(ColisaoTransito.find(ColisaoTransito.class,"pedestre = ?",ocorrenciaEnvolvido.getEnvolvidoTransito().getId().toString()).size() > 0)
                                 {
@@ -438,7 +440,7 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
 
                 envolvido = new EnvolvidoTransito();
 
-                ocorrenciaEnvolvido = new OcorrenciaEnvolvido();
+                ocorrenciaEnvolvido = new OcorrenciaTransitoEnvolvido();
 
                 envolvido.save();
 
@@ -573,11 +575,11 @@ public class GerenciarEnvolvido extends android.support.v4.app.Fragment implemen
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoEnvolvido.getOcorrenciaID());
 
-        ocorrenciaEnvolvidos = OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class, "ocorrencia_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString());
+        ocorrenciaEnvolvidos = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class, "ocorrencia_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString());
 
         envolvidotransitoModel = new ArrayList<>();
 
-        for (OcorrenciaEnvolvido oe : ocorrenciaEnvolvidos)
+        for (OcorrenciaTransitoEnvolvido oe : ocorrenciaEnvolvidos)
         {
             if (oe.getEnvolvidoTransito() != null)
             {

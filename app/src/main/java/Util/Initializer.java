@@ -1,20 +1,15 @@
 package Util;
 
-import android.util.Log;
-
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import Enums.AreaIntegradaSeguranca;
-import Model.Bairro;
 import Model.Cidade;
 import Model.DadosTerritoriais;
 import Model.Delegacia;
 import Model.Pessoa;
-import Model.Veiculo;
 
 /**
  * Created by Pefoce on 21/06/2017.

@@ -32,8 +32,6 @@ import com.example.pefoce.peritolocal.R;
 //import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.frosquivel.magicalcamera.MagicalCamera;
 import com.frosquivel.magicalcamera.MagicalPermissions;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 import com.squareup.picasso.Picasso;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -49,8 +47,8 @@ import Adapters.AdapterGaleria;
 import Enums.CategoriaFoto;
 import Model.Foto;
 import Model.Ocorrencia;
-import Model.OcorrenciaFoto;
-import Model.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoFoto;
+import Model.Transito.OcorrenciaTransito;
 import Util.BuscadorEnum;
 import Util.ViewUtil;
 
@@ -73,7 +71,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
     private Spinner spnCategoriaFoto;
 
 
-    OcorrenciaFoto ocorrenciaFoto;
+    OcorrenciaTransitoFoto ocorrenciaFoto;
 
     Foto foto;
     OcorrenciaTransito ocorrenciaTransitoFoto;
@@ -86,7 +84,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
 
     private OnFragmentInteractionListener mListener;
 
-    List<OcorrenciaFoto> ocorrenciaFotos;
+    List<OcorrenciaTransitoFoto> ocorrenciaFotos;
     ArrayList<Foto> fotosModel;
 
     private String pathImagem;
@@ -167,14 +165,14 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaTransitoFoto.getOcorrenciaID());
 
-        ocorrenciaFotos =  OcorrenciaFoto.find(OcorrenciaFoto.class,"ocorrencia_transito = ?",ocorrenciaTransitoFoto.getId().toString());
-//        ocorrenciaFotos = Select.from(OcorrenciaFoto.class)
+        ocorrenciaFotos =  OcorrenciaTransitoFoto.find(OcorrenciaTransitoFoto.class,"ocorrencia_transito = ?",ocorrenciaTransitoFoto.getId().toString());
+//        ocorrenciaFotos = Select.from(OcorrenciaTransitoFoto.class)
 //                .orderBy("categoriaFoto")
 //                .where(Condition.prop("ocorrencia_transito").eq(ocorrenciaTransitoFoto.getId().toString())).lstvEnvolvidos();
 
         fotosModel = new ArrayList<Foto>();
 
-        for(OcorrenciaFoto of : ocorrenciaFotos)
+        for(OcorrenciaTransitoFoto of : ocorrenciaFotos)
         {
             if(of.getFoto()!= null)
             fotosModel.add(of.getFoto());
@@ -225,7 +223,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
 
             File newFile = new File(pathImagem);
 
-            Picasso.with(getContext()).load(new File(pathImagem)).into(imgvDetalhe);
+            Picasso.with(getContext()).load(new File(pathImagem)).error(R.drawable.placeholder_error).into(imgvDetalhe);
 
             String newPath = "";
 
@@ -289,7 +287,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
                     foto = new Foto(edtDetalhe.getText().toString(),pathImagem);
 
                 foto.save();
-                ocorrenciaFoto = new OcorrenciaFoto();
+                ocorrenciaFoto = new OcorrenciaTransitoFoto();
                 ocorrenciaFoto.setFoto(foto);
                 ocorrenciaFoto.setOcorrenciaTransito(ocorrenciaTransitoFoto);
                 ocorrenciaFoto.save();
@@ -372,10 +370,10 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
                 pathImagem = foto.getArquivo();
                 try
                 {
-                    ocorrenciaFoto =OcorrenciaFoto.find(OcorrenciaFoto.class,"ocorrencia_transito = ? and foto = ?",ocorrenciaTransitoFoto.getId().toString(),foto.getId().toString()).get(0);
+                    ocorrenciaFoto = OcorrenciaTransitoFoto.find(OcorrenciaTransitoFoto.class,"ocorrencia_transito = ? and foto = ?",ocorrenciaTransitoFoto.getId().toString(),foto.getId().toString()).get(0);
                 }
                 catch(Exception e){
-                    ocorrenciaFoto = new OcorrenciaFoto();
+                    ocorrenciaFoto = new OcorrenciaTransitoFoto();
             }
 
             }
@@ -401,7 +399,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
-                               OcorrenciaFoto ocorrenciaFotoDelete = ocorrenciaFotos.get(position);
+                               OcorrenciaTransitoFoto ocorrenciaFotoDelete = ocorrenciaFotos.get(position);
 
                                 adapterGaleria.remove(ocorrenciaFotoDelete.getFoto());
 
@@ -432,7 +430,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
             @Override
             public void onClick(View v)
             {
-                Picasso.with(getContext()).load(new File(foto.getArquivo())).placeholder(R.drawable.placeholder).into(imgvDetalhe);
+                Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvDetalhe);
                 edtDetalhe.setText(foto.getDescricao());
             }
         });
@@ -461,7 +459,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
         }
         else
         {
-            ocorrenciaFoto = new OcorrenciaFoto();
+            ocorrenciaFoto = new OcorrenciaTransitoFoto();
             ocorrenciaFoto.setOcorrenciaTransito(ocorrenciaTransitoFoto);
             ocorrenciaFoto.setFoto(foto);
             ocorrenciaFoto.save();
@@ -474,7 +472,7 @@ public class GerenciarFotos  extends  android.support.v4.app.Fragment  implement
 
     public void carregarDadosFoto(Foto f)
     {
-        Picasso.with(getContext()).load(new File(f.getArquivo())).placeholder(R.drawable.placeholder).into(imgvDetalhe);
+        Picasso.with(getContext()).load(new File(f.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvDetalhe);
         //imgvDetalhe.setImageBitmap(ImageUtil.byteToBitmap(f.getArquivo()));
         edtDetalhe.setText(f.getDescricao());
         if(f.getCategoriaFoto()!= null)

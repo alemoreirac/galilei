@@ -12,7 +12,7 @@ import com.example.pefoce.peritolocal.R;
 
 import java.util.ArrayList;
 
-import Model.Veiculo;
+import Model.Transito.Veiculo;
 import ViewHolders.ViewHolderVeiculo;
 
 /**

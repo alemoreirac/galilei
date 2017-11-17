@@ -1,23 +1,19 @@
 package Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.pefoce.peritolocal.R;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import Enums.Lesao;
-import Model.EnvolvidoTransito;
-import ViewHolders.ViewHolderEnvolvidoTransito;
+import Enums.Transito.Lesao;
+import Model.Transito.EnvolvidoTransito;
 
 /**
  * Created by Pefoce on 20/06/2017.

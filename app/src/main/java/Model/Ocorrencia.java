@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import Enums.TipoOcorrencia;
+import Model.Transito.OcorrenciaTransito;
+import Model.Vida.OcorrenciaVida;
 import Util.TempoUtil;
 
 /**
@@ -19,6 +21,8 @@ public class Ocorrencia extends SugarRecord<Ocorrencia> {
     TipoOcorrencia tipoOcorrencia;
 
     OcorrenciaTransito ocorrenciaTransito;
+
+    OcorrenciaVida ocorrenciaVida;
 
     @Expose
     private Pessoa perito;
@@ -121,5 +125,15 @@ public class Ocorrencia extends SugarRecord<Ocorrencia> {
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         return timeFormat.format(this.dataChamado);
+    }
+
+    public OcorrenciaVida getOcorrenciaVida()
+    {
+        return ocorrenciaVida;
+    }
+
+    public void setOcorrenciaVida(OcorrenciaVida ocorrenciaVida)
+    {
+        this.ocorrenciaVida = ocorrenciaVida;
     }
 }

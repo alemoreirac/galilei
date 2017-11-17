@@ -20,14 +20,14 @@ import com.example.pefoce.peritolocal.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import Enums.TipoJustificativa_Inconclusao;
+import Enums.Transito.TipoJustificativa_Inconclusao;
 import Fragments.GerenciarColisoes;
-import Model.ColisaoTransito;
-import Model.EnvolvidoTransito;
-import Model.OcorrenciaEnvolvido;
-import Model.OcorrenciaTransito;
-import Model.OcorrenciaVeiculo;
-import Model.Veiculo;
+import Model.Transito.ColisaoTransito;
+import Model.Transito.EnvolvidoTransito;
+import Model.Transito.OcorrenciaTransitoEnvolvido;
+import Model.Transito.OcorrenciaTransito;
+import Model.Transito.OcorrenciaTransitoVeiculo;
+import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
 
 /**
@@ -80,16 +80,16 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
 
         semEvasores = bd.getBoolean("SemEvasores");
 
-        List<OcorrenciaEnvolvido> ocorrenciaEnvolvidos = OcorrenciaEnvolvido.find(OcorrenciaEnvolvido.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+        List<OcorrenciaTransitoEnvolvido> ocorrenciaEnvolvidos = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
           envolvidos = new ArrayList<EnvolvidoTransito>();
 
-        for(OcorrenciaEnvolvido oe : ocorrenciaEnvolvidos)
+        for(OcorrenciaTransitoEnvolvido oe : ocorrenciaEnvolvidos)
             envolvidos.add(oe.getEnvolvidoTransito());
 
-        List<OcorrenciaVeiculo> ocorrenciaVeiculos = OcorrenciaVeiculo.find(OcorrenciaVeiculo.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+        List<OcorrenciaTransitoVeiculo> ocorrenciaVeiculos = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
         veiculos = new ArrayList<Veiculo>();
 
-        for(OcorrenciaVeiculo ov : ocorrenciaVeiculos)
+        for(OcorrenciaTransitoVeiculo ov : ocorrenciaVeiculos)
 
             veiculos.add(ov.getVeiculo());
 
@@ -102,7 +102,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
         //ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaTransito.getOcorrenciaID());
 
 
-        //vestigioModel = new ArrayList<Vestigio>();
+        //vestigioModel = new ArrayList<VestigioTransito>();
 
         AssociarLayout(view);
         AssociarEventos();
