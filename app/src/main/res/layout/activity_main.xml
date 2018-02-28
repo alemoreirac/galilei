@@ -2,7 +2,6 @@
 
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -13,54 +12,86 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.pefoce.peritolocal.MainActivity">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_centerHorizontal="true"
-        android:text="@string/titulo_inicial"
-        android:id="@+id/txv_Titulo"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10dp"
-        android:layout_alignParentRight="true"
-        android:text="Alessandro Moreira Collado"
-        android:id="@+id/txv_Perito"
-        />
+        <TextView
+            android:id="@+id/txv_Nenhuma_Pericia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Nenhuma perícia cadastrada!"
+            android:layout_centerInParent="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_busca"
-        android:layout_toRightOf="@+id/edt_busca"
-        android:layout_alignBottom="@+id/edt_busca"
-        android:layout_alignTop="@+id/edt_busca"
-        android:text="Pesquisar"/>
-    <ListView
-        android:id="@+id/lstvOcorrencias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edt_busca"
-        />
 
-    <EditText
-        android:layout_width="450dp"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:hint="@string/buscar_pericia"
-        android:id="@+id/edt_busca"
-        android:layout_below="@+id/txv_Titulo"
-        android:layout_alignLeft="@id/lstvOcorrencias"
-        />
-</RelativeLayout>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/galilei"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/titulo_inicial"
+            android:id="@+id/txv_Titulo"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Alessandro Moreira Collado"
+            android:id="@+id/txv_Perito"
+            />
+
+        <Button
+            android:id="@+id/btn_Logout"
+            android:text="Logout"
+            android:textColor="@color/ms_errorColor"
+            android:layout_width="wrap_content"
+            android:layout_alignRight="@id/txv_Perito"
+            android:layout_below="@id/txv_Perito"
+            android:background="@color/lightGray"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="@string/buscar_pericia"
+            android:id="@+id/edt_busca"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/txv_Titulo"
+            android:layout_marginTop="10dp"/>
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/imgb_Busca"
+            android:adjustViewBounds="true"
+            android:layout_alignTop="@id/edt_busca"
+            android:background="@drawable/search"
+            android:layout_toRightOf="@+id/edt_busca" />
+
+
+        <ListView
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/lstvOcorrencias"
+            android:layout_width="wrap_content"
+            android:background="@drawable/border_gray"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edt_busca"/>
+
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_Pericia"

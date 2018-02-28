@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,7 +43,11 @@ import Model.Transito.OcorrenciaTransitoVeiculo;
 import Model.Pessoa;
 import Model.Transito.VestigioTransito;
 import Model.Transito.VestigioColisao;
-import Util.BuscadorEnum;
+import Model.Vida.LesaoEnvolvido;
+import Model.Vida.OcorrenciaEnvolvidoVida;
+import Model.Vida.OcorrenciaVida;
+import Model.Vida.OcorrenciaVidaFoto;
+import Model.Vida.VestigioVidaOcorrencia;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     EditText edtBusca = null;
     AdapterOcorrencia adapter;
     String AnoEscolhido = "";
+    TextView txvNenhumaPericia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,17 +73,11 @@ public class MainActivity extends AppCompatActivity
         AssociarEventos();
 
         Intent intent = getIntent();
-//        if(intent.getLongExtra("OcorrenciaId",0) != 0)
-//        {
-//            ocorrenciaTransito = OcorrenciaTransito.findById(OcorrenciaTransito.class, intent.getLongExtra("OcorrenciaId", 0));
-//        }
 
-        //   final Dialog dialog = new Dialog(MainActivity.this);
-        //   dialog.setContentView(R.layout.dano_veiculo);
-        //   dialog.setCanceledOnTouchOutside(false);
-//
-        //   dialog.setTitle("Definir Proprietário");
-        //   dialog.show();
+
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
 
 
         //Recebe o ID do perito logado, caso não seja encontrado, volta para a tela de login
@@ -94,6 +94,20 @@ public class MainActivity extends AppCompatActivity
 
         ocorrencias = (ArrayList<Ocorrencia>) Ocorrencia.find(Ocorrencia.class, "perito = ?", perito.getId().toString());
 
+        if(ocorrencias!=null)
+        {
+            if (ocorrencias.size() == 0)
+            {
+                lstvOcorrencias.setVisibility(View.INVISIBLE);
+                txvNenhumaPericia.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                lstvOcorrencias.setVisibility(View.VISIBLE);
+                txvNenhumaPericia.setVisibility(View.INVISIBLE);
+            }
+        }
+
         //final ArrayList<OcorrenciaTransito> ocorrenciasTransito = (ArrayList<OcorrenciaTransito>) OcorrenciaTransito.find(OcorrenciaTransito.class, "perito = ?", p.getId().toString());
 
         //Carrega as ocorrencias na lista
@@ -109,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if(edtBusca.getText().toString().trim() == "")
+                if (edtBusca.getText().toString().trim() == "")
                 {
                     ocorrencias = (ArrayList<Ocorrencia>) Ocorrencia.find(Ocorrencia.class, "perito = ?", perito.getId().toString());
                     adapter = new AdapterOcorrencia(ocorrencias, getApplicationContext());
@@ -122,10 +136,10 @@ public class MainActivity extends AppCompatActivity
 
                 ArrayList<Ocorrencia> ocorrenciaResultado = new ArrayList<Ocorrencia>();
 
-                for(int i = 0;i<ocorrenciasTransito.size();i++)
+                for (int i = 0; i < ocorrenciasTransito.size(); i++)
                 {
-                    if(Ocorrencia.find(Ocorrencia.class,"ocorrencia_transito = ?",ocorrenciasTransito.get(i).getId().toString()).size()>0)
-                    ocorrenciaResultado.add(Ocorrencia.find(Ocorrencia.class,"ocorrencia_transito = ?",ocorrenciasTransito.get(i).getId().toString()).get(0));
+                    if (Ocorrencia.find(Ocorrencia.class, "ocorrencia_transito = ?", ocorrenciasTransito.get(i).getId().toString()).size() > 0)
+                        ocorrenciaResultado.add(Ocorrencia.find(Ocorrencia.class, "ocorrencia_transito = ?", ocorrenciasTransito.get(i).getId().toString()).get(0));
                 }
 
                 adapter = new AdapterOcorrencia(ocorrenciaResultado, getApplicationContext());
@@ -150,7 +164,7 @@ public class MainActivity extends AppCompatActivity
 //
 //                for(OcorrenciaTransitoEnvolvido oe : ocorrenciaEnvolvidos)
 //
-//                oe.getOcorrenciaTransito().getOcorrenciaID();
+//                oe.getOcorrenciaVida().getOcorrenciaID();
 //
 //
 //
@@ -170,9 +184,24 @@ public class MainActivity extends AppCompatActivity
             {
 
                 Ocorrencia ocorrencia = ocorrencias.get(position);
-                Intent it = new Intent(getApplicationContext(), ManterPericia.class);
-                it.putExtra("OcorrenciaId", ocorrencia.getOcorrenciaTransito().getId());
-                startActivity(it);
+
+                switch (ocorrencia.getTipoOcorrencia())
+                {
+                    case TRANSITO:
+                        Intent intentTransito = new Intent(getApplicationContext(), ManterPericiaTransito.class);
+                        intentTransito.putExtra("OcorrenciaId", ocorrencia.getOcorrenciaTransito().getId());
+
+
+                        startActivity(intentTransito);
+                        break;
+                    case VIDA:
+                        Intent intentVida = new Intent(getApplicationContext(), ManterPericiaVida.class);
+                        intentVida.putExtra("OcorrenciaId", ocorrencia.getOcorrenciaVida().getId());
+                        intentVida.putExtra("FragmentPicker", "Ocorrência");
+                        startActivity(intentVida);
+                        break;
+                }
+
             }
         });
 
@@ -197,9 +226,29 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which)
                             {
 
+                                Ocorrencia ocorrencia = (Ocorrencia)lstvOcorrencias.getAdapter().getItem(position);
 
-                                DeletarOcorrencia(position);
+                                switch (ocorrencia.getTipoOcorrencia())
+                                {
+                                    case TRANSITO:
+                                        DeletarOcorrenciaTransito(position);
+                                        break;
+                                    case VIDA:
+                                        DeletarOcorrenciaVida(position);
+                                        break;
+                                }
 
+
+                                if (adapter.getCount() == 0)
+                                {
+                                    lstvOcorrencias.setVisibility(View.INVISIBLE);
+                                    txvNenhumaPericia.setVisibility(View.VISIBLE);
+                                }
+                                else
+                                {
+                                    lstvOcorrencias.setVisibility(View.VISIBLE);
+                                    txvNenhumaPericia.setVisibility(View.INVISIBLE);
+                                }
 
                                 Toast.makeText(MainActivity.this, "Ocorrência Deletada com sucesso!", Toast.LENGTH_LONG).show();
 
@@ -240,7 +289,7 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which)
                             {
 
-                                Intent it = new Intent(getBaseContext(),LoginActivity.class);
+                                Intent it = new Intent(getBaseContext(), LoginActivity.class);
                                 startActivity(it);
 
 
@@ -259,15 +308,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         fabOcorrencia.setOnClickListener(
                 new View.OnClickListener()
                 {
                     public void onClick(View v)
                     {
-
-                        //String ano = Calendar.YEAR;
-
                         final Dialog dialog = new Dialog(MainActivity.this);
                         dialog.setContentView(R.layout.dialog_pericia_transito);
                         dialog.setCanceledOnTouchOutside(false);
@@ -297,7 +342,7 @@ public class MainActivity extends AppCompatActivity
                         spnAnoIncidencia.setAdapter(new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_spinner_dropdown_item, anos));
 
                         spnTipoOcorrencia.setAdapter(new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_spinner_dropdown_item, tiposOcorrencia));
-                        spnTipoOcorrencia.setEnabled(false);
+                        //spnTipoOcorrencia.setEnabled(false);
 
 
                         spnAnoIncidencia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -306,7 +351,7 @@ public class MainActivity extends AppCompatActivity
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
                             {
                                 AnoEscolhido = spnAnoIncidencia.getSelectedItem().toString();
-                                txvNumIncidencia.setText("I"+AnoEscolhido + incidencia.toString());
+                                txvNumIncidencia.setText("I" + AnoEscolhido + incidencia.toString());
                             }
 
                             @Override
@@ -325,10 +370,9 @@ public class MainActivity extends AppCompatActivity
                             }
 
                             @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count,
-                                                          int after)
+                            public void beforeTextChanged(CharSequence s, int start, int count,int after)
                             {
-                                // TODO Auto-generated method stub
+
                             }
 
                             @Override
@@ -339,7 +383,7 @@ public class MainActivity extends AppCompatActivity
                                 incidencia.replace(incidencia.length() - s.length(), incidencia.length(), s.toString());
 
                                 //txvNumIncidencia.setText(incidencia.replace("0000000",s.toString()));
-                                txvNumIncidencia.setText("I"+AnoEscolhido + incidencia.toString());
+                                txvNumIncidencia.setText("I" + AnoEscolhido + incidencia.toString());
                             }
                         });
 
@@ -373,43 +417,12 @@ public class MainActivity extends AppCompatActivity
 
                                 if (edtNumDoc.getText().toString().length() > 0)
                                 {
-                                    Ocorrencia ocorrenciaNova = new Ocorrencia();
+                                    if (spnTipoOcorrencia.getSelectedItem().toString().equals("Trânsito"))
+                                        NovaPericiaTransito(txvNumIncidencia.getText().toString());
 
-                                    OcorrenciaTransito ocorrenciaTransito = new OcorrenciaTransito();
+                                    if (spnTipoOcorrencia.getSelectedItem().toString().equals("Crime contra a Vida"))
+                                        NovaPericiaVida(txvNumIncidencia.getText().toString());
 
-                                    DocumentoOcorrencia documentoOcorrencia = new DocumentoOcorrencia(null, "");
-
-                                    documentoOcorrencia.save();
-
-                                    ocorrenciaTransito.setDocumentoOcorrencia(documentoOcorrencia);
-
-                                    //ocorrenciaTransito.setNumIncidencia(txvNumIncidencia.getText().toString().substring(txvNumIncidencia.getText().toString().length() - 7));
-
-                                    ocorrenciaTransito.setNumIncidencia(txvNumIncidencia.getText().toString());
-
-                                    //ocorrenciaTransito.save();
-
-                                    ocorrenciaNova.setOcorrenciaTransito(ocorrenciaTransito);
-
-                                    ocorrenciaNova.setTipoOcorrencia(BuscadorEnum.BuscarTipoOcorrencia(spnTipoOcorrencia.getSelectedItem().toString()));
-
-                                    ocorrenciaNova.setPerito(perito);
-
-                                    ocorrenciaTransito.save();
-
-                                    ocorrenciaNova.save();
-
-                                    ocorrenciaTransito.setOcorrenciaID(ocorrenciaNova.getId());
-
-                                    ocorrenciaTransito.save();
-
-                                    //     ocorrenciaTransito.save();
-
-                                    Intent it = new Intent(MainActivity.this, ManterPericia.class);
-
-                                    it.putExtra("OcorrenciaId", ocorrenciaTransito.getId());
-
-                                    startActivity(it);
                                 } else
                                     Toast.makeText(getApplicationContext(), "Preencha corretamente os dados!", Toast.LENGTH_LONG).show();
                             }
@@ -431,99 +444,177 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-public void DeletarOcorrencia(int position)
-{
-    OcorrenciaTransito ocorrenciaTransito = ocorrencias.get(position).getOcorrenciaTransito();
-
-    Ocorrencia ocorrenciaDelete = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrenciaID());
-
-
-
-    adapter.remove((Ocorrencia)lstvOcorrencias.getAdapter().getItem(position));
-    adapter.notifyDataSetChanged();
-
-
-    //Deletar Entidades envolvidas com endereço: EnderecoTransito, Endereco, EnderecoVeiculo e OcorrenciaTransitoEndereco
-
-    List<OcorrenciaTransitoEndereco> ocorrenciaEnderecos = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
-
-    List<EnderecoVeiculo> enderecosVeiculo = null;
-
-    for(int i = 0;i<ocorrenciaEnderecos.size();i++)
+    public void DeletarOcorrenciaTransito(int position)
     {
-        enderecosVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class,"endereco = ?",ocorrenciaEnderecos.get(i).getEnderecoTransito().getEndereco().getId().toString());
-        for(EnderecoVeiculo ev: enderecosVeiculo)
-            ev.delete();
+        OcorrenciaTransito ocorrenciaTransito = ocorrencias.get(position).getOcorrenciaTransito();
 
-        ocorrenciaEnderecos.get(i).getEnderecoTransito().getEndereco().delete();
-        ocorrenciaEnderecos.get(i).getEnderecoTransito().delete();
-        ocorrenciaEnderecos.get(i).delete();
-    }
-
-    //Deletar Entidades relacionadas ao Envolvido: EnvolvidoTransito e OcorrenciaTransitoEnvolvido
-
-    List<OcorrenciaTransitoEnvolvido> ocorrenciasEnvolvido = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
-
-    for(OcorrenciaTransitoEnvolvido oe : ocorrenciasEnvolvido)
-    {
-        oe.getEnvolvidoTransito().delete();
-        oe.delete();
-    }
+        Ocorrencia ocorrenciaDelete = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrenciaID());
 
 
-    List<OcorrenciaTransitoVeiculo> ocorrenciasVeiculo = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
+        adapter.remove((Ocorrencia) lstvOcorrencias.getAdapter().getItem(position));
+        adapter.notifyDataSetChanged();
 
-    List<DanoVeiculo> danosVeiculo = null;
 
-    for(OcorrenciaTransitoVeiculo ov : ocorrenciasVeiculo)
-    {
-        danosVeiculo = DanoVeiculo.find(DanoVeiculo.class,"veiculo = ?",ov.getVeiculo().getId().toString());
-        for(DanoVeiculo dv : danosVeiculo)
+        //Deletar Entidades envolvidas com endereço: EnderecoTransito, Endereco, EnderecoVeiculo e OcorrenciaTransitoEndereco
+
+        List<OcorrenciaTransitoEndereco> ocorrenciaEnderecos = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString());
+
+        List<EnderecoVeiculo> enderecosVeiculo = null;
+
+        for (int i = 0; i < ocorrenciaEnderecos.size(); i++)
         {
-            dv.getDano().delete();
-            dv.delete();
-        }
-        ov.getVeiculo().delete();
-        ov.delete();
-    }
 
-
-    List<OcorrenciaTransitoFoto> ocorrenciaFotos = OcorrenciaTransitoFoto.find(OcorrenciaTransitoFoto.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
-
-    for(OcorrenciaTransitoFoto of : ocorrenciaFotos)
-    {
-        of.getFoto().delete();
-        of.delete();
-    }
-
-    List<OcorrenciaTransitoColisao> ocorrenciaColisoes = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class,"ocorrencia_transito = ?",ocorrenciaTransito.getId().toString());
-
-    List<VestigioColisao> vestigioColisoes = null;
-    for(OcorrenciaTransitoColisao oc : ocorrenciaColisoes)
-    {
-        vestigioColisoes = VestigioColisao.find(VestigioColisao.class,"colisao_transito = ?",oc.getColisaoTransito().getId().toString());
-        for(VestigioColisao vc : vestigioColisoes)
-        {
-            if(vc.getVestigioId()!= null)
+            try
             {
-                VestigioTransito v = VestigioTransito.findById(VestigioTransito.class,vc.getVestigioId());
-                v.delete();
+                enderecosVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class, "endereco = ?", ocorrenciaEnderecos.get(i).getEnderecoTransito().getEndereco().getId().toString());
+            } catch (Exception e)
+            {
+                continue;
             }
-            vc.delete();
+            for (EnderecoVeiculo ev : enderecosVeiculo)
+                ev.delete();
+
+            ocorrenciaEnderecos.get(i).getEnderecoTransito().getEndereco().delete();
+            ocorrenciaEnderecos.get(i).getEnderecoTransito().delete();
+            ocorrenciaEnderecos.get(i).delete();
         }
-        oc.getColisaoTransito().delete();
-        oc.delete();
+
+        //Deletar Entidades relacionadas ao Envolvido: EnvolvidoTransito e OcorrenciaTransitoEnvolvido
+
+        List<OcorrenciaTransitoEnvolvido> ocorrenciasEnvolvido = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString());
+
+        for (OcorrenciaTransitoEnvolvido oe : ocorrenciasEnvolvido)
+        {
+            oe.getEnvolvidoTransito().delete();
+            oe.delete();
+        }
+
+
+        List<OcorrenciaTransitoVeiculo> ocorrenciasVeiculo = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString());
+
+        List<DanoVeiculo> danosVeiculo = null;
+
+        for (OcorrenciaTransitoVeiculo ov : ocorrenciasVeiculo)
+        {
+            danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", ov.getVeiculo().getId().toString());
+            for (DanoVeiculo dv : danosVeiculo)
+            {
+                dv.getDano().delete();
+                dv.delete();
+            }
+            ov.getVeiculo().delete();
+            ov.delete();
+        }
+
+
+        List<OcorrenciaTransitoFoto> ocorrenciaFotos = OcorrenciaTransitoFoto.find(OcorrenciaTransitoFoto.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString());
+
+        for (OcorrenciaTransitoFoto of : ocorrenciaFotos)
+        {
+            of.getFoto().delete();
+            of.delete();
+        }
+
+        List<OcorrenciaTransitoColisao> ocorrenciaColisoes = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString());
+
+        List<VestigioColisao> vestigioColisoes = null;
+        for (OcorrenciaTransitoColisao oc : ocorrenciaColisoes)
+        {
+            vestigioColisoes = VestigioColisao.find(VestigioColisao.class, "colisao_transito = ?", oc.getColisaoTransito().getId().toString());
+            for (VestigioColisao vc : vestigioColisoes)
+            {
+                if (vc.getVestigioId() != null)
+                {
+                    VestigioTransito v = VestigioTransito.findById(VestigioTransito.class, vc.getVestigioId());
+                    v.delete();
+                }
+                vc.delete();
+            }
+            oc.getColisaoTransito().delete();
+            oc.delete();
+        }
+
+
+        ocorrenciaTransito.delete();
+        ocorrenciaDelete.delete();
+
     }
 
 
-    ocorrenciaTransito.delete();
-    ocorrenciaDelete.delete();
+    public void DeletarOcorrenciaVida(int position)
+    {
+        OcorrenciaVida ocorrenciaVida = ocorrencias.get(position).getOcorrenciaVida();
 
-}
+        Ocorrencia ocorrenciaDelete = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
+
+        adapter.remove((Ocorrencia) lstvOcorrencias.getAdapter().getItem(position));
+        adapter.notifyDataSetChanged();
+
+
+        List<OcorrenciaEnvolvidoVida> ocorrenciaEnvolvidos = OcorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
+
+        List<LesaoEnvolvido> lesoesEnvolvido = null;
+
+        for (int i = 0; i < ocorrenciaEnvolvidos.size(); i++)
+        {
+
+            try
+            {
+                lesoesEnvolvido = LesaoEnvolvido.find(LesaoEnvolvido.class, "envolvido_vida = ?", ocorrenciaEnvolvidos.get(i).getEnvolvidoVida().getId().toString());
+            } catch (Exception e)
+            {
+                continue;
+            }
+            for (LesaoEnvolvido le : lesoesEnvolvido)
+            {
+                le.getLesao().delete();
+                le.delete();
+            }
+
+            lesoesEnvolvido = null;
+        }
+
+
+        List<OcorrenciaEnvolvidoVida> ocorrenciaEnvolvidoVidaList = OcorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
+
+        for (OcorrenciaEnvolvidoVida oev : ocorrenciaEnvolvidoVidaList)
+        {
+            if(oev.getEnvolvidoVida()!=null)
+            oev.getEnvolvidoVida().delete();
+            oev.delete();
+        }
+
+        ocorrenciaEnvolvidoVidaList = null;
+
+
+        List<VestigioVidaOcorrencia> vestigiosOcorrenciaList = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
+
+        for (VestigioVidaOcorrencia vvo : vestigiosOcorrenciaList)
+        {
+            vvo.getVestigioVida().delete();
+            vvo.delete();
+        }
+
+        vestigiosOcorrenciaList = null;
+
+
+        List<OcorrenciaVidaFoto> ocorrenciaFotos = OcorrenciaVidaFoto.find(OcorrenciaVidaFoto.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
+
+        for (OcorrenciaVidaFoto of : ocorrenciaFotos)
+        {
+            of.getFoto().delete();
+            of.delete();
+        }
+
+        ocorrenciaVida.delete();
+        ocorrenciaDelete.delete();
+
+    }
 
 
     public void AssociarLayout()
     {
+        txvNenhumaPericia = (TextView) findViewById(R.id.txv_Nenhuma_Pericia);
         fabOcorrencia = (FloatingActionButton) findViewById(R.id.fab_Pericia);
         lstvOcorrencias = (ListView) findViewById(R.id.lstvOcorrencias);
         edtBusca = (EditText) findViewById(R.id.edt_busca);
@@ -532,9 +623,86 @@ public void DeletarOcorrencia(int position)
 
     }
 
+    public void NovaPericiaVida(String numIncidencia)
+    {
+        Ocorrencia ocorrenciaNova = new Ocorrencia();
+
+        OcorrenciaVida ocorrenciaVida = new OcorrenciaVida();
+
+        DocumentoOcorrencia documentoOcorrencia = new DocumentoOcorrencia(null, "");
+
+        documentoOcorrencia.save();
+
+        ocorrenciaVida.setDocumento(documentoOcorrencia);
+
+        ocorrenciaVida.setNumIncidencia(numIncidencia);
+
+        ocorrenciaNova.setTipoOcorrencia(TipoOcorrencia.VIDA);
+
+        ocorrenciaNova.setPerito(perito);
+
+        ocorrenciaVida.save();
+
+        ocorrenciaNova.setOcorrenciaVida(ocorrenciaVida);
+
+        ocorrenciaNova.save();
+
+        ocorrenciaVida.setOcorrenciaID(ocorrenciaNova.getId());
+
+        ocorrenciaVida.save();
+
+        Intent it = new Intent(MainActivity.this, ManterPericiaVida.class);
+
+        it.putExtra("OcorrenciaId", ocorrenciaVida.getId());
+
+        it.putExtra("FragmentPicker", "Ocorrência");
+
+        startActivity(it);
+    }
+
+    public void NovaPericiaTransito(String numIncidencia)
+    {
+        Ocorrencia ocorrenciaNova = new Ocorrencia();
+
+        OcorrenciaTransito ocorrenciaTransito = new OcorrenciaTransito();
+
+        DocumentoOcorrencia documentoOcorrencia = new DocumentoOcorrencia(null, "");
+
+        documentoOcorrencia.save();
+
+        ocorrenciaTransito.setDocumentoOcorrencia(documentoOcorrencia);
+
+        //ocorrenciaTransito.setNumIncidencia(txvNumIncidencia.getText().toString().substring(txvNumIncidencia.getText().toString().length() - 7));
+
+        ocorrenciaTransito.setNumIncidencia(numIncidencia);
+
+        //ocorrenciaTransito.save();
+
+        ocorrenciaNova.setOcorrenciaTransito(ocorrenciaTransito);
+
+        ocorrenciaNova.setTipoOcorrencia(TipoOcorrencia.TRANSITO);
+
+        ocorrenciaNova.setPerito(perito);
+
+        ocorrenciaTransito.save();
+
+        ocorrenciaNova.save();
+
+        ocorrenciaTransito.setOcorrenciaID(ocorrenciaNova.getId());
+
+        ocorrenciaTransito.save();
+
+
+        Intent it = new Intent(MainActivity.this, ManterPericiaTransito.class);
+
+
+        it.putExtra("OcorrenciaId", ocorrenciaTransito.getId());
+
+        startActivity(it);
+    }
+
     public void onBackPressed()
     {
-//        Intent it = new Intent(this, MainActivity.class);
-//        startActivity(it);
+        //IGNORE O BACKPRESSED PARA ANULAR O BOTÂO VOLTAR
     }
 }

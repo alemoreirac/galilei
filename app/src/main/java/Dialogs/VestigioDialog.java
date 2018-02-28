@@ -6,11 +6,13 @@ package Dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +24,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.example.pefoce.peritolocal.ManterPericia;
+import com.example.pefoce.peritolocal.ManterPericiaTransito;
 import com.example.pefoce.peritolocal.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Enums.Transito.TipoVestigioTransito;
+import Fragments.FragmentsTransito.GerenciarColisoes;
 import Model.Transito.ColisaoTransito;
 import Model.Ocorrencia;
 import Model.Transito.OcorrenciaTransito;
@@ -41,13 +44,14 @@ import Util.BuscadorEnum;
  * Created by Pefoce on 21/08/2017.
  */
 
-public class VestigioDialog extends  android.support.v4.app.DialogFragment
+public class VestigioDialog //extends  android.support.v4.app.DialogFragment
 {
+    Dialog dialog;
     public ColisaoTransito colisaoTransito;
     public Activity activity = null;
     public Spinner spnTIpoVestigio;
     public Button btnLimparVestigio, btnSalvarVestigio;
-    public FloatingActionButton btnAddVestigio;
+    public Button btnAddVestigio;
     public ListView lstvVestigios;
     public EditText edtAreaVestigio, edtDistanciaVestigio;
     public OcorrenciaTransito ocorrenciaTransito;
@@ -56,57 +60,39 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
     public ArrayList<VestigioTransito> vestigioModel;
     public List<VestigioColisao> vestigioColisaoModel;
     public CheckBox cxbDeterminante;
+    Fragment fragment;
 
-    public VestigioDialog()
+    public VestigioDialog(Fragment f, Activity a)
     {
-    }
+        fragment = f;
+        activity = a;
 
-    public static VestigioDialog newInstance(String title, String local)
-    {
-        VestigioDialog frag = new VestigioDialog();
+        colisaoTransito = ((GerenciarColisoes)fragment).colisaoTransito;
+        ocorrenciaTransito = ((ManterPericiaTransito)activity).ocorrenciaTransito;
 
-        Bundle args = new Bundle();
 
-        args.putString("Gravar Áudio", title);
-        args.putString("Local", local);
+        dialog = new Dialog(a);
+        dialog.setContentView(R.layout.dialog_vestigios);
+        dialog.setTitle("Vestígios");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
-        frag.setArguments(args);
-
-        return frag;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.dialog_vestigios, container, false);
-
-        Bundle bd = getArguments();
-
-        colisaoTransito = ColisaoTransito.findById(ColisaoTransito.class, bd.getLong("ColisaoID"));
-
-        activity = getActivity();
-
-        ocorrenciaTransito = ((ManterPericia) activity).ocorrenciaTransito;
-
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrenciaID());
-
-        AssociarLayout(view);
+        AssociarLayout();
         AssociarEventos();
-
         CarregarVestigios();
-        return view;
     }
 
-    private void AssociarLayout(View view)
+
+    private void AssociarLayout()
     {
-        btnAddVestigio = (FloatingActionButton) view.findViewById(R.id.btn_dialog_AddVestigio);
-        btnLimparVestigio = (Button) view.findViewById(R.id.btn_dialog_LimparVestigios);
-        btnSalvarVestigio = (Button) view.findViewById(R.id.btn_dialog_SalvarVestigio_Detalhe);
-        edtDistanciaVestigio = (EditText) view.findViewById(R.id.edt_dialog_Distancia_Vestigio);
-        edtAreaVestigio = (EditText) view.findViewById(R.id.edt_dialog_Area_Vestigio);
-        spnTIpoVestigio = (Spinner) view.findViewById(R.id.spn_dialog_Tipo_Vestigio);
-        lstvVestigios = (ListView) view.findViewById(R.id.lstv_dialog_Vestigios);
-        cxbDeterminante = (CheckBox) view.findViewById(R.id.cxb_dialog_Determinante);
+        btnAddVestigio = (Button) dialog.findViewById(R.id.btn_dialog_AddVestigio);
+        btnLimparVestigio = (Button) dialog.findViewById(R.id.btn_dialog_LimparVestigios);
+        btnSalvarVestigio = (Button) dialog.findViewById(R.id.btn_dialog_SalvarVestigio_Detalhe);
+        edtDistanciaVestigio = (EditText) dialog.findViewById(R.id.edt_dialog_Distancia_Vestigio);
+        edtAreaVestigio = (EditText) dialog.findViewById(R.id.edt_dialog_Area_Vestigio);
+        spnTIpoVestigio = (Spinner) dialog.findViewById(R.id.spn_dialog_Tipo_Vestigio);
+        lstvVestigios = (ListView) dialog.findViewById(R.id.lstv_dialog_Vestigios);
+        cxbDeterminante = (CheckBox) dialog.findViewById(R.id.cxb_dialog_Determinante);
 
 
         ArrayList<String> tiposVestigio = new ArrayList<>();
@@ -114,13 +100,14 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
         for (TipoVestigioTransito tipoVestigio : TipoVestigioTransito.values())
             tiposVestigio.add(tipoVestigio.getValor());
 
-        spnTIpoVestigio.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, tiposVestigio));
+        spnTIpoVestigio.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_dropdown_item, tiposVestigio));
 
     }
 
     private void CarregarVestigios()
     {
         vestigioColisaoModel = VestigioColisao.find(VestigioColisao.class, "colisao_transito = ?", colisaoTransito.getId().toString());
+
 
         if(vestigioColisaoModel==null)
             vestigioColisaoModel = new ArrayList<>();
@@ -130,11 +117,9 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
         for (VestigioColisao vc : vestigioColisaoModel)
             vestigioModel.add(VestigioTransito.findById(VestigioTransito.class,vc.getVestigioId()));
 
-        adapterVestigio = new ArrayAdapter<VestigioTransito>(getActivity(), android.R.layout.simple_spinner_dropdown_item, vestigioModel);
+        adapterVestigio = new ArrayAdapter<VestigioTransito>(activity, android.R.layout.simple_spinner_dropdown_item, vestigioModel);
 
         lstvVestigios.setAdapter(adapterVestigio);
-
-
     }
 
     private void AssociarEventos()
@@ -190,7 +175,7 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
             public void onClick(View v)
             {
                 if (colisaoTransito == null)
-                    dismiss();
+                    dialog.dismiss();
                 VestigioTransito vestigioDelete;
                 for (VestigioColisao vc : vestigioColisaoModel)
                 {
@@ -205,22 +190,21 @@ public class VestigioDialog extends  android.support.v4.app.DialogFragment
                     vc.delete();
                 }
 
-                VestigioColisao vestigioColisao ;
-
-VestigioTransito vestigio;
-
                 for (int i = 0; i < adapterVestigio.getCount(); i++)
                 {
-
-                    vestigio = adapterVestigio.getItem(i);
+                    VestigioColisao vestigioColisao ;
+                    VestigioTransito vestigio = new VestigioTransito();
+                    vestigio.setArea(adapterVestigio.getItem(i).getArea());
+                    vestigio.setDistancia(adapterVestigio.getItem(i).getDistancia());
+                    vestigio.setDeterminante(adapterVestigio.getItem(i).isDeterminante());
+                    vestigio.setTipoVestigio(adapterVestigio.getItem(i).getTipoVestigio());
                     vestigio.save();
                     vestigioColisao = new VestigioColisao(vestigio.getId(), colisaoTransito);
                     vestigio.save();
                     vestigioColisao.save();
-                    vestigioColisao.toString();
                 }
 
-                dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -263,7 +247,7 @@ VestigioTransito vestigio;
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View v, final int position, long id)
             {
-                new AlertDialog.Builder(getActivity())
+                new AlertDialog.Builder(activity)
                         .setTitle("Deletar Dano")
                         .setMessage("Você deseja deletar este Dano?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
@@ -293,13 +277,6 @@ VestigioTransito vestigio;
 
     }
 
-
-    @Override
-
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
 
 }

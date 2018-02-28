@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
+
+    <CheckBox
+        android:id="@+id/cxb_Veiculo_Envolvido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Houve Veículo Envolvido"
+        android:layout_marginTop="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rltv_Dados_Veiculo_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cxb_Veiculo_Envolvido"
+        android:clickable="false">
+
+        <View
+            android:id="@+id/view_titulo_divisoria_veiculo_vida"
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:layout_height="3dp"
+            android:alpha="0.2"
+            android:layout_marginTop="20dp"/>
+
+        <CheckBox
+            android:id="@+id/cxb_Proprietario_Vida_Desconhecido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Proprietário(a) Desconhecido(a)"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view_titulo_divisoria_veiculo_vida"/>
+
+        <TextView
+            android:id="@+id/txv_Proprietario_Nome_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Proprietário"
+            android:layout_below="@+id/cxb_Proprietario_Vida_Desconhecido"
+            android:layout_marginTop="15dp"/>
+
+        <EditText
+            android:id="@+id/edt_Nome_Proprietario_Vida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Proprietario_Nome_Vida"/>
+        <TextView
+            android:id="@+id/txv_Proprietario_Num_CNH_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nº CNH"
+            android:layout_below="@+id/edt_Nome_Proprietario_Vida"/>
+
+        <EditText
+            android:id="@+id/edt_Proprietario_Num_CNH_Vida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Proprietario_Num_CNH_Vida"/>
+
+        <TextView
+            android:id="@+id/txv_Proprietario_Tipo_CNH_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo CNH"
+            android:layout_below="@id/edt_Nome_Proprietario_Vida"
+            android:layout_toRightOf="@id/edt_Proprietario_Num_CNH_Vida"
+            android:layout_marginLeft="10dp"/>
+
+        <Spinner
+            android:id="@+id/spn_Tipo_CNH_Proprietario_Vida"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Proprietario_Tipo_CNH_Vida"
+            android:layout_alignBottom="@id/edt_Proprietario_Num_CNH_Vida"/>
+
+        <View
+            android:id="@+id/view_veiculo_divisoria_Vida"
+            android:layout_height="3dp"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:alpha="0.2"
+            android:layout_below="@id/edt_Proprietario_Num_CNH_Vida"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Modelo_Veiculo_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modelo"
+            android:layout_below="@id/view_veiculo_divisoria_Vida"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/edt_Modelo_Veiculo_Vida"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Modelo_Veiculo_Vida"/>
+
+        <TextView
+            android:id="@+id/txv_Marca_Veiculo_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Marca"
+            android:layout_below="@id/view_veiculo_divisoria_Vida"
+            android:layout_toRightOf="@id/edt_Modelo_Veiculo_Vida"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/edt_Marca_Veiculo_Vida"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Marca_Veiculo_Vida"
+            android:layout_below="@id/txv_Marca_Veiculo_Vida"/>
+
+        <TextView
+            android:id="@+id/txv_Placa_Veiculo_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_Modelo_Veiculo_Vida"
+            android:layout_alignLeft="@id/edt_Modelo_Veiculo_Vida"
+            android:layout_marginTop="10dp"
+            android:text="Placa"/>
+
+        <EditText
+            android:id="@+id/edt_Placa_Letras_Veiculo_Vida"
+            android:layout_width="55dp"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:layout_alignLeft="@id/txv_Placa_Veiculo_Vida"
+            android:hint="ABC"
+            android:maxLength="3"
+            android:inputType="text"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/txv_Placa_Veiculo_Vida" />
+
+        <EditText
+            android:id="@+id/edt_Placa_Numeros_Veiculo_Vida"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:maxLength="4"
+            android:layout_alignBottom="@id/edt_Placa_Letras_Veiculo_Vida"
+            android:hint="1234"
+            android:layout_marginLeft="20dp"
+            android:inputType="number"
+            android:layout_toRightOf="@id/edt_Placa_Letras_Veiculo_Vida"/>
+
+        <TextView
+            android:id="@+id/txv_Posicao_Veiculo_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Setor do Veículo"
+            android:layout_alignLeft="@id/edt_Marca_Veiculo_Vida"
+            android:layout_alignBottom="@id/txv_Placa_Veiculo_Vida"/>
+
+        <Spinner
+            android:id="@+id/spn_Local_Veiculo_Vida"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Posicao_Veiculo_Vida"
+            android:layout_below="@id/txv_Posicao_Veiculo_Vida"
+            android:layout_marginTop="10dp"/>
+
+        <!--<TextView-->
+        <!--android:id="@+id/txv_Observacao_Veiculo_Vida"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Observação"-->
+        <!--android:layout_below="@id/edt_Modelo_Veiculo_Vida"-->
+        <!--android:layout_marginTop="20dp"/>-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/edt_Observacao_Veiculo_Vida"-->
+        <!--android:layout_width="600dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/txv_Observacao_Veiculo_Vida"/>-->
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_Salvar_Veiculo_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:layout_marginTop="70dp"
+        android:layout_below="@id/rltv_Dados_Veiculo_Vida"/>
+
+    <Button
+        android:id="@+id/btn_Cancelar_Veiculo_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/btn_Salvar_Veiculo_Vida"/>
+</RelativeLayout>

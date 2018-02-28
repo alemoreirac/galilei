@@ -1,5 +1,8 @@
 package Util;
 
+import android.os.Environment;
+import android.util.Log;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,7 +66,6 @@ public class FileUtil
                 {
                     e1.printStackTrace();
                 }
-
                 try
                 {
                     out.close();
@@ -76,7 +78,20 @@ public class FileUtil
         }
     }
 
-
+public static void deleteAll(String path)
+{
+    File dir = new File(Environment.getExternalStorageDirectory()+path);
+    if (dir.isDirectory())
+    {
+        String[] children = dir.list();
+        for (int i = 0; i < children.length; i++)
+        {
+            System.out.print("File Deleted: "+children.toString());
+            //Log.i();
+            new File(dir, children[i]).delete();
+        }
+    }
+}
 
 
 }

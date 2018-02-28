@@ -1,0 +1,99 @@
+@startuml
+
+ class OcorrenciaVida{
+  Long ocorrenciaID;
+  Date dataChamado;
+  Date dataAtendimento;
+  TipoOcorrenciaVida tipoOcorrenciaVida;
+  DocumentoOcorrencia documento;
+  String numIncidencia;
+  String delegado;
+  Orgao autoridadePresente;
+  String Viatura;
+  String Comandante;
+  AreaIntegradaSeguranca ais;
+  String orgaoOrigem;
+  String orgaoDestino;
+  PreservacaoLocal preservacaoLocal;
+  }
+
+  class EnderecoVida{
+  Endereco endereco;
+    TipoLocalCrime tipoLocalCrime;
+    String latitude;
+    String longitude;
+      IluminacaoArtificial tipoIluminacao;
+    TipoVegetacao tipoVegetacao;
+    TipoAberturaLocal localAberto;
+    boolean veiculoEnvolvido;
+  String modeloVeiculo;
+    String marcaVeiculo;
+    String placaVeiculo;
+    LocalVeiculo localVeiculo;
+    String nomeProprietario;
+    Meteorologia condicoesClimaticas;
+    String numeroDocumentoProprietario;
+    TipoCNH categoriaProprietario;
+    Pavimentacao pavimentacao;
+    LocalObjeto posicaoVia;
+    Long ocorrenciaId;
+    TipoVia tipoVia;
+    String observacao;
+    LocalPraia localPraia;
+  Comodo comodo;
+  TipoLocal localResidencia;
+  Gravacao gravacaoEndereco;
+  }
+
+  class EnvolvidoVida{
+    String nome;
+      DocumentoPessoa documentoTipo;
+      String documentoValor;
+      TipoEnvolvidoTransito tipoEnvolvido;
+      Date nascimento;
+      Genero genero;
+      String vestes;
+      Gravacao gravacaoEnvolvido;
+      String Observacoes;
+      int periodoMorte;
+      UnidadeTempo unidadeTempo;
+      boolean morteViolenta;
+      PosicaoBraco posicaoBracoEsquerdo;
+      PosicaoBraco posicaoBracoDireito;
+      PosicaoPerna posicaoPernaEsquerda;
+      PosicaoPerna posicaoPernaDireita;
+      PosicaoTorax posicaoCorpo;
+      PosicaoCabeca posicaoCabeca;
+  }
+  class Lesao{
+    LocalizacaoLesao localizacaoLesao;
+    boolean compatibilidade;
+    NaturezaLesao natureza;
+    Secao secaoLesao;
+    ParteCorpo parteCorpo;
+  }
+
+  class VestigioVida{
+   TipoVestigioVida tipoVestigio;
+      String observacao;
+      String numDocumento;
+      DocumentoPessoa tipoDocumento;
+      TipoRecolhimentoAmostra_Papiloscopia tipoRecolhimentoAmostraPapiloscopia;
+      String objetoRecolhidoPapiloscopia;
+      TiposVestigioBiologico tiposVestigioBiologico;
+      TipoRecolhimentoAmostra_Biologica tipoRecolhimentoAmostraBiologica;
+      TipoArma tipoArma;
+      String numeracaoArma;
+      Calibre calibreArma;
+      int quantidadeMunicao;
+      Calibre calibreMunicao;
+      boolean condicaoMunicao;
+      TiposMunicao tiposMunicao;
+      String objetoRecolhido;
+  }
+
+  OcorrenciaVida "1" -- "1" EnderecoVida
+  OcorrenciaVida "1" -- "0..*" EnvolvidoVida
+  Lesao "0..*" -- "1" EnvolvidoVida
+  OcorrenciaVida "1" -- "0..*" VestigioVida
+@enduml

@@ -6,7 +6,7 @@ package Enums.Vida;
 
 public enum PosicaoCabeca
 {
-    APOIADA_SOLO("Apoiada ao solo"), SOBRE_BRACO("Sobre os braços");
+    APOIADA_SOLO("Apoiada ao solo"), SOBRE_BRACO("Sobre os braços"),APOIADA_TORAX("Apoiada no tórax");
 
     String valor;
 

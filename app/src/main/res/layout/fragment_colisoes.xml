@@ -1,22 +1,20 @@
 
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="50dp"
-    tools:context="Fragments.GerenciarColisoes">
+    tools:context="Fragments.Fragments.GerenciarColisoes">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<!--
-        <ListView
-            android:id="@+id/lstv_Colisoes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="300dp"
+        android:background="@drawable/stroke_border"
+        android:layout_height="match_parent"
+        android:id="@+id/lista_colisoes"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_Colisao"
@@ -27,14 +25,821 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:src="@drawable/fab_plus"/>
-    </RelativeLayout>
--->
-    <ImageView
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/desenvolvimento"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
 
-    </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+        <ListView
+            android:id="@+id/lstv_Colisoes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:choiceMode="singleChoice"/>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+<HorizontalScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_toRightOf="@id/lista_colisoes"
+    android:layout_margin="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rltv_Base">
+        <!--
+                <ListView
+                    android:id="@+id/lstv_Colisoes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </ListView>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_Colisao"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/fab_plus"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/desenvolvimento"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        -->
+
+        <!-- ########## INÍCIO CONTROLES VEÍCULO CULPADO ######### -->
+
+
+        <RelativeLayout
+            android:layout_width="430dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rltv_Veiculo1"
+            android:background="@drawable/border_gray"
+            android:padding="8dp"
+            >
+            <TextView
+                android:id="@+id/txv_Veiculo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Veículo 1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                />
+            <Spinner
+                android:id="@+id/spn_Veiculo1"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Veiculo1"
+                android:layout_below="@+id/txv_Veiculo1"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/txv_Endereco_Veiculo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Endereço Veículo 1"
+                android:layout_below="@id/spn_Veiculo1"
+                android:layout_marginTop="10dp"
+                android:layout_alignLeft="@id/spn_Veiculo1" />
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Endereco_Veiculo1"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Endereco_Veiculo1"
+                android:layout_below="@+id/txv_Endereco_Veiculo1"/>
+
+
+
+
+            <TextView
+                android:id="@+id/txv_Sentido_Veiculo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sentido Veiculo 1"
+                android:layout_below="@+id/spn_Endereco_Veiculo1"
+                android:layout_alignLeft="@id/txv_Veiculo1"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Sentido_Veiculo1"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Veiculo1"
+                android:layout_below="@+id/txv_Sentido_Veiculo1"/>
+
+            <TextView
+                android:id="@+id/txv_Faixa_Veiculo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Faixa Veiculo 1"
+                android:layout_toRightOf="@id/spn_Sentido_Veiculo1"
+                android:layout_alignBottom="@id/txv_Sentido_Veiculo1"
+                android:layout_marginTop="15dp"/>
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Faixa_Veiculo1"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Faixa_Veiculo1"
+                android:layout_below="@+id/txv_Faixa_Veiculo1"/>
+
+
+
+            <CheckBox
+                android:id="@+id/cxb_Veiculo1_Culpado"
+                android:layout_alignLeft="@id/txv_Veiculo1"
+                android:layout_below="@id/spn_Sentido_Veiculo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Causador"
+                android:layout_marginTop="15dp"/>
+            <CheckBox
+                android:id="@+id/cxb_Veiculo1_ContraMao"
+                android:layout_alignLeft="@id/txv_Faixa_Veiculo1"
+                android:layout_alignBottom="@id/cxb_Veiculo1_Culpado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Contra-Mão"  />
+            <TextView
+                android:id="@+id/txv_Causa_Veiculo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Causa Veiculo 1"
+                android:layout_alignLeft="@id/spn_Sentido_Veiculo1"
+                android:layout_below="@id/cxb_Veiculo1_Culpado"
+                android:layout_marginTop="15dp"/>
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Causa_Veiculo1"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Causa_Veiculo1"
+                android:clickable="false"
+                android:layout_below="@+id/txv_Causa_Veiculo1"   />
+
+
+            <RelativeLayout
+                android:id="@+id/rltv_block_Veiculo1"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="@color/ms_black"
+                android:alpha="0.85"
+                android:visibility="invisible"
+                android:layout_below="@id/spn_Endereco_Veiculo1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/ms_white"
+                    android:text="Dados ignorados devido à inconclusão sobre a interação"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
+
+        <!-- ######### FIM CONTROLES VEÍCULO 1 ############ -->
+        <RelativeLayout
+            android:layout_width="430dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rltv_Veiculo2"
+            android:layout_toRightOf="@id/rltv_Veiculo1"
+            android:layout_marginLeft="20dp"
+            android:visibility="invisible"
+            android:background="@drawable/border_gray"
+            android:padding="10dp"
+            >
+            <TextView
+                android:id="@+id/txv_Veiculo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Veículo 2"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                />
+            <Spinner
+                android:id="@+id/spn_Veiculo2"
+                android:layout_width="460dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Veiculo2"
+                android:layout_below="@+id/txv_Veiculo2"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/txv_Endereco_Veiculo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Endereço Veículo 2"
+                android:layout_below="@id/spn_Veiculo2"
+                android:layout_marginTop="10dp"
+                android:layout_alignLeft="@id/spn_Veiculo2" />
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Endereco_Veiculo2"
+                android:layout_width="460dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Endereco_Veiculo2"
+                android:layout_below="@+id/txv_Endereco_Veiculo2"/>
+
+            <TextView
+                android:id="@+id/txv_Sentido_Veiculo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sentido Veiculo 2"
+                android:layout_below="@+id/spn_Endereco_Veiculo2"
+                android:layout_alignLeft="@id/txv_Veiculo2"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Sentido_Veiculo2"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Veiculo2"
+                android:layout_below="@+id/txv_Sentido_Veiculo2"/>
+
+            <TextView
+                android:id="@+id/txv_Faixa_Veiculo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Faixa Veiculo 2"
+                android:layout_toRightOf="@id/spn_Sentido_Veiculo2"
+                android:layout_alignBottom="@id/txv_Sentido_Veiculo2"
+                android:layout_marginTop="15dp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Faixa_Veiculo2"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Faixa_Veiculo2"
+                android:layout_below="@+id/txv_Faixa_Veiculo2"/>
+
+
+            <CheckBox
+
+                android:id="@+id/cxb_Veiculo2_Culpado"
+                android:layout_alignLeft="@id/txv_Veiculo2"
+                android:layout_below="@id/spn_Sentido_Veiculo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Culpado"
+                android:layout_marginTop="10dp"/>
+
+            <CheckBox
+                android:id="@+id/cxb_Veiculo2_ContraMao"
+                android:layout_alignLeft="@id/txv_Faixa_Veiculo2"
+                android:layout_alignBottom="@id/cxb_Veiculo2_Culpado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Contra-Mão"  />
+
+
+            <TextView
+                android:id="@+id/txv_Causa_Veiculo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Causa Veiculo 2"
+                android:layout_alignLeft="@id/spn_Sentido_Veiculo2"
+                android:layout_below="@id/cxb_Veiculo2_Culpado"
+                android:clickable="false"
+                android:layout_marginTop="15dp"/>
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Causa_Veiculo2"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Causa_Veiculo2"
+
+                android:layout_below="@+id/txv_Causa_Veiculo2"/>
+
+
+            <RelativeLayout
+                android:id="@+id/rltv_block_Veiculo2"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="@color/ms_black"
+                android:alpha="0.85"
+                android:visibility="invisible"
+                android:layout_below="@id/spn_Endereco_Veiculo2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/ms_white"
+                    android:text="Dados ignorados devido à inconclusão sobre a interação"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="430dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rltv_Envolvido"
+            android:visibility="invisible"
+            android:background="@drawable/border_gray"
+            android:layout_alignLeft="@id/rltv_Veiculo2"
+            android:padding="10dp">
+
+
+            <TextView
+                android:id="@+id/txv_Envolvido_Dinamica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pedestre"
+                android:layout_marginTop="15dp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Envolvido_Dinamica"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Envolvido_Dinamica"
+                android:layout_below="@+id/txv_Envolvido_Dinamica"/>
+
+            <TextView
+                android:id="@+id/txv_Envolvido_Posicao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Posição do Pedestre"
+                android:layout_below="@id/spn_Envolvido_Dinamica"
+                android:layout_marginTop="15dp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Envolvido_Posicao"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Envolvido_Dinamica"
+                android:layout_below="@+id/txv_Envolvido_Posicao"/>
+
+            <TextView
+                android:id="@+id/txv_Envolvido_Distancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distância (metros)"
+                android:layout_below="@id/spn_Envolvido_Posicao"
+                android:layout_marginTop="15dp"/>
+
+            <EditText
+                android:id="@+id/edt_Envolvido_Distancia"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_below="@id/txv_Envolvido_Distancia"
+                android:clickable="false"
+
+                android:layout_marginTop="5dp"/>
+
+            <CheckBox
+                android:id="@+id/cxb_Envolvido_Culpado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Causador"
+                android:layout_below="@id/edt_Envolvido_Distancia"/>
+            <!--
+
+                        <TextView
+                            android:id="@+id/txv_Causa_Envolvido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Causa Pedestre"
+                            android:layout_alignLeft="@id/spn_Envolvido_Posicao"
+                            android:layout_below="@id/edt_Envolvido_Distancia"
+                            android:layout_marginTop="15dp"/>
+                        <Spinner
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/spn_Causa_Envolvido"
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/txv_Envolvido_Dinamica"
+                            android:layout_below="@+id/txv_Causa_Envolvido"/> -->
+
+
+            <RelativeLayout
+                android:id="@+id/rltv_block_Envolvido"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/ms_black"
+                android:alpha="0.85"
+                android:visibility="invisible"
+                android:layout_below="@id/spn_Envolvido_Posicao">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/ms_white"
+                    android:text="Dados ignorados devido à inconclusão sobre a interação"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="430dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rltv_Objeto"
+            android:layout_alignLeft="@id/rltv_Veiculo2"
+            android:visibility="invisible"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txv_Objeto_Dinamica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Objeto"
+                android:layout_marginTop="15dp"/>
+
+            <EditText
+                android:layout_marginTop="5dp"
+                android:id="@+id/edt_Objeto_Descricao"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Objeto_Dinamica"
+                android:layout_below="@+id/txv_Objeto_Dinamica"/>
+
+            <TextView
+                android:id="@+id/txv_Objeto_Posicao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Posição do Objeto"
+                android:layout_below="@id/edt_Objeto_Descricao"
+                android:layout_marginTop="15dp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Objeto_Posicao"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Objeto_Dinamica"
+                android:layout_below="@+id/txv_Objeto_Posicao"/>
+
+
+            <TextView
+                android:id="@+id/txv_Objeto_Observacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Observações do Objeto"
+                android:layout_below="@id/spn_Objeto_Posicao"
+                android:layout_marginTop="15dp"/>
+
+            <EditText
+                android:id="@+id/edt_Objeto_Observacao"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_below="@id/txv_Objeto_Observacao"
+                android:layout_marginTop="5dp"
+                android:lines="5"
+                android:inputType="textMultiLine"
+                android:gravity="top|left"
+                android:background="@color/lightGray"/>
+
+
+            <RelativeLayout
+                android:id="@+id/rltv_block_Objeto"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/ms_black"
+                android:alpha="0.85"
+                android:visibility="invisible"
+                android:layout_below="@id/edt_Objeto_Descricao">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/ms_white"
+                    android:text="Dados ignorados devido à inconclusão sobre a interação"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="430dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rltv_Animal"
+            android:layout_alignLeft="@id/rltv_Veiculo2"
+            android:visibility="invisible"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txv_Animal_Dinamica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animal"
+                android:layout_marginTop="15dp"/>
+
+            <EditText
+                android:layout_marginTop="5dp"
+                android:id="@+id/edt_Animal_Descricao"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Animal_Dinamica"
+                android:layout_below="@+id/txv_Animal_Dinamica"/>
+
+            <TextView
+                android:id="@+id/txv_Animal_Posicao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Posição do Animal"
+                android:layout_below="@id/edt_Animal_Descricao"
+                android:layout_marginTop="15dp"/>
+
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:id="@+id/spn_Animal_Posicao"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Animal_Dinamica"
+                android:layout_below="@+id/txv_Animal_Posicao"/>
+
+
+            <TextView
+                android:id="@+id/txv_Animal_Observacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Observações sobre o Animal"
+                android:layout_below="@id/spn_Animal_Posicao"
+                android:layout_marginTop="15dp"/>
+
+            <EditText
+                android:id="@+id/edt_Animal_Observacao"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:lines="5"
+                android:inputType="textMultiLine"
+                android:gravity="top|left"
+                android:background="@color/lightGray"
+                android:layout_below="@id/txv_Animal_Observacao"
+                android:layout_alignLeft="@id/txv_Animal_Observacao"/>
+
+
+
+            <RelativeLayout
+                android:id="@+id/rltv_block_Animal"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/ms_black"
+                android:alpha="0.85"
+                android:visibility="invisible"
+                android:layout_below="@id/edt_Animal_Descricao">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/ms_white"
+                    android:text="Dados ignorados devido à inconclusão sobre a interação"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="430dp"
+            android:layout_height="230dp"
+            android:id="@+id/rltv_Nenhum"
+            android:layout_alignLeft="@id/rltv_Veiculo2"
+            android:visibility="invisible"
+            android:background="@color/lightGray">
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Apenas o veículo 1 participou no acidente."
+                android:layout_width="wrap_content"
+                android:layout_height="270dp"
+                android:gravity="center"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txv_Tipo_Interacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de Interação"
+            android:layout_below="@id/rltv_Veiculo1"
+            android:layout_alignLeft="@id/rltv_Veiculo1"
+            android:layout_marginTop="30dp"/>
+
+        <Spinner
+            android:layout_marginTop="15dp"
+            android:id="@+id/spn_Tipo_Interacao"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Tipo_Interacao"
+            android:layout_alignLeft="@id/rltv_Veiculo1"/>
+
+        <TextView
+            android:id="@+id/txv_Observacoes_Interacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Observações: "
+            android:layout_below="@id/spn_Tipo_Interacao"/>
+
+        <TextView
+            android:id="@+id/txv_Audio_Colisao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/txv_Tipo_Interacao"
+            android:layout_toRightOf="@id/spn_Tipo_Interacao"
+            android:text="Áudio"
+            android:layout_marginLeft="30dp"/>
+
+        <ImageButton
+            android:id="@+id/imgb_Audio_Veiculo_Vida"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/ms_white"
+            android:src="@drawable/mic_icon"
+            android:scaleType="centerCrop"
+            android:layout_below="@id/txv_Audio_Colisao"
+            android:layout_alignLeft="@id/txv_Audio_Colisao"
+            android:layout_marginTop="8dp"/>
+
+        <!--<CheckBox-->
+        <!--android:id="@+id/cxb_Inconclusivo"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Colisão Inconclusiva"-->
+        <!--android:layout_marginLeft="50dp"/>-->
+
+        <!--<Spinner-->
+        <!--android:id="@+id/spn_Justificativa_Inconclusao"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:visibility="invisible"-->
+        <!--android:layout_alignBottom="@id/cxb_Inconclusivo"-->
+        <!--android:layout_toRightOf="@+id/cxb_Inconclusivo"/>-->
+
+        <info.hoang8f.android.segmented.SegmentedGroup
+            xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sgm_Dinamica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            segmentedgroup:sc_border_width="2dp"
+            segmentedgroup:sc_corner_radius="10dp"
+            android:layout_alignLeft="@id/rltv_Veiculo2"
+            android:layout_marginLeft="75dp"
+            android:layout_below="@id/rltv_Veiculo1">
+
+            <RadioButton
+                android:id="@+id/rbtn_Opcao_Veiculo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Veiculo"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/rbtn_Opcao_Objeto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Objeto"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/rbtn_Opcao_Pedestre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pedestre"
+                style="@style/RadioButton" />
+            <RadioButton
+                android:id="@+id/rbtn_Opcao_Animal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animal"
+                style="@style/RadioButton" />
+            <RadioButton
+                android:id="@+id/rbtn_Opcao_Nenhum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nenhum"
+                style="@style/RadioButton" />
+        </info.hoang8f.android.segmented.SegmentedGroup>
+
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_Salvar_Colisao"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:text="Salvar"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_Cancelar_Colisao"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_alignBottom="@id/btn_Salvar_Colisao"-->
+            <!--android:text="@string/cancelar"-->
+            <!--android:layout_toRightOf="@id/btn_Salvar_Colisao"-->
+            <!--android:layout_marginLeft="60dp"/>-->
+
+        <EditText
+            android:id="@+id/edt_Observacao"
+            android:layout_height="40dp"
+            android:background="@drawable/border_gray"
+            android:layout_width="1100dp"
+            android:inputType="textMultiLine"
+            android:gravity="top|left"
+            android:text=""
+            android:layout_below="@+id/txv_Observacoes_Interacao"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_Inconclusao"
+            android:drawableLeft="@drawable/inconclusivo"
+            style="@android:style/Widget.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgb_Audio_Veiculo_Vida"
+            android:layout_alignBottom="@id/spn_Tipo_Interacao"
+            android:layout_marginLeft="35dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/inconclusivo" />
+
+            <TextView
+                android:id="@+id/txv_inconclusao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="Inconclusivo"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_Vestigio"
+            android:drawableLeft="@drawable/vestigio"
+            style="@android:style/Widget.Button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ll_Inconclusao"
+            android:layout_alignBottom="@id/ll_Inconclusao"
+            android:layout_marginLeft="10dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/vestigio" />
+
+            <TextView
+                android:id="@+id/imgb_vestigio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="Vestigio" />
+
+        </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</HorizontalScrollView>
+
+
+</RelativeLayout>

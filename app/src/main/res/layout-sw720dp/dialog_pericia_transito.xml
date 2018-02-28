@@ -71,10 +71,6 @@
         android:layout_marginTop="10dp"/>
 
 
-
-
-
-
     <TextView
         android:id="@+id/txv_dialog_TipoPericia"
         android:text="Tipo de Ocorrência"
@@ -99,6 +95,7 @@
         android:text="@string/iniciar_pericia"
         android:layout_alignLeft="@+id/edt_dialog_NumIncidencia"
         android:layout_below="@+id/spn_dialog_TipoOcorrencia"/>
+
     <Button
         android:id="@+id/btn_dialog_Cancelar"
         android:layout_width="wrap_content"
@@ -107,6 +104,5 @@
         android:layout_marginTop="15dp"
         android:text="@string/cancelar"
         android:layout_alignRight="@id/spn_dialog_Ano_Incidencia"
-        android:layout_alignBottom="@id/btn_dialog_IniciarPericia"
-        />
+        android:layout_alignBottom="@id/btn_dialog_IniciarPericia"/>
 </RelativeLayout>

@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:text="Tipo de Dano"
+        android:text="Terço do Dano"
         android:id="@+id/txv_dialog_TercoDano"
         android:layout_toRightOf="@id/spn_dialog_TipoDano"/>
 

@@ -99,7 +99,7 @@ public class SchemaGenerator {
         boolean isSuccess = false;
 
         try {
-            List<String> files = Arrays.asList(getAssets().list("sugar_upgrades"));
+            List<String> files = Arrays.asList(getAssets().list("sugar_upgrades111"));
             Collections.sort(files, new NumberComparator());
             for (String file : files) {
                 if(ManifestHelper.isDebugEnabled()) {
@@ -110,7 +110,7 @@ public class SchemaGenerator {
                     int version = Integer.valueOf(file.replace(".sql", ""));
 
                     if ((version > oldVersion) && (version <= newVersion)) {
-                        executeScript(db,"sugar_upgrades/" ,file);
+                        executeScript(db, "sugar_upgrades111/",file);
                         isSuccess = true;
                     }
                 } catch (NumberFormatException e) {

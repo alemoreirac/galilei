@@ -1,1 +1,0 @@
-ALTER TABLE OCORRENCIA_TRANSITO ADD COLUMN num_incidenciaa varchar(9);

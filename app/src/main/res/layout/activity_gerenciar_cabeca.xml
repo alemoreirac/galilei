@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.pefoce.peritolocal.GerenciarCabeca"
+    android:background="@color/ms_white">
+
+
+
+    <TextView
+        android:id="@+id/txv_Nome_Envolvido_Lesoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Nome do Envolvido: "
+        android:textSize="18dp"
+        android:layout_margin="8dp"/>
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sgm_Direita_Esquerda_Cabeca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="30dp"
+        android:orientation="horizontal"
+        segmentedgroup:sc_border_width="2dp"
+        segmentedgroup:sc_corner_radius="10dp"
+        segmentedgroup:sc_tint_color="@color/colorPrimary">
+
+        <RadioButton
+            android:id="@+id/rbtn_Opcao_Esquerda_Cabeca"
+            style="@style/RadioButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Esquerda"
+            android:textSize="18dp"/>
+
+        <RadioButton
+            android:id="@+id/rbtn_Opcao_Direita_Cabeca"
+            style="@style/RadioButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Direita"
+            android:textSize="18dp"/>
+
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+    <RelativeLayout
+        android:id="@+id/rltv_Cabeca_Masculina_Direita"
+        android:layout_width="1000dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/imgv_Cabeca_Masculina_Direita"
+            android:layout_width="390dp"
+            android:layout_height="490dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/masculino_cabeca_direita"/>
+
+        <TextView
+            android:id="@+id/txv_Parietal_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/imgv_Cabeca_Masculina_Direita"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="300dp"
+            android:onClick="addLesaoCabeca"
+            android:text="Parietal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Frontal_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Parietal_Masculina_Direita"
+            android:layout_marginLeft="190dp"
+            android:layout_toRightOf="@id/txv_Parietal_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Frontal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Ocular_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Frontal_Masculina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Ocular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Nasal_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Ocular_Masculina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="85dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Nasal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Bucal_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Nasal_Masculina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="70dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Bucal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Mentoniana_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Bucal_Masculina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Mentoniana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Malar_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Masculina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@id/txv_Mentoniana_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Malar"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Occipital_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Parietal_Masculina_Direita"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="105dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Occipital"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Auricular_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Occipital_Masculina_Direita"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="144dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Auricular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Cervical_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Auricular_Masculina_Direita"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="125dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Masculina_Direita"
+            android:text="Cervical"
+            android:textColor="@color/colorPrimary"
+            android:onClick="addLesaoCabeca"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Carotidiana_Masculina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Masculina_Direita"
+            android:layout_marginRight="35dp"
+            android:layout_toLeftOf="@id/txv_Malar_Masculina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Carotidiana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rltv_Cabeca_Masculina_Esquerda"
+        android:layout_width="1000dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/imgv_Cabeca_Masculina_Esquerda"
+            android:layout_width="390dp"
+            android:layout_height="490dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/masculino_cabeca_esquerda"/>
+
+        <TextView
+            android:id="@+id/txv_Parietal_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="620dp"
+            android:onClick="addLesaoCabeca"
+            android:text="Parietal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Frontal_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Parietal_Masculina_Esquerda"
+            android:layout_alignLeft="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:layout_marginLeft="50dp"
+            android:onClick="addLesaoCabeca"
+            android:text="Frontal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Ocular_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Frontal_Masculina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Ocular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Nasal_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Ocular_Masculina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="85dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Nasal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Bucal_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Nasal_Masculina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="70dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Bucal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Mentoniana_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Bucal_Masculina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Mentoniana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Malar_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/txv_Mentoniana_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Malar"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Occipital_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Parietal_Masculina_Esquerda"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="105dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Occipital"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Auricular_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Occipital_Masculina_Esquerda"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="144dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Auricular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Cervical_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Auricular_Masculina_Esquerda"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="125dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Cervical"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Carotidiana_Masculina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Masculina_Esquerda"
+            android:layout_marginLeft="35dp"
+            android:layout_toRightOf="@id/txv_Malar_Masculina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Carotidiana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Cabeca_Feminina_Direita"
+        android:layout_width="1000dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/imgv_Cabeca_Feminina_Direita"
+            android:layout_width="390dp"
+            android:layout_height="490dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/feminino_cabeca_direita"/>
+
+        <TextView
+            android:id="@+id/txv_Parietal_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/imgv_Cabeca_Feminina_Direita"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="300dp"
+            android:onClick="addLesaoCabeca"
+            android:text="Parietal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Frontal_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Parietal_Feminina_Direita"
+            android:layout_marginLeft="190dp"
+            android:layout_toRightOf="@id/txv_Parietal_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Frontal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Ocular_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Frontal_Feminina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Ocular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Nasal_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Ocular_Feminina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="85dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Nasal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Bucal_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Nasal_Feminina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="70dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Bucal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Mentoniana_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Bucal_Feminina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Mentoniana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Malar_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Feminina_Direita"
+            android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@id/txv_Mentoniana_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Malar"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Occipital_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Parietal_Feminina_Direita"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="105dp"
+            android:onClick="addLesaoCabeca"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Feminina_Direita"
+            android:text="Occipital"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Auricular_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Occipital_Feminina_Direita"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="144dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Auricular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Cervical_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Auricular_Feminina_Direita"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="125dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Equinael"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Carotidiana_Feminina_Direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Feminina_Direita"
+            android:layout_marginRight="35dp"
+            android:layout_toLeftOf="@id/txv_Malar_Feminina_Direita"
+            android:onClick="addLesaoCabeca"
+            android:text="Carotidiana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Cabeca_Feminina_Esquerda"
+        android:layout_width="1000dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imgv_Cabeca_Feminina_Esquerda"
+            android:layout_width="390dp"
+            android:layout_height="490dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/feminino_cabeca_esquerda"/>
+
+        <TextView
+            android:id="@+id/txv_Parietal_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="620dp"
+            android:onClick="addLesaoCabeca"
+            android:text="Parietal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Frontal_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Parietal_Feminina_Esquerda"
+            android:layout_alignLeft="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:layout_marginLeft="50dp"
+            android:onClick="addLesaoCabeca"
+            android:text="Frontal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Ocular_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Frontal_Feminina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Ocular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Nasal_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Ocular_Feminina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="85dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Nasal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Bucal_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Nasal_Feminina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="70dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Bucal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Mentoniana_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Bucal_Feminina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_toLeftOf="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Mentoniana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Malar_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/txv_Mentoniana_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Malar"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Occipital_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Parietal_Feminina_Esquerda"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="105dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Occipital"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Auricular_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Occipital_Feminina_Esquerda"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="144dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Auricular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Cervical_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Auricular_Feminina_Esquerda"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="125dp"
+            android:layout_toRightOf="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Cervical"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/txv_Carotidiana_Feminina_Esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgv_Cabeca_Feminina_Esquerda"
+            android:layout_marginLeft="35dp"
+            android:layout_toRightOf="@id/txv_Malar_Feminina_Esquerda"
+            android:onClick="addLesaoCabeca"
+            android:text="Carotidiana"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_Voltar_Cabeca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="30dp"
+        android:text="Voltar"/>
+
+</RelativeLayout>
+
+

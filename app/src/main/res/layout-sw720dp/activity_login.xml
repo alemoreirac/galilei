@@ -44,7 +44,7 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="720dp"
         android:layout_below="@+id/edt_senha"
         android:layout_marginTop="7dp"
         android:layout_centerHorizontal="true"

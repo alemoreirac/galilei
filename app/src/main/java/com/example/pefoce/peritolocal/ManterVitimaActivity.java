@@ -79,7 +79,7 @@ public class ManterVitimaActivity extends AppCompatActivity {
 
                 Toast.makeText(v.getContext(), "Vítima salva com Sucesso!", Toast.LENGTH_LONG).show();
 
-                Intent it = new Intent(v.getContext(),ManterPericia.class);
+                Intent it = new Intent(v.getContext(),ManterPericiaTransito.class);
                 it.putExtra("OcorrenciaId",ocorrenciaTransito.getId());
                 it.putExtra("FragmentPicker","Vítima");
                 startActivity(it);
@@ -94,7 +94,7 @@ public class ManterVitimaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent it = new Intent(v.getContext(),ManterPericia.class);
+                Intent it = new Intent(v.getContext(),ManterPericiaTransito.class);
                 it.putExtra("OcorrenciaId",ocorrenciaTransito.getId());
                 it.putExtra("FragmentPicker","Vítima");
                 startActivity(it);
@@ -182,8 +182,11 @@ public class ManterVitimaActivity extends AppCompatActivity {
         vitima.setDocumentoValor(edtNumDocumento.getText().toString());
         //vitima.setFatal(cxbFatal.isChecked());
         vitima.setDataNascimentoString(txvNascimento.getText().toString());
-        vitima.setDocumentoTipo(BuscadorEnum.BuscarTipoDocumento(spnTipoDocumento.getSelectedItem().toString()));
-        vitima.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
+        //vitima.setDocumentoTipo(BuscadorEnum.BuscarTipoDocumento(spnTipoDocumento.getSelectedItem().toString()));
+        vitima.setDocumentoTipo(DocumentoPessoa.valueOf(DocumentoPessoa.class,spnTipoDocumento.getSelectedItem().toString()));
+
+        //vitima.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
+        vitima.setGenero(Genero.valueOf(Genero.class,spnGenero.getSelectedItem().toString()));
 
         vitima.save();
 

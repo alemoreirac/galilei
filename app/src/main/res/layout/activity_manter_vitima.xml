@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_manter_vitima"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.pefoce.peritolocal.ManterVitimaActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_manter_vitima"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                tools:context="com.example.pefoce.peritolocal.ManterVitimaActivity">
 
 
     <TextView
@@ -92,7 +92,6 @@
         android:id="@+id/txv_DataNascimentoVitima"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="20dp"
         android:layout_below="@+id/spn_TipoCNHVitima"
         android:text="@string/data_nascimento" />
@@ -117,10 +116,7 @@
         android:text="@string/vitima_fatal"
         android:layout_marginLeft="40dp"
         android:layout_toRightOf="@+id/txv_DataNascimentoVitima_Valor"
-        android:layout_alignBottom="@id/txv_DataNascimentoVitima_Valor"    />
-
-
-
+        android:layout_alignBottom="@id/txv_DataNascimentoVitima_Valor"/>
 
     <Button
         android:id="@+id/btn_Salvar_Vitima"

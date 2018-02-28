@@ -27,7 +27,7 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
     @Expose
     Long ocorrenciaID;
     @Expose
-    private Date dataOcorrencia;
+    private Date dataChamado;
     @Expose
     private Date dataAtendimento;
     @Expose
@@ -105,7 +105,7 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
     {
             this.dataAtendimento = TempoUtil.stringToDate("01/01/2000");
             //this.dataChamado = TempoUtil.stringToDate("01/01/2000");
-            this.dataOcorrencia = TempoUtil.stringToDate("01/01/2000");
+            this.dataChamado = TempoUtil.stringToDate("01/01/2000");
             this.setViatura("");
 
     }
@@ -117,10 +117,6 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
     public void setOrgaoDestino(String orgaoDestino) {
         this.orgaoDestino = orgaoDestino;
     }
-
-
-
-
 
     public Date getDataAtendimento() {
         return dataAtendimento;
@@ -136,10 +132,50 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
         return timeFormat.format(this.dataAtendimento);
     }
 
+    public String getDataChamadoString()
+    {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return timeFormat.format(this.dataChamado);
+    }
+
     public String getDataPath()
     {
             SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy/MM/dd");
             return timeFormat.format(this.dataAtendimento);
+    }
+
+    public void setHoraChamado(String s)
+    {
+        final Calendar c  = Calendar.getInstance();
+        c.setTime(TempoUtil.stringToTime(s));
+
+        int hr = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+
+        final Calendar cSave = Calendar.getInstance();
+        cSave.setTime(this.getDataChamado());
+        cSave.set(Calendar.HOUR_OF_DAY,hr);
+        cSave.set(Calendar.MINUTE,min);
+
+        this.dataChamado= cSave.getTime();
+    }
+
+    public void setDataChamado(String s)
+    {
+        final Calendar c  = Calendar.getInstance();
+        c.setTime(TempoUtil.stringToDate(s));
+
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        final Calendar cSave = Calendar.getInstance();
+        cSave.setTime(this.getDataChamado());
+        cSave.set(Calendar.YEAR,year);
+        cSave.set(Calendar.MONTH,month);
+        cSave.set(Calendar.DAY_OF_MONTH,day);
+
+        this.dataChamado = cSave.getTime();
     }
 
     public void setHoraAtendimento(String s)
@@ -177,36 +213,25 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
     }
 
 
-    public void setDataAtendimento(int ano,int mes, int dia)
-    {
-
-        final Calendar c = Calendar.getInstance();
-        c.setTime(this.getDataAtendimento());
-
-        c.set(ano,mes,dia);
-
-        this.setDataAtendimento(c.getTime());
-
-    }
-
-
-    public Date getDataOcorrencia() {
-        return dataOcorrencia;
+    public Date getDataChamado() {
+        return dataChamado;
     }
 
     public String getHoraAtendimentoString()
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        return timeFormat.format(this.dataAtendimento)+"h ";
+        return timeFormat.format(this.dataAtendimento);
     }
 
-    public String getHoraOcorrenciaString()
+    public String getHoraChamadoString()
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        return timeFormat.format(this.dataOcorrencia);
+        return timeFormat.format(this.dataChamado);
     }
-    public void setDataOcorrencia(Date dataOcorrencia) {
-        this.dataOcorrencia = dataOcorrencia;
+
+
+    public void setDataChamado(Date dataChamado) {
+        this.dataChamado = dataChamado;
     }
 
 

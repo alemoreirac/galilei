@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/selector">
+
+
+    <View android:id="@+id/background"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="#FFF"/>
+
+    <TextView
+        android:id="@+id/txv_row_Nome_Envolvido_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alessandro Moreira Collado"
+        android:textSize="25dp"/>
+    <TextView
+        android:id="@+id/txv_row_Idade_Envolvido_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_row_Nome_Envolvido_Vida"
+        android:layout_below="@+id/txv_row_Nome_Envolvido_Vida"
+        android:text="23 anos"/>
+    <TextView
+        android:id="@+id/txv_row_Genero_Envolvido_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_row_Nome_Envolvido_Vida"
+        android:layout_below="@+id/txv_row_Idade_Envolvido_Vida"
+        android:text="Vítima fatal"/>
+
+</RelativeLayout>

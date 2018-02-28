@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_gerenciar_corpo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.pefoce.peritolocal.GerenciarCorpo"
+    android:background="@color/ms_white">
+
+    <TextView
+        android:id="@+id/txv_Nome_Envolvido_Lesoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Nome do Envolvido: "
+        android:textSize="18dp"
+        android:layout_margin="8dp"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Corpo_Feminino"
+        android:layout_width="1000dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+
+
+        <ImageView
+            android:id="@+id/imgv_Corpo_Feminino"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/feminino_corpo"/>
+
+        <TextView
+            android:id="@+id/txv_Cabeca_Feminina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/imgv_Corpo_Feminino"
+            android:text="Cabeça"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+        <TextView
+            android:id="@+id/txv_Torax_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txv_Cabeca_Feminina"
+            android:layout_marginTop="99dp"
+            android:layout_toLeftOf="@+id/imgv_Corpo_Feminino"
+            android:text="Tórax"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+        <TextView
+            android:id="@+id/txv_Bracos_Femininos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Torax_Feminino"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/imgv_Corpo_Feminino"
+            android:text="Braços"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/txv_Perna_Esquerda_Feminina"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/txv_Braco_Esquerdo_Feminino"-->
+            <!--android:layout_marginTop="200dp"-->
+            <!--android:layout_toRightOf="@id/imgv_Corpo_Feminino"-->
+            <!--android:text="Perna Esquerda"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:textSize="30dp"/>-->
+
+        <TextView
+            android:id="@+id/txv_Pernas_Femininas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Bracos_Femininos"
+            android:layout_marginTop="189dp"
+            android:layout_toLeftOf="@id/imgv_Corpo_Feminino"
+            android:text="Pernas"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/txv_Braco_Direito_Feminino"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@id/txv_Braco_Esquerdo_Feminino"-->
+            <!--android:layout_toLeftOf="@id/imgv_Corpo_Feminino"-->
+            <!--android:text="Braço Direito"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:textSize="30dp"/>-->
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Corpo_Masculino"
+        android:layout_width="1000dp"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/rltv_Corpo_Feminino"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/rltv_Corpo_Feminino"
+        android:visibility="visible">
+
+
+        <ImageView
+            android:id="@+id/imgv_Corpo_Masculino"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/masculino_corpo"/>
+
+        <TextView
+            android:id="@+id/txv_Cabeca_Masculina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/imgv_Corpo_Masculino"
+            android:text="Cabeça"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Torax_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txv_Cabeca_Masculina"
+            android:layout_marginTop="103dp"
+            android:layout_toLeftOf="@+id/imgv_Corpo_Masculino"
+            android:text="Tórax"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+        <TextView
+            android:id="@+id/txv_Bracos_Masculinos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Torax_Masculino"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/imgv_Corpo_Masculino"
+            android:text="Braços"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+        <!--<TextView-->
+        <!--android:id="@+id/txv_Perna_Esquerda_Masculina"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/txv_Braco_Esquerdo_Masculino"-->
+        <!--android:layout_marginTop="200dp"-->
+        <!--android:layout_toRightOf="@id/imgv_Corpo_Masculino"-->
+        <!--android:text="Perna Esquerda"-->
+        <!--android:textColor="@color/colorPrimary"-->
+        <!--android:textSize="30dp"/>-->
+
+        <TextView
+            android:id="@+id/txv_Pernas_Masculinas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_Bracos_Masculinos"
+            android:layout_toLeftOf="@id/imgv_Corpo_Masculino"
+            android:text="Pernas"
+            android:layout_marginTop="195dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"/>
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/txv_Braco_Direito_Masculino"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@id/txv_Braco_Esquerdo_Masculino"-->
+        <!--android:layout_toLeftOf="@id/imgv_Corpo_Masculino"-->
+        <!--android:text="Braço Direito"-->
+        <!--android:textColor="@color/colorPrimary"-->
+        <!--android:textSize="30dp"/>-->
+
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_Voltar_corpo"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Voltar"/>
+
+</RelativeLayout>

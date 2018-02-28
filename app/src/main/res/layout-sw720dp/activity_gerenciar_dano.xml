@@ -73,7 +73,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txv_PPD"
-        android:layout_marginLeft="220dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="200dp"
         android:id="@+id/txv_PAD" />
 
     <TextView
@@ -221,9 +222,9 @@
     <View
 
         android:layout_alignTop="@+id/txv_PAD"
-        android:layout_marginLeft="210dp"
+        android:layout_marginLeft="190dp"
         android:layout_width="1dp"
-        android:layout_height="230dp"
+        android:layout_height="250dp"
         android:background="@android:color/black"/>
 
     <TextView
@@ -247,7 +248,7 @@
         android:text="ANTERIOR"
         android:textSize="25dp"
         android:layout_alignTop="@id/txv_PAD"
-        android:layout_marginLeft="156dp"
+        android:layout_marginLeft="166dp"
         android:onClick="Selecionar_Lado" />
 
 
@@ -307,7 +308,7 @@
         android:id="@+id/txv_PPD"
         android:layout_marginTop="250dp"
         android:layout_alignLeft="@+id/txv_APD"
-        android:layout_marginLeft="62dp"
+        android:layout_marginLeft="78dp"
         />
 
     <TextView
@@ -318,7 +319,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txv_PPD"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_alignLeft="@+id/txv_PPD" />
 
 

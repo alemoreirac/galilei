@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    tools:context="Fragments.GerenciarEndereco">
+    tools:context="Fragments.Fragments.GerenciarEndereco">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="300dp"
@@ -402,7 +402,6 @@
             android:text="@string/cancelar"
             android:layout_toRightOf="@id/btn_Salvar_Endereco"
             android:layout_marginLeft="60dp"/>
-
 
         <CheckBox
             android:id="@+id/cxb_Preferencial"

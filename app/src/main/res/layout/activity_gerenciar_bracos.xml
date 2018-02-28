@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_gerenciar_bracos"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.pefoce.peritolocal.GerenciarBracos"
+    android:padding="8dp"
+    android:background="@color/ms_white">
+
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Bracos_Masculinos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        >
+
+
+        <TextView
+            android:id="@+id/txv_Nome_Envolvido_Lesoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Nome do Envolvido: "
+            android:textSize="18dp"
+            android:layout_margin="8dp"/>
+
+        <ImageView
+            android:id="@+id/imgv_Bracos_Masculinos"
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/masculino_bracos"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_Braco_Direito_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="93dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção superior braço"
+            android:textColor="@color/colorPrimary"
+            android:onClick="addLesaoBraco"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_Braco_Direito_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/txv_Secao_Superior_Braco_Direito_Masculino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção inferior braço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Cotovelo_Braco_Direito_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addLesaoBraco"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/txv_Secao_Inferior_Braco_Direito_Masculino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Masculinos"
+            android:text="Cotovelo"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_AnteBraco_Direito_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addLesaoBraco"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/txv_Cotovelo_Braco_Direito_Masculino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção superior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_AnteBraco_Direito_Masculino"
+            android:layout_width="wrap_content"
+            android:onClick="addLesaoBraco"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/txv_Secao_Superior_AnteBraco_Direito_Masculino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção inferior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Mao_Direita_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/txv_Secao_Inferior_AnteBraco_Direito_Masculino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Masculinos"
+            android:text="Mão"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <!-- BRAÇO ESQUERDO  -->
+
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_Braco_Esquerdo_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="93dp"
+            android:layout_marginLeft="8dp"
+            android:onClick="addLesaoBraco"
+            android:layout_toRightOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção superior braço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_Braco_Esquerdo_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Secao_Superior_Braco_Direito_Masculino"
+            android:layout_toRightOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção inferior braço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Cotovelo_Braco_Esquerdo_Masculino"
+            android:layout_width="wrap_content"
+            android:onClick="addLesaoBraco"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Secao_Inferior_Braco_Esquerdo_Masculino"
+            android:layout_toRightOf="@id/imgv_Bracos_Masculinos"
+            android:text="Cotovelo"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_AnteBraco_Esquerdo_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Cotovelo_Braco_Esquerdo_Masculino"
+            android:layout_toRightOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção superior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_AnteBraco_Esquerdo_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addLesaoBraco"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Secao_Superior_AnteBraco_Esquerdo_Masculino"
+            android:layout_toRightOf="@id/imgv_Bracos_Masculinos"
+            android:text="Seção inferior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Mao_Esquerda_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Secao_Inferior_AnteBraco_Esquerdo_Masculino"
+            android:layout_toRightOf="@id/imgv_Bracos_Masculinos"
+            android:text="Mão"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Bracos_Femininos"
+        android:layout_width="1000dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+
+        <ImageView
+            android:id="@+id/imgv_Bracos_Femininos"
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/feminino_bracos"/>
+
+
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_Braco_Direito_Feminino"
+            android:onClick="addLesaoBraco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="73dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@id/imgv_Bracos_Femininos"
+            android:text="Seção superior braço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_Braco_Direito_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addLesaoBraco"
+            android:layout_marginTop="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Secao_Superior_Braco_Direito_Feminino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Femininos"
+            android:text="Seção inferior braço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Cotovelo_Braco_Direito_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Secao_Inferior_Braco_Direito_Feminino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Femininos"
+            android:text="Cotovelo"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_AnteBraco_Direito_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="8dp"
+            android:onClick="addLesaoBraco"
+            android:layout_below="@id/txv_Cotovelo_Braco_Direito_Feminino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Femininos"
+            android:text="Seção superior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_AnteBraco_Direito_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="8dp"
+            android:onClick="addLesaoBraco"
+            android:layout_below="@id/txv_Secao_Superior_AnteBraco_Direito_Feminino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Femininos"
+            android:text="Seção inferior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Mao_Direita_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txv_Secao_Inferior_AnteBraco_Direito_Feminino"
+            android:layout_toLeftOf="@id/imgv_Bracos_Femininos"
+            android:text="Mão"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+
+        <!-- BRAÇO ESQUERDO  -->
+
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_Braco_Esquerdo_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="73dp"
+            android:onClick="addLesaoBraco"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/imgv_Bracos_Femininos"
+            android:text="Seção superior braço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_Braco_Esquerdo_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_alignLeft="@id/txv_Secao_Superior_Braco_Esquerdo_Feminino"
+            android:onClick="addLesaoBraco"
+            android:layout_below="@id/txv_Secao_Superior_Braco_Esquerdo_Feminino"
+            android:layout_toRightOf="@id/imgv_Bracos_Femininos"
+            android:text="Seção inferior braço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Cotovelo_Braco_Esquerdo_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_alignLeft="@id/txv_Secao_Superior_Braco_Esquerdo_Feminino"
+            android:layout_below="@id/txv_Secao_Inferior_Braco_Esquerdo_Feminino"
+            android:onClick="addLesaoBraco"
+            android:layout_toRightOf="@id/imgv_Bracos_Femininos"
+            android:text="Cotovelo"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Secao_Superior_AnteBraco_Esquerdo_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:layout_alignLeft="@id/txv_Secao_Superior_Braco_Esquerdo_Feminino"
+            android:layout_below="@id/txv_Cotovelo_Braco_Esquerdo_Feminino"
+            android:layout_toRightOf="@id/imgv_Bracos_Femininos"
+            android:onClick="addLesaoBraco"
+            android:text="Seção superior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+
+        <TextView
+            android:id="@+id/txv_Secao_Inferior_AnteBraco_Esquerdo_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:onClick="addLesaoBraco"
+            android:layout_alignLeft="@id/txv_Secao_Superior_Braco_Esquerdo_Feminino"
+            android:layout_below="@id/txv_Secao_Superior_AnteBraco_Esquerdo_Feminino"
+            android:layout_toRightOf="@id/imgv_Bracos_Femininos"
+            android:text="Seção inferior antebraço"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/txv_Mao_Esquerda_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addLesaoBraco"
+            android:layout_marginTop="40dp"
+            android:layout_alignLeft="@id/txv_Secao_Superior_Braco_Esquerdo_Feminino"
+            android:layout_below="@id/txv_Secao_Inferior_AnteBraco_Esquerdo_Feminino"
+            android:layout_toRightOf="@id/imgv_Bracos_Femininos"
+            android:text="Mão"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+
+    </RelativeLayout>
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_Voltar_bracos"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Voltar"/>
+
+</RelativeLayout>

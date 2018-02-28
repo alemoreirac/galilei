@@ -6,8 +6,10 @@ package Enums;
 
 public enum CategoriaFoto
 {
-    VEICULOS("Veículos"),
+    LOCAL_OCORRENCIA("Local Ocorrência"),
+    VESTIGIOS("Vestígios"),
     ENVOLVIDOS("Envolvidos"),
+    VEICULOS("Veículos"),
     ENDERECOS("Endereços"),
     OUTROS("Outros");
 

@@ -14,14 +14,14 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.pefoce.peritolocal.ManterPericia;
+import com.example.pefoce.peritolocal.ManterPericiaTransito;
 import com.example.pefoce.peritolocal.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Enums.Transito.TipoJustificativa_Inconclusao;
-import Fragments.GerenciarColisoes;
+import Fragments.FragmentsTransito.GerenciarColisoes;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.EnvolvidoTransito;
 import Model.Transito.OcorrenciaTransitoEnvolvido;
@@ -52,19 +52,19 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
     {
     }
 
-    public static VestigioDialog newInstance(String title, String local)
-    {
-        VestigioDialog frag = new VestigioDialog();
-
-        Bundle args = new Bundle();
-
-        args.putString("Gravar Áudio", title);
-        args.putString("Local", local);
-
-        frag.setArguments(args);
-
-        return frag;
-    }
+//    public static VestigioDialog newInstance(String title, String local)
+//    {
+//        VestigioDialog frag = new VestigioDialog();
+//
+//        Bundle args = new Bundle();
+//
+//        args.putString("Gravar Áudio", title);
+//        args.putString("Local", local);
+//
+//        frag.setArguments(args);
+//
+//        return frag;
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -74,9 +74,10 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
         Bundle bd = getArguments();
 
         activity = getActivity();
-        ocorrenciaTransito =  ((ManterPericia)activity).ocorrenciaTransito;
+        ocorrenciaTransito =  ((ManterPericiaTransito)activity).ocorrenciaTransito;
 
-        colisaoTransito = ColisaoTransito.findById(ColisaoTransito.class,bd.getLong("ColisaoID"));
+        //colisaoTransito = ColisaoTransito.findById(ColisaoTransito.class,bd.getLong("ColisaoID"));
+        colisaoTransito = ((GerenciarColisoes)getTargetFragment()).colisaoTransito;
 
         semEvasores = bd.getBoolean("SemEvasores");
 
@@ -93,16 +94,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
 
             veiculos.add(ov.getVeiculo());
 
-
-
         activity = getActivity();
-
-
-
-        //ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaTransito.getOcorrenciaID());
-
-
-        //vestigioModel = new ArrayList<VestigioTransito>();
 
         AssociarLayout(view);
         AssociarEventos();
@@ -140,7 +132,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
         if(colisaoTransito.getEnvolvidoEvadido() != null )
         {
             spnEvadido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(v.getContext(),R.layout.support_simple_spinner_dropdown_item,envolvidos));
-            spnEvadido.setSelection(BuscadorEnum.PegarPosicaoEnvolvido(envolvidos,colisaoTransito.getEnvolvidoEvadido()));
+            spnEvadido.setSelection(BuscadorEnum.PegarPosicaoEnvolvidoTransito(envolvidos,colisaoTransito.getEnvolvidoEvadido()));
         }
     }
 
@@ -156,6 +148,22 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
         btnSalvarInconclusao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(cxbInconclusivo.isChecked())
+                {
+                    colisaoTransito.setInconclusivo(true);
+                    colisaoTransito.setJustificativaInconclusao(BuscadorEnum.BuscarJustificativa(spnJustificativa.getSelectedItem().toString()));
+
+                    if(spnJustificativa.getSelectedItem().toString() == "Condutor se evadiu")
+                        colisaoTransito.setVeiculoEvadido((Veiculo)spnEvadido.getSelectedItem());
+
+                    if(spnJustificativa.getSelectedItem().toString() == "Envolvido se evadiu")
+                        colisaoTransito.setEnvolvidoEvadido((EnvolvidoTransito)spnEvadido.getSelectedItem());
+
+                    colisaoTransito.save();
+                    //colisaoTransito.set
+                }
+
 
                 ((GerenciarColisoes)getTargetFragment()).InterfaceInconclusiva(cxbInconclusivo.isChecked());
 

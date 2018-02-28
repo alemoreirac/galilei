@@ -15,6 +15,17 @@ import java.util.StringTokenizer;
 
 public class Pessoa extends SugarRecord<Pessoa> implements Serializable {
 
+
+    @Expose
+    private String login;
+    @Expose
+    private String nome;
+    @Expose
+    private Date nascimento;
+
+    private String senha;
+
+
     public Pessoa() {
     }
 
@@ -42,14 +53,6 @@ public class Pessoa extends SugarRecord<Pessoa> implements Serializable {
         this.nome = nome;
         this.senha = senha;
     }
-
-    @Expose
-    private String login;
-    @Expose
-    private String nome;
-    @Expose
-    private Date nascimento;
-    private String senha;
 
 
     public String getLogin() {

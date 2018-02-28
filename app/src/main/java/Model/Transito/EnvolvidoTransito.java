@@ -53,8 +53,6 @@ public class EnvolvidoTransito extends SugarRecord<EnvolvidoTransito>
 
     Lesao lesao;
 
-
-
     public Genero getGenero() {
         return genero;
     }
@@ -130,9 +128,9 @@ public class EnvolvidoTransito extends SugarRecord<EnvolvidoTransito>
         return nascimento;
     }
 
-    public String getNascimentoString(){
-        // Get Current Date
 
+    public String getNascimentoString()
+    {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Calendar c = Calendar.getInstance();
         c.setTime(this.getNascimento());

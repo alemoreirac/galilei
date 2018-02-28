@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="Fragments.GerenciarEndereco">
+    tools:context="Fragments.Fragments.GerenciarEndereco">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="300dp"
@@ -333,24 +333,24 @@
             ></ListView>
 
 
-        <Button
-            android:id="@+id/btn_Salvar_Veiculo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/btn_Add_Dano"
-            android:onClick="Salvar_Fechar"
-            android:text="@string/salvar_sair"/>
+        <!--<Button-->
+            <!--android:id="@+id/btn_Salvar_Veiculo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignLeft="@+id/btn_Add_Dano"-->
+            <!--android:onClick="Salvar_Fechar"-->
+            <!--android:text="@string/salvar_sair"/>-->
 
-        <Button
-            android:id="@+id/btn_Cancelar_Veiculo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_alignBottom="@id/btn_Salvar_Veiculo"
-            android:text="@string/cancelar"
-            android:layout_toRightOf="@id/btn_Salvar_Veiculo"
-            android:layout_marginLeft="60dp"/>
+        <!--<Button-->
+            <!--android:id="@+id/btn_Cancelar_Veiculo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_alignBottom="@id/btn_Salvar_Veiculo"-->
+            <!--android:text="@string/cancelar"-->
+            <!--android:layout_toRightOf="@id/btn_Salvar_Veiculo"-->
+            <!--android:layout_marginLeft="60dp"/>-->
 
 
         <LinearLayout
@@ -373,7 +373,7 @@
                 android:id="@+id/image_button_2_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimary"
                 android:text="Danos" />
 
         </LinearLayout>

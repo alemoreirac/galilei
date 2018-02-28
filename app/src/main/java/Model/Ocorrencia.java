@@ -35,10 +35,12 @@ public class Ocorrencia extends SugarRecord<Ocorrencia> {
         this.dataChamado= TempoUtil.stringToDate("01/01/2000");
     }
 
+
+
     public String getDataChamado_MesExtenso()
     {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dataChamado);
+        calendar.setTime(ocorrenciaTransito.getDataAtendimento());
 
         switch(calendar.MONTH)
         {
@@ -124,6 +126,11 @@ public class Ocorrencia extends SugarRecord<Ocorrencia> {
     public String getHoraChamadoString()
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        return timeFormat.format(this.dataChamado);
+    }
+    public String getDataHoraFormatada()
+    {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return timeFormat.format(this.dataChamado);
     }
 

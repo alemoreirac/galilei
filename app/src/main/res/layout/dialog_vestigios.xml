@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    android:padding="8dp">
 
 
     <TextView
@@ -73,14 +74,16 @@
 
 
 
-    <android.support.design.widget.FloatingActionButton
+    <Button
         android:id="@+id/btn_dialog_AddVestigio"
         android:layout_height="40dp"
         android:layout_width="40dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/fab_plus"
+
+        android:background="@drawable/btn_add"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/edt_dialog_Distancia_Vestigio" />
+
 
 
     <Button

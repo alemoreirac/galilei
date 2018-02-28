@@ -51,10 +51,15 @@ public class AutoCompleteUtil
         ArrayList<String> arrayDelegacias = new ArrayList<>();
 
         for (DadosTerritoriais dt : dados)
+        {
+            if(!arrayDelegacias.contains(dt.getDelegacia()))
             arrayDelegacias.add(dt.getDelegacia());
-
+        }
         for(Delegacia d : delegacias)
+        {
+            if(!arrayDelegacias.contains(d))
             arrayDelegacias.add(d.getDescricao());
+        }
 
 
         return new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, arrayDelegacias);

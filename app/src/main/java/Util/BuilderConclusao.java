@@ -1,7 +1,6 @@
 package Util;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import Enums.Transito.AtoresColisao;
@@ -11,7 +10,7 @@ import Enums.IluminacaoVia;
 import Enums.Transito.TipoCNH;
 import Enums.Transito.Topografia;
 import Model.Transito.ColisaoTransito;
-import Model.Dano;
+import Model.Transito.Dano;
 import Model.Transito.DanoVeiculo;
 import Model.Transito.EnderecoTransito;
 import Model.Transito.EnvolvidoTransito;
@@ -47,8 +46,12 @@ public class BuilderConclusao
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoConclusao.getOcorrenciaID());
 
         InstanciarListas();
-
-        ConstruirTexto();
+        try
+        {
+            ConstruirTexto();
+        }
+        catch (Exception e)
+        {}
 
         return builderConclusao.toString();
     }
@@ -146,12 +149,14 @@ public class BuilderConclusao
     {
         builderConclusao.append("PREÂMBULO\n");
         builderConclusao.append("\nEm ");
-        builderConclusao.append(ocorrencia.getDataChamado_MesExtenso());
+        //builderConclusao.append(ocorrencia.getDataChamado_MesExtenso());
+        builderConclusao.append(TempoUtil.getDataExtenso(ocorrencia.getDataChamado()));
         builderConclusao.append(", nesta cidade de Fortaleza, de acordo com a legislação e os dispositivos regulamentares vigentes, e na Coordenadoria de Perícia Criminal da Perícia Forense do Ceará, da Secretaria da Segurança Pública e Defesa Social do Estado do Ceará, o coordenador em exercício Franklin Delano Magalhães Leite designou o Perito Criminal ");
         builderConclusao.append(ocorrencia.getPerito().getNome());
+//        builderConclusao.append(" para proceder ao exame acima referido, a fim de ser atendida a " +
+//                "solicitação da CIOPS I" + Calendar.getInstance().get(Calendar.YEAR) + " ");
         builderConclusao.append(" para proceder ao exame acima referido, a fim de ser atendida a " +
-                "solicitação da CIOPS I" + Calendar.getInstance().get(Calendar.YEAR) + " ");
-        builderConclusao.append(ocorrenciaTransitoConclusao.getNumIncidencia() + ".\n");
+                "solicitação da CIOPS " + ocorrencia.getOcorrenciaTransito().getNumIncidencia() + ".\n");
         builderConclusao.append("Findos os trabalhos o infrafirmado passa a apresentar os " +
                 "resultados dos procedimentos executados sistematicamente, à luz de princípios " +
                 "técnico-legais do sistema Criminalístico.\n");
@@ -554,7 +559,7 @@ public class BuilderConclusao
                 if (colisoes.get(i).getAtoresColisao() == AtoresColisao.PEDESTRE)
                     builderConclusao.append("o(a) pedestre " + colisoes.get(i).getPedestre().getNome());
 
-
+                if(colisoes.get(i).getJustificativaInconclusao() != null )
                 builderConclusao.append(" ficou impossiblitada obteve conclusões devido à " + colisoes.get(i).getJustificativaInconclusao().getValor());
 
             }
@@ -675,7 +680,6 @@ public class BuilderConclusao
                 }
             }
         }
-
         builderConclusao.append("\nNada mais havendo a lavrar, fica encerrado o presente laudo.");
     }
 

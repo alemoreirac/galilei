@@ -1,0 +1,310 @@
+package Model.Vida;
+
+import com.orm.SugarRecord;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import Enums.DocumentoPessoa;
+import Enums.Genero;
+import Enums.SecaoImagem;
+import Enums.Transito.TipoEnvolvidoTransito;
+import Enums.Vida.ParteCorpo;
+import Enums.Vida.PosicaoBraco;
+import Enums.Vida.PosicaoCabeca;
+import Enums.Vida.PosicaoPerna;
+import Enums.Vida.PosicaoTorax;
+import Enums.UnidadeTempo;
+import Model.Gravacao;
+import Util.BuscadorEnum;
+import Util.TempoUtil;
+
+/**
+ * Created by Pefoce on 20/11/2017.
+ */
+
+public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
+{
+    String nome;
+
+    DocumentoPessoa documentoTipo;
+
+    String documentoValor;
+
+    TipoEnvolvidoTransito tipoEnvolvido;
+
+    Date nascimento;
+
+    Genero genero;
+
+    String vestes;
+
+    private Gravacao gravacaoEnvolvido;
+
+    String Observacoes;
+
+    private int periodoMorte;
+
+    private UnidadeTempo unidadeTempo;
+
+    private boolean morteViolenta;
+
+    PosicaoBraco posicaoBracoEsquerdo;
+    PosicaoBraco posicaoBracoDireito;
+    PosicaoPerna posicaoPernaEsquerda;
+    PosicaoPerna posicaoPernaDireita;
+    PosicaoTorax posicaoCorpo;
+    PosicaoCabeca posicaoCabeca;
+
+    public boolean isMorteViolenta()
+    {
+        return morteViolenta;
+    }
+
+    public void setMorteViolenta(boolean morteViolenta)
+    {
+        this.morteViolenta = morteViolenta;
+    }
+
+    public String getNome()
+    {
+        return nome;
+    }
+
+    public void setNome(String nome)
+    {
+        this.nome = nome;
+    }
+
+    public DocumentoPessoa getDocumentoTipo()
+    {
+        return documentoTipo;
+    }
+
+    public void setDocumentoTipo(DocumentoPessoa documentoTipo)
+    {
+        this.documentoTipo = documentoTipo;
+    }
+
+    public EnvolvidoVida()
+    {
+        final Calendar cSave = Calendar.getInstance();
+        this.nascimento = cSave.getTime();
+        this.setNome("");
+        this.setObservacoes("");
+        this.setDocumentoValor("");
+        this.setGenero(Genero.NAO_IDENTIFICADO);
+        this.posicaoCorpo = PosicaoTorax.DECUBITO_DORSAL;
+        this.posicaoBracoDireito = PosicaoBraco.ESTENDIDO;
+        this.posicaoBracoEsquerdo = PosicaoBraco.ESTENDIDO;
+        this.posicaoCabeca = PosicaoCabeca.APOIADA_SOLO;
+        this.posicaoPernaDireita = PosicaoPerna.ESTENDIDO;
+        this.posicaoPernaEsquerda = PosicaoPerna.ESTENDIDO;
+
+    }
+
+    public String getDocumentoValor()
+    {
+        return documentoValor;
+    }
+
+    public void setDocumentoValor(String documentoValor)
+    {
+        this.documentoValor = documentoValor;
+    }
+
+    public TipoEnvolvidoTransito getTipoEnvolvido()
+    {
+        return tipoEnvolvido;
+    }
+
+    public void setTipoEnvolvido(TipoEnvolvidoTransito tipoEnvolvido)
+    {
+        this.tipoEnvolvido = tipoEnvolvido;
+    }
+
+    public Date getNascimento()
+    {
+        return nascimento;
+    }
+
+    public void setNascimento(Date nascimento)
+    {
+        this.nascimento = nascimento;
+    }
+
+    public Genero getGenero()
+    {
+        return genero;
+    }
+
+    public void setGenero(Genero genero)
+    {
+        this.genero = genero;
+    }
+
+    public String getVestes()
+    {
+        return vestes;
+    }
+
+    public void setVestes(String vestes)
+    {
+        this.vestes = vestes;
+    }
+
+    public String getObservacoes()
+    {
+        return Observacoes;
+    }
+
+    public void setObservacoes(String observacoes)
+    {
+        Observacoes = observacoes;
+    }
+
+    public int getPeriodoMorte()
+    {
+        return periodoMorte;
+    }
+
+    public void setPeriodoMorte(int periodoMorte)
+    {
+        this.periodoMorte = periodoMorte;
+    }
+
+    public UnidadeTempo getUnidadeTempo()
+    {
+        return unidadeTempo;
+    }
+
+    public void setUnidadeTempo(UnidadeTempo unidadeTempo)
+    {
+        this.unidadeTempo = unidadeTempo;
+    }
+
+    public PosicaoBraco getPosicaoBracoEsquerdo()
+    {
+        return posicaoBracoEsquerdo;
+    }
+
+    public Gravacao getGravacaoEnvolvido()
+    {
+        return gravacaoEnvolvido;
+    }
+
+    public void setGravacaoEnvolvido(Gravacao gravacaoEnvolvido)
+    {
+        this.gravacaoEnvolvido = gravacaoEnvolvido;
+    }
+
+    public void setPosicaoBracoEsquerdo(PosicaoBraco posicaoBracoEsquerdo)
+    {
+        this.posicaoBracoEsquerdo = posicaoBracoEsquerdo;
+    }
+
+    public PosicaoBraco getPosicaoBracoDireito()
+    {
+        return posicaoBracoDireito;
+    }
+
+    public void setPosicaoBracoDireito(PosicaoBraco posicaoBracoDireito)
+    {
+        this.posicaoBracoDireito = posicaoBracoDireito;
+    }
+
+    public PosicaoPerna getPosicaoPernaEsquerda()
+    {
+        return posicaoPernaEsquerda;
+    }
+
+    public void setPosicaoPernaEsquerda(PosicaoPerna posicaoPernaEsquerda)
+    {
+        this.posicaoPernaEsquerda = posicaoPernaEsquerda;
+    }
+
+    public PosicaoPerna getPosicaoPernaDireita()
+    {
+        return posicaoPernaDireita;
+    }
+
+    public void setPosicaoPernaDireita(PosicaoPerna posicaoPernaDireita)
+    {
+        this.posicaoPernaDireita = posicaoPernaDireita;
+    }
+
+    public PosicaoTorax getPosicaoCorpo()
+    {
+        return posicaoCorpo;
+    }
+
+    public void setPosicaoCorpo(PosicaoTorax posicaoCorpo)
+    {
+        this.posicaoCorpo = posicaoCorpo;
+    }
+
+    public PosicaoCabeca getPosicaoCabeca()
+    {
+        return posicaoCabeca;
+    }
+
+    public void setPosicaoCabeca(PosicaoCabeca posicaoCabeca)
+    {
+        this.posicaoCabeca = posicaoCabeca;
+    }
+
+    public void setDataNascimentoString(String s)
+    {
+        final Calendar c = Calendar.getInstance();
+        c.setTime(TempoUtil.stringToDate(s));
+
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        final Calendar cSave = Calendar.getInstance();
+
+        cSave.set(Calendar.YEAR, year);
+        cSave.set(Calendar.MONTH, month);
+        cSave.set(Calendar.DAY_OF_MONTH, day);
+
+        this.nascimento = cSave.getTime();
+    }
+
+    public List<SecaoImagem> getSecoesImagem()
+    {
+        ArrayList<SecaoImagem> secoesList = new ArrayList<>();
+        List<LesaoEnvolvido> lesaoEnvolvidos = LesaoEnvolvido.find(LesaoEnvolvido.class, "envolvido_vida = ?", getId().toString());
+
+        for (LesaoEnvolvido le : lesaoEnvolvidos)
+        {
+            if (le.getLesao() != null)
+            {
+                if (le.getLesao().getSecaoLesao() != null)
+                {
+                    SecaoImagem si = BuscadorEnum.EncontrarSecaoImagem(le.getLesao().getSecaoLesao(), genero);
+
+                    if (!secoesList.contains(si))
+                        secoesList.add(si);
+                }
+            }
+        }
+        return secoesList;
+    }
+
+    public String getDataNascimentoString()
+    {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        final Calendar c = Calendar.getInstance();
+        c.setTime(this.getNascimento());
+
+        String data;
+
+        data = format.format(c.getTime());
+
+        return data;
+    }
+}

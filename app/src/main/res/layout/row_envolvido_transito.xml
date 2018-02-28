@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:choiceMode="singleChoice">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/selector"
+                android:orientation="vertical">
 
-
-    <View android:id="@+id/background"
+    <View
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFF"
-        />
+        android:background="#FFF"/>
+
     <TextView
         android:id="@+id/txv_row_Nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Alessandro Moreira Collado"
         android:textSize="25dp"/>
+
     <TextView
         android:id="@+id/txv_row_Idade"
         android:layout_width="wrap_content"
@@ -24,6 +26,7 @@
         android:layout_alignLeft="@+id/txv_row_Nome"
         android:layout_below="@+id/txv_row_Nome"
         android:text="23 anos"/>
+
     <TextView
         android:id="@+id/txv_row_Fatalidade"
         android:layout_width="wrap_content"

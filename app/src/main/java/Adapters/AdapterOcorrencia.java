@@ -13,6 +13,7 @@ import com.example.pefoce.peritolocal.R;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
+import Enums.TipoOcorrencia;
 import Model.Ocorrencia;
 import ViewHolders.ViewHolderOcorrencia;
 
@@ -72,7 +73,7 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
 
         lastPosition = position;
 
-        if(ocorrencia.getOcorrenciaTransito() != null)
+        if(ocorrencia.getOcorrenciaTransito() != null || ocorrencia.getTipoOcorrencia() == TipoOcorrencia.TRANSITO)
         {
             if(ocorrencia.getOcorrenciaTransito().getNumIncidencia() != null)
                 viewHolder.getTxtTipoDoc().setText(ocorrencia.getOcorrenciaTransito().getNumIncidencia());
@@ -83,7 +84,7 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
 
             DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
 
-            viewHolder.getTxtData().setText(dateFormat.getDateInstance().format(ocorrencia.getOcorrenciaTransito().getDataOcorrencia()));
+            viewHolder.getTxtData().setText(dateFormat.getDateInstance().format(ocorrencia.getOcorrenciaTransito().getDataChamado()));
 
             if(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem() != null)
                 viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem());
@@ -95,6 +96,31 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
                 viewHolder.getTxtData().setText(ocorrencia.getOcorrenciaTransito().getDataAtendimentoString());
 
         }
+
+        if(ocorrencia.getOcorrenciaVida() != null|| ocorrencia.getTipoOcorrencia() == TipoOcorrencia.VIDA)
+        {
+            if(ocorrencia.getOcorrenciaVida().getNumIncidencia() != null)
+                viewHolder.getTxtTipoDoc().setText(ocorrencia.getOcorrenciaVida().getNumIncidencia());
+
+            if(ocorrencia.getTipoOcorrencia() != null)
+                viewHolder.getTxtTipoOcorrencia().setText(ocorrencia.getTipoOcorrencia().getValor());
+
+
+            DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
+
+            viewHolder.getTxtData().setText(ocorrencia.getOcorrenciaVida().getDataAtendimentoString());
+
+            if(ocorrencia.getOcorrenciaVida().getOrgaoOrigem() != null)
+                viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaVida().getOrgaoOrigem());
+
+            if(ocorrencia.getOcorrenciaVida().getOrgaoDestino() != null)
+                viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaVida().getOrgaoDestino());
+
+            if(ocorrencia.getOcorrenciaVida().getDataAtendimento()!= null)
+                viewHolder.getTxtData().setText(ocorrencia.getOcorrenciaVida().getDataAtendimentoString());
+
+        }
+
         return convertView;
     }
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo de Lesão"
+        android:id="@+id/txv_dialog_Natureza_Lesao"    />
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_Natureza_Lesao"
+        android:layout_alignLeft="@id/txv_dialog_Natureza_Lesao"
+        android:id="@+id/spn_dialog_Natureza_Lesao"/>
+
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:text="Seção da Lesão"-->
+        <!--android:id="@+id/txv_dialog_Secao_Lesao"-->
+        <!--android:layout_toRightOf="@id/spn_dialog_Natureza_Lesao"/>-->
+
+    <!--<Spinner-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/txv_dialog_Secao_Lesao"-->
+        <!--android:layout_alignLeft="@id/txv_dialog_Secao_Lesao"-->
+        <!--android:id="@+id/spn_dialog_Secao_Lesao"/>-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:text="Localização da Lesão"
+
+        android:id="@+id/txv_dialog_Localizacao_Lesao"
+        android:layout_toRightOf="@id/spn_dialog_Natureza_Lesao"/>
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_Localizacao_Lesao"
+        android:layout_alignLeft="@id/txv_dialog_Localizacao_Lesao"
+
+        android:id="@+id/spn_dialog_Localizacao_Lesao"/>
+
+    <CheckBox
+        android:id="@+id/cxb_dialog_CompatibilidadeLesao"
+        android:layout_alignLeft="@+id/spn_dialog_Natureza_Lesao"
+        android:layout_below="@+id/spn_dialog_Natureza_Lesao"
+        android:layout_width="wrap_content"
+        android:checked="true"
+        android:layout_height="wrap_content"
+        android:hint="Compativel com o ocorrido"/>
+
+    <ListView
+        android:layout_below="@id/cxb_dialog_CompatibilidadeLesao"
+        android:layout_alignLeft="@id/txv_dialog_Natureza_Lesao"
+        android:id="@+id/lstv_dialog_ListLesoes"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:padding="8dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/lstv_dialog_ListLesoes"
+        android:layout_below="@id/lstv_dialog_ListLesoes"
+        android:text="Salvar"
+        android:id="@+id/btn_dialog_SalvarLesao_Detalhe"/>
+
+    <Button
+        android:id="@+id/btn_dialog_AddLesao"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/btn_add"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:id="@+id/btn_dialog_LimparLesao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/btn_dialog_AddLesao"
+        android:layout_below="@id/lstv_dialog_ListLesoes"
+        android:text="Limpar Lesões"/>
+
+
+</RelativeLayout>

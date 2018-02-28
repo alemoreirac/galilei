@@ -5,6 +5,21 @@ import android.widget.Spinner;
 import java.util.List;
 
 import Enums.AreaIntegradaSeguranca;
+import Enums.Calibre;
+import Enums.Comodo;
+import Enums.IluminacaoArtificial;
+import Enums.LocalPraia;
+import Enums.LocalVeiculo;
+import Enums.SecaoImagem;
+import Enums.TipoAcesso;
+import Enums.TipoArma;
+import Enums.TipoLocal;
+import Enums.TipoLocalCrime;
+import Enums.Meteorologia;
+import Enums.TipoRecolhimentoAmostra_Papiloscopia;
+import Enums.TipoVegetacao;
+import Enums.TiposMunicao;
+import Enums.TiposVestigioBiologico;
 import Enums.Transito.AtoresColisao;
 import Enums.CategoriaFoto;
 import Enums.ConclusaoTransito;
@@ -37,592 +52,700 @@ import Enums.Transito.TipoVestigioTransito;
 import Enums.Transito.TipoVia;
 import Enums.Transito.TipoEnvolvidoTransito;
 import Enums.Transito.Topografia;
+import Enums.UnidadeTempo;
+import Enums.Vida.LocalizacaoLesao;
+import Enums.Vida.NaturezaLesao;
+import Enums.Vida.ParteCorpo;
+import Enums.Vida.PosicaoBraco;
+import Enums.Vida.PosicaoCabeca;
+import Enums.Vida.PosicaoPerna;
+import Enums.Vida.PosicaoTorax;
+import Enums.Vida.Secao;
+import Enums.Vida.TipoAberturaLocal;
+import Enums.Vida.TipoOcorrenciaVida;
+import Enums.Vida.TipoRecolhimentoAmostra_Biologica;
+import Enums.Vida.TipoVestigioVida;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.EnderecoTransito;
 import Model.Transito.EnvolvidoTransito;
 import Model.Foto;
 import Model.Transito.Veiculo;
+import Model.Vida.EnvolvidoVida;
+import Model.Vida.VestigioVida;
 
 /**
  * Created by Pefoce on 22/06/2017.
  */
 
-public class BuscadorEnum {
-
-    public static TipoOcorrencia BuscarTipoOcorrencia(String value)
+public class BuscadorEnum
+{
+    //
+//
+    public static TipoOcorrencia BuscarTipoOcorrencia(String valor)
     {
-        if(value == "Trânsito")
-            return TipoOcorrencia.TRANSITO;
-        if(value == "Patrimônio")
-            return TipoOcorrencia.PATRIMONIO;
-        if(value == "Crime contra a vida")
-            return TipoOcorrencia.VIDA;
+        for (TipoOcorrencia item : TipoOcorrencia.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
         return null;
     }
 
-    public static TipoVestigioTransito BuscarTipoVestigio(String value)
+    public static SecaoImagem BuscarSecaoImagem(String valor)
     {
-        if(value == "Derrapagem")
-            return TipoVestigioTransito.DERRAPAGEM;
-        if(value == "Derrapagem em curva")
-            return TipoVestigioTransito.DERRAPAGEM_CURVA;
-        if(value == "Fragmentos metálicos")
-            return TipoVestigioTransito.FRAGMENTOS_METALICOS;
-        if(value == "Fragmentos vítreos")
-            return TipoVestigioTransito.FRAGMENTOS_VITREOS;
-        if(value == "Sulcagem")
-            return TipoVestigioTransito.SULCAGEM;
-        if(value == "Frenagem")
-            return TipoVestigioTransito.FRENAGEM;
-        if(value == "Marcas de sangue")
-            return TipoVestigioTransito.SANGUE;
+        for (SecaoImagem item : SecaoImagem.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
         return null;
     }
 
 
-    public static ConclusaoTransito BuscarConclusao(String value)
+    public static TipoVestigioTransito BuscarTipoVestigio(String valor)
     {
-        if(value == "ao Condutor estar desatento às condições de tráfego à frente")
-            return ConclusaoTransito.CONDUTOR_DESATENTO;
-        if(value == "ao avanço de preferencial em cruzamento")
-            return ConclusaoTransito.AVANCO_PREFERENCIAL;
-        if(value == "à mudança de faixa definida pelo local dos danos")
-            return ConclusaoTransito.MUDANCA_FAIXA;
-        if(value == "à conversão em momento inapropriado")
-            return ConclusaoTransito.CONVERSAO_INAPROPRIADA;
-        if(value == "ao veiculo se deslocar na contra-mão")
-            return ConclusaoTransito.CONTRA_MAO;
-        if(value == "à ultrapassagem mal executada")
-            return ConclusaoTransito.ULTRAPASSAGEM_INDEVIDA;
-        if(value == "à manobra de retorno em momento inapropriado")
-            return ConclusaoTransito.RETORNO_INAPROPRIADO;
-        if(value == "O condutor não teve responsabilidade no ocorrido")
-            return ConclusaoTransito.CONDUTOR_ISENTO;
-
-            return null;
+        for (TipoVestigioTransito item : TipoVestigioTransito.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static TipoEnvolvidoTransito BuscarTipoEnvolvido(String value)
+    public static Meteorologia BuscarMeteorologia(String valor)
     {
-        if(value == "Pedestre")
-            return TipoEnvolvidoTransito.PEDESTRE;
-        if(value == "Passageiro")
-            return TipoEnvolvidoTransito.PASSAGEIRO;
-        if(value == "Motorista")
-            return TipoEnvolvidoTransito.MOTORISTA;
-        if(value == "Não Identificado")
-            return  TipoEnvolvidoTransito.NAO_IDENTIFICADO;
-        else
-            return null;
+        for (Meteorologia item : Meteorologia.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static AreaIntegradaSeguranca BuscarAIS(String value)
+
+    public static ConclusaoTransito BuscarConclusao(String valor)
     {
-        if(value == "AIS 1")
-            return AreaIntegradaSeguranca.AIS_1;
-        if(value == "AIS 2")
-            return AreaIntegradaSeguranca.AIS_2;
-        if(value == "AIS 3")
-            return AreaIntegradaSeguranca.AIS_3;
-        if(value == "AIS 4")
-            return AreaIntegradaSeguranca.AIS_4;
-        if(value == "AIS 5")
-            return AreaIntegradaSeguranca.AIS_5;
-        if(value == "AIS 6")
-            return AreaIntegradaSeguranca.AIS_6;
-        if(value == "AIS 7")
-            return AreaIntegradaSeguranca.AIS_7;
-        if(value == "AIS 8")
-            return AreaIntegradaSeguranca.AIS_8;
-        if(value == "AIS 9")
-            return AreaIntegradaSeguranca.AIS_9;
-        if(value == "AIS 10")
-            return AreaIntegradaSeguranca.AIS_10;
-        else
-            return null;
+        for (ConclusaoTransito item : ConclusaoTransito.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static LocalPedestre BuscarLocalPedestre(String value)
+
+    public static TipoEnvolvidoTransito BuscarTipoEnvolvido(String valor)
     {
-        if(value == "Local sem faixa")
-            return LocalPedestre.SEM_FAIXA;
-        if(value == "Pedestre na faixa")
-            return LocalPedestre.SEM_FAIXA;
-        if(value == "Passarela de pedestres")
-            return LocalPedestre.PASSARELA;
-        if(value == "Próximo à faixa de pedestres")
-            return LocalPedestre.PROXIMO_FAIXA;
-        if(value == "Próximo à passarela de pedestres")
-            return LocalPedestre.PROXIMO_PASSARELA;
-        else
-            return null;
+        for (TipoEnvolvidoTransito item : TipoEnvolvidoTransito.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static LocalObjeto BuscarLocalObjeto(String value)
+
+    public static AreaIntegradaSeguranca BuscarAIS(String valor)
     {
-        if(value == "Acostamento")
-            return LocalObjeto.ACOSTAMENTO;
-        if(value == "Calçada")
-            return LocalObjeto.CALCADA;
-        if(value == "Passarela")
-            return LocalObjeto.PASSARELA;
-        if(value == "Pista")
-            return LocalObjeto.PISTA;
-        else
-            return null;
+        for (AreaIntegradaSeguranca item : AreaIntegradaSeguranca.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static TipoJustificativa_Inconclusao BuscarJustificativa(String value)
+
+    public static LocalPedestre BuscarLocalPedestre(String valor)
     {
-        if(value == "Condutor se evadiu")
-            return TipoJustificativa_Inconclusao.CONDUTOR_EVADIU;
-        if(value == "Envolvido se evadiu")
-            return TipoJustificativa_Inconclusao.ENVOLVIDO_EVADIU;
-        if(value == "Vestígios insuficientes para determinar o fato")
-            return TipoJustificativa_Inconclusao.VESTIGIOS_INSUFICIENTES;
-        if(value == "Local violado")
-            return TipoJustificativa_Inconclusao.LOCAL_VIOLADO;
-        if(value == "Posição final dos veículos alterada")
-            return TipoJustificativa_Inconclusao.POSICAO_ALTERADA;
-        else
-            return null;
+        for (LocalPedestre item : LocalPedestre.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static DocumentoSolicitacao BuscarDocSolicitacao(String value)
+    public static IluminacaoVia BuscarIluminacao(String valor)
     {
-        if(value.equalsIgnoreCase("Inquérito Policial"))
-            return DocumentoSolicitacao.IP;
-
-        if(value.equalsIgnoreCase("Boletim de Ocorrência"))
-            return DocumentoSolicitacao.BO;
-
-        if(value.equalsIgnoreCase("Termo Circunstanciado de Ocorrência"))
-            return DocumentoSolicitacao.TCO;
-
-        else
-            return null;
+        for (IluminacaoVia item : IluminacaoVia.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static Genero BuscarGenero(String value)
+
+    public static LocalObjeto BuscarLocalObjeto(String valor)
     {
-        if(value == "Masculino")
-            return  Genero.MASCULINO;
-        if(value == "Feminino")
-            return Genero.FEMININO;
-        if(value == "Não Identificado")
-            return Genero.NAO_IDENTIFICADO;
-        else
-            return null;
+        for (LocalObjeto item : LocalObjeto.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static AtoresColisao BuscarAtoresColisao(String value)
+
+    public static TipoJustificativa_Inconclusao BuscarJustificativa(String valor)
     {
-        if(value == "Nenhum")
-            return  AtoresColisao.NENHUM;
-        if(value == "Veículo")
-            return  AtoresColisao.VEICULO;
-        if(value == "Pedestre")
-            return  AtoresColisao.PEDESTRE;
-        if(value == "Objeto")
-            return  AtoresColisao.OBJETO;
-        else
-            return null;
+        for (TipoJustificativa_Inconclusao item : TipoJustificativa_Inconclusao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static SetorDano BuscarSetorDano(String value)
+
+    public static TipoVia BuscarTipoVia(String valor)
     {
-        if(value.equalsIgnoreCase("AAD"))
-            return SetorDano.AAD;
-
-        if(value.equalsIgnoreCase( "AAE"))
-            return SetorDano.AAE;
-
-        if(value.equalsIgnoreCase( "APD"))
-            return SetorDano.APD;
-
-        if(value.equalsIgnoreCase("APE"))
-            return SetorDano.APE;
-
-        if(value.equalsIgnoreCase("LAD"))
-            return SetorDano.LAD;
-
-        if(value.equalsIgnoreCase("LAE"))
-            return SetorDano.LAE;
-
-        if(value.equalsIgnoreCase("LMD"))
-            return SetorDano.LMD;
-
-        if(value.equalsIgnoreCase("LPD"))
-            return SetorDano.LPD;
-
-        if(value.equalsIgnoreCase("LPE"))
-            return SetorDano.LPE;
-
-        if(value.equalsIgnoreCase("LME"))
-            return SetorDano.LME;
-
-        if(value.equalsIgnoreCase("PAE"))
-            return SetorDano.PAE;
-
-        if(value.equalsIgnoreCase("PPM"))
-            return SetorDano.PPM;
-
-        if(value.equalsIgnoreCase("PAD"))
-            return SetorDano.PAD;
-
-        if(value.equalsIgnoreCase("PPE"))
-            return SetorDano.PPE;
-
-        if(value.equalsIgnoreCase("PPD"))
-            return SetorDano.PPD;
-
-        if(value.equalsIgnoreCase("PAM"))
-            return SetorDano.PAM;
-
-        else
-            return null;
-
+        for (TipoVia item : TipoVia.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static TipoCNH BuscarTipoCNH(String value)
+
+    public static DocumentoSolicitacao BuscarDocSolicitacao(String valor)
     {
-        if(value == "A")
-            return TipoCNH.A;
-        if(value == "B")
-            return TipoCNH.B;
-        if(value == "C")
-            return TipoCNH.C;
-        if(value == "D")
-            return TipoCNH.D;
-        if(value == "E")
-            return TipoCNH.E;
-        if(value == "AB")
-            return TipoCNH.AB;
-        if(value == "AC")
-            return TipoCNH.AC;
-        if(value == "AD")
-            return TipoCNH.AD;
-        if(value == "AB")
-            return TipoCNH.AE;
-        if(value == "Não Possui")
-            return TipoCNH.NP;
-        else
-            return null;
+        for (DocumentoSolicitacao item : DocumentoSolicitacao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static EstadoSitioColisao BuscarEstadoColisao(String value)
+
+    public static Genero BuscarGenero(String valor)
     {
-        if(value == "Fragmentos do Choque")
-            return EstadoSitioColisao.FRAGMENTOS_CHOQUE;
-        if(value == "Vestígios de Sangue")
-            return EstadoSitioColisao.VESTIGIOS_SANGUE;
-        if(value == "Marcações de Sulcagens")
-            return EstadoSitioColisao.MARCACOES_SULCAGENS;
-        if(value == "Fragmentos Vítreos")
-            return EstadoSitioColisao.FRAGMENTOS_VITREOS;
-        if(value == "Não Determinado")
-            return EstadoSitioColisao.NAO_DETERMINADO;
-        else
-            return null;
+        for (Genero item : Genero.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static PreservacaoLocal BuscarPreservacaoLocal(String value)
+
+    public static AtoresColisao BuscarAtoresColisao(String valor)
     {
-        if(value == "Marcações da AMC")
-            return PreservacaoLocal.MARCACOES_AMC;
-        if(value == "Polícia Militar")
-            return PreservacaoLocal.POLICIA_MILITAR;
-        if(value == "Preservado por Populares")
-            return PreservacaoLocal.POPULARES;
-        if(value == "Não Preservado")
-            return PreservacaoLocal.NAO_PRESERVADO;
-        else
-            return null;
+
+        for (AtoresColisao item : AtoresColisao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static CondicaoPista BuscarCondicaoPista(String value)
+    //
+//
+    public static SetorDano BuscarSetorDano(String valor)
     {
-        if(value == "Boa")
-            return CondicaoPista.BOA;
-        if(value == "Má")
-            return CondicaoPista.RUIM;
-        else
-            return null;
+
+        for (SetorDano item : SetorDano.values())
+        {
+            if (item.getValor().equals(valor))
+                //if(SetorDano.valueOf(SetorDano.class,item.toString()).toString().equals(valor))
+                return item;
+        }
+        return null;
     }
 
-    public static Pavimentacao BuscarPavimentacao(String value)
+    public static NaturezaLesao BuscarNaturezaLesao(String valor)
     {
-        if(value == "Asfalto")
-            return Pavimentacao.ASFALTO;
-        if(value == "Paralelepipedo")
-            return Pavimentacao.PARALELEPIPEDO;
-        if(value == "Terra")
-            return Pavimentacao.TERRA;
-        if(value == "Concreto")
-            return Pavimentacao.CONCRETO;
-        else
-            return null;
+        for (NaturezaLesao item : NaturezaLesao.values())
+        {
+            //if (NaturezaLesao.valueOf(NaturezaLesao.class, item.toString()).toString().equals(valor))
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static Semaforo BuscarSemaforizacao (String value)
+    public static LocalizacaoLesao BuscarLocalizacaoLesao(String valor)
     {
-        if(value == "Ativo")
-            return Semaforo.ATIVO;
-        if(value == "Inativo")
-            return Semaforo.INATIVO;
-        if(value == "Ausente")
-            return Semaforo.AUSENTE;
-        else
-            return null;
+        for (LocalizacaoLesao item : LocalizacaoLesao.values())
+        {
+            //if (LocalizacaoLesao.valueOf(LocalizacaoLesao.class, item.toString()).toString().equals(valor))
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-
-    public static SinalizacaoPare BuscarSinalizacaoPare (String value)
+    public static Calibre BuscarCalibre(String valor)
     {
-        if(value == "Vertical")
-            return SinalizacaoPare.VERTICAL;
-        if(value == "Horizontal")
-            return SinalizacaoPare.HORIZONTAL;
-        if(value == "Vertical e Horizontal")
-            return SinalizacaoPare.VERTICAL_E_HORIZONTAL;
-        if(value == "Más Condições")
-            return SinalizacaoPare.MAS_CONDICOES;
-        if(value == "Ausente")
-            return SinalizacaoPare.AUSENTE;
-        else
-            return null;
+        for (Calibre item : Calibre.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static Lesao BuscarLesao(String value)
+    public static TipoArma BuscarTipoArma(String valor)
     {
-        if(value == "Leve")
-            return Lesao.LEVE;
-        if(value == "Grave")
-            return Lesao.GRAVE;
-        if(value == "Fatal")
-            return Lesao.FATAL;
-        else
-            return null;
+        for (TipoArma item : TipoArma.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static TipoVia BuscarTipoVia(String value)
+    public static TiposMunicao BuscarTipoMunicao(String valor)
     {
-        if(value == "Rua")
-            return TipoVia.RUA;
-        if(value == "Avenida")
-            return TipoVia.AVENIDA;
-        if(value == "BR")
-            return TipoVia.BR;
-        if(value == "CE")
-            return TipoVia.CE;
-        else
-            return null;
+        for (TiposMunicao item : TiposMunicao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static Topografia BuscarTopografia (String value)
+    public static SetorDano BuscarSetorDanoSigla(String valor)
     {
-        if(value == "Plana")
-            return Topografia.RETA_PLANA;
-        if(value == "Aclive")
-            return Topografia.ACLIVE;
-        if(value == "Declive")
-            return Topografia.DECLIVE;
-        else
-            return null;
+
+        for (SetorDano item : SetorDano.values())
+        {
+            if (SetorDano.valueOf(SetorDano.class, item.toString()).toString().equals(valor))
+                //if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
+//
 
-
-    public static IluminacaoVia BuscarIluminacao (String value)
+    public static TipoCNH BuscarTipoCNH(String valor)
     {
-        if(value == "Ausente")
-            return IluminacaoVia.AUSENTE;
-        if(value == "Boa")
-            return IluminacaoVia.BOA;
-        if(value == "Ruim")
-            return IluminacaoVia.RUIM;
-        else
-            return null;
+        for (TipoCNH item : TipoCNH.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static Orgao BuscarOrgao (String value)
+
+    public static EstadoSitioColisao BuscarEstadoColisao(String valor)
     {
-        if(value == "Autarquia Municipal")
-            return Orgao.AM;
-        if(value == "Polícia Rodoviária Federal")
-            return Orgao.PRF;
-        if(value == "Polícia Rodoviária Estadual")
-            return Orgao.PRE;
-        if(value == "Polícia Militar")
-            return Orgao.PM;
-        if(value == "Guarda Municipal")
-            return Orgao.GM;
-        else
-            return null;
+        for (EstadoSitioColisao item : EstadoSitioColisao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static OrientacaoGeografica BuscarOrientacao(String value)
+
+    public static PreservacaoLocal BuscarPreservacaoLocal(String valor)
     {
-        if(value == "Norte")
-            return OrientacaoGeografica.NORTE;
-        if(value == "Sul")
-            return OrientacaoGeografica.SUL;
-        if(value == "Leste")
-            return OrientacaoGeografica.LESTE;
-        if(value == "Oeste")
-            return OrientacaoGeografica.OESTE;
-        if(value == "Sudeste")
-            return OrientacaoGeografica.SUDESTE;
-        if(value == "Nordeste")
-            return OrientacaoGeografica.NORDESTE;
-        if(value == "Noroeste")
-            return OrientacaoGeografica.NOROESTE;
-        if(value == "Sudoeste")
-            return OrientacaoGeografica.SUDOESTE;
-        else
-            return null;
+        for (PreservacaoLocal item : PreservacaoLocal.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
-    public static OrientacaoGeograficaComposta BuscarOrientacaoComposta(String value)
+
+
+    public static CondicaoPista BuscarCondicaoPista(String valor)
     {
-        if(value == "Norte-Sul")
-            return OrientacaoGeograficaComposta.NORTE_SUL;
-        if(value == "Sul-Norte")
-            return OrientacaoGeograficaComposta.SUL_NORTE;
-        if(value == "Leste-Oeste")
-            return OrientacaoGeograficaComposta.LESTE_OESTE;
-        if(value == "Oeste-Leste")
-            return OrientacaoGeograficaComposta.OESTE_LESTE;
-        if(value == "Sudeste-Noroeste")
-            return OrientacaoGeograficaComposta.SUDESTE_NOROESTE;
-        if(value == "Nordeste-Sudoeste")
-            return OrientacaoGeograficaComposta.NORDESTE_SUDOESTE;
-        if(value == "Noroeste-Sudeste")
-            return OrientacaoGeograficaComposta.NOROESTE_SUDESTE;
-        if(value == "Sudoeste-Nordeste")
-            return OrientacaoGeograficaComposta.SUDOESTE_NORDESTE;
-        else
-            return null;
+        for (CondicaoPista item : CondicaoPista.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
-    public static TipoInteracao BuscarTipoInteracao(String value)
+
+
+    public static Pavimentacao BuscarPavimentacao(String valor)
     {
-        if(value == "Colisão em Cruzamento")
-            return TipoInteracao.COLISAO_CRUZ;
-        if(value == "Colisão")
-            return TipoInteracao.COLISAO;
-        if(value == "Colisão Frontal")
-            return TipoInteracao.COLISAO_FRONTAL;
-        if(value == "Colisão Traseira")
-            return TipoInteracao.COLISAO_TRASEIRA;
-        if(value == "Colisão Lateral")
-            return TipoInteracao.COLISAO_LATERAL;
-        if(value == "Abalroamento")
-            return TipoInteracao.ABALROAMENTO;
-        if(value == "Adernamento")
-            return TipoInteracao.ADERNAMENTO;
-        if(value == "Choque")
-            return TipoInteracao.CHOQUE;
-        if(value == "Atropelamento")
-            return TipoInteracao.ATROPELAMENTO;
-        else
-            return null;
+        for (Pavimentacao item : Pavimentacao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
-    public static DocumentoPessoa BuscarTipoDocumento(String value) {
-        if(value == "Carteira de Identidade")
-            return DocumentoPessoa.RG;
-        if(value == "Cadastro de Pessoa Física")
-            return DocumentoPessoa.CPF;
-        if(value == "Passaporte")
-            return DocumentoPessoa.PASSAPORTE;
-        if(value == "Carteira de Trabalho e Previdência Social")
-            return  DocumentoPessoa.CTPS;
-        if(value == "Carteira Nacional de Habilitação")
-            return DocumentoPessoa.CNH;
-        else
-            return null;
-    }
-
-
-    public static TipoVeiculo BuscarTipoVeiculo(String value) {
-        if(value == "Caminhão")
-            return TipoVeiculo.CAMINHAO;
-        if(value == "Moto")
-            return TipoVeiculo.MOTO;
-        if(value == "Carro")
-            return TipoVeiculo.CARRO;
-        if(value == "Ônibus")
-            return  TipoVeiculo.ONIBUS;
-        else
-            return null;
-    }
-
-    public static TercoDano BuscarTercoDano(String value) {
-        if(value == "Superior")
-            return TercoDano.SUPERIOR;
-        if(value == "Inferior")
-            return TercoDano.INFERIOR;
-        if(value == "Médio")
-            return TercoDano.MEDIO;
-        else
-            return null;
-    }
-
-    public static CategoriaFoto BuscarCategoriaFoto(String value) {
-        if(value == "Veículos")
-            return CategoriaFoto.VEICULOS;
-        if(value == "Envolvidos")
-            return CategoriaFoto.ENVOLVIDOS;
-        if(value == "Endereços")
-            return CategoriaFoto.ENDERECOS;
-        if(value == "Outros")
-            return CategoriaFoto.OUTROS;
-        else
-            return null;
-    }
-
-    public static TipoDano BuscarTipoDano(String value) {
-        if(value == "Contuso")
-            return TipoDano.CONTUSO;
-        if(value == "Perfurante")
-            return TipoDano.PERFURANTE;
-        if(value == "Fricção")
-            return TipoDano.FRICCAO;
-        if(value == "Cortante")
-            return TipoDano.CORTANTE;
-        else
-            return null;
-    }
-
-    public static Cor BuscarCor(String value)
+    public static Semaforo BuscarSemaforizacao(String valor)
     {
-        if(value == "Amarela")
-            return Cor.AMARELO;
-        if (value == "Azul")
-            return Cor.AZUL;
-        if(value=="Bege")
-            return Cor.BEGE;
-        if(value=="Branca")
-            return Cor.BRANCO;
-        if(value=="Roxa")
-            return Cor.ROXO;
-        if(value=="Cinza")
-            return Cor.CINZA;
-        if(value=="Rosa")
-            return Cor.ROSA;
-        if(value=="Preta")
-            return Cor.PRETO;
-        if(value=="Laranja")
-            return Cor.LARANJA;
-        if(value == "Vermelha")
-            return Cor.VERMELHO;
-        if(value == "Verde")
-            return Cor.VERDE;
-        else
-            return null;
+        for (Semaforo item : Semaforo.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
     }
 
+    public static SinalizacaoPare BuscarSinalizacaoPare(String valor)
+    {
+        for (SinalizacaoPare item : SinalizacaoPare.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static Lesao BuscarLesao(String valor)
+    {
+        for (Lesao item : Lesao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static Topografia BuscarTopografia(String valor)
+    {
+        for (Topografia item : Topografia.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static IluminacaoArtificial BuscarIluminacaoArtificial(String valor)
+    {
+        for (IluminacaoArtificial item : IluminacaoArtificial.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static Orgao BuscarOrgao(String valor)
+    {
+        for (Orgao item : Orgao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static OrientacaoGeografica BuscarOrientacao(String valor)
+    {
+        for (OrientacaoGeografica item : OrientacaoGeografica.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static OrientacaoGeograficaComposta BuscarOrientacaoComposta(String valor)
+    {
+        for (OrientacaoGeograficaComposta item : OrientacaoGeograficaComposta.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoInteracao BuscarTipoInteracao(String valor)
+    {
+        for (TipoInteracao item : TipoInteracao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static DocumentoPessoa BuscarDocumentoPessoa(String valor)
+    {
+        for (DocumentoPessoa item : DocumentoPessoa.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoVeiculo BuscarTipoVeiculo(String valor)
+    {
+        for (TipoVeiculo item : TipoVeiculo.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TercoDano BuscarTercoDano(String valor)
+    {
+        for (TercoDano item : TercoDano.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static CategoriaFoto BuscarCategoriaFoto(String valor)
+    {
+        for (CategoriaFoto item : CategoriaFoto.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoDano BuscarTipoDano(String valor)
+    {
+        for (TipoDano item : TipoDano.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static Cor BuscarCor(String valor)
+    {
+        for (Cor item : Cor.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoOcorrenciaVida BuscarTipoOcorrenciaVida(String valor)
+    {
+        for (TipoOcorrenciaVida item : TipoOcorrenciaVida.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+
+    public static ParteCorpo BuscarParteCorpo(String valor)
+    {
+        for (ParteCorpo item : ParteCorpo.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoAcesso BuscarTipoAcesso(String valor)
+    {
+        for (TipoAcesso item : TipoAcesso.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoLocal BuscarTipoLocal(String valor)
+    {
+        for (TipoLocal item : TipoLocal.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoLocalCrime BuscarTipoLocalCrime(String valor)
+    {
+        for (TipoLocalCrime item : TipoLocalCrime.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoAberturaLocal BuscarLocalAberto(String valor)
+    {
+        for (TipoAberturaLocal item : TipoAberturaLocal.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoVegetacao BuscarVegetacao(String valor)
+    {
+        for (TipoVegetacao item : TipoVegetacao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+
+    public static UnidadeTempo BuscarUnidadeTempo(String valor)
+    {
+        for (UnidadeTempo item : UnidadeTempo.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TiposVestigioBiologico BuscarVestigioBiologico(String valor)
+    {
+        for (TiposVestigioBiologico item : TiposVestigioBiologico.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+
+    public static TipoRecolhimentoAmostra_Biologica BuscarRecolhimentoAmostraBiologica(String valor)
+    {
+        for (TipoRecolhimentoAmostra_Biologica item : TipoRecolhimentoAmostra_Biologica.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+
+    public static TipoRecolhimentoAmostra_Papiloscopia BuscarRecolhimentoAmostraPapiloscopia(String valor)
+    {
+        for (TipoRecolhimentoAmostra_Papiloscopia item : TipoRecolhimentoAmostra_Papiloscopia.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static LocalVeiculo BuscarLocalVeiculo(String valor)
+    {
+        for (LocalVeiculo item : LocalVeiculo.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static Comodo BuscarComodo(String valor)
+    {
+        for (Comodo item : Comodo.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static LocalPraia BuscarLocaisPraia(String valor)
+    {
+        for (LocalPraia item : LocalPraia.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+
+    public static Secao BuscarSecao(String valor)
+    {
+        for (Secao item : Secao.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static TipoVestigioVida BuscarVestigioVida(String valor)
+    {
+        for (TipoVestigioVida item : TipoVestigioVida.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static DocumentoPessoa BuscarTipoDocumento(String valor)
+    {
+        for (DocumentoPessoa item : DocumentoPessoa.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static PosicaoBraco BuscarPosicaoBraco(String valor)
+    {
+        for (PosicaoBraco item : PosicaoBraco.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static PosicaoCabeca BuscarPosicaoCabeca(String valor)
+    {
+        for (PosicaoCabeca item : PosicaoCabeca.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static PosicaoTorax BuscarPosicaoTorax(String valor)
+    {
+        for (PosicaoTorax item : PosicaoTorax.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static PosicaoPerna BuscarPosicaoPerna(String valor)
+    {
+
+        for (PosicaoPerna item : PosicaoPerna.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    //
     public static Integer getIndex(Spinner spinner, String myString)
     {
-        for (int i=0;i<spinner.getCount();i++)
+        for (int i = 0; i < spinner.getCount(); i++)
         {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString))
             {
@@ -634,9 +757,9 @@ public class BuscadorEnum {
 
     public static Integer getVeiculoIndexById(Spinner spinner, Long id)
     {
-        for (int i=0;i<spinner.getCount();i++)
+        for (int i = 0; i < spinner.getCount(); i++)
         {
-            if(((Veiculo)spinner.getItemAtPosition(i)).getId()!=null)
+            if (((Veiculo) spinner.getItemAtPosition(i)).getId() != null)
             {
                 if (((Veiculo) spinner.getItemAtPosition(i)).getId().equals(id))
                     return i;
@@ -647,9 +770,9 @@ public class BuscadorEnum {
 
     public static Integer getEnvolvidoIndexById(Spinner spinner, Long id)
     {
-        for (int i=0;i<spinner.getCount();i++)
+        for (int i = 0; i < spinner.getCount(); i++)
         {
-            if (((EnvolvidoTransito)spinner.getItemAtPosition(i)).getId() == id)
+            if (((EnvolvidoTransito) spinner.getItemAtPosition(i)).getId() == id)
             {
                 return i;
             }
@@ -659,22 +782,22 @@ public class BuscadorEnum {
 
     public static Integer getEnderecoIndexById(Spinner spinner, Long id)
     {
-        for (int i=0;i<spinner.getCount();i++)
+        for (int i = 0; i < spinner.getCount(); i++)
         {
-           if(((EnderecoTransito)spinner.getItemAtPosition(i)).getId()!= null)
-           {
-               if (((EnderecoTransito) spinner.getItemAtPosition(i)).getId().equals(id))
-                   return i;
-           }
+            if (((EnderecoTransito) spinner.getItemAtPosition(i)).getId() != null)
+            {
+                if (((EnderecoTransito) spinner.getItemAtPosition(i)).getId().equals(id))
+                    return i;
+            }
         }
         return null;
     }
 
     public static int PegarPosicaoVeiculo(List<Veiculo> veiculos, Veiculo v)
     {
-        for(int i = 0; i<veiculos.size();i++)
+        for (int i = 0; i < veiculos.size(); i++)
         {
-            if(veiculos.get(i).getId()!=null)
+            if (veiculos.get(i).getId() != null)
             {
                 if (veiculos.get(i).getId().equals(v.getId()))
                     return i;
@@ -682,44 +805,12 @@ public class BuscadorEnum {
         }
         return 0;
     }
+
     public static int PegarPosicaoEndereco(List<EnderecoTransito> enderecos, EnderecoTransito et)
     {
-        for(int i = 0; i<enderecos.size();i++)
+        for (int i = 0; i < enderecos.size(); i++)
         {
-            if(enderecos.get(i).getId().equals(et.getId()))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-    public static int PegarPosicaoEnvolvido(List<EnvolvidoTransito> envolvidos, EnvolvidoTransito et)
-    {
-        for(int i = 0; i<envolvidos.size();i++)
-        {
-            if(envolvidos.get(i).getId().equals(et.getId()))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-    public static int PegarPosicaoFoto(List<Foto> fotos, Foto foto)
-    {
-        for(int i = 0; i<fotos.size();i++)
-        {
-            if(fotos.get(i).getId().equals(foto.getId()))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-    public static int PegarPosicaoColisao(List<ColisaoTransito> colisoes, ColisaoTransito ct)
-    {
-        for(int i = 0; i<colisoes.size();i++)
-        {
-            if(colisoes.get(i).getId().equals(ct.getId()))
+            if (enderecos.get(i).getId().equals(et.getId()))
             {
                 return i;
             }
@@ -727,4 +818,272 @@ public class BuscadorEnum {
         return -1;
     }
 
+    public static int PegarPosicaoEnvolvidoVida(List<EnvolvidoVida> envolvidos, EnvolvidoVida ev)
+    {
+        for (int i = 0; i < envolvidos.size(); i++)
+        {
+            if (envolvidos.get(i).getId().equals(ev.getId()))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    public static int PegarPosicaoVestigioVida(List<VestigioVida> vestigios, VestigioVida vv)
+    {
+        for (int i = 0; i < vestigios.size(); i++)
+        {
+            if (vestigios.get(i).getId().equals(vv.getId()))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int PegarPosicaoEnvolvidoTransito(List<EnvolvidoTransito> envolvidos, EnvolvidoTransito et)
+    {
+        for (int i = 0; i < envolvidos.size(); i++)
+        {
+            if (envolvidos.get(i).getId().equals(et.getId()))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int PegarPosicaoFoto(List<Foto> fotos, Foto foto)
+    {
+        for (int i = 0; i < fotos.size(); i++)
+        {
+            if (fotos.get(i).getId().equals(foto.getId()))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int PegarPosicaoColisao(List<ColisaoTransito> colisoes, ColisaoTransito ct)
+    {
+        for (int i = 0; i < colisoes.size(); i++)
+        {
+            if (colisoes.get(i).getId().equals(ct.getId()))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    public static ParteCorpo EncontrarParteCorpo(Secao secao)
+    {
+        switch (secao)
+        {
+            case SETOR_SUPERIOR_BRACO_ESQUERDO:
+            case SETOR_INFERIOR_BRACO_ESQUERDO:
+            case COTOVELO_ESQUERDO:
+            case SETOR_SUPERIOR_ANTEBRACO_ESQUERDO:
+            case SETOR_INFERIOR_ANTEBRACO_ESQUERDO:
+            case MAO_ESQUERDA:
+            case SETOR_SUPERIOR_BRACO_DIREITO:
+            case SETOR_INFERIOR_BRACO_DIREITO:
+            case COTOVELO_DIREITO:
+            case SETOR_SUPERIOR_ANTEBRACO_DIREITO:
+            case SETOR_INFERIOR_ANTEBRACO_DIREITO:
+            case MAO_DIREITA:
+                return ParteCorpo.BRACOS;
+
+            case SETOR_SUPERIOR_COXA_DIREITA:
+            case SETOR_INFERIOR_COXA_DIREITA:
+            case JOELHO_DIREITO:
+            case SETOR_SUPERIOR_PERNA_DIREITA:
+            case SETOR_INFERIOR_PERNA_DIREITA:
+            case PE_DIREITO:
+
+            case SETOR_SUPERIOR_COXA_ESQUERDA:
+            case SETOR_INFERIOR_COXA_ESQUERDA:
+            case JOELHO_ESQUERDO:
+            case SETOR_SUPERIOR_PERNA_ESQUERDA:
+            case SETOR_INFERIOR_PERNA_ESQUERDA:
+            case PE_ESQUERDO:
+                return ParteCorpo.PERNAS;
+
+            case CLAVICULAR_ANTERIOR_DIREITO:
+            case PEITORAL_DIREITO:
+            case HIPOCONDRIO_DIREITO:
+            case FLANCO_DIREITO:
+            case ILIACO_ANTERIOR_DIREITO:
+            case CLAVICULAR_ANTERIOR_ESQUERDO:
+            case PEITORAL_ESQUERDO:
+            case HIPOCONDRIO_ESQUERDO:
+            case FLANCO_ESQUERDO:
+            case ILIACO_ANTERIOR_ESQUERDO:
+            case CLAVICULAR_POSTERIOR_DIREITO:
+            case ESCAPULAR_DIREITO:
+            case LOMBAR_DIREITO:
+            case ILIACO_POSTERIOR_DIREITO:
+            case GLUTEO_DIREITO:
+            case CLAVICULAR_POSTERIOR_ESQUERDO:
+            case ESCAPULAR_ESQUERDO:
+            case LOMBAR_ESQUERDO:
+            case ILIACO_POSTERIOR_ESQUERDO:
+            case GLUTEO_ESQUERDO:
+            case GENITAL:
+            case ANUS:
+                return ParteCorpo.TORAX;
+
+            case PARIETAL_ESQUERDA:
+            case AURICULAR_ESQUERDA:
+            case FRONTAL_ESQUERDA:
+            case OCULAR_ESQUERDA:
+            case MALAR_ESQUERDA:
+            case NASAL_ESQUERDA:
+            case BUCAL_ESQUERDA:
+            case MENTONIANA_ESQUERDA:
+                //    case MANDIBULAR_ESQUERDA:
+            case CAROTIDIANA_ESQUERDA:
+            case CERVICAL_ESQUERDA:
+            case OCCIPITAL_ESQUERDA:
+            case PARIETAL_DIREITA:
+            case AURICULAR_DIREITA:
+            case FRONTAL_DIREITA:
+            case OCULAR_DIREITA:
+            case MALAR_DIREITA:
+            case NASAL_DIREITA:
+            case BUCAL_DIREITA:
+            case MENTONIANA_DIREITA:
+                //   case MANDIBULAR_DIREITA:
+            case CAROTIDIANA_DIREITA:
+            case CERVICAL_DIREITA:
+            case OCCIPITAL_DIREITA:
+
+                return ParteCorpo.CABECA;
+
+
+            default:
+                return null;
+        }
+    }
+
+    public static SecaoImagem EncontrarSecaoImagem(Secao secao, Genero genero)
+    {
+        switch (secao)
+        {
+            case SETOR_SUPERIOR_BRACO_ESQUERDO:
+            case SETOR_INFERIOR_BRACO_ESQUERDO:
+            case COTOVELO_ESQUERDO:
+            case SETOR_SUPERIOR_ANTEBRACO_ESQUERDO:
+            case SETOR_INFERIOR_ANTEBRACO_ESQUERDO:
+            case MAO_ESQUERDA:
+
+            case SETOR_SUPERIOR_BRACO_DIREITO:
+            case SETOR_INFERIOR_BRACO_DIREITO:
+            case COTOVELO_DIREITO:
+            case SETOR_SUPERIOR_ANTEBRACO_DIREITO:
+            case SETOR_INFERIOR_ANTEBRACO_DIREITO:
+            case MAO_DIREITA:
+
+
+            case SETOR_SUPERIOR_COXA_DIREITA:
+            case SETOR_INFERIOR_COXA_DIREITA:
+            case JOELHO_DIREITO:
+            case SETOR_SUPERIOR_PERNA_DIREITA:
+            case SETOR_INFERIOR_PERNA_DIREITA:
+            case PE_DIREITO:
+
+
+            case SETOR_SUPERIOR_COXA_ESQUERDA:
+            case SETOR_INFERIOR_COXA_ESQUERDA:
+            case JOELHO_ESQUERDO:
+            case SETOR_SUPERIOR_PERNA_ESQUERDA:
+            case SETOR_INFERIOR_PERNA_ESQUERDA:
+            case PE_ESQUERDO:
+
+
+            case CLAVICULAR_ANTERIOR_DIREITO:
+            case PEITORAL_DIREITO:
+            case HIPOCONDRIO_DIREITO:
+            case FLANCO_DIREITO:
+            case ILIACO_ANTERIOR_DIREITO:
+            case CLAVICULAR_ANTERIOR_ESQUERDO:
+            case PEITORAL_ESQUERDO:
+            case HIPOCONDRIO_ESQUERDO:
+            case FLANCO_ESQUERDO:
+            case ILIACO_ANTERIOR_ESQUERDO:
+
+                if (genero.equals(Genero.FEMININO))
+                    return SecaoImagem.ANTERIOR_FEMININO;
+                else
+                    return SecaoImagem.ANTERIOR_MASCULINO;
+
+            case CLAVICULAR_POSTERIOR_DIREITO:
+            case ESCAPULAR_DIREITO:
+            case LOMBAR_DIREITO:
+            case ILIACO_POSTERIOR_DIREITO:
+            case GLUTEO_DIREITO:
+            case CLAVICULAR_POSTERIOR_ESQUERDO:
+            case ESCAPULAR_ESQUERDO:
+            case LOMBAR_ESQUERDO:
+            case ILIACO_POSTERIOR_ESQUERDO:
+            case GLUTEO_ESQUERDO:
+            case GENITAL:
+            case ANUS:
+                if (genero.equals(Genero.FEMININO))
+                    return SecaoImagem.POSTERIOR_FEMININO;
+                else
+                    return SecaoImagem.POSTERIOR_MASCULINO;
+
+
+
+            case PARIETAL_ESQUERDA:
+            case AURICULAR_ESQUERDA:
+            case FRONTAL_ESQUERDA:
+            case OCULAR_ESQUERDA:
+            case MALAR_ESQUERDA:
+            case NASAL_ESQUERDA:
+            case BUCAL_ESQUERDA:
+            case MENTONIANA_ESQUERDA:
+                //    case MANDIBULAR_ESQUERDA:
+            case CAROTIDIANA_ESQUERDA:
+            case CERVICAL_ESQUERDA:
+            case OCCIPITAL_ESQUERDA:
+
+                if (genero.equals(Genero.FEMININO))
+                    return SecaoImagem.CABECA_FEMININO_ESQUERDA;
+                else
+                    return SecaoImagem.CABECA_MASCULINO_ESQUERDA;
+
+
+
+
+            case PARIETAL_DIREITA:
+            case AURICULAR_DIREITA:
+            case FRONTAL_DIREITA:
+            case OCULAR_DIREITA:
+            case MALAR_DIREITA:
+            case NASAL_DIREITA:
+            case BUCAL_DIREITA:
+            case MENTONIANA_DIREITA:
+                //   case MANDIBULAR_DIREITA:
+            case CAROTIDIANA_DIREITA:
+            case CERVICAL_DIREITA:
+            case OCCIPITAL_DIREITA:
+
+                if (genero.equals(Genero.FEMININO))
+                    return SecaoImagem.CABECA_FEMININO_DIREITA;
+                else
+                    return SecaoImagem.CABECA_MASCULINO_DIREITA;
+
+
+
+
+            default:
+                return null;
+        }
+    }
 }

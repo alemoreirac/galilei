@@ -17,6 +17,7 @@ public enum PreservacaoLocal {
     }
 
 
+
     PreservacaoLocal(String s) {
         this.valor = s;
     }

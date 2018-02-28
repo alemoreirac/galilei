@@ -6,7 +6,21 @@ package Enums;
 
 public enum Comodo
 {
-    AREA_SERVICO("Área de Serviço"),BANHEIRO("Banheiro"),COPA("Copa"),CORREDOR("Corredor"),COZINHA("Cozinha"),ESCRITORIO("Escritório"),GABINETE("Gabinete"),GARAGEM("Garagem"),PORTARIA("Portaria"),QUARTO("Quarto"),SALA("Sala de Estar"),TERRACO("Terraço"),VARANDA("Varanda");
+    AREA_SERVICO("Área de Serviço"),
+    BANHEIRO("Banheiro"),
+    COPA("Copa"),
+    CORREDOR("Corredor")
+    ,COZINHA("Cozinha"),
+    ESCRITORIO("Escritório")
+    ,GABINETE("Gabinete"),
+    GARAGEM("Garagem")
+    ,PORAO("Porão")
+    ,PORTARIA("Portaria")
+    ,QUARTO("Quarto"),
+    SALA("Sala de Estar")
+    ,TERRACO("Terraço"),
+
+    VARANDA("Varanda");
 
     String valor;
 

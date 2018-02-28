@@ -23,7 +23,7 @@ import java.util.List;
 import Enums.Transito.SetorDano;
 import Enums.Transito.TercoDano;
 import Enums.Transito.TipoDano;
-import Model.Dano;
+import Model.Transito.Dano;
 import Model.Transito.DanoVeiculo;
 import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
@@ -105,7 +105,7 @@ public class GerenciarDano extends AppCompatActivity
                         dv.save();
                     }
 
-                    Intent it = new Intent(GerenciarDano.this, ManterPericia.class);
+                    Intent it = new Intent(GerenciarDano.this, ManterPericiaTransito.class);
                     it.putExtra("VeiculoId", veiculo.getId());
                     it.putExtra("OcorrenciaId", ocorrenciaId);
                     it.putExtra("DiretoParaVeiculo", true);
@@ -221,12 +221,10 @@ public class GerenciarDano extends AppCompatActivity
 
         }
 
-
         dialog.setTitle("Dano " + (((TextView) viewLado).getText().toString()));
         dialog.show();
 
         Carregar_DanoDetalhe(dialog, viewLado);
-
 
         for (Dano d : danosTotais)
         {
@@ -248,7 +246,6 @@ public class GerenciarDano extends AppCompatActivity
                     if (d.getSetor() == SetorDano.PPM || d.getSetor() == SetorDano.PPD || d.getSetor() == SetorDano.PPE)
                         danos.add(d);
                     break;
-
             }
 
         }
@@ -515,7 +512,6 @@ public class GerenciarDano extends AppCompatActivity
 
         adapterDano = new ArrayAdapter<Dano>(GerenciarDano.this, android.R.layout.simple_spinner_dropdown_item, danos);
 
-
         btnSalvarDano.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -549,7 +545,7 @@ public class GerenciarDano extends AppCompatActivity
                 d.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
                 d.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
                 d.setCompatibilidade(cxbCompatibilidade.isChecked());
-                d.setSetor(BuscadorEnum.BuscarSetorDano(((TextView) viewAngulo).getText().toString()));
+                d.setSetor(BuscadorEnum.BuscarSetorDanoSigla(((TextView) viewAngulo).getText().toString()));
                 adapterDano.add(d);
             }
 
@@ -616,7 +612,6 @@ public class GerenciarDano extends AppCompatActivity
         spnTipoDano = (Spinner) dialog.findViewById(R.id.spn_dialog_TipoDano);
         spnTercoDano = (Spinner) dialog.findViewById(R.id.spn_dialog_TercoDano);
         cxbCompatibilidade = (CheckBox) dialog.findViewById(R.id.cxb_dialog_CompatibilidadeDano);
-
 
         ArrayList<String> tipoDano = new ArrayList<String>();
 

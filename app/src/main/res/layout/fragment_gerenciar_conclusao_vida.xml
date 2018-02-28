@@ -1,0 +1,191 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/ms_white"
+                tools:context="com.example.pefoce.peritolocal.Fragments.GerenciarConclusaoVida">
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sgm_Conclusao_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        segmentedgroup:sc_border_width="2dp"
+        segmentedgroup:sc_corner_radius="10dp"
+        segmentedgroup:sc_tint_color="@color/colorPrimary">
+
+        <RadioButton
+            android:id="@+id/rbtn_Opcao_Imagens_Vida"
+            style="@style/RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Imagens"/>
+
+        <RadioButton
+            android:id="@+id/rbtn_Opcao_Laudo_Vida"
+            style="@style/RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Laudo"/>
+
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Conclusao_Vida"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_below="@id/sgm_Conclusao_Vida"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/border_gray">
+
+
+        <ScrollView
+
+            android:id="@+id/scrlv_Conclusao_Vida"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="150dp"
+            android:paddingRight="150dp">
+            <TextView
+                android:id="@+id/txv_Conclusao_Vida_Text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:visibility="invisible"/>
+        </ScrollView>
+
+
+
+        <RelativeLayout
+            android:id="@+id/rltv_Galeria_Conclusao"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/lstv_Envolvidos_Conclusao"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:choiceMode="singleChoice"
+                android:listSelector="@drawable/selector"
+                android:background="@drawable/border_gray"/>
+
+            <ProgressBar
+                android:id="@+id/pgb_Carregando"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/ms_white"
+                android:indeterminate="true"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/txv_Progress_Imagens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pgb_Carregando"
+                android:visibility="invisible"
+                android:layout_centerInParent="true"
+                android:textSize="20dp"
+                android:textColor="@color/ms_black"
+                android:text="Carregando: "/>
+
+            <HorizontalScrollView
+                android:id="@+id/scrlv_Fotos_Conclusao"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/lstv_Envolvidos_Conclusao"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:id="@+id/imgv_Frente_Conclusao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border_gray"
+                        android:padding="2dp"
+                        android:scaleType="fitCenter"
+                        android:visibility="invisible"/>
+
+                    <ImageView
+                        android:id="@+id/imgv_Costas_Conclusao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border_gray"
+                        android:scaleType="fitCenter"
+                        android:padding="2dp"
+                        android:visibility="invisible"/>
+
+                    <ImageView
+                        android:id="@+id/imgv_Cabeca_Direita_Conclusao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="2dp"
+                        android:background="@drawable/border_gray"
+                        android:scaleType="fitCenter"
+                        android:visibility="invisible"/>
+
+                    <ImageView
+                        android:id="@+id/imgv_Cabeca_Esquerda_Conclusao"
+                        android:layout_width="wrap_content"
+                        android:padding="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border_gray"
+                        android:scaleType="fitCenter"
+                        android:visibility="invisible"/>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_Gerar_ODT_Vida"
+        style="@android:style/Widget.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rltv_Conclusao_Vida"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/veiculo_icon"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/documento"/>
+
+        <TextView
+            android:id="@+id/image_button_2_text_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gerar ODT"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txv_Arquivos_Path_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_Gerar_ODT_Vida"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Clique no botão APÓS CONFERIR AS INFORMAÇÕES para gerar o laudo."/>
+
+
+</RelativeLayout>

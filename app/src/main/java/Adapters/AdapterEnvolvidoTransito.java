@@ -71,52 +71,6 @@ public class AdapterEnvolvidoTransito extends ArrayAdapter<EnvolvidoTransito>  i
         idade.setText(format.format(envolvido.getNascimento()));
         return convertView;
 
-      // if(convertView==null)
-      // {
-      //     viewHolder = new ViewHolderEnvolvidoTransito();
-
-      //     LayoutInflater inflater = LayoutInflater.from(getContext());
-
-      //     if(lastAdded == position)
-      //     {
-      //         convertView = inflater.inflate(R.layout.row_envolvido_selecionado,parent,false);
-      //     }
-      //     else
-      //     {
-      //         convertView = inflater.inflate(R.layout.row_envolvido_transito,parent,false);
-      //     }
-      //     viewHolder.setTxvNome((TextView) convertView.findViewById(R.id.txv_row_Nome));
-      //     viewHolder.setTxvIdade((TextView) convertView.findViewById(R.id.txv_row_Idade));
-      //     viewHolder.setTxvFatal((TextView) convertView.findViewById(R.id.txv_row_Fatalidade));
-
-      //     convertView.setTag(viewHolder);
-
-      // }
-      // else
-      // {
-      //     viewHolder = (ViewHolderEnvolvidoTransito) convertView.getTag();
-      // }
-
-      // lastPosition = position;
-
-      // if(envolvido.getNome().length()== 0)
-      //     viewHolder.getTxvNome().setText("(Sem Nome)");
-      // else
-      //     viewHolder.getTxvNome().setText(envolvido.getNome());
-
-      // if(envolvido.isFatal())
-      // viewHolder.getTxvFatal().setText("Vítima Fatal");
-
-      // else
-      // viewHolder.getTxvFatal().setText("Vítima Não Fatal");
-
-
-      // SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
-      // viewHolder.getTxvIdade().setText(format.format(envolvido.getNascimento()));
-
-      // return convertView;
-
     }
 
 

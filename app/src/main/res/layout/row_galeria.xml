@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="5dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector" >
 
     <ImageView
-        android:id="@+id/imgv_GaleriaItem"
-        android:layout_width="100dp"
+        android:id="@+id/imgv_row_Imagem_Galeria"
+        android:layout_width="150dp"
         android:layout_height="100dp" />
 
     <TextView
-        android:id="@+id/text"
-        android:layout_width="fill_parent"
+        android:layout_below="@id/imgv_row_Imagem_Galeria"
+        android:layout_alignLeft="@id/imgv_row_Imagem_Galeria"
+        android:id="@+id/txv_row_Imagem_Descricao"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:textSize="12sp" />
+        android:text="Descriçao da imagem" />
 
-</LinearLayout>
+</RelativeLayout>

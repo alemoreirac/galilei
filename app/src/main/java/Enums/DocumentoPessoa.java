@@ -4,12 +4,12 @@ package Enums;
  * Created by Pefoce on 30/05/2017.
  */
 public enum DocumentoPessoa {
-    RG("Carteira de Identidade")
-    ,CPF("Cadastro de Pessoa Física")
-    ,CNH("Carteira Nacional de Habilitação")
+    NP("Não possui")
+    ,RG("Carteira de identidade")
+    ,CPF("Cadastro de pessoa física")
+    ,CNH("Carteira nacional de habilitação")
     ,PASSAPORTE("Passaporte")
-    ,CTPS("Carteira de Trabalho e Previdência Social");
-
+    ,CTPS("Carteira de trabalho e previdência social");
 
     String valor;
 

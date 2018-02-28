@@ -1,0 +1,446 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="Fragments.FragmentsVida.GerenciarVestigioVida">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/lista_vestigios_vida"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/stroke_border">
+
+        <ListView
+            android:id="@+id/lstv_Vestigios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:choiceMode="singleChoice"
+            android:listSelector="@drawable/selector"
+            >
+
+        </ListView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Vestigio_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/fab_plus"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rltv_Detalhe_Vestigio_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@+id/lista_vestigios_vida"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/txv_Tipo_vestigio_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de Vestígio"
+            android:textSize="15dp"/>
+
+        <Spinner
+            android:id="@+id/spn_Tipo_Vestigio_Vida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txv_Tipo_vestigio_Vida"
+            android:layout_below="@id/txv_Tipo_vestigio_Vida"/>
+
+        <View
+            android:id="@+id/view_divisor_Vestigio"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:alpha="0.2"
+            android:layout_below="@id/spn_Tipo_Vestigio_Vida"/>
+
+        <RelativeLayout
+            android:id="@+id/rltv_Vestigio_Documento"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_divisor_Vestigio"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/txv_Tipo_Documento_Vestigio_Vida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Documento"/>
+
+            <Spinner
+                android:id="@+id/spn_Tipo_Documento_Vestigio_Vida"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Tipo_Documento_Vestigio_Vida"/>
+
+
+            <TextView
+                android:id="@+id/txv_NumDoc_Vestigio_Vida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/spn_Tipo_Documento_Vestigio_Vida"
+                android:text="Número de Documento"
+                />
+
+            <EditText
+                android:id="@+id/edt_NumDoc_Vestigio_Vida"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_NumDoc_Vestigio_Vida"
+                android:layout_below="@id/txv_NumDoc_Vestigio_Vida"/>
+
+            <TextView
+                android:id="@+id/txv_OBservacoes_Vestigio_Documento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spn_Tipo_Documento_Vestigio_Vida"
+                android:text="Observações"/>
+
+            <EditText
+                android:id="@+id/edt_Observacoes_Vestigio_Documento"
+                android:layout_width="650dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_OBservacoes_Vestigio_Documento"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rltv_Vestigio_Biologico"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_divisor_Vestigio"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/txv_Tipo_Vestigio_Biologico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Vestigio Biológico"/>
+
+            <Spinner
+                android:id="@+id/spn_Tipo_Vestigio_Biologico"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Tipo_Vestigio_Biologico"/>
+
+            <TextView
+                android:id="@+id/txv_Coleta_Vestigio_Biologico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/txv_Tipo_Vestigio_Biologico"
+                android:text="Tipo de coleta"/>
+
+            <Spinner
+                android:id="@+id/spn_Coleta_Vestigio_Biologico"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Coleta_Vestigio_Biologico"
+                android:layout_below="@id/txv_Coleta_Vestigio_Biologico"/>
+
+            <!--<TextView-->
+            <!--android:id="@+id/txv_Estado_Vestigio_Biologico"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@id/spn_Coleta_Vestigio_Biologico"-->
+            <!--android:layout_marginLeft="25dp"-->
+            <!--android:text="Estado"/>-->
+
+            <!--<Spinner-->
+            <!--android:id="@+id/spn_Estado_Vestigio_Biologico"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/txv_Estado_Vestigio_Biologico"-->
+            <!--android:layout_alignLeft="@id/txv_Estado_Vestigio_Biologico"/>-->
+
+
+            <TextView
+                android:id="@+id/txv_Vestigio_Biologico_Observacoes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spn_Tipo_Vestigio_Biologico"
+                android:text="Observações"/>
+
+            <EditText
+                android:id="@+id/edt_Observacoes_Biologico"
+                android:layout_width="650dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Vestigio_Biologico_Observacoes"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rltv_Vestigio_Municao"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/view_divisor_Vestigio"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/txv_Tipo_Vestigio_Municao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Munição"/>
+
+            <Spinner
+                android:id="@+id/spn_Tipo_Vestigio_Municao"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Tipo_Vestigio_Municao"/>
+
+            <TextView
+                android:id="@+id/txv_Calibre_Municao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/spn_Tipo_Vestigio_Municao"
+                android:text="Calibre"/>
+
+            <Spinner
+                android:id="@+id/spn_Calibre_Municao"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Calibre_Municao"
+                android:layout_below="@id/txv_Calibre_Municao"/>
+
+            <CheckBox
+                android:id="@+id/cxb_BoaCondicao_Municao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Tipo_Vestigio_Municao"
+                android:layout_toRightOf="@id/spn_Calibre_Municao"
+                android:layout_marginLeft="10dp"
+                android:hint="Bom estado"/>
+
+
+            <TextView
+                android:id="@+id/txv_Quantidade_Municao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spn_Tipo_Vestigio_Municao"
+                android:text="Quantidade"/>
+
+            <EditText
+                android:id="@+id/edt_Quantidade_Municao"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Quantidade_Municao"
+                android:layout_below="@id/txv_Quantidade_Municao"/>
+
+            <TextView
+                android:id="@+id/txv_Observacoes_Municao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_Quantidade_Municao"
+                android:text="Observações"/>
+
+            <EditText
+                android:id="@+id/edt_Observacoes_Municao"
+                android:layout_width="650dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Quantidade_Municao"
+                android:layout_below="@id/txv_Observacoes_Municao"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rltv_Vestigio_Arma_Fogo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/view_divisor_Vestigio"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/txv_Tipo_Arma_Fogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Arma"/>
+
+            <Spinner
+                android:id="@+id/spn_Tipo_Arma_Fogo"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Tipo_Arma_Fogo"
+                android:layout_below="@id/txv_Tipo_Arma_Fogo"/>
+
+            <!--<TextView-->
+            <!--android:id="@+id/txv_Tipo_Vestigio_Arma_Fogo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Tipo de Munição"-->
+            <!--android:layout_toRightOf="@id/spn_Tipo_Arma_Fogo"/>-->
+
+            <!--<Spinner-->
+            <!--android:id="@+id/spn_Tipo_Vestigio_Arma_Fogo"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_below="@id/txv_Tipo_Vestigio_Arma_Fogo"-->
+            <!--android:layout_alignLeft="@id/txv_Tipo_Vestigio_Arma_Fogo"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+            <TextView
+                android:id="@+id/txv_Calibre_Arma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/spn_Tipo_Arma_Fogo"
+                android:text="Calibre"/>
+
+            <Spinner
+                android:id="@+id/spn_Calibre_Arma"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Calibre_Arma"
+                android:layout_below="@id/txv_Calibre_Arma"/>
+
+            <TextView
+                android:id="@+id/txv_Numeracao_Arma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/spn_Tipo_Arma_Fogo"
+                android:layout_below="@id/spn_Tipo_Arma_Fogo"
+                android:text="Numeração"/>
+
+            <EditText
+                android:id="@+id/edt_Numeracao_Arma"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Numeracao_Arma"
+                android:layout_below="@id/txv_Numeracao_Arma"/>
+
+            <TextView
+                android:id="@+id/txv_Observacao_Arma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/spn_Tipo_Arma_Fogo"
+                android:layout_below="@id/edt_Numeracao_Arma"
+                android:layout_marginTop="20dp"
+                android:text="Observações"/>
+
+            <EditText
+                android:id="@+id/edt_Observacao_Arma"
+                android:layout_width="650dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Observacao_Arma"
+                android:layout_below="@id/txv_Observacao_Arma"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rltv_Vestigio_Papiloscopico"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_divisor_Vestigio"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/txv_Tipo_Recolhimento_Amostra_Papiloscopica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Tipo de Recolhimento da Amostra"/>
+
+            <Spinner
+                android:id="@+id/spn_TipoRecolhimento_Amostra_Papiloscopica"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Tipo_Recolhimento_Amostra_Papiloscopica"
+                android:layout_alignLeft="@id/txv_Tipo_Recolhimento_Amostra_Papiloscopica"/>
+
+
+            <TextView
+                android:id="@+id/txv_Objeto_Papiloscopia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/spn_TipoRecolhimento_Amostra_Papiloscopica"
+                android:layout_below="@id/spn_TipoRecolhimento_Amostra_Papiloscopica"
+                android:layout_marginTop="20dp"
+                android:text="Objeto recolhido"/>
+
+            <EditText
+                android:id="@+id/edt_Objeto_Papiloscopia"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Objeto_Papiloscopia"
+                android:layout_below="@id/txv_Objeto_Papiloscopia"/>
+
+            <TextView
+                android:id="@+id/txv_Observacoes_Papiloscopia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/edt_Objeto_Papiloscopia"
+                android:layout_below="@id/edt_Objeto_Papiloscopia"
+                android:layout_marginTop="20dp"
+                android:text="Observações"/>
+
+            <EditText
+                android:id="@+id/edt_Observacoes_Papiloscopia"
+                android:layout_width="650dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Observacoes_Papiloscopia"
+                android:layout_below="@id/txv_Observacoes_Papiloscopia"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rltv_Vestigio_Outro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_divisor_Vestigio"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible">
+
+
+            <TextView
+                android:id="@+id/txv_Descricao_Vestigio_Outro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Descrição do vestígio"/>
+
+            <EditText
+                android:id="@+id/edt_Descricao_Vestigio_Outro"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Descricao_Vestigio_Outro"
+                android:layout_below="@id/txv_Descricao_Vestigio_Outro"/>
+
+            <TextView
+                android:id="@+id/txv_Observacoes_Vestigio_Outro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/edt_Descricao_Vestigio_Outro"
+                android:text="Observações"/>
+
+            <EditText
+                android:id="@+id/edt_Observacoes_Outro"
+                android:layout_width="650dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/txv_Observacoes_Vestigio_Outro"
+                android:layout_below="@id/txv_Observacoes_Vestigio_Outro"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

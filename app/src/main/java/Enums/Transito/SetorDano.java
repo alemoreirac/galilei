@@ -28,15 +28,20 @@ public enum SetorDano {
 
 
 
+    String abreviacao;
+
     String valor;
 
     public String getValor() {
         return valor;
     }
 
+    public String getAbreviacao(){return abreviacao;}
 
-    SetorDano(String s) {
+    SetorDano(String s)
+    {
     this.valor = s;
+
     }
 
 

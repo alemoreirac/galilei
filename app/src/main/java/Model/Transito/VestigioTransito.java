@@ -73,8 +73,10 @@ public class VestigioTransito extends SugarRecord<VestigioTransito>
         vestigio += tipoVestigio.getValor();
 
         if(getDistancia()!=null && getDistancia()>0.0)
+            if(getDistancia()!=0f)
             vestigio +=  ", distância: " + this.getDistancia().toString() + "m";
         if(getArea()!=null)
+            if(getArea()!=0f)
             vestigio +=  ", área: " + this.getArea().toString() + "m²";
 
         if(this.determinante)

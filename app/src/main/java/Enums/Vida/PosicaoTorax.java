@@ -6,7 +6,7 @@ package Enums.Vida;
 
 public enum PosicaoTorax
 {
-    DECUBITO_DORSAL("Decúbito dorsal"),DECUBITO_FRONTAL("Decúbito frontal");
+    DECUBITO_DORSAL("Decúbito dorsal"),DECUBITO_FRONTAL("Decúbito frontal"),DECUBITO_LATERAL_ESQUERDO("Decúbito lateral esquerdo"),DECUBITO_LATERAL_DIREITO("Decúbito lateral direito");
 
     String valor;
 

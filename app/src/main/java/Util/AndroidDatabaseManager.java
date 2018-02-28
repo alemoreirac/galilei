@@ -80,7 +80,7 @@ public class AndroidDatabaseManager extends Activity implements OnItemClickListe
 
         mainscrollview = new ScrollView(AndroidDatabaseManager.this);
 
-        //the main linear layout to which all tables spinners etc will be added.In this activity every element is created dynamically  to avoid using xml file
+        //the main linear layout to which all tables spinners etc will be added.In this context every element is created dynamically  to avoid using xml file
         mainLayout = new LinearLayout(AndroidDatabaseManager.this);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setBackgroundColor(Color.WHITE);

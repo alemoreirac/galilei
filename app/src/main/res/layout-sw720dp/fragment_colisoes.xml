@@ -1,12 +1,17 @@
 
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Fragments.GerenciarColisoes">
+    tools:context="Fragments.Fragments.GerenciarColisoes">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="300dp"
@@ -638,7 +643,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tipo de Interação"
-            android:layout_below="@id/rltv_Veiculo1"
+            android:layout_below="@id/sgm_Dinamica"
             android:layout_alignLeft="@id/rltv_Veiculo1"
             android:layout_marginTop="30dp"/>
 
@@ -655,7 +660,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Observações: "
-            android:layout_below="@id/spn_Tipo_Interacao"/>
+            android:layout_below="@id/spn_Tipo_Interacao"
+                android:layout_marginTop="20dp"/>
 
         <TextView
             android:id="@+id/txv_Audio_Colisao"
@@ -667,7 +673,7 @@
             android:layout_marginLeft="30dp"/>
 
         <ImageButton
-            android:id="@+id/imgb_Audio_Colisao"
+            android:id="@+id/imgb_Audio_Veiculo_Vida"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@color/ms_white"
@@ -698,12 +704,12 @@
             android:id="@+id/sgm_Dinamica"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="25dp"
             android:orientation="horizontal"
             segmentedgroup:sc_border_width="2dp"
             segmentedgroup:sc_corner_radius="10dp"
-            android:layout_alignLeft="@id/rltv_Veiculo2"
-            android:layout_marginLeft="75dp"
+            android:layout_centerHorizontal="true"
+
             android:layout_below="@id/rltv_Veiculo1">
 
             <RadioButton
@@ -741,22 +747,22 @@
         </info.hoang8f.android.segmented.SegmentedGroup>
 
 
-        <Button
-            android:id="@+id/btn_Salvar_Colisao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="Salvar"/>
+        <!--<Button-->
+            <!--android:id="@+id/btn_Salvar_Colisao"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:text="Salvar"/>-->
 
-        <Button
-            android:id="@+id/btn_Cancelar_Colisao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_alignBottom="@id/btn_Salvar_Colisao"
-            android:text="@string/cancelar"
-            android:layout_toRightOf="@id/btn_Salvar_Colisao"
-            android:layout_marginLeft="60dp"/>
+        <!--<Button-->
+            <!--android:id="@+id/btn_Cancelar_Colisao"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_alignBottom="@id/btn_Salvar_Colisao"-->
+            <!--android:text="@string/cancelar"-->
+            <!--android:layout_toRightOf="@id/btn_Salvar_Colisao"-->
+            <!--android:layout_marginLeft="60dp"/>-->
 
         <EditText
             android:id="@+id/edt_Observacao"
@@ -780,9 +786,9 @@
             style="@android:style/Widget.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/imgb_Audio_Colisao"
+            android:layout_toRightOf="@id/imgb_Audio_Veiculo_Vida"
             android:layout_alignBottom="@id/spn_Tipo_Interacao"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="55dp"
             android:gravity="center">
 
             <ImageView
@@ -809,7 +815,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ll_Inconclusao"
             android:layout_alignBottom="@id/ll_Inconclusao"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center">
 
             <ImageView
@@ -833,3 +839,5 @@
 
 
 </RelativeLayout>
+
+</ScrollView>

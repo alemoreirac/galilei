@@ -13,7 +13,6 @@ public enum Orgao
         return valor;
     }
 
-
     Orgao(String s) {
         this.valor = s;
     }

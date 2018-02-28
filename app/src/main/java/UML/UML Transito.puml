@@ -1,0 +1,132 @@
+@startuml
+
+class OcorrenciaTransito{
+          Long ocorrenciaID;
+          Date dataChamado;
+       Date dataAtendimento;
+       String Observacoes;
+       DocumentoOcorrencia documentoOcorrencia;
+       String numIncidencia;
+       AreaIntegradaSeguranca ais;
+       EstadoSitioColisao estadoSitioColisao;
+       PreservacaoLocal preservacaoLocal;
+       String orgaoOrigem;
+       String orgaoDestino;
+       Orgao orgaoPresente;
+       String Viatura;
+       String Comandante;
+       Gravacao gravacaoConclusao;
+       boolean ultimaForma;
+       }
+       class EnvolvidoTransito{
+           String nome;
+           DocumentoPessoa documentoTipo;
+           String documentoValor;
+           TipoEnvolvidoTransito tipoEnvolvido;
+           Date nascimento;
+           Genero genero;
+           Veiculo veiculoEnvolvido;
+       }
+    class EnderecoTransito{
+    Endereco endereco;
+    TipoVia tipoVia;
+    Topografia topografia;
+    Logradouro logradouro;
+    Pavimentacao pavimentacao;
+    CondicaoPista condicao;
+    IluminacaoVia iluminacao;
+    SinalizacaoPare sinalizacaoPare;
+    Semaforo semaforo;
+    OrientacaoGeograficaComposta sentidoVia;
+    int Angulo;
+    boolean isMaoDupla;
+    boolean isPreferencial;
+    boolean isCurva;
+    boolean isMolhada;
+    boolean isComposta;
+    int numFaixas;
+    int numPistas;
+    String latitude;
+    String longitude;
+    Long largura;
+    }
+    class ColisaoTransito{
+    Veiculo veiculo1;
+    Veiculo veiculo2;
+    TipoInteracao tipoInteracao;
+    boolean isVeiculo1Causador;
+    boolean isVeiculo2Causador;
+    ConclusaoTransito conclusaoVeiculo1;
+    ConclusaoTransito conclusaoVeiculo2;
+    boolean isVeiculo1ContraMao;
+    boolean isVeiculo2ContraMao;
+    int veiculo1_Faixa;
+    int veiculo2_Faixa;
+    EnderecoTransito endereco_veiculo1;
+    EnderecoTransito endereco_veiculo2;
+    OrientacaoGeograficaComposta sentido_veiculo1;
+    OrientacaoGeograficaComposta sentido_veiculo2;
+    String objetoDescricao;
+    String objetoObservacao;
+    LocalObjeto objetoPosicao;
+    EnvolvidoTransito pedestre;
+    LocalPedestre posicaoPedestre;
+    boolean culpaPedestre;
+    int distancia;
+    String observacoesColisao;
+    Gravacao gravacaoObservacoes;
+    AtoresColisao atoresColisao;
+    String animalDescricao;
+    String animalObservacao;
+    LocalObjeto animalPosicao;
+    boolean Inconclusivo;
+    Veiculo veiculoEvadido;
+    EnvolvidoTransito envolvidoEvadido;
+    TipoJustificativa_Inconclusao justificativaInconclusao;
+    }
+       class VestigioTransito{
+        TipoVestigioTransito tipoVestigio;
+        Float Distancia;
+        Float Area;
+        boolean determinante;
+       }
+
+class Dano{
+TipoDano tipo;
+ TercoDano terco;
+  SetorDano setor;
+    boolean Compatibilidade;
+}
+
+class Veiculo{
+        TipoVeiculo tipoVeiculo;
+           String placa;
+           String modelo;
+           Boolean isCausador;
+           String marca;
+           Cor cor;
+           int anoModelo;
+           int anoFabricacao;
+           String nomeProprietario;
+           String numeroDocumentoProprietario;
+           TipoCNH categoriaProprietario;
+           String nomeCondutor;
+           String numeroDocumentoCondutor;
+           TipoCNH categoriaCondutor;
+       }
+ColisaoTransito"0..*"-- "1"OcorrenciaTransito
+OcorrenciaTransito "1"-- "0..*" Veiculo
+EnderecoTransito"0..*"-- "1" OcorrenciaTransito
+OcorrenciaTransito  "1"-- "0..*" EnvolvidoTransito
+
+
+ColisaoTransito "1"-- "1..*" Veiculo
+EnderecoTransito"1..*"-- "1" ColisaoTransito
+ColisaoTransito  "1"-- "0..*" VestigioTransito
+ColisaoTransito  "1"-- "0..*" EnvolvidoTransito
+
+Veiculo  "1"-- "N" Dano
+
+
+
+@enduml

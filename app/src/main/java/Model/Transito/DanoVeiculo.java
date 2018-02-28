@@ -3,8 +3,6 @@ package Model.Transito;
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
-import Model.Dano;
-
 /**
  * Created by Pefoce on 11/07/2017.
  */
