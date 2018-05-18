@@ -15,7 +15,7 @@ import Enums.Vida.TipoVestigioVida;
  * Created by Pefoce on 02/12/2017.
  */
 
-public class VestigioVida extends SugarRecord<VestigioVida>
+public class VestigioVida extends SugarRecord
 {
     TipoVestigioVida tipoVestigio;
     String observacao;
@@ -42,7 +42,7 @@ public class VestigioVida extends SugarRecord<VestigioVida>
     int quantidadeMunicao;
     Calibre calibreMunicao;
     boolean condicaoMunicao;
-    TiposMunicao tiposMunicao;
+    TiposMunicao tipoMunicao;
 
 
     //Características MISCELANIA
@@ -207,14 +207,14 @@ public class VestigioVida extends SugarRecord<VestigioVida>
         return condicaoMunicao;
     }
 
-    public TiposMunicao getTiposMunicao()
+    public TiposMunicao getTipoMunicao()
     {
-        return tiposMunicao;
+        return tipoMunicao;
     }
 
     public void setTipoMunicao(TiposMunicao tiposMunicao)
     {
-        this.tiposMunicao = tiposMunicao;
+        this.tipoMunicao = tiposMunicao;
     }
 
     public void LimparCampos()
@@ -254,14 +254,14 @@ public class VestigioVida extends SugarRecord<VestigioVida>
                 return "Documento do tipo: " + getTipoDocumento().getValor().toLowerCase() + " de número: " + getNumDocumento();
 
             case MUNICAO:
-                if(getTiposMunicao()!= null && getCalibreMunicao()!= null)
+                if(getTipoMunicao()!= null && getCalibreMunicao()!= null)
                 {
                     if (isCondicaoMunicao())
-                        return getQuantidadeMunicao() + " munição(ões) do tipo: " + getTiposMunicao().getValor().toLowerCase() + " de calibre " + getCalibreMunicao().getValor().toLowerCase() + " em bom estado.";
+                        return getQuantidadeMunicao() + " munição(ões) do tipo: " + getTipoMunicao().getValor().toLowerCase() + " de calibre " + getCalibreMunicao().getValor().toLowerCase() + " em bom estado.";
                     else
-                        return getQuantidadeMunicao() + " munição(ões) do tipo: " + getTiposMunicao().getValor().toLowerCase() + " de calibre " + getCalibreMunicao().getValor().toLowerCase() + " danificada.";
+                        return getQuantidadeMunicao() + " munição(ões) do tipo: " + getTipoMunicao().getValor().toLowerCase() + " de calibre " + getCalibreMunicao().getValor().toLowerCase() + " danificada.";
                 }
-            case VESTIGIO_PAPILOSCOPICO:
+            case PAPILOSCOPICO:
                 if(getObjetoRecolhidoPapiloscopia()!= null && getTipoRecolhimentoAmostraPapiloscopia() != null)
                 return "Vestígio recolhido para análise papiloscópica: " + getObjetoRecolhidoPapiloscopia() + " colhido com " + getTipoRecolhimentoAmostraPapiloscopia();
 

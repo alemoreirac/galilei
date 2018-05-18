@@ -42,10 +42,10 @@
     android:layout_toRightOf="@id/lista_colisoes"
     android:layout_margin="16dp">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--&gt;-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -78,6 +78,10 @@
 
         <!-- ########## INÍCIO CONTROLES VEÍCULO CULPADO ######### -->
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esta seção permite com que você possa "/>
 
         <RelativeLayout
             android:layout_width="430dp"
@@ -219,7 +223,7 @@
             android:id="@+id/rltv_Veiculo2"
             android:layout_toRightOf="@id/rltv_Veiculo1"
             android:layout_marginLeft="20dp"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:background="@drawable/border_gray"
             android:padding="10dp"
             >
@@ -709,6 +713,7 @@
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
             segmentedgroup:sc_border_width="2dp"
+            segmentedgroup:sc_tint_color="@color/colorPrimary"
             segmentedgroup:sc_corner_radius="10dp"
             android:layout_alignLeft="@id/rltv_Veiculo2"
             android:layout_marginLeft="75dp"
@@ -770,7 +775,7 @@
             android:id="@+id/edt_Observacao"
             android:layout_height="40dp"
             android:background="@drawable/border_gray"
-            android:layout_width="1100dp"
+            android:layout_width="match_parent"
             android:inputType="textMultiLine"
             android:gravity="top|left"
             android:text=""
@@ -837,7 +842,7 @@
 
         </RelativeLayout>
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
 </HorizontalScrollView>
 

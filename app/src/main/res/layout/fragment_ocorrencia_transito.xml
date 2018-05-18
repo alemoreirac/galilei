@@ -1,9 +1,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="Fragments.Fragments.OcorrenciaTransitoFragment"
-            android:layout_margin="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="Fragments.Fragments.OcorrenciaTransitoFragment"
+    android:layout_margin="10dp"
     >
 
     <RelativeLayout
@@ -23,6 +23,8 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/txv_Num_Incidencia"
+            android:inputType="text"
+            android:maxLines="1"
             android:layout_alignLeft="@+id/txv_Num_Incidencia"
             android:maxLength="12"/>
 
@@ -37,7 +39,7 @@
         <!--android:layout_toRightOf="@id/edt_Num_Incidencia"/>-->
 
         <TextView
-            android:id="@+id/txv_TipoDocumento"
+            android:id="@+id/txv_row_NumIncidencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tipo_documento"
@@ -49,7 +51,7 @@
             android:id="@+id/spn_TipoDocumentoOcorrencia"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_TipoDocumento"
+            android:layout_below="@id/txv_row_NumIncidencia"
             android:layout_alignLeft="@id/spn_TipoDocumentoOcorrencia"
             android:layout_marginTop="15dp" />
 
@@ -58,8 +60,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nº Documento"
-            android:layout_alignBottom="@+id/txv_TipoDocumento"
-            android:layout_toRightOf="@+id/txv_TipoDocumento"
+            android:layout_alignBottom="@+id/txv_row_NumIncidencia"
+            android:layout_toRightOf="@+id/txv_row_NumIncidencia"
             android:layout_marginLeft="140dp"
             />
 
@@ -67,8 +69,11 @@
             android:id="@+id/edt_ValorDocumento"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_TipoDocumento"
+            android:layout_below="@id/txv_row_NumIncidencia"
+            android:imeOptions="actionNext"
             android:layout_alignLeft="@+id/txv_ValorDocumento"
+            android:inputType="text"
+            android:maxLines="1"
             android:layout_alignBottom="@id/spn_TipoDocumentoOcorrencia"
             />
 
@@ -103,6 +108,9 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/spn_Autoridade_Presente"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
             android:layout_alignLeft="@id/txv_Comandante"
             android:layout_below="@+id/txv_Comandante" />
 
@@ -118,9 +126,12 @@
             android:text="@string/placa_viatura"/>
 
         <EditText
-            android:id="@+id/edt_PlacaLetras_Viatura"
+            android:id="@+id/edt_Placa_Viatura_Transito"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
             android:layout_alignLeft="@id/txv_Placa_Viatura"
             android:layout_alignBottom="@id/edt_Autoridade_Comandante" />
 
@@ -142,6 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txv_Data_Hora_Chamado_Transito"
             android:layout_alignLeft="@id/txv_Data_Hora_Chamado_Transito"
+
             android:textSize="20dp"
             android:layout_marginTop="6dp"
             android:text="01/01/2000"/>
@@ -152,6 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/txv_Data_Chamado_Transito_Valor"
             android:layout_alignBottom="@id/txv_Data_Chamado_Transito_Valor"
+
             android:text="00:00"
             android:textSize="20dp"
             android:layout_marginLeft="10dp"
@@ -175,6 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txv_Data_Hora_Atendimento_Transito"
             android:layout_alignLeft="@id/txv_Data_Hora_Atendimento_Transito"
+
             android:textSize="20dp"
             android:layout_marginTop="6dp"
             android:text="01/01/2000"/>
@@ -205,8 +219,10 @@
             android:layout_width="340dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txv_Orgao_Origem"
+            android:inputType="text"
+            android:maxLines="1"
             android:layout_marginTop="6dp"
-
+            android:imeOptions="actionNext"
             android:layout_alignLeft="@+id/txv_Orgao_Origem"  />
 
         <!--
@@ -229,6 +245,23 @@
 
         -->
 
+        <TextView
+            android:id="@+id/txv_Bairro_Delegacia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bairro (Somente para preencher Delegacia)"
+            android:layout_alignLeft="@id/txv_Placa_Viatura"
+            android:layout_alignBottom="@id/txv_Orgao_Origem"
+            />
+        <AutoCompleteTextView
+            android:id="@+id/auc_Bairro_Delegacia"
+            android:layout_width="150dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Bairro_Delegacia"
+            android:imeOptions="actionNext"
+            android:layout_below="@id/txv_Bairro_Delegacia"/>
 
         <TextView
             android:id="@+id/txv_Orgao_Destino"
@@ -239,16 +272,18 @@
             android:layout_marginTop="15dp"
             android:layout_alignLeft="@+id/txv_Orgao_Origem" />
 
+
         <AutoCompleteTextView
             android:id="@+id/auc_Orgao_Destino"
             android:layout_width="340dp"
             android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:layout_below="@+id/txv_Orgao_Destino"
             android:layout_marginTop="6dp"
             android:layout_alignLeft="@+id/txv_Orgao_Origem"
             />
-
-
 
         <TextView
             android:id="@+id/txv_preservacaoLocal"
@@ -265,20 +300,6 @@
             android:layout_alignLeft="@+id/txv_preservacaoLocal"
             android:layout_below="@id/txv_preservacaoLocal" />
 
-        <TextView
-            android:id="@+id/txv_Bairro_Delegacia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bairro (Somente para preencher Delegacia)"
-            android:layout_alignLeft="@id/txv_Placa_Viatura"
-            android:layout_alignBottom="@id/txv_Orgao_Origem"
-            />
-        <AutoCompleteTextView
-            android:id="@+id/auc_Bairro_Delegacia"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/txv_Bairro_Delegacia"
-            android:layout_below="@id/txv_Bairro_Delegacia"/>
 
         <TextView
             android:id="@+id/txv_AIS"

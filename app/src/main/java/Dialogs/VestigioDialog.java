@@ -8,14 +8,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Enums.Transito.TipoVestigioTransito;
-import Fragments.FragmentsTransito.GerenciarColisoes;
+import Fragments.FragmentsTransito.GerenciarColisoesTransito;
 import Model.Transito.ColisaoTransito;
 import Model.Ocorrencia;
 import Model.Transito.OcorrenciaTransito;
@@ -67,7 +62,7 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
         fragment = f;
         activity = a;
 
-        colisaoTransito = ((GerenciarColisoes)fragment).colisaoTransito;
+        colisaoTransito = ((GerenciarColisoesTransito)fragment).colisaoTransito;
         ocorrenciaTransito = ((ManterPericiaTransito)activity).ocorrenciaTransito;
 
 

@@ -27,9 +27,9 @@ import Enums.AreaIntegradaSeguranca;
 import Enums.DocumentoSolicitacao;
 import Enums.Orgao;
 import Enums.PreservacaoLocal;
-import Enums.Vida.TipoOcorrenciaVida;
 import Model.DadosTerritoriais;
 import Model.Ocorrencia;
+import Model.Vida.EnderecoVida;
 import Model.Vida.OcorrenciaVida;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
@@ -56,15 +56,13 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
     TextView txvHoraAtendimento;
     TextView txvDataAtendimento;
 
-
-    Spinner spnTipoOcorrenciaVida;
+    //   Spinner spnTipoOcorrenciaVida;
     Spinner spnPreservacaoLocal;
     Spinner spnAutoridadePresente;
     Spinner spnTipoDocumentoVida;
     Spinner spnAIS;
 
     View mView;
-
 
     public GerenciarOcorrenciaVida()
     {
@@ -127,12 +125,25 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         {
             txvHoraChamado.setTextColor(getResources().getColor(R.color.DefaultTextColor));
             txvHoraAtendimento.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+            txvDataChamado.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+            txvDataAtendimento.setTextColor(getResources().getColor(R.color.DefaultTextColor));
 
-            if (TempoUtil.HoraAntesDe(txvHoraAtendimento.getText().toString(), txvHoraChamado.getText().toString()))
+            if (txvDataChamado.getText().toString().equals(txvDataAtendimento.getText().toString()))
             {
-                txvHoraAtendimento.setTextColor(Color.RED);
-                VerificationError ve = new VerificationError("Hora do atendimento antes do Chamado!");
-                return ve;
+                if (TempoUtil.HoraAntesDe(txvHoraAtendimento.getText().toString(), txvHoraChamado.getText().toString()))
+                {
+                    txvHoraAtendimento.setTextColor(Color.RED);
+                    VerificationError ve = new VerificationError("Hora do atendimento antes do chamado!");
+                    return ve;
+                }
+            } else
+            {
+                if (TempoUtil.DataAntesDe(txvDataAtendimento.getText().toString(), txvDataChamado.getText().toString()))
+                {
+                    txvDataAtendimento.setTextColor(Color.RED);
+                    VerificationError ve = new VerificationError("Data do atendimento antes do chamado!");
+                    return ve;
+                }
             }
 
             SalvarOcorrencia();
@@ -147,10 +158,11 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 
     private void SalvarOcorrencia()
     {
+
+
         ocorrenciaVida.setNumIncidencia(edtNumIncidencia.getText().toString().trim());
         ocorrenciaVida.setComandante(edtComandante.getText().toString().trim());
         ocorrenciaVida.setPreservacaoLocal(BuscadorEnum.BuscarPreservacaoLocal(spnPreservacaoLocal.getSelectedItem().toString()));
-
 
         ocorrenciaVida.setDelegado(edtDelegado.getText().toString());
         ocorrenciaVida.setOrgaoDestino(aucOrgaoDestino.getText().toString());
@@ -178,6 +190,13 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         ocorrenciaVida.getDocumento().save();
 
         ocorrenciaVida.save();
+
+        Ocorrencia ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
+        if (ocorrencia != null)
+        {
+            ocorrencia.setDataChamado(ocorrenciaVida.getDataChamado());
+            ocorrencia.save();
+        }
     }
 
     @Override
@@ -186,6 +205,7 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         ((ManterPericiaVida) getActivity()).txvToolbarTitulo.setText("Ocorrência Vida");
 
         Bundle bd = getArguments();
+
 
         AssociarLayout(mView);
         PovoarSpinners(mView.getContext());
@@ -200,7 +220,20 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
                 ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
 
                 CarregarValores();
+
+                try
+                {
+                    EnderecoVida ev = EnderecoVida.find(EnderecoVida.class,"ocorrencia_id = ?",ocorrenciaVida.getId().toString()).get(0);
+                    CarregarBairro(ev.getBairro());
+                    aucBairro.setText(ev.getBairro());
+
+                }catch (Exception e)
+                {
+                    aucBairro.setText("");
+                }
+
             }
+
         }
     }
 
@@ -209,7 +242,6 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
     {
 
     }
-
 
     public void AssociarEventos()
     {
@@ -254,12 +286,12 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
     public void PovoarSpinners(Context ctx)
     {
 
-        ArrayList<String> tipoOCorrenciaVida = new ArrayList<>();
+//        ArrayList<String> tipoOCorrenciaVida = new ArrayList<>();
+//
+//        for (TipoMorte tov : TipoMorte.values())
+//            tipoOCorrenciaVida.add(tov.getValor());
 
-        for (TipoOcorrenciaVida tov : TipoOcorrenciaVida.values())
-            tipoOCorrenciaVida.add(tov.getValor());
-
-        spnTipoOcorrenciaVida.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, tipoOCorrenciaVida));
+//        spnTipoOcorrenciaVida.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, tipoOCorrenciaVida));
 
         ArrayList<String> preservacaoLocal = new ArrayList<>();
 
@@ -302,7 +334,7 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         spnAutoridadePresente = (Spinner) view.findViewById(R.id.spn_Autoridade_Presente_Vida);
         spnPreservacaoLocal = (Spinner) view.findViewById(R.id.spn_Preservacao_Local_Vida);
         spnTipoDocumentoVida = (Spinner) view.findViewById(R.id.spn_TipoDocumentoOcorrenciaVida);
-        spnTipoOcorrenciaVida = (Spinner) view.findViewById(R.id.spn_Tipo_Ocorrencia_Vida);
+//        spnTipoOcorrenciaVida = (Spinner) view.findViewById(R.id.spn_Tipo_Ocorrencia_Vida);
         spnAIS = (Spinner) view.findViewById(R.id.spn_AIS_Vida);
 
         aucBairro = (AutoCompleteTextView) view.findViewById(R.id.auc_Bairro_Delegacia_Vida);
@@ -327,18 +359,29 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
                                     long arg3)
             {
                 Toast.makeText(view.getContext(), aucBairro.getText().toString(), Toast.LENGTH_LONG).show();
-
-                try
-                {
-                    DadosTerritoriais dt = DadosTerritoriais.find(DadosTerritoriais.class, "bairro = ?", aucBairro.getText().toString()).get(0);
-                    aucOrgaoDestino.setText(dt.getDelegacia());
-                    spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, dt.getAis().getValor()));
-                } catch (Exception e)
-                {
-                    Toast.makeText(view.getContext(), "Bairro não encontrado", Toast.LENGTH_LONG).show();
-                }
+                CarregarBairro(aucBairro.getText().toString());
             }
         });
+
+        edtNumIncidencia.setNextFocusRightId(edtNumDocVida.getId());
+        edtNumDocVida.setNextFocusRightId(edtComandante.getId());
+        edtComandante.setNextFocusRightId(edtViatura.getId());
+        aucOrgaoOrigem.setNextFocusRightId(aucOrgaoDestino.getId());
+        aucOrgaoDestino.setNextFocusRightId(edtDelegado.getId());
+        aucBairro.setNextFocusRightId(aucOrgaoDestino.getId());
+    }
+
+    public void CarregarBairro(String bairro)
+    {
+        try
+        {
+            DadosTerritoriais dt = DadosTerritoriais.find(DadosTerritoriais.class, "bairro = ?", bairro).get(0);
+            aucOrgaoDestino.setText(dt.getDelegacia());
+            spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, dt.getAis().getValor()));
+        } catch (Exception e)
+        {
+            Toast.makeText(getActivity(), "Bairro não encontrado", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void CarregarValores()
@@ -351,8 +394,8 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 
         txvHoraChamado.setText(ocorrenciaVida.getHoraChamadoString());
 
-        if(ocorrenciaVida.getDelegado()!=null)
-        edtDelegado.setText(ocorrenciaVida.getDelegado());
+        if (ocorrenciaVida.getDelegado() != null)
+            edtDelegado.setText(ocorrenciaVida.getDelegado());
 
         edtComandante.setText(ocorrenciaVida.getComandante());
 
@@ -374,8 +417,8 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         if (ocorrenciaVida.getPreservacaoLocal() != null)
             spnPreservacaoLocal.setSelection(BuscadorEnum.getIndex(spnPreservacaoLocal, ocorrenciaVida.getPreservacaoLocal().getValor()));
 
-        if (ocorrenciaVida.getTipoOcorrenciaVida() != null)
-            spnTipoOcorrenciaVida.setSelection(BuscadorEnum.getIndex(spnTipoOcorrenciaVida, ocorrenciaVida.getTipoOcorrenciaVida().getValor()));
+//        if (ocorrenciaVida.getTipoOcorrenciaVida() != null)
+//            spnTipoOcorrenciaVida.setSelection(BuscadorEnum.getIndex(spnTipoOcorrenciaVida, ocorrenciaVida.getTipoOcorrenciaVida().getValor()));
 
         aucOrgaoDestino.setText(ocorrenciaVida.getOrgaoDestino());
 
@@ -401,7 +444,7 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         txvHoraChamado = null;
         txvHoraAtendimento = null;
         txvDataAtendimento = null;
-        spnTipoOcorrenciaVida = null;
+//        spnTipoOcorrenciaVida = null;
         spnPreservacaoLocal = null;
         spnAutoridadePresente = null;
         spnTipoDocumentoVida = null;

@@ -38,24 +38,43 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_alignParentBottom="true"
+    android:layout_toRightOf="@+id/lista_veiculos">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/rltv_Detalhe_Veiculo"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/lista_veiculos"
         android:padding="15dp"
         >
 
 
+        <TextView
+            android:id="@+id/txv_Marca_Veiculo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Marca"/>
+
+        <EditText
+            android:id="@+id/edt_Marca_Veiculo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="textCapWords"
+            android:layout_alignTop="@+id/edt_PlacaNumeros_Envolvido"
+            android:layout_alignLeft="@+id/txv_Marca_Veiculo" />
 
         <TextView
             android:id="@+id/txv_Modelo_Veiculo"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="30dp"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/edt_Marca_Veiculo"
             android:textSize="15dp"
             android:text="@string/modelo_carro"/>
 
@@ -64,24 +83,11 @@
             android:id="@+id/edt_Modelo_Veiculo"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="textCapWords"
             android:layout_alignTop="@+id/edt_PlacaNumeros_Envolvido"
             android:layout_alignLeft="@+id/txv_Modelo_Veiculo" />
 
-        <TextView
-            android:id="@+id/txv_Marca_Veiculo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:layout_toRightOf="@id/edt_Modelo_Veiculo"
-            android:layout_marginLeft="30dp"
-            android:text="Marca"/>
-
-        <EditText
-            android:id="@+id/edt_Marca_Veiculo"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/edt_PlacaNumeros_Envolvido"
-            android:layout_alignLeft="@+id/txv_Marca_Veiculo" />
 
 
         <TextView
@@ -90,13 +96,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:textSize="15dp"
-            android:layout_toRightOf="@id/edt_Marca_Veiculo"
+            android:layout_toRightOf="@id/edt_Modelo_Veiculo"
             android:text="@string/placa_carro"/>
 
         <EditText
 
             android:id="@+id/edt_PlacaLetras_Envolvido"
-            android:layout_width="60dp"
+            android:layout_width="70dp"
             android:textAlignment="center"
             android:layout_height="wrap_content"
             android:background="@color/gray"
@@ -118,6 +124,7 @@
             android:textSize="30dp"
             android:maxLength="4"
             android:inputType="number"
+            android:imeOptions="actionDone"
             android:layout_alignBottom="@id/edt_PlacaLetras_Envolvido"
             android:hint="1234"
             android:layout_marginLeft="20dp"
@@ -179,10 +186,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:layout_below="@id/spn_TipoVeiculo"
-            android:layout_alignLeft="@+id/txv_TipoVeiculo"
+            android:layout_alignBottom="@id/txv_TipoVeiculo"
+            android:layout_toRightOf="@id/spn_CorVeiculo"
+            android:layout_marginLeft="10dp"
             android:text="Ano do Veículo"
-            android:layout_marginTop="10dp"
             />
 
         <Spinner
@@ -197,10 +204,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:layout_alignLeft="@+id/txv_CorVeiculo"
-
+            android:layout_toRightOf="@id/spn_Ano_Veiculo"
             android:layout_alignBottom="@id/txv_Ano_Veiculo"
-
             android:text="Fabricação do Veículo"/>
 
         <Spinner
@@ -228,13 +233,13 @@
             />
 
         <TextView
-            android:layout_alignLeft="@+id/txv_Placa_Veiculo"
-            android:layout_alignBottom="@+id/txv_CorVeiculo"
+
+            android:layout_below="@id/spn_TipoVeiculo"
             android:id="@+id/txv_Dados_Proprietario_Condutor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Proprietário e Condutor"
-            android:layout_marginTop="15dp"
+            android:text="Condutor(a) e Proprietário(a)"
+            android:layout_marginTop="10dp"
             android:textSize="20dp"/>
 
 
@@ -245,12 +250,45 @@
             android:background="@drawable/stroke_border"
             android:layout_below="@id/txv_Dados_Proprietario_Condutor"
             android:layout_alignLeft="@+id/txv_Dados_Proprietario_Condutor"
+            android:layout_marginTop="10dp"
             android:id="@+id/rltv_Proprietario_Condutor">
+
+
+            <TextView
+                android:id="@+id/txv_Condutor_Titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Condutor: "
+                android:textSize="15dp"
+                />
+
+            <TextView
+                android:id="@+id/txv_Condutor_Nome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Sem Condutor Definido)"
+                android:layout_below="@+id/txv_Condutor_Titulo"
+                android:textSize="15dp"
+                android:layout_alignLeft="@id/txv_Condutor_Titulo"
+                android:layout_marginTop="2dp"/>
+
+
+            <TextView
+                android:id="@+id/txv_Condutor_Documento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Nº Registro)"
+                android:layout_below="@+id/txv_Condutor_Nome"
+                android:layout_alignLeft="@id/txv_Condutor_Nome"
+                android:layout_marginTop="2dp"/>
+
 
             <TextView
                 android:id="@+id/txv_Proprietario_Titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/txv_Condutor_Titulo"
+                android:layout_marginLeft="160dp"
                 android:text="Proprietário: "
                 android:textSize="15dp"
                 />
@@ -277,59 +315,29 @@
                 android:layout_marginTop="2dp"/>
 
 
-            <TextView
-                android:id="@+id/txv_Condutor_Titulo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Condutor: "
-                android:layout_toRightOf="@+id/txv_Proprietario_Titulo"
-
-                android:textSize="15dp"
-                android:layout_marginLeft="160dp"/>
-
-            <TextView
-                android:id="@+id/txv_Condutor_Nome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(Sem Condutor Definido)"
-                android:layout_below="@+id/txv_Condutor_Titulo"
-                android:textSize="15dp"
-                android:layout_alignLeft="@id/txv_Condutor_Titulo"
-                android:layout_marginTop="2dp"/>
-
-
-            <TextView
-                android:id="@+id/txv_Condutor_Documento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(Nº Registro)"
-                android:layout_below="@+id/txv_Condutor_Nome"
-                android:layout_alignLeft="@id/txv_Condutor_Nome"
-                android:layout_marginTop="2dp"/>
-
 
         </RelativeLayout>
 
 
 
         <TextView
-            android:layout_below="@id/spn_Ano_Veiculo"
+            android:layout_below="@id/rltv_Proprietario_Condutor"
             android:id="@+id/txv_DanosVeiculo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Danos do Veículo"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="20dp"
             android:textSize="20dp"/>
 
 
         <ListView
             android:id="@+id/lstv_Danos_Veiculo"
             android:layout_width="750dp"
-            android:layout_marginRight="50dp"
             android:background="@drawable/stroke_border"
             android:layout_height="160dp"
             android:layout_alignLeft="@+id/txv_DanosVeiculo"
             android:layout_below="@id/txv_DanosVeiculo"
+            android:layout_marginTop="10dp"
             ></ListView>
 
 
@@ -360,7 +368,7 @@
             style="@android:style/Widget.Button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:gravity="center">
 
             <ImageView
@@ -380,5 +388,5 @@
 
 
     </RelativeLayout>
-
+</ScrollView>
 </RelativeLayout>

@@ -26,7 +26,7 @@ public final class SelectTest {
         assertEquals("(test = ?  AND prop = ? )", where.getWhereCond());
         assertEquals(2, where.getArgs().length);
         assertEquals("satya", where.getArgs()[0]);
-        assertEquals("2", where.getArgs()[1]);
+        assertEquals("", where.getArgs()[1]);
     }
 
     @Test
@@ -40,7 +40,7 @@ public final class SelectTest {
         assertEquals("(test = ?  AND prop = ? )", where.getWhereCond());
         assertEquals(2, where.getArgs().length);
         assertEquals("satya", where.getArgs()[0]);
-        assertEquals("2", where.getArgs()[1]);
+        assertEquals("", where.getArgs()[1]);
     }
 
     @Test
@@ -83,7 +83,7 @@ public final class SelectTest {
         assertEquals("(test = ?  OR prop = ? )", where.getWhereCond());
         assertEquals(2, where.getArgs().length);
         assertEquals("satya", where.getArgs()[0]);
-        assertEquals("2", where.getArgs()[1]);
+        assertEquals("", where.getArgs()[1]);
     }
 
     @Test
@@ -98,7 +98,7 @@ public final class SelectTest {
         assertEquals("(test = ? ) AND (prop = ? )", where.getWhereCond());
         assertEquals(2, where.getArgs().length);
         assertEquals("satya", where.getArgs()[0]);
-        assertEquals("2", where.getArgs()[1]);
+        assertEquals("", where.getArgs()[1]);
     }
 
     @Test
@@ -113,7 +113,7 @@ public final class SelectTest {
         assertEquals("(test = ? ) OR (prop = ? )", where.getWhereCond());
         assertEquals(2, where.getArgs().length);
         assertEquals("satya", where.getArgs()[0]);
-        assertEquals("2", where.getArgs()[1]);
+        assertEquals("", where.getArgs()[1]);
     }
 
     @Test

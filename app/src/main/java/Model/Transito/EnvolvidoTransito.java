@@ -18,7 +18,7 @@ import Util.TempoUtil;
  * Created by Pefoce on 30/05/2017.
  */
 
-public class EnvolvidoTransito extends SugarRecord<EnvolvidoTransito>
+public class EnvolvidoTransito extends SugarRecord
 {
     @Expose
     String nome;
@@ -35,96 +35,116 @@ public class EnvolvidoTransito extends SugarRecord<EnvolvidoTransito>
 
     Veiculo veiculoEnvolvido;
 
-    public Veiculo getVeiculoEnvolvido() {
+    public Veiculo getVeiculoEnvolvido()
+    {
         return veiculoEnvolvido;
     }
 
-    public void setVeiculoEnvolvido(Veiculo veiculoEnvolvido) {
+    public void setVeiculoEnvolvido(Veiculo veiculoEnvolvido)
+    {
         this.veiculoEnvolvido = veiculoEnvolvido;
     }
 
-    public Lesao getLesao() {
+    public Lesao getLesao()
+    {
         return lesao;
     }
 
-    public void setLesao(Lesao lesao) {
+    public void setLesao(Lesao lesao)
+    {
         this.lesao = lesao;
     }
 
     Lesao lesao;
 
-    public Genero getGenero() {
+    public Genero getGenero()
+    {
         return genero;
     }
 
-    public void setGenero(Genero genero) {
+    public void setGenero(Genero genero)
+    {
         this.genero = genero;
     }
 
 
-    public EnvolvidoTransito() {
+    public EnvolvidoTransito()
+    {
         this.setLesao(Lesao.LEVE);
         this.setNome("");
         this.setGenero(Genero.NAO_IDENTIFICADO);
         this.setTipoEnvolvido(TipoEnvolvidoTransito.PEDESTRE);
-        final Calendar cSave = Calendar.getInstance();
-        this.nascimento = cSave.getTime();
+        this.nascimento = null;
     }
 
-
-    public String getNome() {
+    public String getNome()
+    {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(String nome)
+    {
         this.nome = nome;
     }
 
-    public DocumentoPessoa getDocumentoTipo() {
+    public DocumentoPessoa getDocumentoTipo()
+    {
         return documentoTipo;
     }
 
-    public void setDocumentoTipo(DocumentoPessoa documentoTipo) {
+    public void setDocumentoTipo(DocumentoPessoa documentoTipo)
+    {
         this.documentoTipo = documentoTipo;
     }
 
 
     public void setDataNascimentoString(String s)
     {
-        final Calendar c  = Calendar.getInstance();
-        c.setTime(TempoUtil.stringToDate(s));
-
+        final Calendar c = Calendar.getInstance();
+        try
+        {
+            c.setTime(TempoUtil.stringToDate(s));
+        } catch (Exception e)
+        {
+            this.nascimento = null;
+            return;
+        }
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         final Calendar cSave = Calendar.getInstance();
 
-        cSave.set(Calendar.YEAR,year);
-        cSave.set(Calendar.MONTH,month);
-        cSave.set(Calendar.DAY_OF_MONTH,day);
+        cSave.set(Calendar.YEAR, year);
+        cSave.set(Calendar.MONTH, month);
+        cSave.set(Calendar.DAY_OF_MONTH, day);
 
         this.nascimento = cSave.getTime();
     }
 
-    public String getDocumentoValor() {
+    public String getDocumentoValor()
+    {
         return documentoValor;
     }
 
-    public void setDocumentoValor(String documentoValor) {
+    public void setDocumentoValor(String documentoValor)
+    {
         this.documentoValor = documentoValor;
     }
 
 
-    public TipoEnvolvidoTransito getTipoEnvolvido() {
+    public TipoEnvolvidoTransito getTipoEnvolvido()
+    {
         return tipoEnvolvido;
     }
 
-    public void setTipoEnvolvido(TipoEnvolvidoTransito tipoEnvolvido) {
+    public void setTipoEnvolvido(TipoEnvolvidoTransito tipoEnvolvido)
+    {
         this.tipoEnvolvido = tipoEnvolvido;
     }
 
-    public Date getNascimento() {
+    public Date getNascimento()
+    {
         return nascimento;
     }
 
@@ -133,29 +153,29 @@ public class EnvolvidoTransito extends SugarRecord<EnvolvidoTransito>
     {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Calendar c = Calendar.getInstance();
-        c.setTime(this.getNascimento());
 
+        if (this.getNascimento() != null)
+            c.setTime(this.getNascimento());
+        else
+            return "--/--/----";
 
-        String data;
-
-        data = format.format(c.getTime());
-
-        return data;
+        return format.format(c.getTime());
     }
 
-    public void setNascimento(Date nascimento) {
+    public void setNascimento(Date nascimento)
+    {
         this.nascimento = nascimento;
     }
 
     @Override
     public String toString()
     {
-        if(this.lesao.equals(Lesao.FATAL))
-            return this.nome+"\n"+this.getNascimentoString()+"\n"+"Vítima Fatal";
-        if(this.lesao.equals(Lesao.GRAVE))
-            return this.nome+"\n"+this.getNascimentoString()+"\n"+"Ferido Gravemente";
-        if(this.lesao.equals(Lesao.LEVE))
-            return this.nome+"\n"+this.getNascimentoString()+"\n"+"Ferido Levemente";
+        if (this.lesao.equals(Lesao.FATAL))
+            return this.nome + "\n" + this.getNascimentoString() + "\n" + "Vítima Fatal";
+        if (this.lesao.equals(Lesao.GRAVE))
+            return this.nome + "\n" + this.getNascimentoString() + "\n" + "Ferido Gravemente";
+        if (this.lesao.equals(Lesao.LEVE))
+            return this.nome + "\n" + this.getNascimentoString() + "\n" + "Ferido Levemente";
         return "";
     }
 

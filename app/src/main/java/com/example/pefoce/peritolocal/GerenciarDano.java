@@ -42,6 +42,10 @@ public class GerenciarDano extends AppCompatActivity
     Button btnLimparDanos = null;
     TextView txvDetalhe = null;
 
+    TextView txvAnterior = null;
+    TextView txvPosterior = null;
+
+
     public List<Dano> danosTotais = null;
 
     ArrayList<String> setores = new ArrayList<>();
@@ -77,13 +81,17 @@ public class GerenciarDano extends AppCompatActivity
             for (Dano d : danosTotais)
             {
                 if (!setores.contains(d.setor.toString()))
-                {
                     setores.add(d.setor.toString());
-                }
+
             }
 
             ColorirTxv_Angulos();
 
+            txvAnterior = (TextView) findViewById(R.id.txv_Anterior_Veiculo);
+            txvPosterior = (TextView) findViewById(R.id.txv_Posterior_Veiculo);
+
+            txvAnterior.setText("A\nN\nT\nE\nR\nI\nO\nR");
+            txvPosterior.setText("P\nO\nS\nT\nE\nR\nI\nO\nR");
 
             Button btnFechar = (Button) findViewById(R.id.btn_SalvarDano_Veiculo);
             btnFechar.setOnClickListener(new View.OnClickListener()
@@ -218,13 +226,12 @@ public class GerenciarDano extends AppCompatActivity
                 ((TextView) findViewById(R.id.txv_PPD)).setTextColor(Color.GREEN);
                 ((TextView) findViewById(R.id.txv_PPE)).setTextColor(Color.GREEN);
                 break;
-
         }
 
         dialog.setTitle("Dano " + (((TextView) viewLado).getText().toString()));
         dialog.show();
 
-        Carregar_DanoDetalhe(dialog, viewLado);
+        Carregar_DanoDetalhe(dialog);
 
         for (Dano d : danosTotais)
         {
@@ -247,7 +254,6 @@ public class GerenciarDano extends AppCompatActivity
                         danos.add(d);
                     break;
             }
-
         }
 
         adapterDano = new ArrayAdapter<Dano>(GerenciarDano.this, android.R.layout.simple_spinner_dropdown_item, danos);
@@ -258,7 +264,10 @@ public class GerenciarDano extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                switch (txv.getText().toString())
+                String texto = txv.getText().toString();
+                texto = texto.replace("\n","");
+
+                switch (texto)
                 {
 
                     case "LADO ESQUERDO":
@@ -353,10 +362,7 @@ public class GerenciarDano extends AppCompatActivity
                         adapterDano.add(danoPosterior);
                         break;
                 }
-
             }
-
-            ;
         });
 
 
@@ -372,9 +378,6 @@ public class GerenciarDano extends AppCompatActivity
 
                 adapterDano.clear();
             }
-
-            ;
-
         });
 
         btnSalvarDano.setOnClickListener(new View.OnClickListener()
@@ -391,7 +394,11 @@ public class GerenciarDano extends AppCompatActivity
                 if (adapterDano.getCount() == 0)
                     ((TextView) viewLado).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
 
-                switch (txv.getText().toString())
+                //Removendo os \n para ler o TextView de Anterior e Posterior, que estão na vertical.
+                String texto = txv.getText().toString();
+                texto = texto.replace("\n","");
+
+                switch (texto)
                 {
                     case "LADO ESQUERDO":
                         ((TextView) findViewById(R.id.txv_LME)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
@@ -498,7 +505,7 @@ public class GerenciarDano extends AppCompatActivity
         dialog.show();
 
 
-        Carregar_DanoDetalhe(dialog, viewAngulo);
+        Carregar_DanoDetalhe(dialog);
 
 
         for (Dano d : danosTotais)
@@ -603,7 +610,7 @@ public class GerenciarDano extends AppCompatActivity
     }
 
 
-    private void Carregar_DanoDetalhe(Dialog dialog, View view)
+    private void Carregar_DanoDetalhe(Dialog dialog)
     {
         lstvDanosDialog = (ListView) dialog.findViewById(R.id.lstv_dialog_ListDanos);
         btnAddDano = (Button) dialog.findViewById(R.id.btn_dialog_AddDano);
@@ -630,8 +637,6 @@ public class GerenciarDano extends AppCompatActivity
         }
 
         spnTercoDano.setAdapter(new ArrayAdapter<String>(GerenciarDano.this, android.R.layout.simple_spinner_dropdown_item, tercoDano));
-
-
     }
 
     public void onBackPressed()

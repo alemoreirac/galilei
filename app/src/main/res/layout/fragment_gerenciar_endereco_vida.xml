@@ -1,63 +1,90 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:paddingTop="8dp"
-             tools:context="Fragments.FragmentsVida.GerenciarEnderecoVida">
+    xmlns:tools="http://schemas.android.com/tools"
 
-            <TextView
-                android:id="@+id/txv_Endereco_Vida"
-                android:text="Endereço"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-            <Spinner
-                android:id="@+id/spn_TipoVia_Vida"
-                android:layout_below="@+id/txv_Endereco_Vida"
-                android:layout_alignLeft="@+id/txv_Endereco_Vida"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:paddingTop="8dp"
+    tools:context="Fragments.FragmentsVida.GerenciarEnderecoVida">
 
-            <EditText
-                android:id="@+id/edt_Endereco_Vida"
-                android:layout_alignBottom="@+id/spn_TipoVia_Vida"
-                android:layout_toRightOf="@id/spn_TipoVia_Vida"
-                android:layout_width="600dp"
-                android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txv_Endereco_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Endereço" />
+
+    <Spinner
+        android:id="@+id/spn_TipoVia_Vida"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_Endereco_Vida"
+        android:layout_below="@+id/txv_Endereco_Vida" />
+
+    <EditText
+        android:id="@+id/edt_Endereco_Vida"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spn_TipoVia_Vida"
+        android:layout_toRightOf="@id/spn_TipoVia_Vida"
+        android:inputType="textCapWords"
+        android:maxLines="1" />
+
+
+    <TextView
+        android:id="@+id/txv_Complemento_End_Vida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txv_Endereco_Vida"
+        android:layout_toRightOf="@id/edt_Endereco_Vida"
+        android:layout_marginLeft="20dp"
+        android:text="Complemento" />
+
+    <EditText
+        android:id="@+id/edt_Complemento_End_Vida"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_Complemento_End_Vida"
+        android:layout_alignBottom="@id/edt_Endereco_Vida"
+        android:inputType="textCapWords"
+        android:maxLines="1" />
 
 
     <TextView
         android:id="@+id/txv_Cidade_Vida"
-        android:text="Cidade"
-
-        android:layout_below="@id/spn_TipoVia_Vida"
-        android:layout_alignLeft="@id/spn_TipoVia_Vida"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/spn_TipoVia_Vida"
+        android:layout_below="@id/spn_TipoVia_Vida"
+        android:text="Cidade" />
 
     <AutoCompleteTextView
         android:id="@+id/auc_Cidade_Vida"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txv_Cidade_Vida"
         android:layout_below="@id/txv_Cidade_Vida"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"/>
+        android:inputType="textCapWords"
+        android:maxLines="1" />
 
     <TextView
         android:id="@+id/txv_Bairro_Vida"
-        android:text="Bairro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/txv_Cidade_Vida"
+        android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/auc_Cidade_Vida"
-        android:layout_marginLeft="20dp"/>
+        android:text="Bairro" />
 
     <AutoCompleteTextView
         android:id="@+id/auc_Bairro_Vida"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txv_Bairro_Vida"
         android:layout_below="@+id/txv_Bairro_Vida"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"/>
+        android:inputType="textCapWords"
+        android:maxLines="1" />
 
 
     <ImageButton
@@ -65,103 +92,119 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignTop="@id/txv_Bairro_Vida"
-        android:layout_toRightOf="@id/auc_Bairro_Vida"
         android:layout_marginLeft="30dp"
-        android:scaleType="centerCrop"
-        android:background="@drawable/pin_icon" />
+        android:layout_toRightOf="@id/auc_Bairro_Vida"
+        android:background="@drawable/pin_icon"
+        android:scaleType="centerCrop" />
+
+    <ProgressBar
+        android:id="@+id/pgb_Carregar_Coordenadas_Vida"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@id/imgb_Coordenadas_Vida"
+        android:layout_alignTop="@id/imgb_Coordenadas_Vida"
+        android:visibility="invisible" />
 
     <EditText
         android:id="@+id/edt_latitude_Vida"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imgb_Coordenadas_Vida"
         android:layout_alignBottom="@id/imgb_Coordenadas_Vida"
-        android:hint="@string/latitude"/>
+        android:layout_toRightOf="@id/imgb_Coordenadas_Vida"
+        android:digits="0123456789'*-ºSW,"
+        android:hint="@string/latitude"
+        android:inputType="text"
+        android:maxLines="1" />
 
     <TextView
         android:id="@+id/txv_Coordenadas_Vida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Coordenadas"
         android:layout_alignBottom="@+id/txv_Bairro_Vida"
-        android:layout_alignLeft="@id/edt_latitude_Vida"/>
+        android:layout_alignLeft="@id/edt_latitude_Vida"
+        android:text="Coordenadas" />
 
     <EditText
         android:id="@+id/edt_longitude_Vida"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/edt_latitude_Vida"
         android:layout_alignBottom="@id/imgb_Coordenadas_Vida"
-        android:hint="@string/longitude"/>
+        android:layout_toRightOf="@id/edt_latitude_Vida"
+        android:digits="0123456789'*-ºSW,"
+        android:hint="@string/longitude"
+        android:inputType="text"
+        android:maxLines="1" />
 
     <View
         android:id="@+id/view_endereco_divisoria_Vida"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
         android:layout_height="3dp"
-        android:alpha="0.2"
         android:layout_below="@id/edt_longitude_Vida"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:alpha="0.2"
+        android:background="@color/colorPrimary" />
 
     <!--<TextView-->
-        <!--android:id="@+id/txv_Tipo_Local_Vida"-->
-        <!--android:text="Tipo de Local"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/view_endereco_divisoria_Vida"-->
-        <!--android:layout_marginTop="10dp"/>-->
+    <!--android:id="@+id/txv_Tipo_Local_Vida"-->
+    <!--android:text="Tipo de Local"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/view_endereco_divisoria_Vida"-->
+    <!--android:layout_marginTop="10dp"/>-->
 
     <!--<Spinner-->
-        <!--android:id="@+id/spn_Tipo_Local_Vida"-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/txv_Tipo_Local_Vida"-->
-        <!--android:layout_alignLeft="@id/txv_Tipo_Local_Vida"/>-->
+    <!--android:id="@+id/spn_Tipo_Local_Vida"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/txv_Tipo_Local_Vida"-->
+    <!--android:layout_alignLeft="@id/txv_Tipo_Local_Vida"/>-->
 
-    <info.hoang8f.android.segmented.SegmentedGroup
-        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+    <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sgm_Local_Vida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/view_endereco_divisoria_Vida"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
         segmentedgroup:sc_border_width="2dp"
-        segmentedgroup:sc_tint_color="@color/colorPrimary"
         segmentedgroup:sc_corner_radius="10dp"
-        android:layout_below="@id/view_endereco_divisoria_Vida">
+        segmentedgroup:sc_tint_color="@color/colorPrimary">
 
         <RadioButton
             android:id="@+id/rbtn_Opcao_Via_Publica"
+            style="@style/RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Via Pública"
-            style="@style/RadioButton" />
+            android:text="Via Pública" />
+
         <RadioButton
             android:id="@+id/rbtn_Opcao_Residencia"
+            style="@style/RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Residência"
-            style="@style/RadioButton" />
+            android:text="Residência" />
+
         <RadioButton
             android:id="@+id/rbtn_Opcao_Praia"
+            style="@style/RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Faixa de Praia"
-            style="@style/RadioButton" />
+            android:text="Faixa de Praia" />
 
         <RadioButton
             android:id="@+id/rbtn_Opcao_Rural"
+            style="@style/RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rural"
-            style="@style/RadioButton" />
+            android:text="Rural" />
+
         <RadioButton
             android:id="@+id/rbtn_Opcao_Outro"
+            style="@style/RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Outros"
-            style="@style/RadioButton" />
+            android:text="Outros" />
     </info.hoang8f.android.segmented.SegmentedGroup>
 
     <RelativeLayout
@@ -177,156 +220,161 @@
             android:id="@+id/txv_Vegetacao_Rural"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vegetação"/>
+            android:text="Vegetação" />
 
         <Spinner
             android:id="@+id/spn_Vegetacao_Rural"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Vegetacao_Rural"/>
+            android:layout_below="@id/txv_Vegetacao_Rural" />
 
 
         <TextView
             android:id="@+id/txv_Tipo_Localidade_Rural"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Localidade"
+            android:layout_alignBottom="@id/txv_Vegetacao_Rural"
             android:layout_toRightOf="@id/spn_Vegetacao_Rural"
-            android:layout_alignBottom="@id/txv_Vegetacao_Rural"/>
+            android:text="Localidade" />
 
         <Spinner
             android:id="@+id/spn_Tipo_Localidade_Rural"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Tipo_Localidade_Rural"
-            android:layout_alignLeft="@id/txv_Tipo_Localidade_Rural"/>
+            android:layout_alignLeft="@id/txv_Tipo_Localidade_Rural"
+            android:layout_below="@id/txv_Tipo_Localidade_Rural" />
 
         <!--<CheckBox-->
-            <!--android:id="@+id/cxb_Aberto_Rural"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:hint="Local Aberto"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_toRightOf="@id/spn_Tipo_Localidade_Rural"/>-->
-
+        <!--android:id="@+id/cxb_Aberto_Rural"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Local Aberto"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_toRightOf="@id/spn_Tipo_Localidade_Rural"/>-->
 
 
         <!--<TextView-->
-            <!--android:id="@+id/txv_Tipo_Aberto_Rural"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Localidade"-->
-            <!--android:layout_toRightOf="@id/spn_Vegetacao_Rural"-->
-            <!--android:layout_alignBottom="@id/txv_Vegetacao_Rural"/>-->
+        <!--android:id="@+id/txv_Tipo_Aberto_Rural"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Localidade"-->
+        <!--android:layout_toRightOf="@id/spn_Vegetacao_Rural"-->
+        <!--android:layout_alignBottom="@id/txv_Vegetacao_Rural"/>-->
 
         <!--<Spinner-->
-            <!--android:id="@+id/spn_Tipo_Aberto_Rural"-->
-            <!--android:layout_width="150dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/txv_Tipo_Localidade_Rural"-->
-            <!--android:layout_alignLeft="@id/txv_Tipo_Localidade_Rural"/>-->
+        <!--android:id="@+id/spn_Tipo_Aberto_Rural"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/txv_Tipo_Localidade_Rural"-->
+        <!--android:layout_alignLeft="@id/txv_Tipo_Localidade_Rural"/>-->
 
         <TextView
             android:id="@+id/txv_Observacoes_Rural"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/spn_Tipo_Localidade_Rural"
-            android:text="Observações"/>
+            android:text="Observações" />
 
         <EditText
             android:id="@+id/edt_Observacoes_Rural"
             android:layout_width="400dp"
             android:layout_height="80dp"
-            android:layout_below="@id/txv_Observacoes_Rural"/>
+            android:layout_below="@id/txv_Observacoes_Rural"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rltv_Endereco_Vida_Via_Publica"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/sgm_Local_Vida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/sgm_Local_Vida"
+        android:layout_marginTop="30dp"
         android:visibility="invisible">
 
         <TextView
             android:id="@+id/txv_Posicao_Via_Publica"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Posição na Via"/>
+            android:text="Posição na Via" />
 
         <Spinner
             android:id="@+id/spn_Posicao_Via_Publica"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Posicao_Via_Publica"
-            android:layout_alignLeft="@id/txv_Posicao_Via_Publica"/>
+            android:layout_alignLeft="@id/txv_Posicao_Via_Publica"
+            android:layout_below="@id/txv_Posicao_Via_Publica" />
 
 
         <TextView
             android:id="@+id/txv_Pavimentacao_Vida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/spn_Posicao_Via_Publica"
             android:layout_alignBottom="@id/txv_Posicao_Via_Publica"
-            android:text="Pavimentaçao"/>
+            android:layout_toRightOf="@id/spn_Posicao_Via_Publica"
+            android:text="Pavimentaçao" />
 
         <Spinner
             android:id="@+id/spn_Pavimentacao_Vida"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Pavimentacao_Vida"
-            android:layout_alignLeft="@id/txv_Pavimentacao_Vida"/>
+            android:layout_alignLeft="@id/txv_Pavimentacao_Vida"
+            android:layout_below="@id/txv_Pavimentacao_Vida" />
 
         <TextView
             android:id="@+id/txv_Observacoes_Via_Publica"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Observações"
             android:layout_below="@id/spn_Pavimentacao_Vida"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            android:text="Observações" />
 
         <EditText
             android:id="@+id/edt_Observacoes_Via_Publica"
             android:layout_width="400dp"
             android:layout_height="80dp"
-            android:layout_below="@id/txv_Observacoes_Via_Publica"/>
+            android:layout_below="@id/txv_Observacoes_Via_Publica"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1" />
 
     </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/rltv_Endereco_Vida_Praia"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/sgm_Local_Vida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/sgm_Local_Vida"
+        android:layout_marginTop="30dp"
         android:visibility="invisible">
 
         <TextView
             android:id="@+id/txv_Local_Praia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Local de Praia"/>
+            android:text="Local de Praia" />
 
         <Spinner
             android:id="@+id/spn_Local_Praia"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Local_Praia"/>
+            android:layout_below="@id/txv_Local_Praia" />
 
         <TextView
             android:id="@+id/txv_Vegetacao_Praia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/spn_Local_Praia"
-            android:text="Vegetação Praia"/>
+            android:text="Vegetação Praia" />
 
         <Spinner
             android:id="@+id/spn_Vegetacao_Praia"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/txv_Vegetacao_Praia"
-            android:layout_below="@id/txv_Vegetacao_Praia"/>
+            android:layout_below="@id/txv_Vegetacao_Praia" />
 
 
         <TextView
@@ -334,186 +382,193 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/spn_Local_Praia"
-            android:text="Observações"/>
+            android:text="Observações" />
 
         <EditText
             android:id="@+id/edt_Observacoes_Praia"
             android:layout_width="500dp"
             android:layout_height="80dp"
+            android:layout_alignLeft="@id/txv_Observacoes_Praia"
             android:layout_below="@id/txv_Observacoes_Praia"
-            android:layout_alignLeft="@id/txv_Observacoes_Praia"/>
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rltv_Endereco_Vida_Residencia"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/sgm_Local_Vida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/sgm_Local_Vida"
+        android:layout_marginTop="30dp"
         android:visibility="visible">
 
         <TextView
             android:id="@+id/txv_TipoEspaco_Residencia"
-            android:text="Tipo Espaço"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Tipo Espaço" />
 
         <Spinner
             android:id="@+id/spn_Espaco_Residencia"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_TipoEspaco_Residencia"/>
+            android:layout_below="@id/txv_TipoEspaco_Residencia" />
 
         <TextView
             android:id="@+id/txv_Tipo_Localidade_Residencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_TipoEspaco_Residencia"
             android:layout_toRightOf="@id/spn_Espaco_Residencia"
-            android:text="Tipo Localidade"
-            android:layout_alignBottom="@id/txv_TipoEspaco_Residencia"/>
+            android:text="Tipo Localidade" />
 
         <Spinner
             android:id="@+id/spn_Tipo_Localidade_Residencia"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/txv_Tipo_Localidade_Residencia"
-            android:layout_below="@id/txv_Tipo_Localidade_Residencia"/>
+            android:layout_below="@id/txv_Tipo_Localidade_Residencia" />
 
         <TextView
             android:id="@+id/txv_Comodo_Residencia"
-            android:text="Cômodo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/spn_Tipo_Localidade_Residencia"/>
+            android:layout_toRightOf="@id/spn_Tipo_Localidade_Residencia"
+            android:text="Cômodo" />
 
         <Spinner
             android:id="@+id/spn_Comodo_Residencia"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/txv_Comodo_Residencia"
-            android:layout_below="@id/txv_Comodo_Residencia"/>
+            android:layout_below="@id/txv_Comodo_Residencia" />
 
         <TextView
             android:id="@+id/txv_Observacoes_Residencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Observações"
             android:layout_below="@id/spn_Espaco_Residencia"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            android:text="Observações" />
 
         <EditText
             android:id="@+id/edt_Observacoes_Residencia"
             android:layout_width="400dp"
             android:layout_height="80dp"
-            android:layout_below="@id/txv_Observacoes_Residencia"/>
+            android:layout_below="@id/txv_Observacoes_Residencia"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rltv_Outro_Vida"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/sgm_Local_Vida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/sgm_Local_Vida"
+        android:layout_marginTop="30dp"
         android:visibility="invisible">
 
         <TextView
             android:id="@+id/txv_Descricao_Outro_Vida"
-            android:text="Descrição"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Descrição" />
 
 
         <EditText
             android:id="@+id/edt_Descricao_Outro"
             android:layout_width="400dp"
             android:layout_height="80dp"
-            android:layout_below="@id/txv_Descricao_Outro_Vida"/>
+            android:layout_below="@id/txv_Descricao_Outro_Vida"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rltv_Condicoes_Climaticas"
-        android:layout_marginTop="10dp"
-        android:layout_alignTop="@id/rltv_Endereco_Vida_Praia"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/edt_latitude_Vida"
-
+        android:layout_alignTop="@id/rltv_Endereco_Vida_Praia"
+        android:layout_marginTop="10dp"
         android:visibility="invisible">
 
         <TextView
             android:id="@+id/txv_Iluminacao_Vida"
-            android:text="iluminação"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="iluminação" />
 
         <Spinner
             android:id="@+id/spn_Iluminacao_Vida"
-            android:layout_width="210dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Iluminacao_Vida"
-            android:layout_alignLeft="@id/txv_Iluminacao_Vida"/>
+            android:layout_alignLeft="@id/txv_Iluminacao_Vida"
+            android:layout_below="@id/txv_Iluminacao_Vida" />
 
         <TextView
             android:id="@+id/txv_Condicoes_Climaticas_Vida"
-            android:hint="Condições Climáticas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/spn_Iluminacao_Vida"
             android:layout_below="@id/spn_Iluminacao_Vida"
-            android:layout_alignLeft="@id/spn_Iluminacao_Vida"/>
+            android:layout_marginTop="10dp"
+            android:hint="Condições Climáticas" />
 
         <Spinner
             android:id="@+id/spn_Condicoes_Climaticas_Vida"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Condicoes_Climaticas_Vida"
-            android:layout_alignLeft="@id/txv_Condicoes_Climaticas_Vida"/>
+            android:layout_alignLeft="@id/txv_Condicoes_Climaticas_Vida"
+            android:layout_below="@id/txv_Condicoes_Climaticas_Vida" />
 
 
     </RelativeLayout>
 
 
-
     <!--<LinearLayout-->
-        <!--android:id="@+id/ll_Condicoes_Climaticas_vida"-->
-        <!--android:drawableLeft="@drawable/veiculo_icon"-->
-        <!--style="@android:style/Widget.Button"-->
-        <!--android:layout_width="115dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:gravity="center"-->
-        <!--android:layout_alignParentBottom="true">-->
+    <!--android:id="@+id/ll_Condicoes_Climaticas_vida"-->
+    <!--android:drawableLeft="@drawable/veiculo_icon"-->
+    <!--style="@android:style/Widget.Button"-->
+    <!--android:layout_width="115dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_alignParentBottom="true">-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="20dp"-->
-            <!--android:layout_height="20dp"-->
-            <!--android:layout_marginRight="5dp"-->
-            <!--android:src="@drawable/condicoes_climaticas" />-->
+    <!--<ImageView-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:layout_marginRight="5dp"-->
+    <!--android:src="@drawable/condicoes_climaticas" />-->
 
-        <!--<TextView-->
-            <!--android:id="@+id/txv_Condicoes_Climaticas"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="@color/colorPrimary"-->
-            <!--android:text="Ambiente" />-->
+    <!--<TextView-->
+    <!--android:id="@+id/txv_Condicoes_Climaticas"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textColor="@color/colorPrimary"-->
+    <!--android:text="Ambiente" />-->
 
     <!--</LinearLayout>-->
 
 
-
     <LinearLayout
         android:id="@+id/ll_Veiculo_Vida"
-        android:drawableLeft="@drawable/veiculo_icon"
         style="@android:style/Widget.Button"
         android:layout_width="115dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_below="@id/rltv_Condicoes_Climaticas"
         android:layout_alignLeft="@id/rltv_Condicoes_Climaticas"
-        >
+        android:layout_below="@id/rltv_Condicoes_Climaticas"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/veiculo_icon"
+        android:gravity="center">
 
         <ImageView
-            android:layout_width="20dp"
+            android:layout_width="21dp"
             android:layout_height="20dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/veiculo_icon" />
@@ -522,8 +577,8 @@
             android:id="@+id/txv_Veiculo_vida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:text="Veículo" />
+            android:text="Veículo"
+            android:textColor="@color/colorPrimary" />
 
     </LinearLayout>
 
@@ -531,24 +586,23 @@
         android:id="@+id/imgb_Audio_Endereco_Vida"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@color/ms_white"
-        android:src="@drawable/mic_icon"
-        android:scaleType="centerCrop"
         android:layout_alignTop="@id/ll_Veiculo_Vida"
+        android:layout_marginLeft="30dp"
         android:layout_toRightOf="@id/ll_Veiculo_Vida"
-        android:layout_marginLeft="30dp"/>
+        android:background="@color/ms_white"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mic_icon" />
 
     <ImageButton
         android:id="@+id/imgb_Foto_Endereco_Vida"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_alignTop="@id/ll_Veiculo_Vida"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@id/imgb_Audio_Endereco_Vida"
         android:background="@color/ms_white"
         android:scaleType="centerCrop"
-        android:src="@drawable/camera_icon"
-        android:layout_alignTop="@id/ll_Veiculo_Vida"
-        android:layout_toRightOf="@id/imgb_Audio_Endereco_Vida"
-        android:layout_marginLeft="30dp"
-        />
+        android:src="@drawable/camera_icon" />
 
 
 </RelativeLayout>

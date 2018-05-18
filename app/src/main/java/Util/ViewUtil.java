@@ -13,6 +13,7 @@ import com.example.pefoce.peritolocal.R;
 import java.util.List;
 
 import Model.Vida.Lesao;
+import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
  * Created by Pefoce on 31/07/2017.
@@ -26,8 +27,13 @@ public class ViewUtil
         {
             View child = relativeLayout.getChildAt(i);
             child.setEnabled(opcao);
+
+            if (child.getClass() == RelativeLayout.class)
+                modifyAll((RelativeLayout) child, opcao);
+
         }
     }
+
 
     public static void nullifyAll(RelativeLayout relativeLayout)
     {
@@ -44,34 +50,33 @@ public class ViewUtil
     }
 
 
-    public static void modifyAllRecursive(RelativeLayout relativeLayout, boolean opcao)
-    {
-        for (int i = 0; i < relativeLayout.getChildCount(); i++)
-        {
-            View child = relativeLayout.getChildAt(i);
-            child.setEnabled(opcao);
-            if (child.getClass() == RelativeLayout.class ||child.getClass() == LinearLayout.class)
-            {
-                modifyAllRecursive((RelativeLayout) child, opcao);
-            }
-        }
-    }
+//    public static void modifyAllRecursive(RelativeLayout relativeLayout, boolean opcao)
+//    {
+//        for (int i = 0; i < relativeLayout.getChildCount(); i++)
+//        {
+//            View child = relativeLayout.getChildAt(i);
+//            child.setEnabled(opcao);
+//            if (child.getClass() == RelativeLayout.class ||child.getClass() == LinearLayout.class)
+//            {
+//                modifyAllRecursive((RelativeLayout) child, opcao);
+//            }
+//        }
+//    }
 
-    public static void disableNext(RelativeLayout relativeLayout, boolean opcao)
-    {
-        for (int i = 0; i < relativeLayout.getChildCount(); i++)
-        {
-            View child = relativeLayout.getChildAt(i);
-
-            if(child.getClass()== EditText.class)
-                ((EditText)child).setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-            if (child.getClass() == RelativeLayout.class ||child.getClass() == LinearLayout.class)
-                modifyAllRecursive((RelativeLayout) child, opcao);
-
-        }
-    }
-
+//    public static void disableNext(RelativeLayout relativeLayout, boolean opcao)
+//    {
+//        for (int i = 0; i < relativeLayout.getChildCount(); i++)
+//        {
+//            View child = relativeLayout.getChildAt(i);
+//
+//            if(child.getClass()== EditText.class)
+//                ((EditText)child).setImeOptions(EditorInfo.IME_ACTION_DONE);
+//
+//            if (child.getClass() == RelativeLayout.class ||child.getClass() == LinearLayout.class)
+//                modifyAllRecursive((RelativeLayout) child, opcao);
+//
+//        }
+//    }
 
 
     public static void ColorirCamposLesoes(RelativeLayout relativeLayout, List<Lesao> lesoes, int color)

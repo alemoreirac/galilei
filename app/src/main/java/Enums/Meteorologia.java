@@ -6,7 +6,7 @@ package Enums;
 
 public enum Meteorologia
 {
-    TEMPO_ABERTO("Céu Sem Nuvens"), CHUVA("Chuva"),NEBLINA("Neblina"),SERENAGEM("Serenagem"),GRANIZO("Chuva de Granizo"),NEVE("Neve");
+    TEMPO_ABERTO("Céu Sem Nuvens"), CHUVA("Chuva"),NEBLINA("Neblina"),SERENO("Sereno"),GRANIZO("Chuva de Granizo"),NEVE("Neve");
 
     String valor;
 

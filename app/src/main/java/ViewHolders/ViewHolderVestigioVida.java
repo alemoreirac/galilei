@@ -1,5 +1,6 @@
 package ViewHolders;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -8,9 +9,21 @@ import android.widget.TextView;
 
 public class ViewHolderVestigioVida
 {
+    ImageView imgvTipoVestigio;
     TextView txvTipoVestigio;
     TextView txvCategoriaVestigio;
     TextView txvObservacaoVestigio;
+
+
+    public ImageView getImgvTipoVestigio()
+    {
+        return imgvTipoVestigio;
+    }
+
+    public void setImgvTipoVestigio(ImageView imgvTipoVestigio)
+    {
+        this.imgvTipoVestigio = imgvTipoVestigio;
+    }
 
     public TextView getTxvTipoVestigio()
     {

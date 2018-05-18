@@ -11,7 +11,7 @@ import Enums.Vida.Secao;
  * Created by Pefoce on 20/11/2017.
  */
 
-public class Lesao extends SugarRecord<Lesao>
+public class Lesao extends SugarRecord
 {
     LocalizacaoLesao localizacaoLesao;
     boolean compatibilidade;

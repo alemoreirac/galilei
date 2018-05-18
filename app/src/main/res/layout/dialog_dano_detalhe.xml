@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical" android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-    >
+                android:padding="8dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tipo de Dano"
-        android:id="@+id/txv_dialog_TipoDano"    />
+        android:id="@+id/txv_dialog_TipoDano"/>
 
     <Spinner
         android:layout_width="150dp"

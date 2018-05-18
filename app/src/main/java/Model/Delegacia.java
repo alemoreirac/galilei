@@ -7,7 +7,8 @@ import com.orm.SugarRecord;
  */
 
 
-public  class Delegacia extends SugarRecord<Delegacia> {
+public  class Delegacia extends SugarRecord
+{
     public String getDescricao() {
         return Descricao;
     }

@@ -8,9 +8,8 @@ public enum TipoEnvolvidoTransito
 {
     NAO_IDENTIFICADO("Não Identificado")
     ,PEDESTRE("Pedestre")
-    ,MOTORISTA("Motorista")
+    ,MOTORISTA("Condutor")
     ,PASSAGEIRO("Passageiro");
-
 
     String valor;
 

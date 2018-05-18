@@ -71,6 +71,7 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
         dialog.setContentView(R.layout.dialog_posicao_cadaver);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setTitle("Posição do Cadáver");
+        dialog.getWindow().setLayout(580,570);
         dialog.show();
 
         envolvidoVida = ((GerenciarEnvolvidoVida)f).envolvidoVida;
@@ -224,7 +225,6 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
                 bd.putString("PernaEsquerda",spnPernaEsquerda.getSelectedItem().toString());
                 bd.putString("Cabeca",spnCabeca.getSelectedItem().toString());
                 bd.putString("Torax",spnTorax.getSelectedItem().toString());
-
 
                 ((GerenciarEnvolvidoVida)fragment).InterfacePosicaoCadaver(bd);
 

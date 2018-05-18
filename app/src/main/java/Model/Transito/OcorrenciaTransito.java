@@ -21,7 +21,7 @@ import Util.TempoUtil;
  * Created by Pefoce on 29/05/2017.
  */
 
-public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
+public class OcorrenciaTransito extends SugarRecord
 {
 
     @Expose
@@ -103,9 +103,8 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
 
     public OcorrenciaTransito()
     {
-            this.dataAtendimento = TempoUtil.stringToDate("01/01/2000");
-            //this.dataChamado = TempoUtil.stringToDate("01/01/2000");
-            this.dataChamado = TempoUtil.stringToDate("01/01/2000");
+            this.dataAtendimento =  Calendar.getInstance().getTime();
+            this.dataChamado =  Calendar.getInstance().getTime();
             this.setViatura("");
 
     }
@@ -129,13 +128,21 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
     public String getDataAtendimentoString()
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return timeFormat.format(this.dataAtendimento);
+
+        if(dataAtendimento!=null)
+            return timeFormat.format(this.dataAtendimento);
+        else
+            return "--/--/----";
     }
 
     public String getDataChamadoString()
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return timeFormat.format(this.dataChamado);
+
+        if(dataChamado!=null)
+            return timeFormat.format(this.dataChamado);
+        else
+            return "--/--/----";
     }
 
     public String getDataPath()
@@ -212,7 +219,6 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
         this.dataAtendimento = cSave.getTime();
     }
 
-
     public Date getDataChamado() {
         return dataChamado;
     }
@@ -220,21 +226,27 @@ public class OcorrenciaTransito extends SugarRecord<OcorrenciaTransito>
     public String getHoraAtendimentoString()
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        return timeFormat.format(this.dataAtendimento);
+
+        if(dataAtendimento!=null)
+            return timeFormat.format(this.dataAtendimento);
+        else
+            return "--:--";
     }
 
     public String getHoraChamadoString()
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        return timeFormat.format(this.dataChamado);
+
+        if(dataChamado!=null)
+            return timeFormat.format(this.dataChamado);
+        else
+            return "--:--";
     }
 
 
     public void setDataChamado(Date dataChamado) {
         this.dataChamado = dataChamado;
     }
-
-
 
 
     public String getObservacoes() {

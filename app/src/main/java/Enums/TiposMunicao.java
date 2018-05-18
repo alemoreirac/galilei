@@ -7,7 +7,7 @@ package Enums;
 public enum TiposMunicao
 {
     NAO_DEFLAGRADA("Não deflagrada"),
-    CAPSULA("Cápsula"),
+    CAPSULA("Capsula"),
     PROJETIL("Projétil"),
     CAMISA("Camisa"),
     FRAGMENTO("Fragmento");

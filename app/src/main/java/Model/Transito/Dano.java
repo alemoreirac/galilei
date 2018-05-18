@@ -8,80 +8,115 @@ import Enums.Transito.TercoDano;
 import Enums.Transito.TipoDano;
 
 
-public class Dano extends SugarRecord<Dano>
+public class Dano extends SugarRecord
 {
     @Expose
-     public TipoDano tipo;
+    public TipoDano tipo;
     @Expose
-     public TercoDano terco;
+    public TercoDano terco;
     @Expose
-     public SetorDano setor;
+    public SetorDano setor;
     @Expose
-     public Boolean Compatibilidade;
+    public Boolean Compatibilidade;
 
 
     //TODO trocar para varios tipos de dano
 
-    public TipoDano getTipo() {
+    public TipoDano getTipo()
+    {
         return tipo;
     }
 
-    public void setTipo(TipoDano tipo) {
+    public void setTipo(TipoDano tipo)
+    {
         this.tipo = tipo;
     }
 
-    public TercoDano getTerco() {
+    public TercoDano getTerco()
+    {
         return terco;
     }
 
-    public void setTerco(TercoDano terco) {
+    public void setTerco(TercoDano terco)
+    {
         this.terco = terco;
     }
 
-    public SetorDano getSetor() {
+    public SetorDano getSetor()
+    {
         return setor;
     }
 
-    public void setSetor(SetorDano setor) {
+    public void setSetor(SetorDano setor)
+    {
         this.setor = setor;
     }
 
-    public Boolean getCompatibilidade() {
+    public Boolean getCompatibilidade()
+    {
         return Compatibilidade;
     }
 
-    public void setCompatibilidade(Boolean compatibilidade) {
+    public void setCompatibilidade(Boolean compatibilidade)
+    {
         Compatibilidade = compatibilidade;
     }
 
 
-     public Dano()
-     { }
+    public Dano()
+    {
+    }
 
-     public Dano(TipoDano tipod, TercoDano tercod,SetorDano setord, Boolean compatibilidade)
-     {
-         this.setor = setord;
-         this.tipo = tipod;
-         this.terco = tercod;
-         this.Compatibilidade = compatibilidade;
-     }
+    public Dano(TipoDano tipod, TercoDano tercod, SetorDano setord, Boolean compatibilidade)
+    {
+        this.setor = setord;
+        this.tipo = tipod;
+        this.terco = tercod;
+        this.Compatibilidade = compatibilidade;
+    }
 
     @Override
     public String toString()
     {
-        if(this.getCompatibilidade())
-            return "Dano "+ this.tipo.getValor() + "; Terço " + this.terco.getValor() + "; Compatível com a Colisão" + " - " + this.setor.getValor();
+        String dano = "Dano ";
 
+        if (this.tipo != null)
+            dano += tipo.getValor() + " ";
+
+        if (this.terco != null)
+            dano += "no terço " + terco.getValor() + " ";
+
+        if (this.setor != null)
+            dano += "no setor " + setor.getValor()+". ";
+
+        if (this.getCompatibilidade())
+            dano += "Compatível com a colisão.";
         else
-            return "Dano "+ this.tipo.getValor() + "; Terço: " + this.terco.getValor() + "; Incompatível com a Colisão" + " - " + this.setor.getValor();
+            dano += "Incompatível com a colisão.";
+
+        return dano;
     }
 
     public String exportarLaudo()
     {
-        if(this.getCompatibilidade())
-            return "Do tipo "+ this.tipo.getValor() + ", situado na seção " + this.setor.getValor() + ", compatível com a Colisão.";
+        String dano = "Do tipo ";
+
+        if (this.tipo != null)
+            dano += tipo.getValor();
+
+        if (this.terco != null)
+            dano += ", no terço " + terco.getValor();
+
+        if (this.setor != null)
+            dano += "no Setor " + setor.getValor() + ". ";
+
+        if (this.getCompatibilidade())
+            dano += "Compatível com a colisão.";
+
         else
-            return "Do tipo "+ this.tipo.getValor() + ", situado na seção " + this.setor.getValor() + ", incompatível com a Colisão.";
+            dano += "Incompatível com a colisão.";
+
+        return dano;
     }
- }
+}
 

@@ -10,6 +10,7 @@ public enum LocalPraia
     ROCHAS("Rochas"),
     AREIA("Areia"),
     DUNA("Duna"),
+    MAR("Mar"),
     MANGUE("Mangue");
 //    VEGETACAO_RASTEIRA("Vegetação rasteira"),
 //    VEGETACAO_MEDIA("Vegetação média"),

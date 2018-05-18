@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import Model.Transito.ColisaoTransito;
+import Util.StringUtil;
 import ViewHolders.ViewHolderColisao;
 
 
@@ -55,56 +56,73 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
             viewHolder.setImgvTipoInteracao((ImageView) convertView.findViewById(R.id.imgv_row_TipoInteracao));
             viewHolder.setImgvAudio((ImageView) convertView.findViewById(R.id.imgv_row_AudioColisao));
             convertView.setTag(viewHolder);
-
-            switch(colisaoTransito.getAtoresColisao())
-            {
-                case PEDESTRE:
-                    Picasso.with(convertView.getContext())
-                            .load(R.drawable.pedestre)
-                            .into(viewHolder.getImgvTipoInteracao());
-                    break;
-                case VEICULO:
-                    Picasso.with(convertView.getContext())
-                            .load(R.drawable.veiculo_veiculo)
-                            .into(viewHolder.getImgvTipoInteracao());
-                    if(colisaoTransito.getVeiculo2() != null)
-                        viewHolder.getTxvAtor2().setText(colisaoTransito.getVeiculo2().toString());
-                    break;
-                case ANIMAL:
-                    Picasso.with(convertView.getContext())
-                            .load(R.drawable.veiculo_animal)
-                            .into(viewHolder.getImgvTipoInteracao());
-                    break;
-                case OBJETO:
-                    Picasso.with(convertView.getContext())
-                            .load(R.drawable.veiculo_objeto)
-                            .into(viewHolder.getImgvTipoInteracao());
-                    break;
-                case NENHUM:
-                    Picasso.with(convertView.getContext())
-                            .load(R.drawable.veiculo)
-                            .into(viewHolder.getImgvTipoInteracao());
-                    viewHolder.getTxvAtor2().setText("");
-                    break;
-            }
-
-            if(colisaoTransito.getGravacaoObservacoes() != null)
-            {
-                Picasso.with(convertView.getContext())
-                        .load(R.drawable.microfone)
-                        .into(viewHolder.getImgvAudio());
-            }
-            else
-            {
-                Picasso.with(convertView.getContext())
-                        .load(R.drawable.microfone_apagado)
-                        .into(viewHolder.getImgvAudio());
-            }
-
         }
         else
         {
             viewHolder = (ViewHolderColisao) convertView.getTag();
+
+
+        }
+
+        switch(colisaoTransito.getAtoresColisao())
+        {
+            case PEDESTRE:
+                Picasso.with(convertView.getContext())
+                        .load(R.drawable.colisao_pedestre)
+                        .into(viewHolder.getImgvTipoInteracao());
+
+
+                if(colisaoTransito.getPedestre() != null)
+                    viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getPedestre().getNome(),17,"(Sem nome)"));
+                else
+                    viewHolder.getTxvAtor2().setText("(Sem Nome)");
+
+                break;
+            case VEICULO:
+                Picasso.with(convertView.getContext())
+                        .load(R.drawable.colisao_veiculos)
+                        .into(viewHolder.getImgvTipoInteracao());
+
+                if(colisaoTransito.getVeiculo2() != null)
+                    viewHolder.getTxvAtor2().setText(colisaoTransito.getVeiculo2().toString());
+                break;
+            case ANIMAL:
+                Picasso.with(convertView.getContext())
+                        .load(R.drawable.colisao_animal)
+                        .into(viewHolder.getImgvTipoInteracao());
+
+                    viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getAnimalDescricao(),17,"(Não descrito)"));
+
+
+
+                break;
+            case OBJETO:
+                Picasso.with(convertView.getContext())
+                        .load(R.drawable.colisao_objeto)
+                        .into(viewHolder.getImgvTipoInteracao());
+
+                    viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getObjetoDescricao(),17,"(Não descrito)"));
+
+                break;
+            case NENHUM:
+                Picasso.with(convertView.getContext())
+                        .load(R.drawable.colisao_adernamento)
+                        .into(viewHolder.getImgvTipoInteracao());
+                viewHolder.getTxvAtor2().setText("");
+                break;
+        }
+
+        if(colisaoTransito.getGravacaoObservacoes() != null)
+        {
+            Picasso.with(convertView.getContext())
+                    .load(R.drawable.microfone)
+                    .into(viewHolder.getImgvAudio());
+        }
+        else
+        {
+            Picasso.with(convertView.getContext())
+                    .load(R.drawable.microfone_apagado)
+                    .into(viewHolder.getImgvAudio());
         }
 
         lastPosition = position;

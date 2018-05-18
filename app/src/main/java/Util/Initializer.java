@@ -15,27 +15,37 @@ import Model.Pessoa;
  * Created by Pefoce on 21/06/2017.
  */
 
-public class Initializer
-{
-    public static void InicializarPessoas()
-    {
+public class Initializer {
+    public static void InicializarPessoas() {
         String dtStart = "29/01/1994";
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        try
-        {
+        try {
             Date date = format.parse(dtStart);
 
-            Pessoa p = new Pessoa("123", "José 123", date, "123");
+            Pessoa p = new Pessoa("wellison.tavares@pefoce.ce.gov.br", "Wellison Tavares", date, "00367374374");
             p.save();
 
-            Pessoa p2 = new Pessoa("456", "João 456", date, "456");
+            Pessoa p4 = new Pessoa("julio.rocha@pefoce.ce.gov.br", "Júlio César Rodrigues Rocha", date, "01046795309");
+            p4.save();
+
+            Pessoa p5 = new Pessoa("marcondes.franca@pefoce.ce.gov.br", "Francisco Marcondes França de Sousa", date, "41118235304");
+            p5.save();
+
+            Pessoa p2 = new Pessoa("vinicius.aguiar@pefoce.ce.gov.br", "Vinícius do Nascimento Aguiar", date, "00954067355");
             p2.save();
 
-            Pessoa p3 = new Pessoa("789", "Pedro 789", date, "789");
+            Pessoa p3 = new Pessoa("oliveira.junior@pefoce.ce.gov.br", "Francisco das Chagas Oliveira Jr.", date, "61389153304");
             p3.save();
+
+            Pessoa p9 = new Pessoa("leao.junior@pefoce.ce.gov.br", "Francisco Leão de Souza Jr.", date, "50327011300");
+            p9.save();
+
+            Pessoa p6 = new Pessoa("123", "Convidado(a)", date, "123");
+            p6.save();
+
             System.out.println(date);
-        } catch (ParseException e)
-        {
+
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

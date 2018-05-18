@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,15 +24,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import Adapters.AdapterOcorrencia;
 import Enums.DocumentoSolicitacao;
 import Enums.TipoOcorrencia;
+import Enums.Transito.TipoVia;
 import Model.Transito.DanoVeiculo;
 import Model.DocumentoOcorrencia;
+import Model.Transito.EnderecoTransito;
 import Model.Transito.EnderecoVeiculo;
 import Model.Ocorrencia;
 import Model.Transito.OcorrenciaTransitoColisao;
@@ -43,11 +50,17 @@ import Model.Transito.OcorrenciaTransitoVeiculo;
 import Model.Pessoa;
 import Model.Transito.VestigioTransito;
 import Model.Transito.VestigioColisao;
+import Model.Vida.EnderecoVida;
 import Model.Vida.LesaoEnvolvido;
 import Model.Vida.OcorrenciaEnvolvidoVida;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
 import Model.Vida.VestigioVidaOcorrencia;
+import Util.AutoCompleteUtil;
+import Util.BuscadorEnum;
+import Util.BusinessOcorrencia;
+import Util.TempoUtil;
+
 
 public class MainActivity extends AppCompatActivity
 {
@@ -60,7 +73,11 @@ public class MainActivity extends AppCompatActivity
     EditText edtBusca = null;
     AdapterOcorrencia adapter;
     String AnoEscolhido = "";
-    TextView txvNenhumaPericia;
+    TextView txvNenhumaPericia, txvPerito, txvPaginas;
+    Button btnAnterior, btnProxima;
+    int paginaAtual = 1;
+    int maximoPaginas = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -74,11 +91,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
-
-
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-
 
         //Recebe o ID do perito logado, caso não seja encontrado, volta para a tela de login
         Long peritoId = intent.getLongExtra("PeritoId", 0);
@@ -92,23 +105,38 @@ public class MainActivity extends AppCompatActivity
         //Busca o perito pelo id passado e depois busca as ocorrências relacionadas a ele
         perito = Pessoa.findById(Pessoa.class, peritoId);
 
-        ocorrencias = (ArrayList<Ocorrencia>) Ocorrencia.find(Ocorrencia.class, "perito = ?", perito.getId().toString());
+        if (perito != null && perito.getNome() != null)
+            txvPerito.setText(perito.getNome());
+        else
+            txvPerito.setText("(Perito sem nome)");
 
-        if(ocorrencias!=null)
+        paginaAtual = 1;
+        btnAnterior.setEnabled(false);
+
+        BusinessOcorrencia.refreshOcorrencias(perito.getId());
+
+        ocorrencias = BusinessOcorrencia.findByFilterPaginated("", paginaAtual);
+
+        maximoPaginas = BusinessOcorrencia.maxPages;
+
+        if(maximoPaginas == 1)
+            btnProxima.setEnabled(false);
+
+        txvPaginas.setText("Página "+paginaAtual + " de "+ maximoPaginas);
+
+        if (ocorrencias != null)
         {
             if (ocorrencias.size() == 0)
             {
                 lstvOcorrencias.setVisibility(View.INVISIBLE);
                 txvNenhumaPericia.setVisibility(View.VISIBLE);
-            }
-            else
+            } else
             {
+                Collections.sort(ocorrencias);
                 lstvOcorrencias.setVisibility(View.VISIBLE);
                 txvNenhumaPericia.setVisibility(View.INVISIBLE);
             }
         }
-
-        //final ArrayList<OcorrenciaTransito> ocorrenciasTransito = (ArrayList<OcorrenciaTransito>) OcorrenciaTransito.find(OcorrenciaTransito.class, "perito = ?", p.getId().toString());
 
         //Carrega as ocorrencias na lista
         adapter = new AdapterOcorrencia(ocorrencias, getApplicationContext());
@@ -118,61 +146,81 @@ public class MainActivity extends AppCompatActivity
 
     private void AssociarEventos()
     {
-        imgbBusca.setOnClickListener(new View.OnClickListener()
+
+        btnProxima.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        adapter = new AdapterOcorrencia(BusinessOcorrencia.findByFilterPaginated(edtBusca.getText().toString().trim(), ++paginaAtual), getApplicationContext());
+                        maximoPaginas = BusinessOcorrencia.maxPages;
+                        lstvOcorrencias.setAdapter(adapter);
+
+                        if(paginaAtual == maximoPaginas)
+
+                            btnProxima.setEnabled(false);
+
+                        btnAnterior.setEnabled(true);
+
+                        txvPaginas.setText("Página "+paginaAtual+ " de "+ maximoPaginas);
+
+                    }
+                });
+
+        btnAnterior.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        adapter = new AdapterOcorrencia(BusinessOcorrencia.findByFilterPaginated(edtBusca.getText().toString().trim(), --paginaAtual), getApplicationContext());
+                        maximoPaginas = BusinessOcorrencia.maxPages;
+                        lstvOcorrencias.setAdapter(adapter);
+
+                        if(paginaAtual == 1)
+                            btnAnterior.setEnabled(false);
+
+                        btnProxima.setEnabled(true);
+
+                        txvPaginas.setText("Página "+paginaAtual+ " de "+ maximoPaginas);
+                    }
+                });
+
+
+        edtBusca.addTextChangedListener(new TextWatcher()
         {
             @Override
-            public void onClick(View v)
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
             {
-                if (edtBusca.getText().toString().trim() == "")
-                {
-                    ocorrencias = (ArrayList<Ocorrencia>) Ocorrencia.find(Ocorrencia.class, "perito = ?", perito.getId().toString());
-                    adapter = new AdapterOcorrencia(ocorrencias, getApplicationContext());
-                    lstvOcorrencias.setAdapter(adapter);
-                    return;
-                }
-                String query = "SELECT * FROM OCORRENCIA_TRANSITO where NUM_INCIDENCIA like '%" + edtBusca.getText().toString().trim() + "%'";
-                List<OcorrenciaTransito> ocorrenciasTransito = OcorrenciaTransito.findWithQuery(OcorrenciaTransito.class, query);
-                ocorrenciasTransito.size();
 
-                ArrayList<Ocorrencia> ocorrenciaResultado = new ArrayList<Ocorrencia>();
+            }
 
-                for (int i = 0; i < ocorrenciasTransito.size(); i++)
-                {
-                    if (Ocorrencia.find(Ocorrencia.class, "ocorrencia_transito = ?", ocorrenciasTransito.get(i).getId().toString()).size() > 0)
-                        ocorrenciaResultado.add(Ocorrencia.find(Ocorrencia.class, "ocorrencia_transito = ?", ocorrenciasTransito.get(i).getId().toString()).get(0));
-                }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
 
-                adapter = new AdapterOcorrencia(ocorrenciaResultado, getApplicationContext());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                adapter = new AdapterOcorrencia(BusinessOcorrencia.findByFilterPaginated(s.toString().trim(), 1), getApplicationContext());
+                maximoPaginas = BusinessOcorrencia.maxPages;
+
                 lstvOcorrencias.setAdapter(adapter);
 
-//                String[] argumentos = new String[4];
-//                argumentos[0] = perito.getId().toString();
-//                argumentos[1] = "Incidencia";
-//                argumentos[2] = "Data";
-//                argumentos[3] = "Envolvido_nome";
-//
-//                String nome = "alessandro";
-//
-//                List<EnvolvidoTransito> envolvidoTransitoList = EnvolvidoTransito.find(EnvolvidoTransito.class,"nome = ?",nome);
-//
-//                ArrayList<OcorrenciaTransitoEnvolvido> ocorrenciaEnvolvidos = new ArrayList<OcorrenciaTransitoEnvolvido>();
-//
-//                for(EnvolvidoTransito envolvido : envolvidoTransitoList)
-//                {
-//                    ocorrenciaEnvolvidos.addAll(OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,"envolvido_transito = ?",envolvido.getId().toString()));
-//                }
-//
-//                for(OcorrenciaTransitoEnvolvido oe : ocorrenciaEnvolvidos)
-//
-//                oe.getOcorrenciaVida().getOcorrenciaID();
-//
-//
-//
-//                ocorrencias = (ArrayList<Ocorrencia>) Ocorrencia.find(Ocorrencia.class, "perito = ?", perito.getId().toString());
+                btnAnterior.setEnabled(false);
 
-                //final ArrayList<OcorrenciaTransito> ocorrenciasTransito = (ArrayList<OcorrenciaTransito>) OcorrenciaTransito.find(OcorrenciaTransito.class, "perito = ?", p.getId().toString());
+                paginaAtual = 1;
 
-                //Carrega as ocorrencias na lista
+                if(maximoPaginas == 1)
+
+                    btnProxima.setEnabled(false);
+
+                else
+
+                btnProxima.setEnabled(true);
+
+                txvPaginas.setText("Página "+1 + " de "+ maximoPaginas);
 
             }
         });
@@ -226,7 +274,7 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which)
                             {
 
-                                Ocorrencia ocorrencia = (Ocorrencia)lstvOcorrencias.getAdapter().getItem(position);
+                                Ocorrencia ocorrencia = (Ocorrencia) lstvOcorrencias.getAdapter().getItem(position);
 
                                 switch (ocorrencia.getTipoOcorrencia())
                                 {
@@ -238,22 +286,18 @@ public class MainActivity extends AppCompatActivity
                                         break;
                                 }
 
-
                                 if (adapter.getCount() == 0)
                                 {
                                     lstvOcorrencias.setVisibility(View.INVISIBLE);
                                     txvNenhumaPericia.setVisibility(View.VISIBLE);
-                                }
-                                else
+                                } else
                                 {
                                     lstvOcorrencias.setVisibility(View.VISIBLE);
                                     txvNenhumaPericia.setVisibility(View.INVISIBLE);
                                 }
 
                                 Toast.makeText(MainActivity.this, "Ocorrência Deletada com sucesso!", Toast.LENGTH_LONG).show();
-
                             }
-
 
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
@@ -308,22 +352,65 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
         fabOcorrencia.setOnClickListener(
                 new View.OnClickListener()
                 {
                     public void onClick(View v)
                     {
                         final Dialog dialog = new Dialog(MainActivity.this);
-                        dialog.setContentView(R.layout.dialog_pericia_transito);
+                        dialog.setContentView(R.layout.dialog_pericia_nova);
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
 
+                        final TextView txvHoraChamada = (TextView) dialog.findViewById(R.id.txv_dialog_Hora_Chamado_Valor_Ocorrencia);
+                        final TextView txvDataChamada = (TextView) dialog.findViewById(R.id.txv_dialog_Data_Chamado_Valor_Ocorrencia);
+                        final EditText edtEndereco = (EditText) dialog.findViewById(R.id.edt_dialog_Endereco_Ocorrencia);
+                        final AutoCompleteTextView aucCidade = (AutoCompleteTextView) dialog.findViewById(R.id.auc_dialog_Cidade_Ocorrencia);
+                        final AutoCompleteTextView aucBairro = (AutoCompleteTextView) dialog.findViewById(R.id.auc_dialog_Bairro_Ocorrencia);
                         final TextView txvNumIncidencia = (TextView) dialog.findViewById(R.id.txv_dialog_Incidencia);
                         final Spinner spnTipoOcorrencia = (Spinner) dialog.findViewById(R.id.spn_dialog_TipoOcorrencia);
                         final Spinner spnAnoIncidencia = (Spinner) dialog.findViewById(R.id.spn_dialog_Ano_Incidencia);
-                        final EditText edtNumDoc = (EditText) dialog.findViewById(R.id.edt_dialog_NumIncidencia);
+                        final Spinner spnTipoVia = (Spinner) dialog.findViewById(R.id.spn_Tipo_Via_Dialog_Ocorrencia);
+                        final EditText edtNumIncidencia = (EditText) dialog.findViewById(R.id.edt_dialog_NumIncidencia);
+                        final EditText edtComplemento = (EditText) dialog.findViewById(R.id.edt_Complemento_Dialog_Ocorrencia);
                         final StringBuilder incidencia = new StringBuilder("0000000");
 
+                        edtNumIncidencia.setNextFocusRightId(edtEndereco.getId());
+                        edtEndereco.setNextFocusRightId(edtComplemento.getId());
+                        edtComplemento.setNextFocusRightId(aucCidade.getId());
+                        aucCidade.setNextFocusRightId(aucBairro.getId());
+
+                        aucCidade.setAdapter(AutoCompleteUtil.getCidades(MainActivity.this));
+                        aucBairro.setAdapter(AutoCompleteUtil.getBairros(MainActivity.this));
+                        aucCidade.setText("Fortaleza");
+
+                        txvDataChamada.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                TempoUtil.setDate(txvDataChamada, MainActivity.this);
+                            }
+                        });
+
+                        txvHoraChamada.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                TempoUtil.setTime(txvHoraChamada, MainActivity.this);
+                            }
+                        });
+
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        Calendar c = Calendar.getInstance();
+
+                        txvDataChamada.setText(format.format(c.getTime()));
+
+                        format = new SimpleDateFormat("HH:mm");
+
+                        txvHoraChamada.setText(format.format(c.getTime()));
 
                         ArrayList<String> tiposOcorrencia = new ArrayList<>();
 
@@ -345,6 +432,13 @@ public class MainActivity extends AppCompatActivity
                         //spnTipoOcorrencia.setEnabled(false);
 
 
+                        ArrayList<String> tiposVia = new ArrayList<String>();
+
+                        for (TipoVia tv : TipoVia.values())
+                            tiposVia.add(tv.getValor());
+
+                        spnTipoVia.setAdapter(new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_spinner_dropdown_item, tiposVia));
+
                         spnAnoIncidencia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
                         {
                             @Override
@@ -361,7 +455,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
 
-                        edtNumDoc.addTextChangedListener(new TextWatcher()
+                        edtNumIncidencia.addTextChangedListener(new TextWatcher()
                         {
                             @Override
                             public void onTextChanged(CharSequence s, int start, int before, int count)
@@ -370,7 +464,7 @@ public class MainActivity extends AppCompatActivity
                             }
 
                             @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count,int after)
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after)
                             {
 
                             }
@@ -381,23 +475,17 @@ public class MainActivity extends AppCompatActivity
                                 incidencia.setLength(0);
                                 incidencia.insert(0, "0000000");
                                 incidencia.replace(incidencia.length() - s.length(), incidencia.length(), s.toString());
-
-                                //txvNumIncidencia.setText(incidencia.replace("0000000",s.toString()));
                                 txvNumIncidencia.setText("I" + AnoEscolhido + incidencia.toString());
                             }
                         });
 
-                        // final Spinner spnTipoDoc = (Spinner) dialog.findViewById(R.id.spn_dialog_TipoDoc);
-
-                        //Carrega os valores do Enum Documento Solicitacao no Spinner
-                        ArrayList<String> docs = new ArrayList<String>();
-
-                        for (DocumentoSolicitacao d : DocumentoSolicitacao.values())
-                        {
-                            docs.add(d.getValor());
-                        }
-
-                        //   spnTipoDoc.setAdapter(new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_dropdown_item,docs));
+//                        //Carrega os valores do Enum Documento Solicitacao no Spinner
+//                        ArrayList<String> docs = new ArrayList<String>();
+//
+//                        for (DocumentoSolicitacao d : DocumentoSolicitacao.values())
+//                        {
+//                            docs.add(d.getValor());
+//                        }
 
                         Button btnComecaPericia = (Button) dialog.findViewById(R.id.btn_dialog_IniciarPericia);
 
@@ -406,27 +494,45 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(View v)
                             {
-
-                                //if (OcorrenciaTransito.find(OcorrenciaTransito.class, "num_incidencia = ?", txvNumIncidencia.getText().toString().substring(7)).size() > 0)
                                 if (OcorrenciaTransito.find(OcorrenciaTransito.class, "num_incidencia = ?", txvNumIncidencia.getText().toString()).size() > 0)
                                 {
                                     txvNumIncidencia.setText(txvNumIncidencia.getText().toString() + " Já existe, favor tente outro número!");
                                     txvNumIncidencia.setTextColor(Color.RED);
                                     return;
                                 }
-
-                                if (edtNumDoc.getText().toString().length() > 0)
+                                if (OcorrenciaVida.find(OcorrenciaVida.class, "num_incidencia = ?", txvNumIncidencia.getText().toString()).size() > 0)
                                 {
+                                    txvNumIncidencia.setText(txvNumIncidencia.getText().toString() + " Já existe, favor tente outro número!");
+                                    txvNumIncidencia.setTextColor(Color.RED);
+                                    return;
+                                }
+
+                                if (edtNumIncidencia.getText().toString().length() > 0)
+                                {
+                                    Bundle bd = new Bundle();
+                                    bd.putString("incidencia", txvNumIncidencia.getText().toString());
+                                    bd.putString("endereco", edtEndereco.getText().toString());
+                                    bd.putString("cidade", aucCidade.getText().toString());
+                                    bd.putString("bairro", aucBairro.getText().toString());
+                                    bd.putString("complemento", edtComplemento.getText().toString());
+                                    bd.putString("tipoVia", spnTipoVia.getSelectedItem().toString());
+                                    bd.putString("data", txvDataChamada.getText().toString());
+                                    bd.putString("hora", txvHoraChamada.getText().toString());
+
+
                                     if (spnTipoOcorrencia.getSelectedItem().toString().equals("Trânsito"))
-                                        NovaPericiaTransito(txvNumIncidencia.getText().toString());
+                                        NovaPericiaTransito(bd);
 
                                     if (spnTipoOcorrencia.getSelectedItem().toString().equals("Crime contra a Vida"))
-                                        NovaPericiaVida(txvNumIncidencia.getText().toString());
+                                        NovaPericiaVida(bd);
 
                                 } else
                                     Toast.makeText(getApplicationContext(), "Preencha corretamente os dados!", Toast.LENGTH_LONG).show();
                             }
                         });
+
+                        aucBairro.setDropDownVerticalOffset(-200);
+                        aucCidade.setDropDownVerticalOffset(-200);
 
                         //Botão de cancelar a criação de perícia
                         Button btnCancelaPericia = (Button) dialog.findViewById(R.id.btn_dialog_Cancelar);
@@ -450,10 +556,8 @@ public class MainActivity extends AppCompatActivity
 
         Ocorrencia ocorrenciaDelete = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrenciaID());
 
-
         adapter.remove((Ocorrencia) lstvOcorrencias.getAdapter().getItem(position));
         adapter.notifyDataSetChanged();
-
 
         //Deletar Entidades envolvidas com endereço: EnderecoTransito, Endereco, EnderecoVeiculo e OcorrenciaTransitoEndereco
 
@@ -463,10 +567,9 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 0; i < ocorrenciaEnderecos.size(); i++)
         {
-
             try
             {
-                enderecosVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class, "endereco = ?", ocorrenciaEnderecos.get(i).getEnderecoTransito().getEndereco().getId().toString());
+                enderecosVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class, "endereco = ?", ocorrenciaEnderecos.get(i).getEnderecoTransito().getId().toString());
             } catch (Exception e)
             {
                 continue;
@@ -474,8 +577,6 @@ public class MainActivity extends AppCompatActivity
             for (EnderecoVeiculo ev : enderecosVeiculo)
                 ev.delete();
 
-            ocorrenciaEnderecos.get(i).getEnderecoTransito().getEndereco().delete();
-            ocorrenciaEnderecos.get(i).getEnderecoTransito().delete();
             ocorrenciaEnderecos.get(i).delete();
         }
 
@@ -496,13 +597,16 @@ public class MainActivity extends AppCompatActivity
 
         for (OcorrenciaTransitoVeiculo ov : ocorrenciasVeiculo)
         {
-            danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", ov.getVeiculo().getId().toString());
-            for (DanoVeiculo dv : danosVeiculo)
+            if (ov.getVeiculo() != null)
             {
-                dv.getDano().delete();
-                dv.delete();
+                danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", ov.getVeiculo().getId().toString());
+                for (DanoVeiculo dv : danosVeiculo)
+                {
+                    dv.getDano().delete();
+                    dv.delete();
+                }
+                ov.getVeiculo().delete();
             }
-            ov.getVeiculo().delete();
             ov.delete();
         }
 
@@ -579,8 +683,8 @@ public class MainActivity extends AppCompatActivity
 
         for (OcorrenciaEnvolvidoVida oev : ocorrenciaEnvolvidoVidaList)
         {
-            if(oev.getEnvolvidoVida()!=null)
-            oev.getEnvolvidoVida().delete();
+            if (oev.getEnvolvidoVida() != null)
+                oev.getEnvolvidoVida().delete();
             oev.delete();
         }
 
@@ -620,10 +724,14 @@ public class MainActivity extends AppCompatActivity
         edtBusca = (EditText) findViewById(R.id.edt_busca);
         imgbBusca = (ImageButton) findViewById(R.id.imgb_Busca);
         btnLogout = (Button) findViewById(R.id.btn_Logout);
+        txvPerito = (TextView) findViewById(R.id.txv_Perito);
+        txvPaginas = (TextView) findViewById(R.id.txv_Pagina);
 
+        btnAnterior = (Button) findViewById(R.id.btn_Anterior_Pagina);
+        btnProxima = (Button) findViewById(R.id.btn_Proxima_Pagina);
     }
 
-    public void NovaPericiaVida(String numIncidencia)
+    public void NovaPericiaVida(Bundle bundle)
     {
         Ocorrencia ocorrenciaNova = new Ocorrencia();
 
@@ -631,11 +739,27 @@ public class MainActivity extends AppCompatActivity
 
         DocumentoOcorrencia documentoOcorrencia = new DocumentoOcorrencia(null, "");
 
+        EnderecoVida enderecoVida = new EnderecoVida();
+
         documentoOcorrencia.save();
 
         ocorrenciaVida.setDocumento(documentoOcorrencia);
 
-        ocorrenciaVida.setNumIncidencia(numIncidencia);
+        enderecoVida.setBairro(bundle.getString("bairro"));
+
+        enderecoVida.setCidade(bundle.getString("cidade"));
+
+        enderecoVida.setComplemento(bundle.getString("complemento"));
+
+        enderecoVida.setTipoVia(BuscadorEnum.BuscarTipoVia(bundle.getString("tipoVia")));
+
+        enderecoVida.setDescricaoEndereco(bundle.getString("endereco"));
+
+        ocorrenciaVida.setNumIncidencia(bundle.getString("incidencia"));
+
+        ocorrenciaVida.setHoraChamado(bundle.getString("hora"));
+
+        ocorrenciaVida.setDataChamadoString(bundle.getString("data"));
 
         ocorrenciaNova.setTipoOcorrencia(TipoOcorrencia.VIDA);
 
@@ -651,16 +775,21 @@ public class MainActivity extends AppCompatActivity
 
         ocorrenciaVida.save();
 
+        enderecoVida.setOcorrenciaId(ocorrenciaVida.getId());
+
+        enderecoVida.save();
+
+
         Intent it = new Intent(MainActivity.this, ManterPericiaVida.class);
 
         it.putExtra("OcorrenciaId", ocorrenciaVida.getId());
-
+        it.putExtra("Bairro", enderecoVida.getBairro());
         it.putExtra("FragmentPicker", "Ocorrência");
 
         startActivity(it);
     }
 
-    public void NovaPericiaTransito(String numIncidencia)
+    public void NovaPericiaTransito(Bundle bundle)
     {
         Ocorrencia ocorrenciaNova = new Ocorrencia();
 
@@ -668,13 +797,27 @@ public class MainActivity extends AppCompatActivity
 
         DocumentoOcorrencia documentoOcorrencia = new DocumentoOcorrencia(null, "");
 
+        EnderecoTransito enderecoTransito = new EnderecoTransito();
+
         documentoOcorrencia.save();
 
         ocorrenciaTransito.setDocumentoOcorrencia(documentoOcorrencia);
 
-        //ocorrenciaTransito.setNumIncidencia(txvNumIncidencia.getText().toString().substring(txvNumIncidencia.getText().toString().length() - 7));
+        enderecoTransito.setCidade(bundle.getString("cidade"));
 
-        ocorrenciaTransito.setNumIncidencia(numIncidencia);
+        enderecoTransito.setBairro(bundle.getString("bairro"));
+
+        enderecoTransito.setComplemento(bundle.getString("complemento"));
+
+        enderecoTransito.setTipoVia(BuscadorEnum.BuscarTipoVia(bundle.getString("tipoVia")));
+
+        enderecoTransito.setDescricaoEndereco(bundle.getString("endereco"));
+
+        ocorrenciaTransito.setHoraChamado(bundle.getString("hora"));
+
+        ocorrenciaTransito.setDataChamado(bundle.getString("data"));
+
+        ocorrenciaTransito.setNumIncidencia(bundle.getString("incidencia"));
 
         //ocorrenciaTransito.save();
 
@@ -692,11 +835,19 @@ public class MainActivity extends AppCompatActivity
 
         ocorrenciaTransito.save();
 
+        enderecoTransito.save();
+
+        OcorrenciaTransitoEndereco ocorrenciaTransitoEndereco = new OcorrenciaTransitoEndereco();
+
+        ocorrenciaTransitoEndereco.setOcorrencia(ocorrenciaTransito);
+        ocorrenciaTransitoEndereco.setEndereco(enderecoTransito);
+
+        ocorrenciaTransitoEndereco.save();
 
         Intent it = new Intent(MainActivity.this, ManterPericiaTransito.class);
 
-
         it.putExtra("OcorrenciaId", ocorrenciaTransito.getId());
+        it.putExtra("Bairro", enderecoTransito.getBairro());
 
         startActivity(it);
     }

@@ -9,7 +9,8 @@ import Enums.DocumentoSolicitacao;
  * Created by Pefoce on 12/06/2017.
  */
 
-public class DocumentoOcorrencia extends SugarRecord<DocumentoOcorrencia> {
+public class DocumentoOcorrencia extends SugarRecord
+{
 
     @Expose
     DocumentoSolicitacao tipoDocumento;

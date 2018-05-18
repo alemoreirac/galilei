@@ -1,23 +1,28 @@
 package Fragments.FragmentsVida;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +32,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -36,6 +42,8 @@ import com.example.pefoce.peritolocal.ManterPericiaVida;
 import com.example.pefoce.peritolocal.R;
 import com.frosquivel.magicalcamera.MagicalCamera;
 import com.frosquivel.magicalcamera.MagicalPermissions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
@@ -67,8 +75,11 @@ import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
+import Util.SingleShotLocationProvider;
 import Util.ViewUtil;
 import info.hoang8f.android.segmented.SegmentedGroup;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,6 +99,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     AutoCompleteTextView aucBairro;
 
     EditText edtEndereco;
+    EditText edtComplemento;
     EditText edtLatitude;
     EditText edtLongitude;
 
@@ -136,7 +148,9 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     LinearLayout llVeiculo;
 
+    FusedLocationProviderClient mFusedLocationClient;
 
+    ProgressBar pbCoordenadas;
 
     View mView;
 
@@ -152,17 +166,14 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     }
 
 
-
-
     public void SalvarEndereco()
     {
         enderecoVida.AnularCampos();
 
-        enderecoVida.getEndereco().setEndereco(edtEndereco.getText().toString());
-        enderecoVida.getEndereco().setCidade(aucCidade.getText().toString());
-        enderecoVida.getEndereco().setBairro(aucBairro.getText().toString());
-
-        enderecoVida.getEndereco().save();
+        enderecoVida.setDescricaoEndereco(edtEndereco.getText().toString());
+        enderecoVida.setCidade(aucCidade.getText().toString());
+        enderecoVida.setBairro(aucBairro.getText().toString());
+        enderecoVida.setComplemento(edtComplemento.getText().toString());
 
         enderecoVida.setTipoVia(BuscadorEnum.BuscarTipoVia(spnTipoVia.getSelectedItem().toString()));
 
@@ -172,22 +183,22 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         enderecoVida.setLongitude(edtLongitude.getText().toString());
 
         //enderecoVida.setTipoLocalCrime(BuscadorEnum.BuscarTipoLocalCrime(spnTipoLocal.getSelectedItem().toString()));
-        if(rbtnViaPublica.isChecked())
+        if (rbtnViaPublica.isChecked())
             enderecoVida.setTipoLocalCrime(TipoLocalCrime.VIA_PUBLICA);
 
-        if(rbtnPraia.isChecked())
+        if (rbtnPraia.isChecked())
             enderecoVida.setTipoLocalCrime(TipoLocalCrime.PRAIA);
 
-        if(rbtnOutro.isChecked())
+        if (rbtnOutro.isChecked())
             enderecoVida.setTipoLocalCrime(TipoLocalCrime.OUTRO);
 
-        if(rbtnRural.isChecked())
+        if (rbtnRural.isChecked())
             enderecoVida.setTipoLocalCrime(TipoLocalCrime.RURAL);
 
-        if(rbtnResidencial.isChecked())
+        if (rbtnResidencial.isChecked())
             enderecoVida.setTipoLocalCrime(TipoLocalCrime.RESIDENCIAL);
 
-        if(rltvClima.getVisibility() == View.VISIBLE)
+        if (rltvClima.getVisibility() == View.VISIBLE)
         {
             enderecoVida.setCondicoesClimaticas(BuscadorEnum.BuscarMeteorologia(spnClima.getSelectedItem().toString()));
             enderecoVida.setTipoIluminacao(BuscadorEnum.BuscarIluminacaoArtificial(spnIluminacao.getSelectedItem().toString()));
@@ -237,7 +248,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-    
+
     public static GerenciarEnderecoVida newInstance(String param1, String param2)
     {
         GerenciarEnderecoVida fragment = new GerenciarEnderecoVida();
@@ -274,6 +285,10 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     {
         ((ManterPericiaVida) getActivity()).txvToolbarTitulo.setText("Local do Crime");
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         Bundle bd = getArguments();
 
         AssociarLayout(mView);
@@ -287,10 +302,9 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                 ocorrenciaVida = OcorrenciaVida.findById(OcorrenciaVida.class, bd.getLong("OcorrenciaId", 0));
                 try
                 {
-                    ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaVida.getOcorrenciaID());
+                    ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
                     enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     enderecoVida = new EnderecoVida();
                 }
@@ -316,13 +330,12 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                if(spnAbertoRural.getSelectedItem().toString() == "Aberto")
+                if (spnAbertoRural.getSelectedItem().toString() == "Aberto")
                 {
                     spnClima.setSelection(0);
                     spnIluminacao.setSelection(0);
                     rltvClima.setVisibility(View.VISIBLE);
-                }
-                else
+                } else
                 {
                     rltvClima.setVisibility(View.INVISIBLE);
                 }
@@ -340,13 +353,12 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                if(spnAbertoRural.getSelectedItem().toString() == "Aberto")
+                if (spnAbertoRural.getSelectedItem().toString() == "Aberto")
                 {
                     spnClima.setSelection(0);
                     spnIluminacao.setSelection(0);
                     rltvClima.setVisibility(View.VISIBLE);
-                }
-                else
+                } else
                 {
                     rltvClima.setVisibility(View.INVISIBLE);
                 }
@@ -374,8 +386,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                 magicalPermissions = new MagicalPermissions(GerenciarEnderecoVida.this, permissions);
                 magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE, magicalPermissions);
 
-                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarEnderecoVida.this, getActivity(),magicalCamera);
-
+                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarEnderecoVida.this, getActivity(), magicalCamera);
             }
         });
 
@@ -384,15 +395,16 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             @Override
             public void onClick(View v)
             {
-                FragmentManager fm = getActivity().getFragmentManager();
-                dialogFragment = new AudioDialog();
+//                FragmentManager fm = getActivity().getFragmentManager();
+//                dialogFragment = new AudioDialog();
 
                 Bundle bd = new Bundle();
                 bd.putString("Local", "conclusão");
                 bd.putLong("OcorrenciaId", ocorrencia.getId());
-                bd.putString("SecaoVida","Endereco");
-                dialogFragment.setArguments(bd);
-                dialogFragment.show(fm, "Seleção");
+                bd.putString("SecaoVida", "Endereco");
+                AudioDialog.show(getActivity(), bd);
+//                dialogFragment.setArguments(bd);
+//                dialogFragment.show(fm, "Seleção");
             }
         });
 
@@ -413,7 +425,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                 final CheckBox cxbExisteVeiculo = (CheckBox) dialog.findViewById(R.id.cxb_Veiculo_Envolvido);
                 final EditText edtNomeProprietario = (EditText) dialog.findViewById(R.id.edt_Nome_Proprietario_Vida);
                 final EditText edtNumCNHPRorpeitario = (EditText) dialog.findViewById(R.id.edt_Proprietario_Num_CNH_Vida);
-                final Spinner  spnTipoCNHProprietario = (Spinner) dialog.findViewById(R.id.spn_Tipo_CNH_Proprietario_Vida);
+                final Spinner spnTipoCNHProprietario = (Spinner) dialog.findViewById(R.id.spn_Tipo_CNH_Proprietario_Vida);
                 final EditText edtMarcaVeiculo = (EditText) dialog.findViewById(R.id.edt_Marca_Veiculo_Vida);
                 final EditText edtModeloVeiculo = (EditText) dialog.findViewById(R.id.edt_Modelo_Veiculo_Vida);
                 final Spinner spnLocalVeiculo = (Spinner) dialog.findViewById(R.id.spn_Local_Veiculo_Vida);
@@ -426,17 +438,17 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
                 List<String> tiposCNH = new ArrayList<>();
 
-                for(TipoCNH t : TipoCNH.values())
+                for (TipoCNH t : TipoCNH.values())
                     tiposCNH.add(t.getValor());
 
-                spnTipoCNHProprietario.setAdapter(new ArrayAdapter<String>(v.getContext(),R.layout.support_simple_spinner_dropdown_item,tiposCNH));
+                spnTipoCNHProprietario.setAdapter(new ArrayAdapter<String>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, tiposCNH));
 
                 List<String> locaisVeiculo = new ArrayList<>();
 
-                for(LocalVeiculo lv : LocalVeiculo.values())
+                for (LocalVeiculo lv : LocalVeiculo.values())
                     locaisVeiculo.add(lv.getValor());
 
-                spnLocalVeiculo.setAdapter(new ArrayAdapter<String>(v.getContext(),R.layout.support_simple_spinner_dropdown_item,locaisVeiculo));
+                spnLocalVeiculo.setAdapter(new ArrayAdapter<String>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, locaisVeiculo));
 
 
                 cxbExisteVeiculo.setOnClickListener(new View.OnClickListener()
@@ -444,22 +456,13 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                     @Override
                     public void onClick(View v)
                     {
-                        if(cxbExisteVeiculo.isChecked())
+                        if (cxbExisteVeiculo.isChecked())
                         {
 
-//                            cxbProprietarioDesconhecido.setEnabled(false);
-//                            edtNomeProprietario.setEnabled(false);
-//                            edtNumCNHPRorpeitario.setEnabled(false);
-//                            spnTipoCNHProprietario.setEnabled(false);
-//                            edtPlacaNumeros.setEnabled(false);
-//                            edtPlacaLetras.setEnabled(false);
-//                            edtMarcaVeiculo.setEnabled(false);
-//                            edtModeloVeiculo.setEnabled(false);
-                            ViewUtil.modifyAll(rltvCampos,true);
-                        }
-                        else
+                            ViewUtil.modifyAll(rltvCampos, true);
+                        } else
                         {
-                            ViewUtil.modifyAll(rltvCampos,false);
+                            ViewUtil.modifyAll(rltvCampos, false);
 
                             cxbProprietarioDesconhecido.setChecked(false);
                             edtNomeProprietario.setText("");
@@ -470,14 +473,6 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                             edtPlacaLetras.setText("");
                             edtPlacaNumeros.setText("");
                             spnLocalVeiculo.setSelection(0);
-//                            cxbProprietarioDesconhecido.setEnabled(true);
-//                            edtNomeProprietario.setEnabled(true);
-//                            edtNumCNHPRorpeitario.setEnabled(true);
-//                            spnTipoCNHProprietario.setEnabled(true);
-//                            edtPlacaNumeros.setEnabled(true);
-//                            edtPlacaLetras.setEnabled(true);
-//                            edtMarcaVeiculo.setEnabled(true);
-//                            edtModeloVeiculo.setEnabled(true);
                         }
                     }
                 });
@@ -497,7 +492,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                     public void onClick(View v)
                     {
 
-                        if(cxbExisteVeiculo.isChecked())
+                        if (cxbExisteVeiculo.isChecked())
                         {
                             enderecoVida.setModeloVeiculo(edtModeloVeiculo.getText().toString());
                             enderecoVida.setMarcaVeiculo(edtMarcaVeiculo.getText().toString());
@@ -507,8 +502,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                             enderecoVida.setCategoriaProprietario(BuscadorEnum.BuscarTipoCNH(spnTipoCNHProprietario.getSelectedItem().toString()));
                             enderecoVida.setLocalVeiculo(BuscadorEnum.BuscarLocalVeiculo(spnLocalVeiculo.getSelectedItem().toString()));
                             enderecoVida.setVeiculoEnvolvido(true);
-                        }
-                        else
+                        } else
                         {
                             enderecoVida.setModeloVeiculo("");
                             enderecoVida.setMarcaVeiculo("");
@@ -523,25 +517,26 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                     }
                 });
 
-                imgbAudio.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view) throws IllegalArgumentException,
-                            SecurityException, IllegalStateException
-                    {
-
-                        FragmentManager fm = getActivity().getFragmentManager();
-                        dialogFragment = new AudioDialog();
-                        Bundle bd = new Bundle();
-                        bd.putString("Local", "conclusão");
-                        bd.putLong("OcorrenciaId",ocorrenciaVida.getId());
-                        bd.putString("SecaoVida", "Endereco");
-
-                        dialogFragment.setArguments(bd);
-                        dialogFragment.show(fm, "Seleção");
-                    }
-                });
-
+//                imgbAudio.setOnClickListener(new View.OnClickListener()
+//                {
+//                    @Override
+//                    public void onClick(View view) throws IllegalArgumentException,
+//                            SecurityException, IllegalStateException
+//                    {
+//
+////                        FragmentManager fm = getActivity().getFragmentManager();
+////                        dialogFragment = new AudioDialog();
+//                        Bundle bd = new Bundle();
+//                        bd.putString("Local", "conclusão");
+//                        bd.putLong("OcorrenciaId",ocorrenciaVida.getId());
+//                        bd.putString("SecaoVida", "Endereco");
+//
+//                        AudioDialog.show(getActivity(),bd);
+////                        dialogFragment.setArguments(bd);
+////                        dialogFragment.show(fm, "Seleção");
+//                    }
+//                });
+//
 
 
                 cxbProprietarioDesconhecido.setOnClickListener(new View.OnClickListener()
@@ -549,7 +544,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                     @Override
                     public void onClick(View v)
                     {
-                        if(cxbProprietarioDesconhecido.isChecked())
+                        if (cxbProprietarioDesconhecido.isChecked())
                         {
                             edtNomeProprietario.setEnabled(false);
                             edtNomeProprietario.setText("Desconhecido(a)");
@@ -559,8 +554,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
                             spnTipoCNHProprietario.setEnabled(false);
                             spnTipoCNHProprietario.setSelection(BuscadorEnum.getIndex(spnTipoCNHProprietario, TipoCNH.NP.getValor()));
-                        }
-                        else
+                        } else
                         {
                             edtNomeProprietario.setEnabled(true);
                             edtNumCNHPRorpeitario.setEnabled(true);
@@ -571,45 +565,44 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                 });
 
 
-                if(enderecoVida.getVeiculoEnvolvido())
+                if (enderecoVida.getVeiculoEnvolvido())
                 {
-                    ViewUtil.modifyAll(rltvCampos,true);
+                    ViewUtil.modifyAll(rltvCampos, true);
                     cxbExisteVeiculo.setChecked(true);
-                }
-                else
+                } else
                 {
                     ViewUtil.modifyAll(rltvCampos, false);
                     cxbExisteVeiculo.setChecked(false);
                     return;
                 }
 
-                if(enderecoVida.getPlacaVeiculo()!= null)
+                if (enderecoVida.getPlacaVeiculo() != null)
                 {
-                    if(enderecoVida.getPlacaVeiculo().length()==8)
+                    if (enderecoVida.getPlacaVeiculo().length() == 8)
                     {
-                        edtPlacaLetras.setText(enderecoVida.getPlacaVeiculo().substring(0,3));
-                        edtPlacaNumeros.setText(enderecoVida.getPlacaVeiculo().substring(4,8));
+                        edtPlacaLetras.setText(enderecoVida.getPlacaVeiculo().substring(0, 3));
+                        edtPlacaNumeros.setText(enderecoVida.getPlacaVeiculo().substring(4, 8));
                     }
                 }
 
-                if(enderecoVida.getMarcaVeiculo()!=null)
+                if (enderecoVida.getMarcaVeiculo() != null)
                     edtMarcaVeiculo.setText(enderecoVida.getMarcaVeiculo());
 
-                if(enderecoVida.getModeloVeiculo()!=null)
+                if (enderecoVida.getModeloVeiculo() != null)
                     edtModeloVeiculo.setText(enderecoVida.getModeloVeiculo());
 
-                if(enderecoVida.getNumeroDocumentoProprietario()!=null)
+                if (enderecoVida.getNumeroDocumentoProprietario() != null)
                     edtNumCNHPRorpeitario.setText(enderecoVida.getNumeroDocumentoProprietario());
 
-                if(enderecoVida.getCategoriaProprietario()!=null)
-                    spnTipoCNHProprietario.setSelection(BuscadorEnum.getIndex(spnTipoCNHProprietario,enderecoVida.getCategoriaProprietario().getValor()));
+                if (enderecoVida.getCategoriaProprietario() != null)
+                    spnTipoCNHProprietario.setSelection(BuscadorEnum.getIndex(spnTipoCNHProprietario, enderecoVida.getCategoriaProprietario().getValor()));
 
-                if(enderecoVida.getLocalVeiculo()!=null)
-                    spnLocalVeiculo.setSelection(BuscadorEnum.getIndex(spnLocalVeiculo,enderecoVida.getLocalVeiculo().getValor()));
+                if (enderecoVida.getLocalVeiculo() != null)
+                    spnLocalVeiculo.setSelection(BuscadorEnum.getIndex(spnLocalVeiculo, enderecoVida.getLocalVeiculo().getValor()));
 
-                if(enderecoVida.getNomeProprietario()!= null)
+                if (enderecoVida.getNomeProprietario() != null)
                 {
-                    if(enderecoVida.getNomeProprietario().equals("Desconhecido(a)"))
+                    if (enderecoVida.getNomeProprietario().equals("Desconhecido(a)"))
                     {
                         cxbProprietarioDesconhecido.performClick();
                         return;
@@ -666,22 +659,137 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             }
         });
 
+
         imgbCoordenadas.setOnClickListener(new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
+         {
+             boolean checking = true;
 
-            Location location = getLocation();
+             @Override
+             public void onClick(View v)
+             {
+                 pbCoordenadas.setVisibility(View.VISIBLE);
+                 imgbCoordenadas.setVisibility(View.INVISIBLE);
+                 edtLatitude.setEnabled(false);
+                 edtLongitude.setEnabled(false);
 
-            if (location != null)
-                converterCoordenadas(location.getLatitude(), location.getLongitude(), edtLatitude, edtLongitude);
-            else
-                Toast.makeText(getContext(), "Deu errado!", Toast.LENGTH_LONG).show();
-        }
-    });
+                 SingleShotLocationProvider.requestSingleUpdate(getActivity(),
+                         new SingleShotLocationProvider.LocationCallback()
+                         {
+                             @Override
+                             public void onNewLocationAvailable(Double lat, Double lng)
+                                 {
+
+//                                 Toast.makeText(getContext(), "lat: " + String.valueOf(lat) + " lon: " + String.valueOf(lng), Toast.LENGTH_LONG).show();
+
+                                 converterCoordenadas(lat, lng, edtLatitude, edtLongitude);
+
+                                 imgbCoordenadas.setVisibility(View.VISIBLE);
+                                 pbCoordenadas.setVisibility(View.INVISIBLE);
+                                 edtLatitude.setEnabled(true);
+                                 edtLongitude.setEnabled(true);
+                                 checking  = false;
+                             }
+                         }
+                 );
+
+                 Looper myLooper = Looper.myLooper();
+
+                 final Handler myHandler = new Handler(myLooper);
+                 myHandler.postDelayed(new Runnable()
+                 {
+                     public void run()
+                     {
+                         if(checking)
+                         {
+                             SingleShotLocationProvider.cancelUpdate();
+                             Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
+
+                             imgbCoordenadas.setVisibility(View.VISIBLE);
+                             pbCoordenadas.setVisibility(View.INVISIBLE);
+                             edtLatitude.setEnabled(true);
+                             edtLongitude.setEnabled(true);
+                         }
+                     }
+                 }, 1000 * 120);
+
+
+             }
+         }
+        );
 
     }
+
+    private void requestRuntimePermission(Activity activity, String runtimePermission, int requestCode)
+    {
+        ActivityCompat.requestPermissions(activity, new String[]{runtimePermission}, requestCode);
+    }
+
+    // This method is used to check whether current app has required runtime permission.
+    private boolean hasRuntimePermission(Context context, String runtimePermission)
+    {
+        boolean ret = false;
+
+        // Get current android os version.
+        int currentAndroidVersion = Build.VERSION.SDK_INT;
+
+        // Build.VERSION_CODES.M's value is 23.
+        if (currentAndroidVersion > Build.VERSION_CODES.M)
+        {
+            // Only android version 23+ need to check runtime permission.
+            if (ContextCompat.checkSelfPermission(context, runtimePermission) == PackageManager.PERMISSION_GRANTED)
+            {
+                ret = true;
+            }
+        } else
+        {
+            ret = true;
+        }
+        return ret;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // If this is our permission request result.
+        if (requestCode == 1)
+        {
+            if (grantResults.length > 0)
+            {
+                // Construct result message.
+                StringBuffer msgBuf = new StringBuffer();
+                int grantResult = grantResults[0];
+                if (grantResult == PackageManager.PERMISSION_GRANTED)
+                {
+                    msgBuf.append("You granted below permissions, you can do the action again to use the permission : ");
+                } else
+                {
+                    msgBuf.append("You denied below permissions : ");
+                }
+
+                // Add granted permissions to the message.
+                if (permissions != null)
+                {
+                    int length = permissions.length;
+                    for (int i = 0; i < length; i++)
+                    {
+                        String permission = permissions[i];
+                        msgBuf.append(permission);
+
+                        if (i < length - 1)
+                        {
+                            msgBuf.append(",");
+                        }
+                    }
+                }
+
+                // Show result message.
+                Toast.makeText(getActivity(), msgBuf.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -704,9 +812,10 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             if (!folder.exists())
                 folder.mkdirs();
 
-            newPath += ocorrenciaVida.getNumIncidencia()+"_foto_endereco" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+            newPath += ocorrenciaVida.getNumIncidencia() + "_foto_endereco" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
 
             Foto foto;
+
             if (newFile.renameTo(new File(newPath)))
                 foto = new Foto("Foto do Endereço".toString(), newPath, CategoriaFoto.ENDERECOS);
 
@@ -715,7 +824,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
             foto.save();
 
-            OcorrenciaVidaFoto ocorrenciaFoto = new OcorrenciaVidaFoto(ocorrenciaVida,foto);
+            OcorrenciaVidaFoto ocorrenciaFoto = new OcorrenciaVidaFoto(ocorrenciaVida, foto);
 
             ocorrenciaFoto.save();
 
@@ -735,78 +844,78 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
         List<String> tiposVia = new ArrayList<>();
 
-        for(TipoVia tl : TipoVia.values())
+        for (TipoVia tl : TipoVia.values())
             tiposVia.add(tl.getValor());
 
-        spnTipoVia.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,tiposVia));
+        spnTipoVia.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, tiposVia));
 
-        List<String> posicoesVia= new ArrayList<>();
+        List<String> posicoesVia = new ArrayList<>();
 
-        for(LocalObjeto lo : LocalObjeto.values())
+        for (LocalObjeto lo : LocalObjeto.values())
             posicoesVia.add(lo.getValor());
 
-        spnPosicaoViaPublica.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,posicoesVia));
+        spnPosicaoViaPublica.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, posicoesVia));
 
         List<String> pavimentacoes = new ArrayList<>();
 
-        for(Pavimentacao p : Pavimentacao.values())
+        for (Pavimentacao p : Pavimentacao.values())
             pavimentacoes.add(p.getValor());
 
-        spnPavimentacaoViaPublica.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,pavimentacoes));
+        spnPavimentacaoViaPublica.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, pavimentacoes));
 
         List<String> locaisPraia = new ArrayList<>();
 
-        for(LocalPraia lp : LocalPraia.values())
+        for (LocalPraia lp : LocalPraia.values())
             locaisPraia.add(lp.getValor());
 
-        spnLocalPraia.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,locaisPraia));
+        spnLocalPraia.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, locaisPraia));
 
         List<String> vegetacoes = new ArrayList<>();
 
-        for(TipoVegetacao tv : TipoVegetacao.values())
+        for (TipoVegetacao tv : TipoVegetacao.values())
             vegetacoes.add(tv.getValor());
 
-        spnVegetacaoPraia.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,vegetacoes));
+        spnVegetacaoPraia.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, vegetacoes));
 
-        spnVegetacaoRural.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,vegetacoes));
+        spnVegetacaoRural.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, vegetacoes));
 
         List<String> tipoAbertura = new ArrayList<>();
 
-        for(TipoAberturaLocal tal : TipoAberturaLocal.values())
+        for (TipoAberturaLocal tal : TipoAberturaLocal.values())
             tipoAbertura.add(tal.getValor());
 
-        spnEspacoResidencia.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,tipoAbertura));
+        spnEspacoResidencia.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, tipoAbertura));
 
-        spnAbertoRural.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,tipoAbertura));
+        spnAbertoRural.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, tipoAbertura));
 
         List<String> localResidencia = new ArrayList<>();
 
-        for(TipoLocal tal : TipoLocal.values())
+        for (TipoLocal tal : TipoLocal.values())
             localResidencia.add(tal.getValor());
 
-        spnLocalidadeResidencia.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,localResidencia));
+        spnLocalidadeResidencia.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, localResidencia));
 
         List<String> comodos = new ArrayList<>();
 
-        for(Comodo c : Comodo.values())
+        for (Comodo c : Comodo.values())
             comodos.add(c.getValor());
 
-        spnComodo.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,comodos));
+        spnComodo.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, comodos));
 
 
         List<String> condicoesClimaticas = new ArrayList<>();
 
-        for(Meteorologia m : Meteorologia.values())
+        for (Meteorologia m : Meteorologia.values())
             condicoesClimaticas.add(m.getValor());
 
-        spnClima.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,condicoesClimaticas));
+        spnClima.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, condicoesClimaticas));
 
         List<String> iluminacaoArtifical = new ArrayList<>();
 
-        for(IluminacaoArtificial ia : IluminacaoArtificial.values())
+        for (IluminacaoArtificial ia : IluminacaoArtificial.values())
             iluminacaoArtifical.add(ia.getValor());
 
-        spnIluminacao.setAdapter(new ArrayAdapter<String>(ctx,R.layout.support_simple_spinner_dropdown_item,iluminacaoArtifical));
+        spnIluminacao.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, iluminacaoArtifical));
 
 
     }
@@ -817,7 +926,9 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         edtEndereco = (EditText) view.findViewById(R.id.edt_Endereco_Vida);
         edtLatitude = (EditText) view.findViewById(R.id.edt_latitude_Vida);
         edtLongitude = (EditText) view.findViewById(R.id.edt_longitude_Vida);
+        edtComplemento = (EditText) view.findViewById(R.id.edt_Complemento_End_Vida);
 
+        pbCoordenadas = (ProgressBar) view.findViewById(R.id.pgb_Carregar_Coordenadas_Vida);
         spnTipoVia = (Spinner) view.findViewById(R.id.spn_TipoVia_Vida);
 
         aucBairro = (AutoCompleteTextView) view.findViewById(R.id.auc_Bairro_Vida);
@@ -865,6 +976,14 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
         imgbCamera = (ImageButton) view.findViewById(R.id.imgb_Foto_Endereco_Vida);
         imgbAudio = (ImageButton) view.findViewById(R.id.imgb_Audio_Endereco_Vida);
+
+
+        edtEndereco.setNextFocusRightId(edtComplemento.getId());
+        edtComplemento.setNextFocusRightId(aucCidade.getId());
+        aucCidade.setNextFocusRightId(aucBairro.getId());
+        aucBairro.setNextFocusRightId(edtLatitude.getId());
+        edtLatitude.setNextFocusRightId(edtLongitude.getId());
+
     }
 
     public void TrocarLocalCrime(TipoLocalCrime local)
@@ -874,27 +993,27 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         rltvResidencia.setVisibility(View.INVISIBLE);
         rltvOutro.setVisibility(View.INVISIBLE);
         rltvPraia.setVisibility(View.INVISIBLE);
-        if(local != null)
-        switch (local)
-        {
-            case VIA_PUBLICA:
-                rltvViaPublica.setVisibility(View.VISIBLE);
-                break;
-            case RURAL:
-                rltvRural.setVisibility(View.VISIBLE);
-                break;
-            case OUTRO:
-                rltvOutro.setVisibility(View.VISIBLE);
-                break;
-            case PRAIA:
-                rltvPraia.setVisibility(View.VISIBLE);
-                break;
-            case RESIDENCIAL:
-                rltvResidencia.setVisibility(View.VISIBLE);
-                break;
+        if (local != null)
+            switch (local)
+            {
+                case VIA_PUBLICA:
+                    rltvViaPublica.setVisibility(View.VISIBLE);
+                    break;
+                case RURAL:
+                    rltvRural.setVisibility(View.VISIBLE);
+                    break;
+                case OUTRO:
+                    rltvOutro.setVisibility(View.VISIBLE);
+                    break;
+                case PRAIA:
+                    rltvPraia.setVisibility(View.VISIBLE);
+                    break;
+                case RESIDENCIAL:
+                    rltvResidencia.setVisibility(View.VISIBLE);
+                    break;
                 default:
                     break;
-        }
+            }
     }
 
     public void LimparCampos()
@@ -914,6 +1033,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         spnIluminacao.setSelection(0);
 
         edtEndereco.setText("");
+        edtComplemento.setText("");
         edtObservacoesViaPublica.setText("");
         edtObservacoesRural.setText("");
         edtObservacoesResidencia.setText("");
@@ -929,145 +1049,92 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     public void CarregarEndereco(EnderecoVida enderecoVida)
     {
-        if(enderecoVida.getEndereco() != null)
-        {
-            edtEndereco.setText(enderecoVida.getEndereco().getDescricao());
-            aucBairro.setText(enderecoVida.getEndereco().getBairro());
-            aucCidade.setText(enderecoVida.getEndereco().getCidade());
-        }
+        edtEndereco.setText(enderecoVida.getDescricaoEndereco());
+        aucBairro.setText(enderecoVida.getBairro());
+        aucCidade.setText(enderecoVida.getCidade());
+        edtComplemento.setText(enderecoVida.getComplemento());
 
         edtLatitude.setText(enderecoVida.getLatitude());
         edtLongitude.setText(enderecoVida.getLongitude());
 
-        if(enderecoVida.getTipoVia()!=null)
-        spnTipoVia.setSelection(BuscadorEnum.getIndex(spnTipoVia,enderecoVida.getTipoVia().toString()));
+        if (enderecoVida.getTipoVia() != null)
+            spnTipoVia.setSelection(BuscadorEnum.getIndex(spnTipoVia, enderecoVida.getTipoVia().toString()));
 
-
-
-        if(enderecoVida.getTipoLocalCrime()!=null)
-
-        //    spnTipoLocal.setSelection(BuscadorEnum.getIndex(spnTipoLocal,enderecoVida.getTipoLocalCrime().getValor()));
-          //  TrocarLocalCrime(enderecoVida.getTipoLocalCrime());
+        if (enderecoVida.getTipoLocalCrime() != null)
 
             switch (enderecoVida.getTipoLocalCrime())
-        {
-            case OUTRO:
-                edtDescricaoOutro.setText(enderecoVida.getObservacao());
-                rbtnOutro.performClick();
-                break;
-            case PRAIA:
-                if(enderecoVida.getLocalPraia()!=null)
-                spnLocalPraia.setSelection(BuscadorEnum.getIndex(spnLocalPraia,enderecoVida.getLocalPraia().getValor()));
+            {
+                case OUTRO:
+                    edtDescricaoOutro.setText(enderecoVida.getObservacao());
+                    rbtnOutro.performClick();
+                    break;
+                case PRAIA:
+                    if (enderecoVida.getLocalPraia() != null)
+                        spnLocalPraia.setSelection(BuscadorEnum.getIndex(spnLocalPraia, enderecoVida.getLocalPraia().getValor()));
 
-                if(enderecoVida.getTipoVegetacao()!=null)
-                spnVegetacaoPraia.setSelection(BuscadorEnum.getIndex(spnVegetacaoPraia,enderecoVida.getTipoVegetacao().getValor()));
+                    if (enderecoVida.getTipoVegetacao() != null)
+                        spnVegetacaoPraia.setSelection(BuscadorEnum.getIndex(spnVegetacaoPraia, enderecoVida.getTipoVegetacao().getValor()));
 
-                edtObservacoesPraia.setText(enderecoVida.getObservacao());
-                rbtnPraia.performClick();
-                break;
-            case RESIDENCIAL:
-                if(enderecoVida.getLocalResidencia()!=null)
-                spnLocalidadeResidencia.setSelection(BuscadorEnum.getIndex(spnLocalidadeResidencia,enderecoVida.getLocalResidencia().getValor()));
-                if(enderecoVida.getLocalAberto()!=null)
-                    spnEspacoResidencia.setSelection(BuscadorEnum.getIndex(spnEspacoResidencia,enderecoVida.getLocalAberto().getValor()));
-                if(enderecoVida.getComodo()!=null)
-                spnComodo.setSelection(BuscadorEnum.getIndex(spnComodo,enderecoVida.getComodo().getValor()));
-                edtObservacoesResidencia.setText(enderecoVida.getObservacao());
-                rbtnResidencial.performClick();
-                break;
-            case RURAL:
-                if(enderecoVida.getTipoVegetacao()!=null)
-                spnVegetacaoRural.setSelection(BuscadorEnum.getIndex(spnVegetacaoRural,enderecoVida.getTipoVegetacao().getValor()));
-                if(enderecoVida.getLocalAberto()!=null)
-                {
-                    spnAbertoRural.setSelection(BuscadorEnum.getIndex(spnEspacoResidencia,enderecoVida.getLocalAberto().getValor()));
-                    if(enderecoVida.getLocalAberto() == TipoAberturaLocal.ABERTO)
+                    edtObservacoesPraia.setText(enderecoVida.getObservacao());
+                    rbtnPraia.performClick();
+                    break;
+                case RESIDENCIAL:
+                    if (enderecoVida.getLocalResidencia() != null)
+                        spnLocalidadeResidencia.setSelection(BuscadorEnum.getIndex(spnLocalidadeResidencia, enderecoVida.getLocalResidencia().getValor()));
+                    if (enderecoVida.getLocalAberto() != null)
+                        spnEspacoResidencia.setSelection(BuscadorEnum.getIndex(spnEspacoResidencia, enderecoVida.getLocalAberto().getValor()));
+                    if (enderecoVida.getComodo() != null)
+                        spnComodo.setSelection(BuscadorEnum.getIndex(spnComodo, enderecoVida.getComodo().getValor()));
+                    edtObservacoesResidencia.setText(enderecoVida.getObservacao());
+                    rbtnResidencial.performClick();
+                    break;
+                case RURAL:
+                    if (enderecoVida.getTipoVegetacao() != null)
+                        spnVegetacaoRural.setSelection(BuscadorEnum.getIndex(spnVegetacaoRural, enderecoVida.getTipoVegetacao().getValor()));
+                    if (enderecoVida.getLocalAberto() != null)
                     {
-                        rltvClima.setVisibility(View.VISIBLE);
-                        if(enderecoVida.getCondicoesClimaticas()!=null)
-                        spnClima.setSelection(BuscadorEnum.getIndex(spnClima,enderecoVida.getCondicoesClimaticas().getValor()));
-                        if(enderecoVida.getTipoIluminacao()!=null)
-                        spnIluminacao.setSelection(BuscadorEnum.getIndex(spnIluminacao,enderecoVida.getTipoIluminacao().getValor()));
+                        spnAbertoRural.setSelection(BuscadorEnum.getIndex(spnEspacoResidencia, enderecoVida.getLocalAberto().getValor()));
+                        if (enderecoVida.getLocalAberto() == TipoAberturaLocal.ABERTO)
+                        {
+                            rltvClima.setVisibility(View.VISIBLE);
+                            if (enderecoVida.getCondicoesClimaticas() != null)
+                                spnClima.setSelection(BuscadorEnum.getIndex(spnClima, enderecoVida.getCondicoesClimaticas().getValor()));
+                            if (enderecoVida.getTipoIluminacao() != null)
+                                spnIluminacao.setSelection(BuscadorEnum.getIndex(spnIluminacao, enderecoVida.getTipoIluminacao().getValor()));
+                        }
                     }
-                }
-                edtObservacoesRural.setText(enderecoVida.getObservacao());
+                    edtObservacoesRural.setText(enderecoVida.getObservacao());
 
-                rbtnRural.performClick();
-                break;
-            case VIA_PUBLICA:
-                if(enderecoVida.getPavimentacao()!=null)
-                spnPavimentacaoViaPublica.setSelection(BuscadorEnum.getIndex(spnPavimentacaoViaPublica,enderecoVida.getPavimentacao().getValor()));
-                if(enderecoVida.getPosicaoVia()!=null)
-                spnPosicaoViaPublica.setSelection(BuscadorEnum.getIndex(spnPosicaoViaPublica,enderecoVida.getPosicaoVia().getValor()));
-                edtObservacoesViaPublica.setText(enderecoVida.getObservacao());
-                rbtnViaPublica.performClick();
-                break;
-        }
+                    rbtnRural.performClick();
+                    break;
+                case VIA_PUBLICA:
+                    if (enderecoVida.getPavimentacao() != null)
+                        spnPavimentacaoViaPublica.setSelection(BuscadorEnum.getIndex(spnPavimentacaoViaPublica, enderecoVida.getPavimentacao().getValor()));
+                    if (enderecoVida.getPosicaoVia() != null)
+                        spnPosicaoViaPublica.setSelection(BuscadorEnum.getIndex(spnPosicaoViaPublica, enderecoVida.getPosicaoVia().getValor()));
+                    edtObservacoesViaPublica.setText(enderecoVida.getObservacao());
+                    rbtnViaPublica.performClick();
+                    break;
+            }
         else
             rbtnViaPublica.performClick();
 
-        if(enderecoVida.getLocalAberto()!=null)
+        if (enderecoVida.getLocalAberto() != null)
         {
-            if(enderecoVida.getLocalAberto() == TipoAberturaLocal.ABERTO)
+            if (enderecoVida.getLocalAberto() == TipoAberturaLocal.ABERTO)
             {
                 rltvClima.setVisibility(View.VISIBLE);
-                if(enderecoVida.getCondicoesClimaticas()!=null)
-                    spnClima.setSelection(BuscadorEnum.getIndex(spnClima,enderecoVida.getCondicoesClimaticas().getValor()));
-                if(enderecoVida.getTipoIluminacao()!=null)
-                    spnIluminacao.setSelection(BuscadorEnum.getIndex(spnIluminacao,enderecoVida.getTipoIluminacao().getValor()));
+                if (enderecoVida.getCondicoesClimaticas() != null)
+                    spnClima.setSelection(BuscadorEnum.getIndex(spnClima, enderecoVida.getCondicoesClimaticas().getValor()));
+                if (enderecoVida.getTipoIluminacao() != null)
+                    spnIluminacao.setSelection(BuscadorEnum.getIndex(spnIluminacao, enderecoVida.getTipoIluminacao().getValor()));
             }
         }
-
     }
-
-    private Location getLocation()
-    {
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        // provider = locationManager.getBestProvider(criteria, false);
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-
-
-        } else
-        {
-
-        }
-
-        List<String> providers = locationManager.getProviders(true);
-        Location bestLocation = null;
-
-        for (String provider : providers)
-        {
-            Location l = locationManager.getLastKnownLocation(provider);
-
-            if (l == null)
-            {
-                continue;
-            }
-            if (bestLocation == null
-                    || l.getAccuracy() < bestLocation.getAccuracy())
-            {
-                bestLocation = l;
-            }
-        }
-        if (bestLocation == null)
-        {
-            return null;
-        }
-
-        return bestLocation;
-
-    }
-
-
 
     private void converterCoordenadas(double latitude, double longitude, EditText edtLatitude, EditText edtLongitude)
     {
         StringBuilder builderLatitude = new StringBuilder();
-
-
         String latitudeDegrees = Location.convert(Math.abs(latitude), Location.FORMAT_SECONDS);
         String[] latitudeSplit = latitudeDegrees.split(":");
         builderLatitude.append(latitudeSplit[0]);
@@ -1078,12 +1145,11 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         builderLatitude.append("\"");
 
         if (latitude < 0)
-        {
-            builderLatitude.append("S ");
-        } else
-        {
+           builderLatitude.append("S ");
+
+         else
             builderLatitude.append("N ");
-        }
+
 
         edtLatitude.setText(builderLatitude.toString());
 
@@ -1111,54 +1177,56 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     }
 
     @Override
-    public void onDestroyView() {
+    public void onDestroyView()
+    {
         super.onDestroyView();
         mView = null;
 
         ocorrenciaVida = null;
         ocorrencia = null;
         dialogFragment = null;
-                locationManager = null;
+        locationManager = null;
         spnTipoVia = null;
-                aucCidade = null;
+        aucCidade = null;
         aucBairro = null;
-                edtEndereco = null;
+        edtEndereco = null;
+        edtComplemento = null;
         edtLatitude = null;
-                edtLongitude = null;
+        edtLongitude = null;
         imgbCoordenadas = null;
-                imgbCamera = null;
+        imgbCamera = null;
         imgbAudio = null;
-                sgmtLocalVida = null;
+        sgmtLocalVida = null;
         rbtnPraia = null;
-                rbtnRural = null;
+        rbtnRural = null;
         rbtnViaPublica = null;
-                rbtnResidencial = null;
+        rbtnResidencial = null;
         rbtnOutro = null;
-                rltvRural = null;
+        rltvRural = null;
         spnVegetacaoRural = null;
-                spnAbertoRural = null;
+        spnAbertoRural = null;
         edtObservacoesRural = null;
-                rltvPraia = null;
+        rltvPraia = null;
         spnLocalPraia = null;
-                spnVegetacaoPraia = null;
+        spnVegetacaoPraia = null;
         edtObservacoesPraia = null;
-                rltvResidencia = null;
+        rltvResidencia = null;
         spnEspacoResidencia = null;
-                spnLocalidadeResidencia = null;
+        spnLocalidadeResidencia = null;
         spnComodo = null;
-                edtObservacoesResidencia = null;
+        edtObservacoesResidencia = null;
         rltvViaPublica = null;
-                spnPosicaoViaPublica = null;
+        spnPosicaoViaPublica = null;
         spnPavimentacaoViaPublica = null;
-                edtObservacoesViaPublica = null;
+        edtObservacoesViaPublica = null;
         rltvOutro = null;
-                edtDescricaoOutro = null;
+        edtDescricaoOutro = null;
         rltvClima = null;
-                spnClima = null;
+        spnClima = null;
         spnIluminacao = null;
-                ocorrencia = null;
+        ocorrencia = null;
         ocorrenciaVida = null;
-                enderecoVida = null;
+        enderecoVida = null;
         llVeiculo = null;
     }
 

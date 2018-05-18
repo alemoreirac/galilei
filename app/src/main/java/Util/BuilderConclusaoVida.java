@@ -5,12 +5,10 @@ import java.util.List;
 
 import Enums.DocumentoPessoa;
 import Enums.Genero;
-import Enums.TipoLocal;
 import Enums.TipoLocalCrime;
-import Enums.TipoVegetacao;
-import Enums.Vida.TipoAberturaLocal;
-import Model.Endereco;
+import Enums.Vida.TipoMorte;
 import Model.Ocorrencia;
+import Model.Pessoa;
 import Model.Vida.EnderecoVida;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.Lesao;
@@ -37,7 +35,7 @@ public class BuilderConclusaoVida
     static List<LesaoEnvolvido> lesaoEnvolvido;
     static StringBuilder builderConclusao;
 
-    public static String ConstruirConclusao(OcorrenciaVida ov)
+    public static String ConstruirLaudo(OcorrenciaVida ov)
     {
         ocorrenciaVida = ov;
 
@@ -59,6 +57,7 @@ public class BuilderConclusaoVida
             ConstruirTexto();
         } catch (Exception e)
         {
+            builderConclusao.append("\n -------------Ocorreu uma falha ao gerar o laudo, apresente este tablet à CTI-------------");
         }
         return builderConclusao.toString();
     }
@@ -76,6 +75,9 @@ public class BuilderConclusaoVida
         ConstruirCadaveres();
 
         ConstruirVestigios();
+
+        ConstruirConclusao();
+
     }
 
     public static void InstanciarListas()
@@ -98,6 +100,7 @@ public class BuilderConclusaoVida
         for (VestigioVidaOcorrencia vestigioVidaOcorrencia : vvo)
             vestigioVidaList.add(vestigioVidaOcorrencia.getVestigioVida());
 
+        vestigioVidaOcorrenciaList = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
     }
 
     private static void ConstruirPreambulo()
@@ -107,7 +110,7 @@ public class BuilderConclusaoVida
         //builderConclusao.append(ocorrencia.getDataChamado_MesExtenso());
         if (ocorrencia.getDataChamado() != null)
             builderConclusao.append(TempoUtil.getDataExtenso(ocorrenciaVida.getDataChamado()));
-        builderConclusao.append(", de acordo com a legislação e os dispositivos regulamentares vigentes, e na Coordenadoria de Perícia Criminal da Perícia Forense do Ceará, da Secretaria da Segurança Pública e Defesa Social do Estado do Ceará, o coordenador em exercício Franklin Delano Magalhães Leite designou o Perito Criminal ");
+        builderConclusao.append(", de acordo com a legislação e os dispositivos regulamentares vigentes, e na Coordenadoria de Perícia Criminal da Perícia Forense do Ceará, da Secretaria da Segurança Pública e Defesa Social do Estado do Ceará, o coordenador em exercício Rômulo de Oliveira Lima designou o Perito Criminal ");
         if (ocorrencia.getPerito() != null)
         {
             if (ocorrencia.getPerito().getNome() != null)
@@ -124,6 +127,50 @@ public class BuilderConclusaoVida
 
     }
 
+
+    private static void ConstruirConclusao()
+    {
+        builderConclusao.append("\nCONCLUSÃO \n");
+        builderConclusao.append("\nAnte o visto e exposto, este(a) perito(a) sugere haver ocorrido no local em pauta, objeto do presente laudo: \n");
+        for (EnvolvidoVida ev : envolvidoVidaList)
+        {
+            if (ev.getNome() != null)
+            {
+                if (ev.getNome().equals("Desconhecido(a)"))
+                    builderConclusao.append("\nA vítima desconhecida");
+                else
+                    builderConclusao.append("\n" + ev.getNome());
+            } else
+                builderConclusao.append("\nA vítima desconhecida");
+
+            if (ev.getTipoMorte() != null)
+            {
+                switch (ev.getTipoMorte())
+                {
+                    case HOMICIDIO:
+                        builderConclusao.append(" fora vítima de morte violenta (homicídio).");
+                        break;
+                    case SUICIDIO:
+                        builderConclusao.append(" haveria cometido suicídio.");
+                        break;
+                    case MORTE_NATURAL:
+                        builderConclusao.append(" fora vítima de morte natural.");
+                        break;
+                    case MORTE_NAO_IDENTIFICADA:
+                        builderConclusao.append(" não teve a causa da morte identificada");
+                        break;
+                    case AFOGAMENTO:
+                        builderConclusao.append(" fora vítima de um afogamento.");
+                        break;
+                    case ACIDENTE:
+                        builderConclusao.append(" fora vítima de um acidente não violento.");
+                        break;
+                }
+            }
+        }
+    }
+
+
     private static void ConstruirHistorico()
     {
         builderConclusao.append("\nHISTÓRICO \n");
@@ -133,20 +180,18 @@ public class BuilderConclusaoVida
         builderConclusao.append(ocorrenciaVida.getDataAtendimentoString());
         builderConclusao.append(", esta equipe pericial composta pelo técnico acima citado, compareceu na ");
 
-        if (enderecoVida.getEndereco() != null)
-        {
-            builderConclusao.append(enderecoVida.getTipoVia().getValor() + " ");
-            builderConclusao.append(enderecoVida.getEndereco().getDescricao() + " ");
-            builderConclusao.append("no bairro: ");
-            builderConclusao.append(enderecoVida.getEndereco().getBairro().toString() + " ");
-            builderConclusao.append("na cidade de ");
-            builderConclusao.append(enderecoVida.getEndereco().getCidade().toString() + " ");
-            builderConclusao.append("com cooordenadas ");
-            builderConclusao.append("LAT: ");
-            builderConclusao.append(enderecoVida.getLatitude() + ", ");
-            builderConclusao.append("LON: ");
-            builderConclusao.append(enderecoVida.getLongitude());
-        }
+        builderConclusao.append(enderecoVida.getTipoVia().getValor() + " ");
+        builderConclusao.append(enderecoVida.getDescricaoEndereco() + " ");
+        builderConclusao.append("no bairro: ");
+        builderConclusao.append(enderecoVida.getBairro() + " ");
+        builderConclusao.append("na cidade de ");
+        builderConclusao.append(enderecoVida.getCidade() + " ");
+        builderConclusao.append("com cooordenadas ");
+        builderConclusao.append("LAT: ");
+        builderConclusao.append(enderecoVida.getLatitude() + ", ");
+        builderConclusao.append("LON: ");
+        builderConclusao.append(enderecoVida.getLongitude());
+
 
         if (ocorrenciaVida.getAutoridadePresente() != null)
         {
@@ -157,9 +202,9 @@ public class BuilderConclusaoVida
         } else
             builderConclusao.append(".\nQuando da chegada da perícia, o local não estava guarnecido por agentes da lei.");
 
-        if(ocorrenciaVida.getDelegado()!=null)
+        if (ocorrenciaVida.getDelegado() != null)
         {
-            if(ocorrenciaVida.getDelegado().length()>0)
+            if (ocorrenciaVida.getDelegado().length() > 0)
                 builderConclusao.append(" Também era presente o(a) Delegado(a): " + ocorrenciaVida.getDelegado());
         }
     }
@@ -190,9 +235,10 @@ public class BuilderConclusaoVida
                 else
                     builderConclusao.append("\nNão foi possível identificar o gênero da vítima");
             }
+
             if (envolvidoVida.getNome() != null)
             {
-                if (envolvidoVida.getNome().equals("Desconhecido(a)"))
+                if (envolvidoVida.getNome().equals("Desconhecido(a)") || envolvidoVida.getNome().trim().isEmpty())
                     builderConclusao.append(", e não foi identificada até o momento.");
                 else
                     builderConclusao.append(", se chamava " + envolvidoVida.getNome());
@@ -209,7 +255,7 @@ public class BuilderConclusaoVida
 
                 if (envolvidoVida.getNascimento() != null)
                 {
-                    if (envolvidoVida.getDataNascimentoString().contains("0002"))
+                    if (!envolvidoVida.getDataNascimentoString().contains("0002"))
                         builderConclusao.append(", nascido em: " + envolvidoVida.getDataNascimentoString());
                     else
                         builderConclusao.append(", cuja data de nascimento não foi informada");
@@ -250,10 +296,12 @@ public class BuilderConclusaoVida
 
     private static void ConstruirVestigios()
     {
+        if (vestigioVidaList.size() == 0)
+            return;
+
         builderConclusao.append(".\n\nDos vestígios ");
         builderConclusao.append(".\nForam encontados os seguintes vestígios: ");
 
-        vestigioVidaOcorrenciaList = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
 
         for (VestigioVidaOcorrencia vvo : vestigioVidaOcorrenciaList)
             vestigioVidaList.add(vvo.getVestigioVida());
@@ -340,27 +388,30 @@ public class BuilderConclusaoVida
             }
         }
 
-
         builderConclusao.append(", situado(a) na ");
 
-        if (enderecoVida.getEndereco() != null)
+        builderConclusao.append(enderecoVida.getTipoVia().getValor() + " ");
+        builderConclusao.append(enderecoVida.getDescricaoEndereco() + " ");
+        builderConclusao.append("no bairro: ");
+        builderConclusao.append(enderecoVida.getBairro() + " ");
+        builderConclusao.append("na cidade de ");
+        builderConclusao.append(enderecoVida.getCidade() + " ");
+
+
+        if (enderecoVida.getCondicoesClimaticas() != null)
         {
-            builderConclusao.append(enderecoVida.getTipoVia().getValor() + " ");
-            builderConclusao.append(enderecoVida.getEndereco().getDescricao() + " ");
-            builderConclusao.append("no bairro de ");
-            builderConclusao.append(enderecoVida.getEndereco().getBairro().toString() + " ");
-            builderConclusao.append("na cidade de ");
-            builderConclusao.append(enderecoVida.getEndereco().getCidade().toString() + " ");
+            builderConclusao.append("\nDurante os exames, as condições climáticas eram de: ");
+            builderConclusao.append(enderecoVida.getCondicoesClimaticas().getValor().toLowerCase());
+
+            if (enderecoVida.getTipoIluminacao() != null)
+            {
+                builderConclusao.append(", com ");
+                builderConclusao.append(enderecoVida.getTipoIluminacao().getValor().toLowerCase());
+            }
+            if (enderecoVida.getObservacao() != null)
+                builderConclusao.append(", observa-se que " + enderecoVida.getObservacao());
         }
 
-        builderConclusao.append("\nDurante os exames, as condições climáticas eram de: ");
-        builderConclusao.append(enderecoVida.getCondicoesClimaticas().getValor().toLowerCase());
-
-        builderConclusao.append(", com ");
-        builderConclusao.append(enderecoVida.getTipoIluminacao().getValor().toLowerCase());
-
-        if (enderecoVida.getObservacao() != null)
-            builderConclusao.append(", observa-se que " + enderecoVida.getObservacao());
     }
 }
 

@@ -64,6 +64,8 @@
         android:id="@+id/edt_NomeEnvolvido"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:inputType="textCapWords"
         android:layout_below="@+id/txv_NomeEnvolvido"  />
 
 
@@ -81,14 +83,7 @@
         android:layout_below="@id/txv_TipoDocEnvolvido"
         android:layout_alignLeft="@id/txv_TipoDocEnvolvido"
         android:layout_marginTop="5dp"/>
-<!--
-    <TextView
-        android:id="@+id/txv_TipoCNHEnvolvido"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tipo CNH"
-        android:layout_below="@id/spn_TipoDocumentoEnvolvido"
-        android:layout_marginTop="10dp"/>-->
+
 
     <TextView
         android:id="@+id/txv_NumDocEnvolvido"
@@ -103,6 +98,8 @@
         android:id="@+id/edt_NumDocEnvolvido"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:inputType="text"
         android:layout_below="@id/txv_NumDocEnvolvido"
         android:layout_alignLeft="@id/txv_NumDocEnvolvido"/>
 
@@ -226,24 +223,24 @@
         android:layout_marginTop="20dp"/>
 
 
-    <Button
-        android:id="@+id/btn_Salvar_Envolvido"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/txv_NomeEnvolvido"
-        android:onClick="Salvar_Fechar"
-        android:text="Salvar"/>
+    <!--<Button-->
+        <!--android:id="@+id/btn_Salvar_Envolvido"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignLeft="@+id/txv_NomeEnvolvido"-->
+        <!--android:onClick="Salvar_Fechar"-->
+        <!--android:text="Salvar"/>-->
 
-    <Button
-        android:id="@+id/btn_Cancelar_Envolvido"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_alignBottom="@id/btn_Salvar_Envolvido"
-        android:text="Desfazer"
-        android:layout_toRightOf="@id/btn_Salvar_Envolvido"
-        android:layout_marginLeft="60dp"/>
+    <!--<Button-->
+        <!--android:id="@+id/btn_Cancelar_Envolvido"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_alignBottom="@id/btn_Salvar_Envolvido"-->
+        <!--android:text="Desfazer"-->
+        <!--android:layout_toRightOf="@id/btn_Salvar_Envolvido"-->
+        <!--android:layout_marginLeft="60dp"/>-->
 
 </RelativeLayout>
 

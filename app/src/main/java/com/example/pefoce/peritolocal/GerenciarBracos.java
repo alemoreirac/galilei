@@ -15,6 +15,7 @@ import java.util.List;
 
 import Dialogs.LesaoDialog;
 import Enums.Genero;
+import Enums.Vida.LesoesEnabled;
 import Enums.Vida.ParteCorpo;
 import Enums.Vida.Secao;
 import Model.Vida.EnvolvidoVida;
@@ -183,8 +184,10 @@ public class GerenciarBracos extends AppCompatActivity
     public void addLesaoBraco(View view)
     {
         TextView txvView = (TextView) view;
-        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarBracos.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+//        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarBracos.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+        LesaoDialog.show(GerenciarBracos.this,envolvidoVida,BuscadorEnum.BuscarSecao(txvView.getText().toString()), LesoesEnabled.TODOS);
     }
+
 
     public void AssociarLayout()
     {

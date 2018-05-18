@@ -1,65 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgv_row_TipoOcorrencia"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/colisao_veiculos" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txv_TipoDocumento"
-        android:text="Tipo Documento"
-        android:textSize="16dp" android:textStyle="bold"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_NumeroDocumento"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/txv_TipoDocumento"
-        android:text="Nº Documento"
-        android:textSize="16dp" android:textStyle="bold"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_DataOcorrencia"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/txt_NumeroDocumento"
-        android:text="Data Ocorrencia"
-        />
-    <TextView
+        android:id="@+id/txv_row_NumIncidencia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:id="@+id/txt_TipoOcorrencia"
-        android:layout_toRightOf="@+id/txt_DataOcorrencia"
-        android:text="Tipo Ocorrencia"/>
+        android:layout_toRightOf="@id/imgv_row_TipoOcorrencia"
+        android:text="I20180012384"
+        android:textSize="16dp"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/txv_row_EnderecoOcorrencia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt_Endereco"
-        android:layout_below="@+id/txv_TipoDocumento"
-        android:layout_alignLeft="@+id/txv_TipoDocumento" android:text="teste"
-        />
+        android:layout_alignLeft="@+id/txv_row_NumIncidencia"
+        android:layout_below="@+id/txv_row_NumIncidencia"
+        android:text="Rua teste" />
 
     <TextView
+        android:id="@+id/txv_row_OrgaoOrigem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt_OrgaoOrigem"
-        android:layout_below="@+id/txt_Endereco"
-        android:layout_alignLeft="@+id/txt_Endereco" android:text="teste"
-        />
+        android:layout_alignLeft="@+id/txv_row_EnderecoOcorrencia"
+        android:layout_below="@+id/txv_row_EnderecoOcorrencia"
+        android:text="CIOPS - Coordenadoria integrada de operações de segurança" />
 
     <TextView
+        android:id="@+id/txv_row_OrgaoDestino"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt_OrgaoDestino"
-        android:layout_below="@+id/txt_OrgaoOrigem"
-        android:layout_alignLeft="@+id/txt_OrgaoOrigem" android:text="teste"
-        />
+        android:layout_alignLeft="@+id/txv_row_OrgaoOrigem"
+        android:layout_below="@+id/txv_row_OrgaoOrigem"
+        android:text="4º Distrito Policial" />
 
 </RelativeLayout>

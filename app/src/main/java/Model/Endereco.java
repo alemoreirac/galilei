@@ -6,13 +6,15 @@ import com.orm.SugarRecord;
 /**
  * Created by Pefoce on 30/05/2017.
  */
-public class Endereco extends SugarRecord<Endereco> {
+public class Endereco extends SugarRecord
+{
 
     public Endereco(String endereco) {
         this.descricao = endereco;
     }
 
-    public Endereco() {
+    public Endereco()
+    {
         this.cidade = "";
         this.bairro = "";
         this.descricao = "";

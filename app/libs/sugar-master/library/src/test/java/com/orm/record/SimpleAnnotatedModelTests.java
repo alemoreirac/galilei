@@ -203,7 +203,7 @@ public final class SimpleAnnotatedModelTests {
         save(new SimpleAnnotatedModel());
         save(new SimpleAnnotatedModel());
 
-        List<SimpleAnnotatedModel> models = find(SimpleAnnotatedModel.class, "id = ?", "2");
+        List<SimpleAnnotatedModel> models = find(SimpleAnnotatedModel.class, "id = ?", "");
 
         assertEquals(1, models.size());
         assertEquals(2L, models.get(0).getId().longValue());

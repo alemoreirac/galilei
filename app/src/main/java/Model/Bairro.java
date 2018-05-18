@@ -6,7 +6,8 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 30/06/2017.
  */
 
-public class Bairro extends SugarRecord<Bairro> {
+public class Bairro extends SugarRecord
+{
 
     public String getDescricao() {
         return Descricao;

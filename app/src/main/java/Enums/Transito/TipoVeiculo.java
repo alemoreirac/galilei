@@ -5,10 +5,19 @@ package Enums.Transito;
  */
 public enum TipoVeiculo
 {
-    CARRO("Carro")
-    ,MOTO("Moto")
+     CARRO("Carro")
+    ,MOTOCICLETA("Motocicleta")
+    ,MOTONETA("Motoneta")
+    ,CICLOMOTOR("Ciclomotor")
+    ,BICICLETA("Bicicleta")
     ,CAMINHAO("Caminhão")
-    ,ONIBUS("Ônibus");
+    ,ONIBUS("Ônibus")
+    ,PICAPE("Picape")
+    ,CAMINHONETE("Caminhonete")
+    ,CAMINHONETA("Caminhoneta")
+    ,UTILITARIO("Utilitário")
+    ,CARROCA("Carroça")
+    ,CHARRETE("Charrete");
 
     String valor;
 

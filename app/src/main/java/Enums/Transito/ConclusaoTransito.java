@@ -1,4 +1,4 @@
-package Enums;
+package Enums.Transito;
 
 /**
  * Created by Pefoce on 18/09/2017.
@@ -13,7 +13,7 @@ public enum ConclusaoTransito
     CONVERSAO_INAPROPRIADA("à conversão em momento inapropriado"),
     RETORNO_INAPROPRIADO("à manobra de retorno em momento inapropriado"),
     ULTRAPASSAGEM_INDEVIDA("à ultrapassagem mal executada"),
-    CONTRA_MAO("ao veiculo se deslocar na contra-mão");
+    CONTRA_MAO("ao veículo se deslocar na contra-mão");
 
     String valor;
 

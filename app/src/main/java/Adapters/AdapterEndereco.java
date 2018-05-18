@@ -24,8 +24,6 @@ public class AdapterEndereco extends ArrayAdapter<EnderecoTransito> implements V
 
     Context mContext;
 
-
-
     public AdapterEndereco(ArrayList<EnderecoTransito> data, Context context)
     {
         super(context, R.layout.row_ocorrencia,data);
@@ -36,13 +34,9 @@ public class AdapterEndereco extends ArrayAdapter<EnderecoTransito> implements V
 
     @Override
     public void onClick(View v) {
-        int position = (Integer) v.getTag();
-        Object object = getItem(position);
-        EnderecoTransito enderecoTransito = (EnderecoTransito) object;
+//        int position = (Integer) v.getTag();
 
     }
-
-    private int lastPosition = -1;
 
 
     public View getView(int position,View convertView,ViewGroup parent)
@@ -67,18 +61,26 @@ public class AdapterEndereco extends ArrayAdapter<EnderecoTransito> implements V
             viewHolder = (ViewHolderEndereco) convertView.getTag();
         }
 
-        lastPosition = position;
 
-        if(enderecoTransito.getEndereco()!= null)
+        if(enderecoTransito.getDescricaoEndereco()!= null )
         {
-            viewHolder.getEndereco().setText(enderecoTransito.getEndereco().getDescricao());
-            viewHolder.getBairro().setText(enderecoTransito.getEndereco().getBairro());
+            if(enderecoTransito.getDescricaoEndereco().equals(""))
+            {
+                viewHolder.getEndereco().setText("(Sem endereço)");
+                return convertView;
+            }
+
+            else
+            {
+                if(enderecoTransito.getTipoVia()!=null)
+                viewHolder.getTipoVia().setText(enderecoTransito.getTipoVia().getValor());
+
+                viewHolder.getEndereco().setText(enderecoTransito.getDescricaoEndereco());
+
+                if(enderecoTransito.getBairro()!=null)
+                viewHolder.getBairro().setText(enderecoTransito.getBairro());
+            }
         }
-
-        if(enderecoTransito.getTipoVia()!= null)
-            viewHolder.getTipoVia().setText(enderecoTransito.getTipoVia().getValor());
-
-
 
 
 

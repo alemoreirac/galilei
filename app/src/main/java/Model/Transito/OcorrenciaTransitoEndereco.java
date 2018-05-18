@@ -7,7 +7,8 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 27/06/2017.
  */
 
-public class OcorrenciaTransitoEndereco extends SugarRecord<OcorrenciaTransitoEndereco> {
+public class OcorrenciaTransitoEndereco extends SugarRecord
+{
 
 
     @Expose
@@ -33,6 +34,12 @@ public class OcorrenciaTransitoEndereco extends SugarRecord<OcorrenciaTransitoEn
 
 
     public OcorrenciaTransitoEndereco() {
+    }
+
+
+    public OcorrenciaTransitoEndereco(OcorrenciaTransito ot,EnderecoTransito et) {
+        this.endereco = et;
+        this.ocorrenciaTransito = ot;
     }
 
 }

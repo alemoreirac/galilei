@@ -5,19 +5,28 @@
     android:background="@color/ms_white"
     tools:context="com.example.pefoce.peritolocal.Fragments.GerenciarConclusao">
 
-<TextView
-    android:background="@drawable/border_gray"
-    android:id="@+id/txv_Conclusao_Text"
-    android:layout_width="900dp"
-    android:layout_height="450dp"
-    android:layout_centerHorizontal="true"
-    android:maxLines = "30"
-    android:scrollbars = "vertical"
-    android:padding="10dp"/>
+    <ScrollView
+        android:id="@+id/scrlv_Conclusao_Transito"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:paddingLeft="150dp"
+        android:paddingRight="150dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:background="@drawable/border_gray"
+            android:id="@+id/txv_Conclusao_Text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:textSize="18dp"/>
+
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/ll_Gerar_ODT"
-        android:layout_below="@id/txv_Conclusao_Text"
+        android:layout_below="@id/scrlv_Conclusao_Transito"
         android:drawableLeft="@drawable/veiculo_icon"
         style="@android:style/Widget.Button"
         android:layout_width="wrap_content"

@@ -9,7 +9,8 @@ import Enums.CategoriaFoto;
  * Created by Pefoce on 09/06/2017.
  */
 
-public class Foto extends SugarRecord<Foto>
+public class Foto extends SugarRecord
+
 {
     @Expose
     private String descricao;

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_width="300dp"
+              android:layout_height="300dp"
+    android:padding="8dp"
+    android:layout_margin="20dp">
 
     <CheckBox
         android:id="@+id/cxb_dialog_Inconclusivo"
@@ -14,7 +16,7 @@
 
     <Spinner
         android:id="@+id/spn_dialog_Justificativa"
-        android:layout_width="200dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/cxb_dialog_Inconclusivo"
@@ -38,15 +40,16 @@
         android:text="Ator Evadido"
         android:layout_below="@id/spn_dialog_Justificativa"
         android:layout_alignLeft="@id/txv_dialog_Justificativa"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"/>
 
     <Spinner
         android:id="@+id/spn_dialog_Evadido"
-        android:layout_width="200dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/txv_dialog_Justificativa"
         android:layout_below="@id/txv_dialog_Evadido"
+        android:layout_marginTop="10dp"
         android:visibility="invisible"/>
 
     <Button
@@ -55,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/spn_dialog_Evadido"
         android:layout_below="@id/spn_dialog_Evadido"
+        android:layout_marginTop="40dp"
         android:text="@string/salvar"
         />
     <Button
@@ -62,6 +66,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/spn_dialog_Evadido"
-        android:layout_below="@id/spn_dialog_Evadido"
+        android:layout_alignBottom="@id/btn_dialog_Salvar_Inconclusivo"
         android:text="@string/cancelar"/>
 </RelativeLayout>

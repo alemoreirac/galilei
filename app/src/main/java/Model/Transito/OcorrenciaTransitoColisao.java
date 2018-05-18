@@ -7,7 +7,7 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 29/08/2017.
  */
 
-public class OcorrenciaTransitoColisao extends SugarRecord<OcorrenciaTransitoColisao>
+public class OcorrenciaTransitoColisao extends SugarRecord
 {
     public OcorrenciaTransito getOcorrenciaTransito() {
         return ocorrenciaTransito;

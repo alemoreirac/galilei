@@ -17,6 +17,7 @@ import java.util.List;
 import Dialogs.LesaoDialog;
 import Enums.Genero;
 import Enums.SecaoImagem;
+import Enums.Vida.LesoesEnabled;
 import Enums.Vida.ParteCorpo;
 import Enums.Vida.Secao;
 import Model.Vida.EnvolvidoVida;
@@ -261,7 +262,9 @@ public class GerenciarCabeca extends AppCompatActivity
     {
         TextView txvView = (TextView) view;
 
-        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarCabeca.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+//        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarCabeca.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+        LesaoDialog.show(GerenciarCabeca.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()), LesoesEnabled.ANTERIOR);
+
     }
 
 

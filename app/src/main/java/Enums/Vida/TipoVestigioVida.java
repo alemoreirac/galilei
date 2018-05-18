@@ -9,7 +9,7 @@ public enum TipoVestigioVida
     BIOLOGICO("Biológico"),
     MUNICAO("Munição"),
     ARMA_DE_FOGO("Arma de fogo"),
-    VESTIGIO_PAPILOSCOPICO("Vestígio papiloscópico"),
+    PAPILOSCOPICO("Papiloscópico"),
     DOCUMENTO("Documento"),
     OUTRO("Outro");
 

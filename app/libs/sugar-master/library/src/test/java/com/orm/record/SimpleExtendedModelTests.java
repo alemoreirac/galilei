@@ -206,7 +206,7 @@ public final class SimpleExtendedModelTests {
     public void findTest() throws Exception {
         save(new SimpleExtendedModel());
         save(new SimpleExtendedModel());
-        List<SimpleExtendedModel> models = find(SimpleExtendedModel.class, "id = ?", "2");
+        List<SimpleExtendedModel> models = find(SimpleExtendedModel.class, "id = ?", "");
         assertEquals(1, models.size());
         assertEquals(Long.valueOf(2L), models.get(0).getId());
     }

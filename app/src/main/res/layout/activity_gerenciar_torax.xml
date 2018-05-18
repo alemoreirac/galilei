@@ -26,7 +26,7 @@
             android:id="@+id/rbtn_Opcao_Frente_Torax"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:text="Frente"
+            android:text="Anterior"
             android:textSize="18dp"
 
             style="@style/RadioButton" />
@@ -36,7 +36,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:textSize="18dp"
-            android:text="Costas"
+            android:text="Posterior"
             style="@style/RadioButton" />
 
     </info.hoang8f.android.segmented.SegmentedGroup>
@@ -67,34 +67,34 @@
             android:src="@drawable/feminino_costas"/>
 
         <TextView
-            android:id="@+id/txv_Clavicular_Esquerdo_Feminino_Costas"
+            android:id="@+id/txv_Escapular_Esquerdo_Feminino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="135dp"
+            android:layout_marginTop="145dp"
             android:layout_toLeftOf="@id/imgv_Costas_Femininas"
             android:onClick="addLesaoTorax"
-            android:text="Clavicular"
+            android:text="Escapular"
             android:textColor="@color/colorPrimary"
             android:textSize="18dp"/>
 
         <TextView
-            android:id="@+id/txv_Escapular_Esquerdo_Feminino"
+            android:id="@+id/txv_Toracico_Esquerdo_Feminino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Clavicular_Esquerdo_Feminino_Costas"
-            android:layout_marginTop="35dp"
-            android:layout_toLeftOf="@id/imgv_Costas_Femininas"
-            android:text="Escapular"
+            android:layout_below="@id/txv_Escapular_Esquerdo_Feminino"
             android:textColor="@color/colorPrimary"
+            android:layout_marginTop="42dp"
+            android:layout_toLeftOf="@id/imgv_Costas_Femininas"
             android:onClick="addLesaoTorax"
+            android:text="Toracico"
             android:textSize="18dp"/>
 
         <TextView
             android:id="@+id/txv_Lombar_Esquerdo_Feminino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Escapular_Esquerdo_Feminino"
-            android:layout_marginTop="40dp"
+            android:layout_below="@id/txv_Toracico_Esquerdo_Feminino"
+            android:layout_marginTop="30dp"
             android:layout_toLeftOf="@id/imgv_Costas_Femininas"
             android:onClick="addLesaoTorax"
             android:text="Lombar"
@@ -130,22 +130,10 @@
 
 
         <TextView
-            android:id="@+id/txv_Clavicular_Direito_Feminino_Costas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="135dp"
-            android:onClick="addLesaoTorax"
-            android:layout_toRightOf="@id/imgv_Costas_Femininas"
-            android:text="Clavicular"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18dp"/>
-
-        <TextView
             android:id="@+id/txv_Escapular_Direito_Feminino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Clavicular_Direito_Feminino_Costas"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="135dp"
             android:layout_toRightOf="@id/imgv_Costas_Femininas"
             android:onClick="addLesaoTorax"
             android:text="Escapular"
@@ -154,12 +142,25 @@
 
 
         <TextView
+            android:id="@+id/txv_Toracico_Direito_Feminino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:layout_below="@id/txv_Escapular_Esquerdo_Feminino"
+            android:onClick="addLesaoTorax"
+            android:layout_toRightOf="@id/imgv_Costas_Femininas"
+            android:text="Toracico"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"/>
+
+
+        <TextView
             android:id="@+id/txv_Lombar_Direito_Feminino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Escapular_Direito_Feminino"
+            android:layout_below="@id/txv_Toracico_Direito_Feminino"
             android:onClick="addLesaoTorax"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_toRightOf="@id/imgv_Costas_Femininas"
             android:text="Lombar"
             android:textColor="@color/colorPrimary"
@@ -219,16 +220,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/masculino_costas"/>
 
-        <TextView
-            android:id="@+id/txv_Clavicular_Esquerdo_Masculino_Costas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="addLesaoTorax"
-            android:text="Clavicular"
-            android:textSize="18dp"
-            android:textColor="@color/colorPrimary"
-            android:layout_toLeftOf="@id/imgv_Costas_Masculinas"
-            android:layout_marginTop="135dp"/>
+
         <TextView
             android:id="@+id/txv_Escapular_Esquerdo_Masculino"
             android:layout_width="wrap_content"
@@ -237,10 +229,21 @@
             android:textSize="18dp"
             android:textColor="@color/colorPrimary"
             android:onClick="addLesaoTorax"
-            android:layout_below="@id/txv_Clavicular_Esquerdo_Masculino_Costas"
             android:layout_toLeftOf="@id/imgv_Costas_Masculinas"
-            android:layout_marginTop="35dp"/>
+            android:layout_marginTop="145dp"/>
 
+
+        <TextView
+            android:id="@+id/txv_Toracico_Esquerdo_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addLesaoTorax"
+            android:text="Toracico"
+            android:layout_below="@id/txv_Escapular_Esquerdo_Masculino"
+            android:textSize="18dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_toLeftOf="@id/imgv_Costas_Masculinas"
+            android:layout_marginTop="42dp"/>
 
         <TextView
             android:id="@+id/txv_Lombar_Esquerdo_Masculino"
@@ -250,9 +253,9 @@
             android:textSize="18dp"
             android:onClick="addLesaoTorax"
             android:textColor="@color/colorPrimary"
-            android:layout_below="@id/txv_Escapular_Esquerdo_Masculino"
+            android:layout_below="@id/txv_Toracico_Esquerdo_Masculino"
             android:layout_toLeftOf="@id/imgv_Costas_Masculinas"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="35dp"/>
         <TextView
             android:id="@+id/txv_Iliaco_Esquerdo_Costas_Masculino"
             android:layout_width="wrap_content"
@@ -279,17 +282,6 @@
 
         <!-- lado direito -->
 
-
-        <TextView
-            android:id="@+id/txv_Clavicular_Direito_Masculino_Costas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clavicular"
-            android:onClick="addLesaoTorax"
-            android:textSize="18dp"
-            android:textColor="@color/colorPrimary"
-            android:layout_toRightOf="@id/imgv_Costas_Masculinas"
-            android:layout_marginTop="135dp"/>
         <TextView
             android:id="@+id/txv_Escapular_Direito_Masculino"
             android:layout_width="wrap_content"
@@ -298,9 +290,20 @@
             android:onClick="addLesaoTorax"
             android:textSize="18dp"
             android:textColor="@color/colorPrimary"
-            android:layout_below="@id/txv_Clavicular_Direito_Masculino_Costas"
             android:layout_toRightOf="@id/imgv_Costas_Masculinas"
-            android:layout_marginTop="35dp"/>
+            android:layout_alignBottom="@id/txv_Escapular_Esquerdo_Masculino"/>
+
+
+        <TextView
+            android:id="@+id/txv_Toracico_Direito_Masculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toracico"
+            android:onClick="addLesaoTorax"
+            android:textSize="18dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_toRightOf="@id/imgv_Costas_Masculinas"
+            android:layout_alignBottom="@id/txv_Toracico_Esquerdo_Masculino"/>
 
 
         <TextView
@@ -310,10 +313,10 @@
             android:text="Lombar"
             android:textSize="18dp"
             android:textColor="@color/colorPrimary"
-            android:layout_below="@id/txv_Escapular_Direito_Masculino"
+            android:layout_alignBottom="@id/txv_Lombar_Esquerdo_Masculino"
             android:onClick="addLesaoTorax"
             android:layout_toRightOf="@id/imgv_Costas_Masculinas"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="35dp"/>
         <TextView
             android:id="@+id/txv_Iliaco_Direito_Costas_Masculino"
             android:layout_width="wrap_content"
@@ -524,9 +527,8 @@
             android:scaleType="centerInside"
             android:src="@drawable/feminino_frente"/>
 
-
         <TextView
-            android:id="@+id/txv_Clavicular_Direito_Feminino_Frente"
+            android:id="@+id/txv_Clavicular_Direito_Feminino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/txv_Clavicular_Esquerdo_Feminino_Frente"
@@ -543,7 +545,7 @@
             android:text="Peitoral"
             android:textSize="18dp"
             android:textColor="@color/colorPrimary"
-            android:layout_below="@id/txv_Clavicular_Direito_Feminino_Frente"
+            android:layout_below="@id/txv_Clavicular_Direito_Feminino"
             android:layout_toLeftOf="@id/imgv_Frente_Feminina"
             android:onClick="addLesaoTorax"
             android:layout_marginTop="25dp"/>

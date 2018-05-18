@@ -14,6 +14,7 @@ import java.util.List;
 
 import Dialogs.LesaoDialog;
 import Enums.Genero;
+import Enums.Vida.LesoesEnabled;
 import Enums.Vida.ParteCorpo;
 import Enums.Vida.Secao;
 import Model.Vida.EnvolvidoVida;
@@ -154,8 +155,10 @@ public class GerenciarPernas extends AppCompatActivity
     public void AddLesaoPerna(View v)
     {
         TextView txvView = (TextView) v;
-        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarPernas.this,envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+//        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarPernas.this,envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+        LesaoDialog.show(GerenciarPernas.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()), LesoesEnabled.TODOS);
     }
+
 
 
     public void AssociarLayout()

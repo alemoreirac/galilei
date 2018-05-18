@@ -2,7 +2,6 @@ package Fragments.FragmentsVida;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +23,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -52,10 +50,9 @@ import Enums.CategoriaFoto;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.UnidadeTempo;
-import Fragments.FragmentsTransito.GerenciarVeiculo;
+import Enums.Vida.TipoMorte;
 import Model.Foto;
 import Model.Ocorrencia;
-import Model.Transito.OcorrenciaTransitoFoto;
 import Model.Vida.OcorrenciaEnvolvidoVida;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.OcorrenciaVida;
@@ -89,7 +86,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
     CheckBox cxbDesconhecido;
     Button btnLesoes;
     Button btnPosicaoCadaver;
-    CheckBox cxbViolencia;
+    Spinner spnTipoMorte;
+    //    CheckBox cxbViolencia;
     ImageButton imgbAudio;
     ImageButton imgbCamera;
     FloatingActionButton fabEnvolvidos;
@@ -227,7 +225,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
     @Override
     public void onSelected()
     {
-        lastPosition= -1;
+        lastPosition = -1;
 
         ((ManterPericiaVida) getActivity()).txvToolbarTitulo.setText("Envolvidos");
 
@@ -239,7 +237,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
         ocorrenciaVida = ((ManterPericiaVida) getActivity()).ocorrenciaVida;
 
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaVida.getOcorrenciaID());
+        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
 
         ocorrenciaEnvolvidosList = OcorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
 
@@ -271,7 +269,6 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
     @Override
     public void onError(@NonNull VerificationError error)
     {
-
     }
 
     public void AssociarLayout(View view)
@@ -291,7 +288,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         rltvEnvolvido = (RelativeLayout) view.findViewById(R.id.rltv_Detalhe_Envolvido_Vida);
         fabEnvolvidos = (FloatingActionButton) view.findViewById(R.id.fab_Envolvido_Vida);
         lstvEnvolvidos = (ListView) view.findViewById(R.id.lstv_envolvidos_vida);
-        cxbViolencia = (CheckBox) view.findViewById(R.id.cxb_Violencia_vida);
+//        cxbViolencia = (CheckBox) view.findViewById(R.id.cxb_Violencia_vida);
+        spnTipoMorte = (Spinner) view.findViewById(R.id.spn_Tipo_Morte_Envolvido_Vida);
         imgbAudio = (ImageButton) view.findViewById(R.id.imgb_Audio_Envolvido_Vida);
         imgbCamera = (ImageButton) view.findViewById(R.id.imgb_Foto_Envolvido_Vida);
     }
@@ -311,6 +309,13 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
     public void PovoarSpinners(Context ctx)
     {
+        List<String> tiposMorte = new ArrayList<>();
+
+        for (TipoMorte tm : TipoMorte.values())
+            tiposMorte.add(tm.getValor());
+
+        spnTipoMorte.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, tiposMorte));
+
         List<String> tiposDocumento = new ArrayList<>();
 
         for (DocumentoPessoa dcp : DocumentoPessoa.values())
@@ -340,6 +345,9 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             @Override
             public void onClick(View v)
             {
+                if (envolvidoVida != null)
+                    SalvarEnvolvidoVida();
+
                 envolvidoVida = new EnvolvidoVida();
 
                 ocorrenciaEnvolvidoVida = new OcorrenciaEnvolvidoVida();
@@ -358,11 +366,13 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                 adapterEnvolvidoVida.notifyDataSetChanged();
 
                 //lstvEnvolvidos.performItemClick(lstvEnvolvidos, BuscadorEnum.PegarPosicaoEnvolvidoTransito(envolvidotransitoModel, envolvido), lstvEnvolvidos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoEnvolvidoTransito(envolvidotransitoModel, envolvido)));
-                lstvEnvolvidos.performItemClick(lstvEnvolvidos, BuscadorEnum.PegarPosicaoEnvolvidoVida(envolvidoVidaModel, envolvidoVida), lstvEnvolvidos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoEnvolvidoVida(envolvidoVidaModel, envolvidoVida)));
 
                 ViewUtil.modifyAll(rltvEnvolvido, true);
 
                 LimparCampos();
+
+                lstvEnvolvidos.performItemClick(lstvEnvolvidos, BuscadorEnum.PegarPosicaoEnvolvidoVida(envolvidoVidaModel, envolvidoVida), lstvEnvolvidos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoEnvolvidoVida(envolvidoVidaModel, envolvidoVida)));
+
             }
         });
 
@@ -376,7 +386,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                 {
                     edtNomeEnvolvido.setText("Desconhecido(a)");
                     edtNumDocumento.setText("");
-                    txvDataNascimento.setText("00/00/0000");
+                    txvDataNascimento.setText("--/--/----");
                     spnTipoDocumento.setSelection(0);
                     spnTipoDocumento.setEnabled(false);
                     edtNumDocumento.setEnabled(false);
@@ -384,6 +394,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                     txvDataNascimento.setEnabled(false);
                 } else
                 {
+
                     edtNomeEnvolvido.setText("");
                     spnTipoDocumento.setEnabled(true);
                     edtNumDocumento.setEnabled(true);
@@ -398,12 +409,11 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                if(spnTipoDocumento.getSelectedItem().toString().equals(DocumentoPessoa.NP.getValor()))
+                if (spnTipoDocumento.getSelectedItem().toString().equals(DocumentoPessoa.NP.getValor()))
                 {
                     edtNumDocumento.setText("");
                     edtNumDocumento.setEnabled(false);
-                }
-                else
+                } else
                     edtNumDocumento.setEnabled(true);
             }
 
@@ -429,7 +439,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                 magicalPermissions = new MagicalPermissions(GerenciarEnvolvidoVida.this, permissions);
                 magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE, magicalPermissions);
 
-                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarEnvolvidoVida.this, getActivity(),magicalCamera);
+                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarEnvolvidoVida.this, getActivity(), magicalCamera);
             }
         });
 
@@ -438,16 +448,17 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             @Override
             public void onClick(View v)
             {
-                FragmentManager fm = getActivity().getFragmentManager();
-                AudioDialog dialogFragment = new AudioDialog();
+//                FragmentManager fm = getActivity().getFragmentManager();
+//                AudioDialog dialogFragment = new AudioDialog();
 
                 Bundle bd = new Bundle();
                 bd.putString("SecaoVida", "Envolvido");
-                bd.putLong("EnvolvidoId",envolvidoVida.getId());
-                bd.putLong("OcorrenciaId",ocorrenciaVida.getOcorrenciaID());
+                bd.putLong("EnvolvidoId", envolvidoVida.getId());
+                bd.putLong("OcorrenciaId", ocorrenciaVida.getOcorrenciaID());
 
-                dialogFragment.setArguments(bd);
-                dialogFragment.show(fm, "Seleção");
+                AudioDialog.show(getActivity(), bd);
+//                dialogFragment.setArguments(bd);
+//                dialogFragment.show(fm, "Seleção");
             }
         });
 
@@ -478,8 +489,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
                                 adapterEnvolvidoVida.remove(ocorrenciaEnvolvidoVida.getEnvolvidoVida());
 
-                                if(ocorrenciaEnvolvidoVida.getEnvolvidoVida()!=null)
-                                ocorrenciaEnvolvidoVida.getEnvolvidoVida().delete();
+                                if (ocorrenciaEnvolvidoVida.getEnvolvidoVida() != null)
+                                    ocorrenciaEnvolvidoVida.getEnvolvidoVida().delete();
 
                                 ocorrenciaEnvolvidoVida.delete();
 
@@ -509,26 +520,26 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if(lastPosition!= -1 && lastPosition != position)
+                if (lastPosition != -1 && lastPosition != position)
                 {
-                    try
-                    {
-                        ocorrenciaEnvolvidoVida = ocorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "envolvido_vida = ?", envolvidoVida.getId().toString()).get(0);
-                    }catch (Exception e)
-                    {
-                        ocorrenciaEnvolvidoVida = new OcorrenciaEnvolvidoVida();
-                    }
+//                    try
+//                    {
+//                        ocorrenciaEnvolvidoVida = ocorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "envolvido_vida = ?", envolvidoVida.getId().toString()).get(0);
+//                    } catch (Exception e)
+//                    {
+//                        ocorrenciaEnvolvidoVida = new OcorrenciaEnvolvidoVida();
+//                    }
                     SalvarEnvolvidoVida();
                 }
-                else
-                    lastPosition = position;
+
+                lastPosition = position;
 
                 envolvidoVida = envolvidoVidaModel.get(position);
 
-                if(envolvidoVida==null)
+                if (envolvidoVida == null)
                     envolvidoVida = new EnvolvidoVida();
 
-                LimparCampos();
+//                LimparCampos();
 
                 CarregarEnvolvido();
 
@@ -543,14 +554,14 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
                 ViewUtil.modifyAll(rltvEnvolvido, true);
 
-                if(envolvidoVida.getNome()!=null)
+                if (envolvidoVida.getNome() != null)
                 {
-                if (envolvidoVida.getNome().equals("Desconhecido(a)"))
-                {
-                    cxbDesconhecido.setEnabled(true);
-                    cxbDesconhecido.setChecked(false);
-                    cxbDesconhecido.performClick();
-                }
+                    if (envolvidoVida.getNome().equals("Desconhecido(a)"))
+                    {
+                        cxbDesconhecido.setEnabled(true);
+                        cxbDesconhecido.setChecked(false);
+                        cxbDesconhecido.performClick();
+                    }
                 }
             }
         });
@@ -590,9 +601,9 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
     public void CarregarEnvolvido()
     {
-        if(envolvidoVida== null)
+        if (envolvidoVida == null)
             return;
-        cxbViolencia.setChecked(envolvidoVida.isMorteViolenta());
+
 
         if (envolvidoVida.getNome() == "Desconhecido(a)")
         {
@@ -602,13 +613,30 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         {
             if (envolvidoVida.getNome() != null)
                 edtNomeEnvolvido.setText(envolvidoVida.getNome());
+
             if (envolvidoVida.getNascimento() != null)
                 txvDataNascimento.setText(envolvidoVida.getDataNascimentoString());
+            else
+                txvDataNascimento.setText("--/--/----");
+
             if (envolvidoVida.getDocumentoTipo() != null)
-                spnTipoDocumento.setSelection(BuscadorEnum.getIndex(spnTipoDocumento, envolvidoVida.getDocumentoTipo().getValor()));
+            {
+                if (envolvidoVida.getDocumentoTipo().equals(DocumentoPessoa.NP))
+                {
+                    edtNumDocumento.setText("");
+                    edtNumDocumento.setEnabled(false);
+                }
+                else
+                    spnTipoDocumento.setSelection(BuscadorEnum.getIndex(spnTipoDocumento, envolvidoVida.getDocumentoTipo().getValor()));
+            }
+
+
             if (envolvidoVida.getDocumentoValor() != null)
                 edtNumDocumento.setText(envolvidoVida.getDocumentoValor());
         }
+
+        if (envolvidoVida.getTipoMorte() != null)
+            spnTipoMorte.setSelection(BuscadorEnum.getIndex(spnTipoMorte, envolvidoVida.getTipoMorte().getValor()));
 
         if (envolvidoVida.getGenero() != null)
             spnGenero.setSelection(BuscadorEnum.getIndex(spnGenero, envolvidoVida.getGenero().getValor()));
@@ -636,7 +664,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         envolvidoVida.setUnidadeTempo(BuscadorEnum.BuscarUnidadeTempo(spnUnidadeTempo.getSelectedItem().toString()));
         envolvidoVida.setDataNascimentoString(txvDataNascimento.getText().toString());
         envolvidoVida.setVestes(edtVestimentas.getText().toString());
-        envolvidoVida.setMorteViolenta(cxbViolencia.isChecked());
+        envolvidoVida.setTipoMorte(BuscadorEnum.BuscarTipoMorte(spnTipoMorte.getSelectedItem().toString()));
         try
         {
             envolvidoVida.setPeriodoMorte(Integer.valueOf(edtTempoMorte.getText().toString()));
@@ -664,7 +692,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         edtNumDocumento.setText("");
 
         cxbDesconhecido.setChecked(false);
-        cxbViolencia.setChecked(true);
+//        cxbViolencia.setChecked(true);
+        spnTipoMorte.setSelection(0);
 
         spnGenero.setSelection(0);
         spnUnidadeTempo.setSelection(0);
@@ -699,7 +728,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         btnLesoes = null;
         btnPosicaoCadaver = null;
         fabEnvolvidos = null;
-        cxbViolencia = null;
+//        cxbViolencia = null;
+        spnTipoMorte = null;
         adapterEnvolvidoVida = null;
     }
 }

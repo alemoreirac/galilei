@@ -52,7 +52,6 @@ public class ManterPericiaVida extends AppCompatActivity implements StepperLayou
 
         AssociarLayout();
 
-
         toolbar.setTitle("");
 
         stepperLayout.setAdapter(new StepperAdapterVida(getSupportFragmentManager(),this));
@@ -71,6 +70,7 @@ public class ManterPericiaVida extends AppCompatActivity implements StepperLayou
     public void CarregarOcorrencia()
     {
         Bundle args = new Bundle();
+
 
         if(it.getLongExtra("OcorrenciaId",0)!=0)
         {

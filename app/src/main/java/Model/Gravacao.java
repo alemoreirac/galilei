@@ -7,7 +7,8 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 24/08/2017.
  */
 
-public class Gravacao extends SugarRecord<Gravacao>
+public class Gravacao extends SugarRecord
+
 {
     public Gravacao() {
     }

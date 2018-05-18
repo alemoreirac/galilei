@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/activity_login"
+                android:id="@+id/rltv_activity_login"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
@@ -17,13 +17,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="90dp" />
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:inputType="textEmailAddress"
-        android:hint="normal"
-        android:id="@+id/edt_login"
+        android:hint="E-mail"
+        android:id="@+id/auc_login"
+        android:nextFocusForward="@+id/edt_senha"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_below="@+id/imgv_Logo"
@@ -37,8 +38,8 @@
         android:id="@+id/edt_senha"
         android:hint="Senha"
         android:layout_marginTop="7dp"
-        android:layout_below="@id/edt_login"
-        android:layout_alignLeft="@+id/edt_login"
+        android:layout_below="@id/auc_login"
+        android:layout_alignLeft="@+id/auc_login"
         />
 
     <Button
@@ -51,5 +52,10 @@
         android:id="@+id/btn_login"
         />
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="1.0.1"/>
 </RelativeLayout>

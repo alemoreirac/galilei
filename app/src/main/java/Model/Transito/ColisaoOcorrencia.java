@@ -7,7 +7,7 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 01/09/2017.
  */
 
-public class ColisaoOcorrencia extends SugarRecord<ColisaoOcorrencia>
+public class ColisaoOcorrencia extends SugarRecord
 {
 
     @Expose

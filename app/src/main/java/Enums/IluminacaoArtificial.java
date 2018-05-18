@@ -6,7 +6,7 @@ package Enums;
 
 public enum IluminacaoArtificial
 {
-    ILUMINACAO_NATURAL_BOA("Iluminação natural boa"),ILUMINACAO_NATURAL_RUIM("Iluminação natural má"),ILUMINACAO_ARTIFICIAL_BOA("Iluminação artificial boa"),ILUMINACAO_ARTIFICIAL_RUIM("Iluminação artificial ruim");
+    ILUMINACAO_NATURAL_BOA("Iluminação natural boa"),ILUMINACAO_NATURAL_RUIM("Iluminação natural ruim"),ILUMINACAO_ARTIFICIAL_BOA("Iluminação artificial boa"),ILUMINACAO_ARTIFICIAL_RUIM("Iluminação artificial ruim");
 
     String valor;
 

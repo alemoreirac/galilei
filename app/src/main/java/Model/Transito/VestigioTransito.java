@@ -8,7 +8,8 @@ import Enums.Transito.TipoVestigioTransito;
  * Created by Pefoce on 12/10/2017.
  */
 
-public class VestigioTransito extends SugarRecord<VestigioTransito>
+public class VestigioTransito extends SugarRecord
+
 {
 
     private TipoVestigioTransito tipoVestigio;

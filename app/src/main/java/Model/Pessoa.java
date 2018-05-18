@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
  * Created by Pefoce on 05/06/2017.
  */
 
-public class Pessoa extends SugarRecord<Pessoa> implements Serializable {
+public class Pessoa extends SugarRecord implements Serializable {
 
 
     @Expose

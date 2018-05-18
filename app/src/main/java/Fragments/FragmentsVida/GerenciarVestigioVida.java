@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -147,6 +148,8 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
 
         ((ManterPericiaVida) getActivity()).txvToolbarTitulo.setText("Vestígios");
 
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         ocorrenciaVida = ((ManterPericiaVida) getActivity()).ocorrenciaVida;
 
         vestigioVidaOcorrenciaList = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
@@ -169,7 +172,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
 
         // ModificarTodosEnabled(false);
         //ViewUtil.modifyAll(rltvVestigioDetalhe,false);
-        ViewUtil.modifyAllRecursive(rltvVestigioDetalhe, false);
+        ViewUtil.modifyAll(rltvVestigioDetalhe, false);
     }
 
 //    private void ModificarTodosEnabled(boolean enabled)
@@ -202,7 +205,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
             case BIOLOGICO:
                 rltvVestigioBiologico.setVisibility(View.VISIBLE);
                 break;
-            case VESTIGIO_PAPILOSCOPICO:
+            case PAPILOSCOPICO:
                 rltvVestigioPapiloscopico.setVisibility(View.VISIBLE);
                 break;
             case DOCUMENTO:
@@ -369,13 +372,13 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
             {
                 if(lastPosition!= -1 && lastPosition != position)
                 {
-                    try
-                    {
-                        vestigioVidaOcorrencia = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class, "vestigio_vida = ?", vestigioVida.getId().toString()).get(0);
-                    }catch (Exception e)
-                    {
-                        vestigioVidaOcorrencia = new VestigioVidaOcorrencia();
-                    }
+//                    try
+//                    {
+//                        vestigioVidaOcorrencia = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class, "vestigio_vida = ?", vestigioVida.getId().toString()).get(0);
+//                    }catch (Exception e)
+//                    {
+//                        vestigioVidaOcorrencia = new VestigioVidaOcorrencia();
+//                    }
 
                     SalvarVestigio();
                 }
@@ -397,7 +400,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                 CarregarVestigio();
 
                 //ModificarTodosEnabled(true);
-                ViewUtil.modifyAllRecursive(rltvVestigioDetalhe, true);
+                ViewUtil.modifyAll(rltvVestigioDetalhe, true);
 
             }
         });
@@ -437,7 +440,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                                 LimparCampos();
 
                                 //ModificarTodosEnabled(false);
-                                ViewUtil.modifyAllRecursive(rltvVestigioDetalhe, false);
+                                ViewUtil.modifyAll(rltvVestigioDetalhe, false);
 
                                 Toast.makeText(getActivity(), "Vestígio Deletado com sucesso!", Toast.LENGTH_LONG).show();
                             }
@@ -479,7 +482,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                 lstvVestigios.performItemClick(lstvVestigios, BuscadorEnum.PegarPosicaoVestigioVida(vestigioVidaModel, vestigioVida),
                         lstvVestigios.getItemIdAtPosition(BuscadorEnum.PegarPosicaoVestigioVida(vestigioVidaModel, vestigioVida)));
 
-                ViewUtil.modifyAllRecursive(rltvVestigioDetalhe, true);
+                ViewUtil.modifyAll(rltvVestigioDetalhe, true);
 //                ModificarTodosEnabled(true);
                 //ModificarTodosVisible(TipoVestigioVida.OUTRO);
 
@@ -547,7 +550,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                         edtObservacoesDocumentoVestigio.setText(vestigioVida.getObservacao());
                     break;
 
-                case VESTIGIO_PAPILOSCOPICO:
+                case PAPILOSCOPICO:
                     if (vestigioVida.getObjetoRecolhidoPapiloscopia() != null)
                         edtObjetoPapiloscopia.setText(vestigioVida.getObjetoRecolhidoPapiloscopia());
 
@@ -599,7 +602,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                 vestigioVida.setObservacao(edtObservacoesVestigioBiologico.getText().toString());
                 break;
 
-            case VESTIGIO_PAPILOSCOPICO:
+            case PAPILOSCOPICO:
                 vestigioVida.setObjetoRecolhidoPapiloscopia(edtObjetoPapiloscopia.getText().toString());
                 vestigioVida.setTipoRecolhimentoAmostraPapiloscopia(BuscadorEnum.BuscarRecolhimentoAmostraPapiloscopia(spnColetaVestigioPapiloscopico.getSelectedItem().toString()));
                 vestigioVida.setObservacao(edtObservacoesPapiloscopia.getText().toString());

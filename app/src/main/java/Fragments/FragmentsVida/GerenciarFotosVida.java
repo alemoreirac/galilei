@@ -5,21 +5,19 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -47,7 +45,6 @@ import Dialogs.TipoFotoDialog;
 import Enums.CategoriaFoto;
 import Model.Foto;
 import Model.Ocorrencia;
-import Model.Transito.OcorrenciaTransitoFoto;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
 import Util.BuscadorEnum;
@@ -56,16 +53,15 @@ import Util.ViewUtil;
 public class GerenciarFotosVida extends android.support.v4.app.Fragment implements Step
 {
     ListView lstvFOtos;
-
     FloatingActionButton fabFotos;
-
+    int lastPosition;
     ImageView imgvFotoDetalhe;
     EditText edtDetalhe;
     Spinner spnCategoriaFoto;
     MagicalPermissions magicalPermissions;
     MagicalCamera magicalCamera;
-    Button btnCancelarFoto;
-    Button btnSalvarFoto;
+//    Button btnCancelarFoto;
+//    Button btnSalvarFoto;
     RelativeLayout rltvFotos;
     ArrayList<Foto> fotosModel;
     List<OcorrenciaVidaFoto> fotosOcorrenciaVida;
@@ -105,7 +101,7 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container, false);
+        View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container, false);
 
         if (mView != null)
         {
@@ -122,21 +118,16 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
         //CALL THIS METHOD EVER
         magicalCamera.resultPhoto(requestCode, resultCode, data);
 
-
-
         //this is for rotate picture in this method
         //magicalCamera.resultPhoto(requestCode, resultCode, data, MagicalCamera.ORIENTATION_ROTATE_180);
 //if you need save your bitmap in device use this method and return the path if you need this
         //You need to send, the bitmap picture, the photo name, the directory name, the picture type, and autoincrement photo name if           //you need this send true, else you have the posibility or realize your standard name for your pictures.
         pathImagem = magicalCamera.savePhotoInMemoryDevice(magicalCamera.getPhoto(),"imagem_pericia","Imagens " + ocorrenciaVida.getId().toString(), MagicalCamera.JPEG, true);
 
-
         if(pathImagem != null)
         {
-            LimparCampos();
 
             imgvFotoDetalhe.setImageBitmap(magicalCamera.getPhoto());
-
 
             File newFile = new File(pathImagem);
 
@@ -212,11 +203,11 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
                     break;
             }
 
-
-
             if(newFile.renameTo(new File(newPath)))
-                foto = new Foto(edtDetalhe.getText().toString(),newPath);
-
+            {
+                foto = new Foto(edtDetalhe.getText().toString(), newPath);
+                pathImagem = newPath;
+            }
             else
                 foto = new Foto(edtDetalhe.getText().toString(),pathImagem);
 
@@ -230,9 +221,9 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
             adapterGaleria.notifyDataSetChanged();
 
             if(pathImagem!= null)
-                Toast.makeText(getActivity(), "Foto salva no caminho: " + pathImagem, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Foto salva no caminho: " + pathImagem, Toast.LENGTH_LONG).show();
             else
-                Toast.makeText(getActivity(), "Ocorreu um erro na gravação, entre em contato com o suporte!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Ocorreu um erro na gravação, entre em contato com o suporte!", Toast.LENGTH_LONG).show();
             lstvFOtos.performItemClick(lstvFOtos, BuscadorEnum.PegarPosicaoFoto(fotosModel,foto),lstvFOtos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoFoto(fotosModel,foto)));
 
         }
@@ -259,13 +250,16 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
                 magicalPermissions = new MagicalPermissions(GerenciarFotosVida.this, permissions);
                 magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE, magicalPermissions);
 
+                if(foto!= null)
+                    SalvarFoto();
+
                 foto = new Foto();
+
+                LimparCampos();
 
                 TipoFotoDialog tfd = new TipoFotoDialog(GerenciarFotosVida.this, getActivity(), magicalCamera);
 
             }
-
-            ;
         });
 
         lstvFOtos.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -273,19 +267,37 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                if(lastPosition!= -1 && lastPosition != position)
+                {
+                    try
+                    {
+                        ocorrenciaVidaFoto = OcorrenciaVidaFoto.find(OcorrenciaVidaFoto.class, "foto = ?", foto.getId().toString()).get(0);
+                    }catch (Exception e)
+                    {
+                        ocorrenciaVidaFoto = new OcorrenciaVidaFoto();
+                    }
+                    SalvarFoto();
+                }
+
+                lastPosition = position;
+
                 foto = fotosModel.get(position);
-                view.setSelected(true);
+
                 LimparCampos();
+
                 ViewUtil.modifyAll(rltvFotos, true);
-                CarregarFoto(foto);
+
+
                 pathImagem = foto.getArquivo();
                 try
                 {
-                    ocorrenciaVidaFoto = OcorrenciaVidaFoto.find(OcorrenciaVidaFoto.class, "ocorrencia_vida = ? and foto = ?", ocorrenciaVidaFoto.getId().toString(), foto.getId().toString()).get(0);
+                    ocorrenciaVidaFoto = OcorrenciaVidaFoto.find(OcorrenciaVidaFoto.class, "foto = ?",foto.getId().toString()).get(0);
                 } catch (Exception e)
                 {
                     ocorrenciaVidaFoto = new OcorrenciaVidaFoto();
                 }
+
+                CarregarFoto();
             }
 
         });
@@ -334,31 +346,33 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
             }
         });
 
-        btnCancelarFoto.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvFotoDetalhe);
-                edtDetalhe.setText(foto.getDescricao());
-            }
-        });
-
-        btnSalvarFoto.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                SalvarFoto();
-            }
-        });
+//        btnCancelarFoto.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvFotoDetalhe);
+//                edtDetalhe.setText(foto.getDescricao());
+//            }
+//        });
+//
+//        btnSalvarFoto.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                SalvarFoto();
+//            }
+//        });
 
     }
 
     private void SalvarFoto()
     {
         foto.setDescricao(edtDetalhe.getText().toString());
+
         foto.setArquivo(pathImagem);
+
         foto.setCategoriaFoto(BuscadorEnum.BuscarCategoriaFoto(spnCategoriaFoto.getSelectedItem().toString()));
         foto.save();
 
@@ -380,12 +394,13 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
         Toast.makeText(getContext(), "Foto salva com sucesso!", Toast.LENGTH_LONG).show();
     }
 
-    private void CarregarFoto(Foto f)
+    private void CarregarFoto()
     {
-        Picasso.with(getContext()).load(new File(f.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvFotoDetalhe);
-        edtDetalhe.setText(f.getDescricao());
-        if(f.getCategoriaFoto()!=null)
-            spnCategoriaFoto.setSelection(BuscadorEnum.getIndex(spnCategoriaFoto,f.getCategoriaFoto().getValor()));
+        pathImagem = foto.getArquivo();
+        Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvFotoDetalhe);
+        edtDetalhe.setText(foto.getDescricao());
+        if(foto.getCategoriaFoto()!=null)
+            spnCategoriaFoto.setSelection(BuscadorEnum.getIndex(spnCategoriaFoto,foto.getCategoriaFoto().getValor()));
         else
             spnCategoriaFoto.setSelection(0);
     }
@@ -405,11 +420,14 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
     @Override
     public void onSelected()
     {
+        lastPosition= -1;
         AssociarLayout(getView());
 
         AssociarEventos();
 
         ((ManterPericiaVida) getActivity()).txvToolbarTitulo.setText("Galeria");
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         ocorrenciaVida = ((ManterPericiaVida) getActivity()).ocorrenciaVida;
 
@@ -450,9 +468,9 @@ View mView = inflater.inflate(R.layout.fragment_gerenciar_fotos_vida, container,
 
     public void AssociarLayout(View view)
     {
-        btnCancelarFoto = (Button) view.findViewById(R.id.btn_Cancelar_Foto_Vida);
+//        btnCancelarFoto = (Button) view.findViewById(R.id.btn_Cancelar_Foto_Vida);
+//        btnSalvarFoto = (Button) view.findViewById(R.id.btn_Salvar_Foto_Vida);
         edtDetalhe = (EditText) view.findViewById(R.id.edt_Foto_Titulo_Vida);
-        btnSalvarFoto = (Button) view.findViewById(R.id.btn_Salvar_Foto_Vida);
         lstvFOtos = (ListView) view.findViewById(R.id.lstv_Fotos_Vida);
         fabFotos = (FloatingActionButton) view.findViewById(R.id.fab_Foto_Vida);
         imgvFotoDetalhe = (ImageView) view.findViewById(R.id.imgv_Foto_Detalhe_Vida);

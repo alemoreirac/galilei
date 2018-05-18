@@ -1,294 +1,302 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="Fragments.Fragments.FragmentsVida.GerenciarOcorrenciaVida"
-             android:layout_margin="10dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context="Fragments.Fragments.FragmentsVida.GerenciarOcorrenciaVida">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/txv_Incidencia_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número de Incidência" />
 
-    <TextView
-        android:id="@+id/txv_Incidencia_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Número de Incidência"/>
+        <EditText
+            android:id="@+id/edt_Num_Incidencia_Vida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txv_Incidencia_Vida"
+            android:layout_below="@id/txv_Incidencia_Vida"
+            android:inputType="text"
+            android:maxLength="12"
+            android:maxLines="1" />
 
-    <EditText
-        android:id="@+id/edt_Num_Incidencia_Vida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:maxLength="12"
-        android:layout_alignLeft="@+id/txv_Incidencia_Vida"
-        android:layout_below="@id/txv_Incidencia_Vida"/>
-
-    <TextView
-        android:id="@+id/txv_TipoDocumento_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tipo Documento"
-        android:layout_toRightOf="@id/edt_Num_Incidencia_Vida"
-        android:layout_marginLeft="20dp"
-        android:layout_alignBottom="@id/txv_Incidencia_Vida"/>
-
-
-    <Spinner
-        android:id="@+id/spn_TipoDocumentoOcorrenciaVida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txv_TipoDocumento_Vida"
-        android:layout_alignLeft="@id/txv_TipoDocumento_Vida"/>
+        <TextView
+            android:id="@+id/txv_TipoDocumento_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Incidencia_Vida"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/edt_Num_Incidencia_Vida"
+            android:text="Tipo Documento" />
 
 
-    <TextView
-        android:id="@+id/txv_NumDocVida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/spn_TipoDocumentoOcorrenciaVida"
-        android:layout_alignBottom="@id/txv_TipoDocumento_Vida"
-        android:layout_marginLeft="20dp"
-        android:text="Número do Documento"
-        />
-
-    <EditText
-        android:id="@+id/edt_NumDocVida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txv_NumDocVida"
-        android:layout_alignLeft="@+id/txv_NumDocVida"/>
-
-    <TextView
-        android:id="@+id/txv_Autoridade_Presente_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Autoridade Presente"
-        android:layout_below="@id/spn_TipoDocumentoOcorrenciaVida"
-        android:layout_marginTop="40dp"/>
-
-    <Spinner
-        android:id="@+id/spn_Autoridade_Presente_Vida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txv_Autoridade_Presente_Vida"
-        android:layout_alignLeft="@id/spn_Autoridade_Presente_Vida"/>
-
-    <TextView
-        android:id="@+id/txv_Autoridade_Comandante_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nome da Autoridade"
-        android:layout_alignBottom="@id/txv_Autoridade_Presente_Vida"
-        android:layout_alignLeft="@id/txv_TipoDocumento_Vida"/>
+        <Spinner
+            android:id="@+id/spn_TipoDocumentoOcorrenciaVida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_TipoDocumento_Vida"
+            android:layout_below="@id/txv_TipoDocumento_Vida" />
 
 
-    <EditText
-        android:id="@+id/edt_Autoridade_Comandante_Vida"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/txv_Autoridade_Comandante_Vida"
-        android:layout_below="@id/txv_Autoridade_Comandante_Vida"/>
+        <TextView
+            android:id="@+id/txv_NumDocVida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_TipoDocumento_Vida"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/spn_TipoDocumentoOcorrenciaVida"
+            android:text="Número do Documento" />
 
-    <TextView
-        android:id="@+id/txv_Placa_Viatura_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/edt_Autoridade_Comandante_Vida"
-        android:layout_alignBottom="@id/txv_Autoridade_Comandante_Vida"
-        android:text="Placa Viatura"/>
+        <EditText
+            android:id="@+id/edt_NumDocVida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txv_NumDocVida"
+            android:layout_below="@id/txv_NumDocVida"
+            android:inputType="text"
+            android:maxLines="1" />
 
-    <EditText
-        android:id="@+id/edt_Placa_Viatura_Vida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/txv_Placa_Viatura_Vida"
-        android:layout_below="@id/txv_Placa_Viatura_Vida"/>
+        <TextView
+            android:id="@+id/txv_Autoridade_Presente_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spn_TipoDocumentoOcorrenciaVida"
+            android:layout_marginTop="40dp"
+            android:text="Autoridade Presente" />
 
-    <TextView
-        android:id="@+id/txv_Data_Hora_Chamado_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Data e hora do Chamado"
-        android:layout_below="@+id/edt_Autoridade_Comandante_Vida"
-        android:layout_marginTop="20dp"/>
+        <Spinner
+            android:id="@+id/spn_Autoridade_Presente_Vida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/spn_Autoridade_Presente_Vida"
+            android:layout_below="@id/txv_Autoridade_Presente_Vida" />
+
+        <TextView
+            android:id="@+id/txv_Autoridade_Comandante_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Autoridade_Presente_Vida"
+            android:layout_alignLeft="@id/txv_TipoDocumento_Vida"
+            android:text="Nome da Autoridade" />
+
+
+        <EditText
+            android:id="@+id/edt_Autoridade_Comandante_Vida"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Autoridade_Comandante_Vida"
+            android:layout_below="@id/txv_Autoridade_Comandante_Vida"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/txv_Placa_Viatura_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Autoridade_Comandante_Vida"
+            android:layout_toRightOf="@id/edt_Autoridade_Comandante_Vida"
+            android:text="Placa Viatura" />
+
+        <EditText
+            android:id="@+id/edt_Placa_Viatura_Vida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Placa_Viatura_Vida"
+            android:layout_below="@id/txv_Placa_Viatura_Vida"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/txv_Data_Hora_Chamado_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edt_Autoridade_Comandante_Vida"
+            android:layout_marginTop="20dp"
+            android:text="Data e hora do Chamado" />
 
 
         <TextView
             android:id="@+id/txv_Data_Chamado_Valor_Vida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Data_Hora_Chamado_Vida"
             android:layout_alignLeft="@id/txv_Data_Hora_Chamado_Vida"
-            android:clickable="true"
-            android:textSize="20dp"
+            android:layout_below="@id/txv_Data_Hora_Chamado_Vida"
             android:layout_marginTop="8dp"
-            android:text="01/01/2000"/>
+            android:clickable="true"
+            android:text="01/01/2000"
+            android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/txv_Hora_Chamado_Valor_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="00:00"
-        android:layout_alignBottom="@id/txv_Data_Chamado_Valor_Vida"
-        android:layout_toRightOf="@id/txv_Data_Chamado_Valor_Vida"
-        android:textSize="20dp"
-        android:layout_marginLeft="15dp"/>
+        <TextView
+            android:id="@+id/txv_Hora_Chamado_Valor_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Data_Chamado_Valor_Vida"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/txv_Data_Chamado_Valor_Vida"
+            android:clickable="true"
+            android:text="00:00"
+            android:textSize="20dp" />
 
 
         <TextView
-        android:id="@+id/txv_Data_Hora_Atendimento_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Data e hora Atendimento"
-        android:layout_toRightOf="@id/txv_Hora_Chamado_Valor_Vida"
-        android:layout_marginLeft="60dp"
-        android:layout_alignBottom="@id/txv_Data_Hora_Chamado_Vida"/>
+            android:id="@+id/txv_Data_Hora_Atendimento_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Data_Hora_Chamado_Vida"
+            android:layout_marginLeft="60dp"
+            android:layout_toRightOf="@id/txv_Hora_Chamado_Valor_Vida"
+            android:text="Data e hora Atendimento" />
 
         <TextView
             android:id="@+id/txv_Data_Atendimento_Valor_Vida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txv_Data_Hora_Chamado_Vida"
             android:layout_alignLeft="@id/txv_Data_Hora_Atendimento_Vida"
-            android:clickable="true"
-            android:textSize="20dp"
+            android:layout_below="@id/txv_Data_Hora_Chamado_Vida"
             android:layout_marginTop="6dp"
-            android:text="01/01/2000"/>
+            android:clickable="true"
+            android:text="01/01/2000"
+            android:textSize="20dp" />
 
 
         <TextView
             android:id="@+id/txv_Hora_Atendimento_Valor_Vida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Data_Atendimento_Valor_Vida"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/txv_Data_Atendimento_Valor_Vida"
             android:clickable="true"
             android:text="00:00"
-            android:layout_alignBottom="@id/txv_Data_Atendimento_Valor_Vida"
-            android:layout_toRightOf="@id/txv_Data_Atendimento_Valor_Vida"
-            android:textSize="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="8dp"/>
+            android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/txv_Tipo_Ocorrencia_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tipo Ocorrência"
-        android:layout_below="@id/txv_Hora_Atendimento_Valor_Vida"
-        android:layout_alignLeft="@id/txv_Data_Chamado_Valor_Vida"
-        android:layout_marginTop="30dp"/>
+        <!--<TextView-->
+        <!--android:id="@+id/txv_Tipo_Ocorrencia_Vida"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Tipo Ocorrência"-->
+        <!--android:layout_below="@id/txv_Hora_Atendimento_Valor_Vida"-->
+        <!--android:layout_alignLeft="@id/txv_Data_Chamado_Valor_Vida"-->
+        <!--android:layout_marginTop="30dp"/>-->
 
-    <Spinner
-        android:id="@+id/spn_Tipo_Ocorrencia_Vida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txv_Tipo_Ocorrencia_Vida"
-        android:layout_alignLeft="@id/txv_Tipo_Ocorrencia_Vida"/>
+        <!--<Spinner-->
+        <!--android:id="@+id/spn_Tipo_Ocorrencia_Vida"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/txv_Tipo_Ocorrencia_Vida"-->
+        <!--android:layout_alignLeft="@id/txv_Tipo_Ocorrencia_Vida"/>-->
 
-    <TextView
-        android:id="@+id/txv_Preservacao_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Preservação Local"
-        android:layout_alignBottom="@id/txv_Tipo_Ocorrencia_Vida"
-        android:layout_alignLeft="@id/txv_Data_Hora_Atendimento_Vida"
-        />
+        <TextView
+            android:id="@+id/txv_Preservacao_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Data_Hora_Atendimento_Vida"
+            android:layout_alignLeft="@id/txv_Placa_Viatura_Vida"
+            android:text="Preservação Local" />
 
-    <Spinner
-        android:id="@+id/spn_Preservacao_Local_Vida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txv_Preservacao_Vida"
-        android:layout_alignLeft="@id/txv_Preservacao_Vida"/>
+        <Spinner
+            android:id="@+id/spn_Preservacao_Local_Vida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Preservacao_Vida"
+            android:layout_below="@id/txv_Preservacao_Vida" />
 
-    <TextView
-        android:id="@+id/txv_Orgao_Origem_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/orgao_origem"
-        android:layout_below="@id/spn_Tipo_Ocorrencia_Vida"
-        android:layout_alignLeft="@id/txv_Data_Chamado_Valor_Vida"
-        android:layout_marginTop="20dp"
-        />
+        <TextView
+            android:id="@+id/txv_Orgao_Origem_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Data_Chamado_Valor_Vida"
+            android:layout_below="@id/txv_Hora_Chamado_Valor_Vida"
+            android:layout_marginTop="20dp"
+            android:text="@string/orgao_origem" />
 
-    <AutoCompleteTextView
-        android:id="@+id/auc_Orgao_Origem_Vida"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txv_Orgao_Origem_Vida"
-        android:layout_marginTop="6dp"
-        android:layout_alignLeft="@+id/txv_Orgao_Origem_Vida"
-        />
+        <AutoCompleteTextView
+            android:id="@+id/auc_Orgao_Origem_Vida"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txv_Orgao_Origem_Vida"
+            android:layout_below="@+id/txv_Orgao_Origem_Vida"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_marginTop="6dp" />
 
-    <TextView
-        android:id="@+id/txv_Orgao_Destino_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/orgao_destino"
-        android:layout_below="@id/auc_Orgao_Origem_Vida"
-        android:layout_alignLeft="@id/auc_Orgao_Origem_Vida"
-        android:layout_marginTop="20dp"
-        />
+        <TextView
+            android:id="@+id/txv_Orgao_Destino_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/auc_Orgao_Origem_Vida"
+            android:layout_below="@id/auc_Orgao_Origem_Vida"
+            android:layout_marginTop="20dp"
+            android:text="@string/orgao_destino" />
 
-    <AutoCompleteTextView
-        android:id="@+id/auc_Orgao_Destino_Vida"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txv_Orgao_Destino_Vida"
-        android:layout_marginTop="6dp"
-        android:layout_alignLeft="@+id/txv_Orgao_Origem_Vida"
-        />
+        <AutoCompleteTextView
+            android:id="@+id/auc_Orgao_Destino_Vida"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txv_Orgao_Origem_Vida"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_below="@+id/txv_Orgao_Destino_Vida"
+            android:layout_marginTop="6dp" />
 
 
-    <TextView
-        android:id="@+id/txv_Bairro_Delegacia_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bairro (Delegacia de destino)"
-        android:layout_toRightOf="@id/auc_Orgao_Origem_Vida"
-        android:layout_alignBottom="@id/txv_Orgao_Destino_Vida"/>
+        <TextView
+            android:id="@+id/txv_Bairro_Delegacia_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Orgao_Destino_Vida"
+            android:layout_toRightOf="@id/auc_Orgao_Origem_Vida"
+            android:text="Bairro (Delegacia de destino)" />
 
-    <AutoCompleteTextView
-        android:id="@+id/auc_Bairro_Delegacia_Vida"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/txv_Bairro_Delegacia_Vida"
-        android:layout_alignBottom="@id/auc_Orgao_Destino_Vida"/>
+        <AutoCompleteTextView
+            android:id="@+id/auc_Bairro_Delegacia_Vida"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_alignBottom="@id/auc_Orgao_Destino_Vida"
+            android:layout_alignLeft="@id/txv_Bairro_Delegacia_Vida" />
 
-    <TextView
-        android:id="@+id/txv_AIS_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AIS"
-        android:layout_alignBottom="@id/txv_Bairro_Delegacia_Vida"
-        android:layout_toRightOf="@id/txv_Bairro_Delegacia_Vida"
-        android:layout_marginLeft="10dp"
-        />
+        <TextView
+            android:id="@+id/txv_AIS_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txv_Bairro_Delegacia_Vida"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/txv_Bairro_Delegacia_Vida"
+            android:text="AIS" />
 
-    <Spinner
-        android:id="@+id/spn_AIS_Vida"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txv_AIS_Vida"
-        android:layout_alignLeft="@id/txv_AIS_Vida"/>
+        <Spinner
+            android:id="@+id/spn_AIS_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_AIS_Vida"
+            android:layout_below="@id/txv_AIS_Vida" />
 
-    <TextView
-        android:id="@+id/txv_Delegado_Vida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delegado"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/auc_Orgao_Destino_Vida"
-        android:layout_alignLeft="@id/auc_Orgao_Destino_Vida"
-        />
+        <TextView
+            android:id="@+id/txv_Delegado_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/auc_Orgao_Destino_Vida"
+            android:layout_below="@id/auc_Orgao_Destino_Vida"
+            android:layout_marginTop="20dp"
+            android:text="Delegado" />
 
-    <EditText
-        android:id="@+id/edt_Delegado_Vida"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txv_Delegado_Vida"
-        android:layout_alignLeft="@id/txv_Delegado_Vida"/>
+        <EditText
+            android:id="@+id/edt_Delegado_Vida"
+            android:layout_width="400dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txv_Delegado_Vida"
+            android:layout_below="@id/txv_Delegado_Vida" />
 
     </RelativeLayout>
 </ScrollView>

@@ -48,115 +48,115 @@ public class SecaoDrawableUtil
     }
 
 
-    public static int findIdByString(String secao_, String genero)
-    {
-        if (genero.equals(Genero.NAO_IDENTIFICADO.getValor()))
-            genero = "masculin";
-        else
-            genero = normalize(genero.substring(0, genero.length() - 1));
-
-        List<String> tokens = tokenize(normalize(secao_));
-
-        if (secao_.equals(Secao.ILIACO_ANTERIOR_DIREITO))
-            secao_.toString();
-
-        String match = "";
-
-        tokens.add(genero);
-        ////            if (drawableName.equals("perna_superior_esquerda_masculina") && secao_.equals(Secao.PE_ESQUERDO.getValor()))
-////            {
-////                for (String token : tokens)
-////                {
-////                    if (token.charAt(token.length() - 1) == 'o' ||
-////                            token.charAt(token.length() - 1) == 'a')
-////
-////                        token = token.substring(0, token.length() - 1);
-////
-////                    if (drawableName.contains(token))
-////                        //|| drawableName.contains(genero))
-////                        acertos++;
-////                    else
-////                    {acertos = 0;
-////                        continue;}
-////                }
+//    public static int findIdByString(String secao_, String genero)
+//    {
+//        if (genero.equals(Genero.NAO_IDENTIFICADO.getValor()))
+//            genero = "masculin";
+//        else
+//            genero = normalize(genero.substring(0, genero.length() - 1));
+//
+//        List<String> tokens = tokenize(normalize(secao_));
+//
+//        if (secao_.equals(Secao.ILIACO_ANTERIOR_DIREITO))
+//            secao_.toString();
+//
+//        String match = "";
+//
+//        tokens.add(genero);
+//        ////            if (drawableName.equals("perna_superior_esquerda_masculina") && secao_.equals(Secao.PE_ESQUERDO.getValor()))
+//////            {
+//////                for (String token : tokens)
+//////                {
+//////                    if (token.charAt(token.length() - 1) == 'o' ||
+//////                            token.charAt(token.length() - 1) == 'a')
+//////
+//////                        token = token.substring(0, token.length() - 1);
+//////
+//////                    if (drawableName.contains(token))
+//////                        //|| drawableName.contains(genero))
+//////                        acertos++;
+//////                    else
+//////                    {acertos = 0;
+//////                        continue;}
+//////                }
+//////                if (acertos == tokens.size())
+//////                {
+//////                    if (drawableName.contains(genero.substring(0, genero.length() - 1)))
+//////                    {
+//////                        //if(tokenize(drawableName).size() == acertos)
+//////                        match = drawableName;
+//////                    }
+//////                    else
+//////                        acertos = 0;
+//////                } else
+//////                    acertos = 0;
+//////            }
+//////
+//////            for (String token : tokens)
+//////            {
+//////                if (token.charAt(token.length() - 1) == 'o' ||
+//////                        token.charAt(token.length() - 1) == 'a')
+//////
+//////                    token = token.substring(0, token.length() - 1);
+//////
+//////                if (drawableName.contains(token))
+//////                    //|| drawableName.contains(genero))
+//////                    acertos++;
+//////                else
+//////                {acertos = 0;
+//////                continue;}
+//////            }
+//////            if (acertos == tokens.size())
+//////            {
+//////                if (drawableName.contains(genero.substring(0, genero.length() - 1)))
+//////                {
+//////                    //if(tokenize(drawableName).size() == acertos)
+//////                            match = drawableName;
+//////                }
+//////                else
+//////                    acertos = 0;
+//////            } else
+//////                acertos = 0;
+//////        }
 ////                if (acertos == tokens.size())
 ////                {
-////                    if (drawableName.contains(genero.substring(0, genero.length() - 1)))
-////                    {
-////                        //if(tokenize(drawableName).size() == acertos)
-////                        match = drawableName;
-////                    }
-////                    else
-////                        acertos = 0;
-////                } else
-////                    acertos = 0;
-////            }
-////
-////            for (String token : tokens)
-////            {
-////                if (token.charAt(token.length() - 1) == 'o' ||
-////                        token.charAt(token.length() - 1) == 'a')
-////
-////                    token = token.substring(0, token.length() - 1);
-////
-////                if (drawableName.contains(token))
-////                    //|| drawableName.contains(genero))
-////                    acertos++;
-////                else
-////                {acertos = 0;
-////                continue;}
-////            }
-////            if (acertos == tokens.size())
-////            {
-////                if (drawableName.contains(genero.substring(0, genero.length() - 1)))
-////                {
-////                    //if(tokenize(drawableName).size() == acertos)
-////                            match = drawableName;
+////                    match = drawableName;
+////                    break;
 ////                }
 ////                else
 ////                    acertos = 0;
-////            } else
-////                acertos = 0;
+////
+////            }
 ////        }
-//                if (acertos == tokens.size())
-//                {
-//                    match = drawableName;
-//                    break;
-//                }
-//                else
-//                    acertos = 0;
 //
-//            }
-//        }
-
-        List<String> result = new ArrayList<>();
-
-        result.addAll(todosDrawables);
-
-        for (String t : tokens)
-        {
-            for (String res : result)
-            {
-                if (!res.contains(t))
-                    result.remove(result.indexOf(res));
-            }
-//            for(int i = 0 ; i<result.size();i++)
+//        List<String> result = new ArrayList<>();
+//
+//        result.addAll(todosDrawables);
+//
+//        for (String t : tokens)
+//        {
+//            for (String res : result)
 //            {
-//                if (!result.get(i).contains(t))
-//                    result.remove(i);
+//                if (!res.contains(t))
+//                    result.remove(result.indexOf(res));
 //            }
-            result.size();
-        }
-
-        if (result.size() == 1)
-            match = result.get(0);
-
-        System.gc();
-        if (match == "")
-            match.toString();
-
-        return getResId(match, Drawable.class);
-    }
+////            for(int i = 0 ; i<result.size();i++)
+////            {
+////                if (!result.get(i).contains(t))
+////                    result.remove(i);
+////            }
+//            result.size();
+//        }
+//
+//        if (result.size() == 1)
+//            match = result.get(0);
+//
+//        System.gc();
+//        if (match == "")
+//            match.toString();
+//
+//        return getResId(match, Drawable.class);
+//    }
 
     public static List<String> getAllDrawablesString()
     {

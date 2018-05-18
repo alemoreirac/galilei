@@ -28,13 +28,15 @@ public class GerenciarTorax extends AppCompatActivity
 {
     EnvolvidoVida envolvidoVida;
 
-    TextView txvClavicularEsquerdoMasculinoCostas;
+//    TextView txvClavicularEsquerdoMasculinoCostas;
+    TextView txvToracicoEsquerdoMasculino;
     TextView txvEscapularEsquerdoMasculino;
     TextView txvLombarEsquerdoMasculino;
     TextView txvIliacoEsquerdoMasculinoCostas;
     TextView txvNadegaEsquerdaMasculina;
 
-    TextView txvClavicularDireitoMasculinoCostas;
+//    TextView txvClavicularDireitoMasculinoCostas;
+    TextView txvToracicoDireitoMasculino;
     TextView txvEscapularDireitoMasculino;
     TextView txvLombarDireitoMasculino;
     TextView txvIliacoDireitoMasculinoCostas;
@@ -42,13 +44,15 @@ public class GerenciarTorax extends AppCompatActivity
 
     TextView txvAnusMasculino;
 
-    TextView txvClavicularEsquerdoFemininoCostas;
+//    TextView txvClavicularEsquerdoFemininoCostas;
+    TextView txvToracicoEsquerdoFeminino;
     TextView txvEscapularEsquerdoFeminino;
     TextView txvLombarEsquerdoFeminino;
     TextView txvIliacoEsquerdoFemininoCostas;
     TextView txvNadegaEsquerdaFeminina;
 
-    TextView txvClavicularDireitoFemininoCostas;
+//    TextView txvClavicularDireitoFemininoCostas;
+    TextView txvToracicoDireitoFeminino;
     TextView txvEscapularDireitoFeminino;
     TextView txvLombarDireitoFeminino;
     TextView txvIliacoDireitoFemininoCostas;
@@ -178,28 +182,32 @@ public class GerenciarTorax extends AppCompatActivity
         rbtnCostas = (RadioButton) findViewById(R.id.rbtn_Opcao_Costas_Torax);
         rbtnFrente = (RadioButton) findViewById(R.id.rbtn_Opcao_Frente_Torax);
 
-        txvClavicularEsquerdoMasculinoCostas = (TextView) findViewById(R.id.txv_Clavicular_Esquerdo_Masculino_Costas);
+//        txvClavicularEsquerdoMasculinoCostas = (TextView) findViewById(R.id.txv_Clavicular_Esquerdo_Masculino_Costas);
         txvEscapularEsquerdoMasculino = (TextView) findViewById(R.id.txv_Escapular_Esquerdo_Masculino);
+        txvToracicoEsquerdoMasculino = (TextView) findViewById(R.id.txv_Toracico_Esquerdo_Masculino);
         txvLombarEsquerdoMasculino = (TextView) findViewById(R.id.txv_Lombar_Esquerdo_Masculino);
         txvIliacoEsquerdoMasculinoCostas = (TextView) findViewById(R.id.txv_Iliaco_Esquerdo_Costas_Masculino);
         txvNadegaEsquerdaMasculina = (TextView) findViewById(R.id.txv_Nadega_Esquerda_Masculina);
 
-        txvClavicularDireitoMasculinoCostas = (TextView) findViewById(R.id.txv_Clavicular_Direito_Masculino_Costas);
+//        txvClavicularDireitoMasculinoCostas = (TextView) findViewById(R.id.txv_Clavicular_Direito_Masculino_Costas);
         txvEscapularDireitoMasculino = (TextView) findViewById(R.id.txv_Escapular_Direito_Masculino);
+        txvToracicoDireitoMasculino = (TextView) findViewById(R.id.txv_Toracico_Direito_Masculino);
         txvLombarDireitoMasculino = (TextView) findViewById(R.id.txv_Lombar_Direito_Masculino);
         txvIliacoDireitoMasculinoCostas = (TextView) findViewById(R.id.txv_Iliaco_Direito_Costas_Masculino);
         txvNadegaDireitaMasculina = (TextView) findViewById(R.id.txv_Nadega_Direita_Masculina);
 
         txvAnusMasculino = (TextView) findViewById(R.id.txv_Anus_Masculina);
 
-        txvClavicularEsquerdoFemininoCostas = (TextView) findViewById(R.id.txv_Clavicular_Esquerdo_Feminino_Costas);
+//        txvClavicularEsquerdoFemininoCostas = (TextView) findViewById(R.id.txv_Clavicular_Esquerdo_Feminino_Costas);
         txvEscapularEsquerdoFeminino = (TextView) findViewById(R.id.txv_Escapular_Esquerdo_Feminino);
+        txvToracicoEsquerdoFeminino  = (TextView) findViewById(R.id.txv_Toracico_Esquerdo_Feminino);
         txvLombarEsquerdoFeminino = (TextView) findViewById(R.id.txv_Lombar_Esquerdo_Feminino);
         txvIliacoEsquerdoFemininoCostas = (TextView) findViewById(R.id.txv_Iliaco_Esquerdo_Costas_Feminino);
         txvNadegaEsquerdaFeminina = (TextView) findViewById(R.id.txv_Nadega_Esquerda_Feminina);
 
-        txvClavicularDireitoFemininoCostas = (TextView) findViewById(R.id.txv_Clavicular_Direito_Feminino_Costas);
+//        txvClavicularDireitoFemininoCostas = (TextView) findViewById(R.id.txv_Clavicular_Direito_Feminino_Costas);
         txvEscapularDireitoFeminino = (TextView) findViewById(R.id.txv_Escapular_Direito_Feminino);
+        txvToracicoDireitoFeminino = (TextView) findViewById(R.id.txv_Toracico_Direito_Feminino);
         txvLombarDireitoFeminino = (TextView) findViewById(R.id.txv_Lombar_Direito_Feminino);
         txvIliacoDireitoFemininoCostas = (TextView) findViewById(R.id.txv_Iliaco_Direito_Costas_Feminino);
         txvNadegaDireitaFeminina = (TextView) findViewById(R.id.txv_Nadega_Direita_Feminina);
@@ -226,7 +234,7 @@ public class GerenciarTorax extends AppCompatActivity
         txvFlancoEsquerdoFeminino = (TextView) findViewById(R.id.txv_Flanco_Esquerdo_Feminino);
         txvIliacoEsquerdoFemininoFrente = (TextView) findViewById(R.id.txv_Iliaco_Esquerdo_Frente_Feminino);
 
-        txvClavicularDireitoFemininoFrente = (TextView) findViewById(R.id.txv_Clavicular_Direito_Feminino_Frente);
+        txvClavicularDireitoFemininoFrente = (TextView) findViewById(R.id.txv_Clavicular_Direito_Feminino);
         txvPeitoralDireitoFeminino = (TextView) findViewById(R.id.txv_Peitoral_Direito_Feminino);
         txvHipocondrioDireitoFeminino = (TextView) findViewById(R.id.txv_Hipocondrio_Direito_Feminino);
         txvFlancoDireitoFeminino = (TextView) findViewById(R.id.txv_Flanco_Direito_Feminino);
@@ -234,14 +242,16 @@ public class GerenciarTorax extends AppCompatActivity
         txvGenitalFeminino = (TextView) findViewById(R.id.txv_Genital_Feminino);
 
 
-        txvClavicularEsquerdoMasculinoCostas.setText(Secao.CLAVICULAR_POSTERIOR_ESQUERDO.getValor());
+//        txvClavicularEsquerdoMasculinoCostas.setText(Secao.CLAVICULAR_POSTERIOR_ESQUERDO.getValor());
         txvEscapularEsquerdoMasculino.setText(Secao.ESCAPULAR_ESQUERDO.getValor());
+        txvToracicoEsquerdoMasculino.setText(Secao.TORACICO_ESQUERDO.getValor());
         txvLombarEsquerdoMasculino.setText(Secao.LOMBAR_ESQUERDO.getValor());
         txvIliacoEsquerdoMasculinoCostas.setText(Secao.ILIACO_POSTERIOR_ESQUERDO.getValor());
         txvNadegaEsquerdaMasculina.setText(Secao.GLUTEO_ESQUERDO.getValor());
 
-        txvClavicularDireitoMasculinoCostas.setText(Secao.CLAVICULAR_POSTERIOR_DIREITO.getValor());
+//        txvClavicularDireitoMasculinoCostas.setText(Secao.CLAVICULAR_POSTERIOR_DIREITO.getValor());
         txvEscapularDireitoMasculino.setText(Secao.ESCAPULAR_DIREITO.getValor());
+        txvToracicoDireitoMasculino.setText(Secao.TORACICO_DIREITO.getValor());
         txvLombarDireitoMasculino.setText(Secao.LOMBAR_DIREITO.getValor());
         txvIliacoDireitoMasculinoCostas.setText(Secao.ILIACO_POSTERIOR_DIREITO.getValor());
         txvNadegaDireitaMasculina.setText(Secao.GLUTEO_DIREITO.getValor());
@@ -249,14 +259,16 @@ public class GerenciarTorax extends AppCompatActivity
         txvAnusMasculino.setText(Secao.ANUS.getValor());
 
 
-        txvClavicularEsquerdoFemininoCostas.setText(Secao.CLAVICULAR_POSTERIOR_ESQUERDO.getValor());
+//        txvClavicularEsquerdoFemininoCostas.setText(Secao.CLAVICULAR_POSTERIOR_ESQUERDO.getValor());
         txvEscapularEsquerdoFeminino.setText(Secao.ESCAPULAR_ESQUERDO.getValor());
+        txvToracicoEsquerdoFeminino.setText(Secao.TORACICO_ESQUERDO.getValor());
         txvLombarEsquerdoFeminino.setText(Secao.LOMBAR_ESQUERDO.getValor());
         txvIliacoEsquerdoFemininoCostas.setText(Secao.ILIACO_POSTERIOR_ESQUERDO.getValor());
         txvNadegaEsquerdaFeminina.setText(Secao.GLUTEO_ESQUERDO.getValor());
 
-        txvClavicularDireitoFemininoCostas.setText(Secao.CLAVICULAR_POSTERIOR_DIREITO.getValor());
+//        txvClavicularDireitoFemininoCostas.setText(Secao.CLAVICULAR_POSTERIOR_DIREITO.getValor());
         txvEscapularDireitoFeminino.setText(Secao.ESCAPULAR_DIREITO.getValor());
+        txvToracicoDireitoFeminino.setText(Secao.TORACICO_DIREITO.getValor());
         txvLombarDireitoFeminino.setText(Secao.LOMBAR_DIREITO.getValor());
         txvIliacoDireitoFemininoCostas.setText(Secao.ILIACO_POSTERIOR_DIREITO.getValor());
         txvNadegaDireitaFeminina.setText(Secao.GLUTEO_DIREITO.getValor());
@@ -404,7 +416,10 @@ public class GerenciarTorax extends AppCompatActivity
     public void addLesaoTorax(View view)
     {
         TextView txvView = (TextView) view;
-        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarTorax.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+//        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarTorax.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
+        Secao s = BuscadorEnum.BuscarSecao(txvView.getText().toString());
+
+        LesaoDialog.show(GerenciarTorax.this, envolvidoVida, s,BuscadorEnum.EncontrarLesoesEnabled(s));
     }
 
     public void AtualizarLesoes()

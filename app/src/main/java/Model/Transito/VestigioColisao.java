@@ -6,8 +6,8 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 16/10/2017.
  */
 
-public class VestigioColisao extends SugarRecord<VestigioColisao>
-{
+public class VestigioColisao extends SugarRecord
+    {
 
     Long vestigioId;
     ColisaoTransito colisaoTransito;

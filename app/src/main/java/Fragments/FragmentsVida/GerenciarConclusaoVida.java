@@ -1,5 +1,7 @@
 package Fragments.FragmentsVida;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +55,7 @@ import Model.Vida.OcorrenciaVida;
 import Util.BuilderConclusaoVida;
 import Util.CryptUtil;
 import Util.ImageUtil;
+import Util.StringUtil;
 import Util.ViewUtil;
 import info.hoang8f.android.segmented.SegmentedGroup;
 import okhttp3.FormBody;
@@ -91,20 +95,21 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
     public void onDestroyView()
     {
         super.onDestroyView();
-        mView = null;
-        ocorrenciaVida = null;
-        ocorrencia = null;
-        txvConclusao = null;
-        ll_GerarODT = null;
-        txvPath = null;
-        conclusao = null;
-        imgvPosterior = null;
-        imgvAnterior = null;
-        imgvCabecaDireita = null;
-        imgvCabecaEsquerda = null;
-        sgmtLaudoImagens = null;
-        rbtnLaudo = null;
-        rbtnImagem = null;
+        //ViewUtil.nullifyAll();
+//        mView = null;
+//        ocorrenciaVida = null;
+//        ocorrencia = null;
+//        txvConclusao = null;
+//        ll_GerarODT = null;
+//        txvPath = null;
+//        conclusao = null;
+//        imgvPosterior = null;
+//        imgvAnterior = null;
+//        imgvCabecaDireita = null;
+//        imgvCabecaEsquerda = null;
+//        sgmtLaudoImagens = null;
+//        rbtnLaudo = null;
+//        rbtnImagem = null;
     }
 
     public GerenciarConclusaoVida()
@@ -152,7 +157,7 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
 
-        conclusao = BuilderConclusaoVida.ConstruirConclusao(ocorrenciaVida);
+        conclusao = BuilderConclusaoVida.ConstruirLaudo(ocorrenciaVida);
 
         ocorrenciaEnvolvidoVidaList = OcorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
 
@@ -180,7 +185,7 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
 
         rbtnImagem.performClick();
 
-        ViewUtil.modifyAllRecursive(((ManterPericiaVida)getActivity()).rltvContent, false);
+        ViewUtil.modifyAll(((ManterPericiaVida)getActivity()).rltvContent, false);
 
         progressBar.setVisibility(View.VISIBLE);
         txvProgress.setVisibility(View.VISIBLE);
@@ -236,7 +241,7 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
                             progressBar.setVisibility(View.INVISIBLE);
                             txvProgress.setVisibility(View.INVISIBLE);
 
-                            ViewUtil.modifyAllRecursive(((ManterPericiaVida)getActivity()).rltvContent, true);
+                            ViewUtil.modifyAll(((ManterPericiaVida)getActivity()).rltvContent, true);
 
                             lstvEnvolvidos.performItemClick(
                                     lstvEnvolvidos.getAdapter().getView(0, null, null),
@@ -265,7 +270,7 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
             public void onClick(View v)
             {
                 generateNoteOnSD(getContext(), "Laudo_" + ocorrenciaVida.getNumIncidencia(), conclusao);
-                EnviarDados();
+//                EnviarDados();
             }
         });
 
@@ -515,6 +520,10 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
     {
         try
         {
+            ActivityCompat.requestPermissions((Activity)context,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
+
             String newPath = Environment.getExternalStorageDirectory() +
                     "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome() + "/Vida/" + ocorrenciaVida.getDataPath() + "/" + ocorrenciaVida.getNumIncidencia();
 
@@ -531,12 +540,12 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
             boolean success = gpxfile.renameTo(file2);
             if (success)
             {
-                //      txvPath.setText("Caminho salvo em: " + file2.getPath());
+                      txvPath.setText("Caminho salvo em: " + file2.getPath());
             }
 
             writer.flush();
             writer.close();
-            Toast.makeText(context, "Salvo com sucesso!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Salvo com sucesso!", Toast.LENGTH_LONG).show();
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -565,14 +574,14 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
                     OkHttpClient client = new OkHttpClient();
                     RequestBody requestBody = new FormBody.Builder()
 
-                            .add("ocorrenciaId", ocorrencia.getId().toString())
-                            .add("incidencia", ocorrenciaVida.getNumIncidencia())
+                            .add("ocorrenciaId", StringUtil.checkValue(ocorrencia.getId().toString(),-1,"Sem valor"))
+                            .add("incidencia",StringUtil.checkValue(ocorrenciaVida.getNumIncidencia(),-1,"Sem valor") )
                             .add("tipoOcorrencia", ocorrencia.getTipoOcorrencia().getValor())
                             .add("dataOcorrencia", ocorrenciaVida.getDataHoraFormatadaAtendimento())
                             .add("usuario", ocorrencia.getPerito().getNome())
                             .add("endereco", enderecoVida.toString())
                             .add("ais", ocorrenciaVida.getAis().getValor())
-                            .add("delegacia", ocorrenciaVida.getOrgaoDestino())
+                            .add("delegacia", StringUtil.checkValue(ocorrenciaVida.getOrgaoDestino(),-1,"Sem valor"))
                             .add("latitude", enderecoVida.getLatitude())
                             .add("longitude", enderecoVida.getLongitude())
                             .add("qtdeEnvolvidos", qtdeEnvolvidos)
@@ -592,12 +601,12 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
 
                     Response response = client.newCall(request).execute();
 
+
                     return response.body().string();
 
                 } catch (Exception e)
                 {
-                    Log.d("V", e.toString());
-                    return null;
+                    return e.toString();
                 }
             }
 
@@ -607,7 +616,7 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
                 super.onPostExecute(s);
                 if (s != null)
                 {
-                    //      txvPath.setText(s);
+                          txvPath.setText(s);
                     //       txvConclusao.setText(s);
                 }
             }

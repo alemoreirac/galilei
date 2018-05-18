@@ -3,24 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    android:background="@drawable/selector">
+    android:background="@drawable/selector"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imgv_Vestigio"
+        android:layout_width="75dp"
+        android:layout_height="75dp"/>
 
     <TextView
         android:id="@+id/txv_row_Categoria_Vestigio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Categoria"/>
+        android:layout_toRightOf="@id/imgv_Vestigio"
+        android:text="Categoria"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txv_row_Tipo_Vestigio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txv_row_Categoria_Vestigio"
-        android:textSize="18dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp"
-        android:text="Tipo"/>
+        android:layout_toRightOf="@id/imgv_Vestigio"
+        android:text="Tipo"
+        android:textSize="18dp"/>
 
     <TextView
         android:id="@+id/txv_row_Observacao_Vestigio"
@@ -28,6 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txv_row_Tipo_Vestigio"
         android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/imgv_Vestigio"
+        android:layout_marginLeft="10dp"
         android:text="Observação"/>
 
 </RelativeLayout>

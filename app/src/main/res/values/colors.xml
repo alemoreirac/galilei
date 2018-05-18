@@ -8,4 +8,5 @@
     <color name="lightGray">#f2f2f2</color>
     <color name="DefaultTextColor">#808080</color>
     <color name="pressed_color">#aeaeae</color>
+    <color name="colorSgmtGroup">#004A6D</color>
 </resources>

@@ -7,7 +7,6 @@ import java.util.Date;
 import Enums.AreaIntegradaSeguranca;
 import Enums.Orgao;
 import Enums.PreservacaoLocal;
-import Enums.Vida.TipoOcorrenciaVida;
 import Model.DocumentoOcorrencia;
 import Util.TempoUtil;
 
@@ -17,7 +16,7 @@ import static Enums.AreaIntegradaSeguranca.AIS_1;
  * Created by Pefoce on 15/11/2017.
  */
 
-public class OcorrenciaVida extends SugarRecord<OcorrenciaVida>
+public class OcorrenciaVida extends SugarRecord
 {
     private Long ocorrenciaID;
 
@@ -25,7 +24,6 @@ public class OcorrenciaVida extends SugarRecord<OcorrenciaVida>
 
     private Date dataAtendimento;
 
-    private TipoOcorrenciaVida tipoOcorrenciaVida;
 
     private DocumentoOcorrencia documento;
 
@@ -55,9 +53,8 @@ public class OcorrenciaVida extends SugarRecord<OcorrenciaVida>
         this.numIncidencia = "";
         this.documento = new DocumentoOcorrencia();
         this.ocorrenciaID = 0l;
-        this.dataChamado = TempoUtil.stringToDate("01/01/2000");
-        this.dataAtendimento = TempoUtil.stringToDate("01/01/2000");
-        this.tipoOcorrenciaVida = TipoOcorrenciaVida.HOMICIDIO;
+        this.dataChamado = Calendar.getInstance().getTime();
+        this.dataAtendimento =  Calendar.getInstance().getTime();
     }
 
     public Long getOcorrenciaID()
@@ -90,15 +87,7 @@ public class OcorrenciaVida extends SugarRecord<OcorrenciaVida>
         this.dataAtendimento = dataAtendimento;
     }
 
-    public TipoOcorrenciaVida getTipoOcorrenciaVida()
-    {
-        return tipoOcorrenciaVida;
-    }
 
-    public void setTipoOcorrenciaVida(TipoOcorrenciaVida tipoOcorrenciaVida)
-    {
-        this.tipoOcorrenciaVida = tipoOcorrenciaVida;
-    }
 
     public DocumentoOcorrencia getDocumento()
     {
@@ -192,7 +181,6 @@ public class OcorrenciaVida extends SugarRecord<OcorrenciaVida>
         SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return timeFormat.format(this.dataAtendimento);
     }
-
 
     public void setHoraChamado(String s)
     {

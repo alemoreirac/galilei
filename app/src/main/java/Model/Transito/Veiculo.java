@@ -6,8 +6,11 @@ import com.orm.SugarRecord;
 import Enums.Cor;
 import Enums.Transito.TipoCNH;
 import Enums.Transito.TipoVeiculo;
+import Util.StringUtil;
 
-public class Veiculo extends SugarRecord<Veiculo>{
+public class Veiculo extends SugarRecord
+
+{
 
     @Expose
     TipoVeiculo tipoVeiculo;
@@ -15,8 +18,6 @@ public class Veiculo extends SugarRecord<Veiculo>{
     String placa;
     @Expose
     String modelo;
-    @Expose
-    Boolean isCausador;
     @Expose
     String marca;
     @Expose
@@ -145,14 +146,6 @@ public class Veiculo extends SugarRecord<Veiculo>{
         this.placa = placa;
     }
 
-    public Boolean getCulpado() {
-        return isCausador;
-    }
-
-    public void setCulpado(Boolean culpado) {
-        isCausador = culpado;
-    }
-
     public String getMarca() {
         return marca;
     }
@@ -164,8 +157,7 @@ public class Veiculo extends SugarRecord<Veiculo>{
 @Override
 public String toString()
 {
-//    if(placa == "0")
-    return this.modelo + " " + this.placa;
+    return StringUtil.checkValue(this.modelo ,-1,"(Sem modelo)")+ " " + StringUtil.checkValue(this.placa,-1,"(Sem placa)");
 }
 
     public String getModelo() {

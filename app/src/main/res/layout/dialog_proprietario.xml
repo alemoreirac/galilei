@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="horizontal" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:background="@color/lightGray"  >
+    android:layout_width="600dp"
+    android:layout_height="400dp"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="8dp">
 
 
     <View
         android:id="@+id/view_media_proprietario"
-        android:layout_height="240dp"
         android:layout_width="3dp"
-        android:background="@color/colorAccent"
-        android:layout_centerHorizontal="true">
-    </View>
-
+        android:layout_height="240dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorAccent"></View>
 
     <!--
-<Spinner
+    <Spinner
     android:id="@+id/spn_EnvolvidoProprietario"
     android:layout_width="250dp"
     android:layout_height="wrap_content"
     android:layout_below="@+id/txv_envolvido"
-  android:layout_centerHorizontal="true"   />
+    android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/txv_envolvido"
@@ -33,36 +32,40 @@
 
 
     <TextView
+        android:id="@+id/txv_Nome_Proprietario"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:id="@+id/txv_Nome_Proprietario"
-        android:layout_toLeftOf="@id/view_media_proprietario"
-        android:layout_marginRight="50dp"
-        android:textSize="18dp"
-        android:text= "Nome Proprietário"/>
-
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/view_media_proprietario"
+        android:text="Nome Proprietário(a)"
+        android:textSize="18dp" />
 
     <EditText
+        android:id="@+id/edt_NomeProprietario"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txv_Nome_Proprietario"
         android:layout_alignLeft="@id/txv_Nome_Proprietario"
-
-        android:id="@+id/edt_NomeProprietario"  />
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:layout_below="@id/txv_Nome_Proprietario"/>
 
     <TextView
+        android:id="@+id/txv_CNH_Proprietario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txv_CNH_Proprietario"
+        android:layout_alignLeft="@+id/edt_ProprietarioCNH"
         android:layout_below="@id/edt_NomeProprietario"
-        android:text="CNH Proprietário"
-        android:layout_alignLeft="@+id/edt_ProprietarioCNH"   />
+        android:text="CNH Proprietário(a)" />
+
     <EditText
+        android:id="@+id/edt_ProprietarioCNH"
         android:layout_width="122dp"
         android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:imeOptions="actionDone"
         android:layout_alignLeft="@id/edt_NomeProprietario"
-        android:layout_below="@id/txv_CNH_Proprietario"
-        android:id="@+id/edt_ProprietarioCNH"  />
+        android:layout_below="@id/txv_CNH_Proprietario" />
 
 
     <Spinner
@@ -70,59 +73,66 @@
         android:layout_width="122dp"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/edt_NomeProprietario"
-        android:layout_below="@id/txv_CNH_Proprietario"/>
+        android:layout_below="@id/txv_CNH_Proprietario" />
 
 
     <TextView
+        android:id="@+id/txv_Categoria_Proprietario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/categoria"
+        android:layout_alignLeft="@id/spn_CNH_Proprietario_720"
         android:layout_below="@id/edt_NomeProprietario"
-        android:layout_alignLeft="@id/spn_CNH_Proprietario_720"   />
+        android:text="@string/categoria" />
 
 
     <CheckBox
         android:id="@+id/cxb_Proprietario_Nao_Habilitado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edt_ProprietarioCNH"
-        android:hint="Proprietário Não Habilitado"
         android:layout_alignLeft="@+id/edt_ProprietarioCNH"
-        />
+        android:layout_below="@id/edt_ProprietarioCNH"
+        android:hint="Proprietário(a) Não Habilitado(a)" />
 
+
+    <!-- CONDUTOR -->
 
     <TextView
+        android:id="@+id/txv_Nome_Condutor"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:id="@+id/txv_Nome_Condutor"
-        android:layout_toRightOf="@+id/view_media_proprietario"
         android:layout_alignBottom="@id/txv_Nome_Proprietario"
-        android:text="Nome Condutor"
-        android:textSize="18dp"
-        android:layout_marginLeft="10dp"
-        />
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/view_media_proprietario"
+        android:text="Nome Condutor(a)"
+        android:textSize="18dp" />
 
 
     <EditText
+        android:id="@+id/edt_Nome_Condutor"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txv_Nome_Condutor"
         android:layout_alignLeft="@id/txv_Nome_Condutor"
-        android:id="@+id/edt_Nome_Condutor"/>
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:layout_below="@id/txv_Nome_Condutor" />
 
     <TextView
+        android:id="@+id/txv_CNH_Condutor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txv_CNH_Condutor"
+        android:layout_alignLeft="@+id/edt_CondutorCNH"
         android:layout_below="@id/edt_Nome_Condutor"
-        android:text="CNH Condutor"
-        android:layout_alignLeft="@+id/edt_CondutorCNH"   />
+        android:text="CNH Condutor(a)" />
+
     <EditText
+        android:id="@+id/edt_CondutorCNH"
         android:layout_width="122dp"
         android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:imeOptions="actionDone"
         android:layout_alignLeft="@id/edt_Nome_Condutor"
-        android:layout_below="@id/txv_CNH_Condutor"
-        android:id="@+id/edt_CondutorCNH"  />
+        android:layout_below="@id/txv_CNH_Condutor" />
 
 
     <Spinner
@@ -130,47 +140,46 @@
         android:layout_width="122dp"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/edt_Nome_Condutor"
-        android:layout_below="@id/txv_CNH_Condutor"/>
+        android:layout_below="@id/txv_CNH_Condutor" />
 
 
     <TextView
         android:id="@+id/txv_Categoria_Condutor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/categoria"
+        android:layout_alignLeft="@id/spn_CNH_Condutor_720"
         android:layout_below="@id/edt_Nome_Condutor"
-        android:layout_alignLeft="@id/spn_CNH_Condutor_720"/>
+        android:text="@string/categoria" />
 
 
     <CheckBox
         android:id="@+id/cxb_Condutor_Nao_Habilitado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edt_CondutorCNH"
-        android:hint="Condutor Não Habilitado"
         android:layout_alignLeft="@+id/edt_CondutorCNH"
-        />
+        android:layout_below="@id/edt_CondutorCNH"
+        android:hint="Condutor(a) Não Habilitado(a)" />
 
 
     <CheckBox
         android:id="@+id/cxb_Proprietario_Nao_Identificado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cxb_Proprietario_Nao_Habilitado"
-        android:hint="Proprietario Não Identificado"
         android:layout_alignLeft="@+id/cxb_Proprietario_Nao_Habilitado"
-        android:textColorHint="@color/colorAccent"
+        android:layout_below="@id/cxb_Proprietario_Nao_Habilitado"
         android:layout_marginTop="10dp"
-        />
+        android:hint="Proprietario(a) Não Identificado(a)"
+        android:textColorHint="@color/colorAccent" />
+
     <CheckBox
-        android:id="@+id/cxb_Proprietario_igual_Condutor"
+        android:id="@+id/cxb_Condutor_igual_Proprietario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cxb_Proprietario_Nao_Identificado"
-        android:hint="Proprietario é o Condutor"
-        android:layout_alignLeft="@+id/cxb_Proprietario_Nao_Habilitado"
-        android:textColorHint="@color/colorAccent"
+        android:layout_alignLeft="@+id/cxb_Condutor_Nao_Identificado"
+        android:layout_below="@id/cxb_Condutor_Nao_Identificado"
         android:layout_marginTop="10dp"
+        android:hint="Condutor(a) é o(a) proprietário(a)"
+        android:textColorHint="@color/colorAccent"
 
         />
 
@@ -178,40 +187,40 @@
         android:id="@+id/btn_Salvar_Proprietario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cxb_Proprietario_igual_Condutor"
-        android:layout_toLeftOf="@id/view_media_proprietario"
+        android:layout_below="@id/cxb_Condutor_igual_Proprietario"
         android:layout_marginRight="100dp"
         android:layout_marginTop="20dp"
-        android:text="Salvar"/>
+        android:layout_toLeftOf="@id/view_media_proprietario"
+        android:text="Salvar" />
 
     <Button
         android:id="@+id/btn_Cancelar_Proprietario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancelar"
         android:layout_alignBottom="@id/btn_Salvar_Proprietario"
         android:layout_marginLeft="100dp"
-        android:layout_toRightOf="@+id/view_media_proprietario"/>
+        android:layout_toRightOf="@+id/view_media_proprietario"
+        android:text="@string/cancelar" />
 
     <CheckBox
         android:id="@+id/cxb_Condutor_Nao_Identificado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Condutor Não Identificado"
-        android:textColorHint="@color/colorAccent"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/cxb_Condutor_Nao_Habilitado"
         android:layout_alignLeft="@+id/cxb_Condutor_Nao_Habilitado"
-        android:layout_alignStart="@+id/cxb_Condutor_Nao_Habilitado"/>
+        android:layout_alignStart="@+id/cxb_Condutor_Nao_Habilitado"
+        android:layout_below="@+id/cxb_Condutor_Nao_Habilitado"
+        android:layout_marginTop="10dp"
+        android:hint="Condutor(a) Não Identificado(a)"
+        android:textColorHint="@color/colorAccent" />
 
     <TextView
         android:id="@+id/txv_Condutor_Proprietario"
-        android:text="O condutor é o proprietário."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spn_CNH_Condutor_720"
-        android:layout_toRightOf="@+id/view_media_proprietario"
+        android:layout_above="@id/cxb_Proprietario_Nao_Habilitado"
         android:layout_marginLeft="10dp"
-        android:visibility="invisible"
-        android:textSize="20dp"/>
+        android:layout_toRightOf="@+id/view_media_proprietario"
+        android:text="O condutor é o proprietário."
+        android:textSize="20dp"
+        android:visibility="invisible" />
 </RelativeLayout>

@@ -48,9 +48,12 @@
 
         <EditText
             android:id="@+id/edt_Foto_Titulo_Vida"
-            android:layout_width="500dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="160dp"
+            android:layout_alignLeft="@id/imgv_Foto_Detalhe_Vida"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:layout_below="@id/imgv_Foto_Detalhe_Vida"
             android:layout_marginTop="30dp"/>
 
@@ -79,22 +82,22 @@
             android:layout_alignLeft="@id/txv_Categoria_Foto_Vida"/>
 
 
-        <Button
-            android:id="@+id/btn_Salvar_Foto_Vida"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="Salvar"/>
+        <!--<Button-->
+            <!--android:id="@+id/btn_Salvar_Foto_Vida"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:text="Salvar"/>-->
 
-        <Button
-            android:id="@+id/btn_Cancelar_Foto_Vida"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_alignBottom="@id/btn_Salvar_Foto_Vida"
-            android:text="@string/cancelar"
-            android:layout_toRightOf="@id/btn_Salvar_Foto_Vida"
-            android:layout_marginLeft="60dp"/>
+        <!--<Button-->
+            <!--android:id="@+id/btn_Cancelar_Foto_Vida"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_alignBottom="@id/btn_Salvar_Foto_Vida"-->
+            <!--android:text="@string/cancelar"-->
+            <!--android:layout_toRightOf="@id/btn_Salvar_Foto_Vida"-->
+            <!--android:layout_marginLeft="60dp"/>-->
 
 
 

@@ -1,5 +1,7 @@
 package Model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
@@ -16,7 +18,7 @@ import Util.TempoUtil;
  * Created by Pefoce on 05/10/2017.
  */
 
-public class Ocorrencia extends SugarRecord<Ocorrencia> {
+public class Ocorrencia extends SugarRecord  implements Comparable<Ocorrencia> {
 
     TipoOcorrencia tipoOcorrencia;
 
@@ -142,5 +144,16 @@ public class Ocorrencia extends SugarRecord<Ocorrencia> {
     public void setOcorrenciaVida(OcorrenciaVida ocorrenciaVida)
     {
         this.ocorrenciaVida = ocorrenciaVida;
+    }
+
+    @Override
+    public int compareTo(@NonNull Ocorrencia o)
+    {
+        return getDataChamado().compareTo(o.getDataChamado())*-1;
+    }
+    @Override
+    public String toString()
+    {
+        return this.getId().toString();
     }
 }

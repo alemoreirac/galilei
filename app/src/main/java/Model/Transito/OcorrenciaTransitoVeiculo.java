@@ -6,7 +6,9 @@ import com.orm.SugarRecord;
 /**
  * Created by Pefoce on 17/07/2017.
  */
-public class OcorrenciaTransitoVeiculo extends SugarRecord<OcorrenciaTransitoVeiculo> {
+public class OcorrenciaTransitoVeiculo extends SugarRecord
+
+{
 
     @Expose
     private OcorrenciaTransito ocorrenciaTransito;

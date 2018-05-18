@@ -18,6 +18,7 @@ import Enums.Vida.PosicaoCabeca;
 import Enums.Vida.PosicaoPerna;
 import Enums.Vida.PosicaoTorax;
 import Enums.UnidadeTempo;
+import Enums.Vida.TipoMorte;
 import Model.Gravacao;
 import Util.BuscadorEnum;
 import Util.TempoUtil;
@@ -26,15 +27,13 @@ import Util.TempoUtil;
  * Created by Pefoce on 20/11/2017.
  */
 
-public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
+public class EnvolvidoVida extends SugarRecord
 {
     String nome;
 
     DocumentoPessoa documentoTipo;
 
     String documentoValor;
-
-    TipoEnvolvidoTransito tipoEnvolvido;
 
     Date nascimento;
 
@@ -50,24 +49,31 @@ public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
 
     private UnidadeTempo unidadeTempo;
 
-    private boolean morteViolenta;
+    private TipoMorte tipoMorte;
 
-    PosicaoBraco posicaoBracoEsquerdo;
-    PosicaoBraco posicaoBracoDireito;
-    PosicaoPerna posicaoPernaEsquerda;
-    PosicaoPerna posicaoPernaDireita;
-    PosicaoTorax posicaoCorpo;
-    PosicaoCabeca posicaoCabeca;
+//    private boolean morteViolenta;
 
-    public boolean isMorteViolenta()
-    {
-        return morteViolenta;
-    }
+    private PosicaoBraco posicaoBracoEsquerdo;
 
-    public void setMorteViolenta(boolean morteViolenta)
-    {
-        this.morteViolenta = morteViolenta;
-    }
+    private PosicaoBraco posicaoBracoDireito;
+
+    private PosicaoPerna posicaoPernaEsquerda;
+
+    private PosicaoPerna posicaoPernaDireita;
+
+    private PosicaoTorax posicaoCorpo;
+
+    private PosicaoCabeca posicaoCabeca;
+
+//    public boolean isMorteViolenta()
+//    {
+//        return morteViolenta;
+//    }
+//
+//    public void setMorteViolenta(boolean morteViolenta)
+//    {
+//        this.morteViolenta = morteViolenta;
+//    }
 
     public String getNome()
     {
@@ -91,8 +97,8 @@ public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
 
     public EnvolvidoVida()
     {
-        final Calendar cSave = Calendar.getInstance();
-        this.nascimento = cSave.getTime();
+//        final Calendar cSave = Calendar.getInstance();
+        this.nascimento = null;
         this.setNome("");
         this.setObservacoes("");
         this.setDocumentoValor("");
@@ -103,7 +109,6 @@ public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
         this.posicaoCabeca = PosicaoCabeca.APOIADA_SOLO;
         this.posicaoPernaDireita = PosicaoPerna.ESTENDIDO;
         this.posicaoPernaEsquerda = PosicaoPerna.ESTENDIDO;
-
     }
 
     public String getDocumentoValor()
@@ -114,16 +119,6 @@ public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
     public void setDocumentoValor(String documentoValor)
     {
         this.documentoValor = documentoValor;
-    }
-
-    public TipoEnvolvidoTransito getTipoEnvolvido()
-    {
-        return tipoEnvolvido;
-    }
-
-    public void setTipoEnvolvido(TipoEnvolvidoTransito tipoEnvolvido)
-    {
-        this.tipoEnvolvido = tipoEnvolvido;
     }
 
     public Date getNascimento()
@@ -259,8 +254,14 @@ public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
     public void setDataNascimentoString(String s)
     {
         final Calendar c = Calendar.getInstance();
-        c.setTime(TempoUtil.stringToDate(s));
-
+      try
+      {
+          c.setTime(TempoUtil.stringToDate(s));
+      }catch (Exception e )
+      {
+          this.nascimento = null;
+          return;
+      }
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
@@ -295,16 +296,26 @@ public class EnvolvidoVida extends SugarRecord<EnvolvidoVida>
         return secoesList;
     }
 
+    public TipoMorte getTipoMorte()
+    {
+        return tipoMorte;
+    }
+
+    public void setTipoMorte(TipoMorte tipoMorte)
+    {
+        this.tipoMorte = tipoMorte;
+    }
+
     public String getDataNascimentoString()
     {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Calendar c = Calendar.getInstance();
-        c.setTime(this.getNascimento());
 
-        String data;
+        if (this.getNascimento() != null)
+            c.setTime(this.getNascimento());
+        else
+            return "--/--/----";
 
-        data = format.format(c.getTime());
-
-        return data;
+        return format.format(c.getTime());
     }
 }

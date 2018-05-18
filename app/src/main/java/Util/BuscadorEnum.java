@@ -22,7 +22,7 @@ import Enums.TiposMunicao;
 import Enums.TiposVestigioBiologico;
 import Enums.Transito.AtoresColisao;
 import Enums.CategoriaFoto;
-import Enums.ConclusaoTransito;
+import Enums.Transito.ConclusaoTransito;
 import Enums.Transito.CondicaoPista;
 import Enums.Cor;
 import Enums.DocumentoPessoa;
@@ -53,6 +53,7 @@ import Enums.Transito.TipoVia;
 import Enums.Transito.TipoEnvolvidoTransito;
 import Enums.Transito.Topografia;
 import Enums.UnidadeTempo;
+import Enums.Vida.LesoesEnabled;
 import Enums.Vida.LocalizacaoLesao;
 import Enums.Vida.NaturezaLesao;
 import Enums.Vida.ParteCorpo;
@@ -62,7 +63,7 @@ import Enums.Vida.PosicaoPerna;
 import Enums.Vida.PosicaoTorax;
 import Enums.Vida.Secao;
 import Enums.Vida.TipoAberturaLocal;
-import Enums.Vida.TipoOcorrenciaVida;
+import Enums.Vida.TipoMorte;
 import Enums.Vida.TipoRecolhimentoAmostra_Biologica;
 import Enums.Vida.TipoVestigioVida;
 import Model.Transito.ColisaoTransito;
@@ -250,8 +251,8 @@ public class BuscadorEnum
 
         for (SetorDano item : SetorDano.values())
         {
-            if (item.getValor().equals(valor))
-                //if(SetorDano.valueOf(SetorDano.class,item.toString()).toString().equals(valor))
+//            if (item.getValor() == valor)
+                if(SetorDano.valueOf(SetorDano.class,item.toString()).toString().equals(valor))
                 return item;
         }
         return null;
@@ -526,9 +527,9 @@ public class BuscadorEnum
         return null;
     }
 
-    public static TipoOcorrenciaVida BuscarTipoOcorrenciaVida(String valor)
+    public static TipoMorte BuscarTipoMorte(String valor)
     {
-        for (TipoOcorrenciaVida item : TipoOcorrenciaVida.values())
+        for (TipoMorte item : TipoMorte.values())
         {
             if (item.getValor() == valor)
                 return item;
@@ -765,7 +766,7 @@ public class BuscadorEnum
                     return i;
             }
         }
-        return null;
+        return 0;
     }
 
     public static Integer getEnvolvidoIndexById(Spinner spinner, Long id)
@@ -810,10 +811,8 @@ public class BuscadorEnum
     {
         for (int i = 0; i < enderecos.size(); i++)
         {
-            if (enderecos.get(i).getId().equals(et.getId()))
-            {
-                return i;
-            }
+//            if (enderecos.get(i).getId().equals(et.getId()))
+                return enderecos.indexOf(et);
         }
         return -1;
     }
@@ -879,6 +878,45 @@ public class BuscadorEnum
         return -1;
     }
 
+    public static LesoesEnabled EncontrarLesoesEnabled(Secao secao)
+    {
+        switch (secao)
+        {
+            case CLAVICULAR_ANTERIOR_DIREITO:
+            case PEITORAL_DIREITO:
+            case HIPOCONDRIO_DIREITO:
+            case FLANCO_DIREITO:
+            case ILIACO_ANTERIOR_DIREITO:
+
+            case CLAVICULAR_ANTERIOR_ESQUERDO:
+            case PEITORAL_ESQUERDO:
+            case HIPOCONDRIO_ESQUERDO:
+            case FLANCO_ESQUERDO:
+            case ILIACO_ANTERIOR_ESQUERDO:
+
+            case GENITAL:
+
+
+            return LesoesEnabled.ANTERIOR;
+
+
+            case TORACICO_DIREITO:
+            case ESCAPULAR_DIREITO:
+            case LOMBAR_DIREITO:
+            case ILIACO_POSTERIOR_DIREITO:
+            case GLUTEO_DIREITO:
+
+            case TORACICO_ESQUERDO:
+            case ESCAPULAR_ESQUERDO:
+            case LOMBAR_ESQUERDO:
+            case ILIACO_POSTERIOR_ESQUERDO:
+            case GLUTEO_ESQUERDO:
+
+            case ANUS:
+            return LesoesEnabled.POSTERIOR;
+        }
+        return null;
+    }
 
     public static ParteCorpo EncontrarParteCorpo(Secao secao)
     {
@@ -923,12 +961,12 @@ public class BuscadorEnum
             case HIPOCONDRIO_ESQUERDO:
             case FLANCO_ESQUERDO:
             case ILIACO_ANTERIOR_ESQUERDO:
-            case CLAVICULAR_POSTERIOR_DIREITO:
+            case TORACICO_ESQUERDO:
             case ESCAPULAR_DIREITO:
             case LOMBAR_DIREITO:
             case ILIACO_POSTERIOR_DIREITO:
             case GLUTEO_DIREITO:
-            case CLAVICULAR_POSTERIOR_ESQUERDO:
+            case TORACICO_DIREITO:
             case ESCAPULAR_ESQUERDO:
             case LOMBAR_ESQUERDO:
             case ILIACO_POSTERIOR_ESQUERDO:
@@ -1021,12 +1059,12 @@ public class BuscadorEnum
                 else
                     return SecaoImagem.ANTERIOR_MASCULINO;
 
-            case CLAVICULAR_POSTERIOR_DIREITO:
+            case TORACICO_DIREITO:
             case ESCAPULAR_DIREITO:
             case LOMBAR_DIREITO:
             case ILIACO_POSTERIOR_DIREITO:
             case GLUTEO_DIREITO:
-            case CLAVICULAR_POSTERIOR_ESQUERDO:
+            case TORACICO_ESQUERDO:
             case ESCAPULAR_ESQUERDO:
             case LOMBAR_ESQUERDO:
             case ILIACO_POSTERIOR_ESQUERDO:

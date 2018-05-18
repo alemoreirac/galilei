@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,10 +18,13 @@ import com.example.pefoce.peritolocal.GerenciarCabeca;
 import com.example.pefoce.peritolocal.GerenciarPernas;
 import com.example.pefoce.peritolocal.GerenciarTorax;
 import com.example.pefoce.peritolocal.R;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Enums.Vida.LesoesEnabled;
 import Enums.Vida.LocalizacaoLesao;
 import Enums.Vida.NaturezaLesao;
 import Enums.Vida.ParteCorpo;
@@ -37,24 +41,25 @@ import Util.BuscadorEnum;
 public class LesaoDialog
 {
 
-    Dialog dialog;
-    public Context context = null;
-    public Spinner spnNaturezaLesao, spnLocalLesao;
-    public CheckBox cxbCompatibilidade;
-    public Button btnLimparLesao, btnSalvarLesao, btnAddLesao;
-    public ListView lstvLesoes;
-    public ArrayAdapter<Lesao> adapterLesoes;
-    public ArrayList<Lesao> lesoesModelNovas;
-    public ArrayList<Lesao> lesoesModel;
-    public List<LesaoEnvolvido> lesaoEnvolvidoList;
-    public EnvolvidoVida envolvidoVida;
-    Secao secao;
-    ParteCorpo parteCorpo;
+  static  Dialog dialog;
+  static  public Context context = null;
+  static  public Spinner spnNaturezaLesao, spnLocalLesao;
+  static  public CheckBox cxbCompatibilidade;
+  static  public Button btnLimparLesao, btnSalvarLesao, btnAddLesao;
+  static  public ListView lstvLesoes;
+  static  public ArrayAdapter<Lesao> adapterLesoes;
+  static  public ArrayList<Lesao> lesoesModelNovas;
+  static  public ArrayList<Lesao> lesoesModel;
+  static  public List<LesaoEnvolvido> lesaoEnvolvidoList;
+  static  public EnvolvidoVida envolvidoVida;
+  static  Secao secao;
+    static  ParteCorpo parteCorpo;
+    static  LesoesEnabled lesoesEnabled;
 
-    public LesaoDialog(Context ctx, EnvolvidoVida envolvidoVida_, Secao secao_)
+    public static void show(Context ctx, EnvolvidoVida envolvidoVida_, Secao secao_, LesoesEnabled le)
     {
         context = ctx;
-
+        lesoesEnabled = le;
         parteCorpo = BuscadorEnum.EncontrarParteCorpo(secao_);
         secao = secao_;
         envolvidoVida = envolvidoVida_;
@@ -68,10 +73,15 @@ public class LesaoDialog
         AssociarLayout();
         AssociarEventos();
         CarregarLesoes();
+
+
+
+
+
     }
 
 
-    private void AssociarLayout()
+    private static void AssociarLayout()
     {
         spnLocalLesao = (Spinner) dialog.findViewById(R.id.spn_dialog_Localizacao_Lesao);
         spnNaturezaLesao = (Spinner) dialog.findViewById(R.id.spn_dialog_Natureza_Lesao);
@@ -85,8 +95,29 @@ public class LesaoDialog
 
         ArrayList<String> locaisLesao = new ArrayList<String>();
 
-        for (LocalizacaoLesao lesao : LocalizacaoLesao.values())
-            locaisLesao.add(lesao.getValor());
+        if(lesoesEnabled!=null)
+        {
+            switch (lesoesEnabled)
+            {
+                case TODOS:
+                for (LocalizacaoLesao lesao : LocalizacaoLesao.values())
+                    locaisLesao.add(lesao.getValor());
+                break;
+                case ANTERIOR:
+                    locaisLesao.add(LocalizacaoLesao.FRONTAL.getValor());
+                    spnLocalLesao.setEnabled(false);
+                    break;
+                case POSTERIOR:
+                    locaisLesao.add(LocalizacaoLesao.TRASEIRA.getValor());
+                    spnLocalLesao.setEnabled(false);
+                    break;
+            }
+        }
+        else
+        {
+            for (LocalizacaoLesao lesao : LocalizacaoLesao.values())
+                locaisLesao.add(lesao.getValor());
+        }
 
         spnLocalLesao.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, locaisLesao));
 
@@ -98,9 +129,8 @@ public class LesaoDialog
         spnNaturezaLesao.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, naturezasLesao));
     }
 
-    private void CarregarLesoes()
+    private static void CarregarLesoes()
     {
-
         lesaoEnvolvidoList = LesaoEnvolvido.find(LesaoEnvolvido.class, "envolvido_vida = ?", envolvidoVida.getId().toString());
 
         lesoesModel = new ArrayList<>();
@@ -126,29 +156,29 @@ public class LesaoDialog
         {
             ParteCorpo pc = BuscadorEnum.EncontrarParteCorpo(lesaoEnvolvidoList.get(0).getLesao().getSecaoLesao());
 
-            if (pc.equals(ParteCorpo.CABECA))
-            {
-                spnLocalLesao.setSelection(BuscadorEnum.getIndex(spnLocalLesao, LocalizacaoLesao.FRONTAL.getValor()));
+            if (pc.equals(ParteCorpo.CABECA) || pc.equals(ParteCorpo.TORAX))
+
+//                spnLocalLesao.setSelection(BuscadorEnum.getIndex(spnLocalLesao, LocalizacaoLesao.FRONTAL.getValor()));
                 spnLocalLesao.setEnabled(false);
-            }
 
-            if (pc.equals(ParteCorpo.TORAX))
-            {
-                ArrayList<String> locaisLesao = new ArrayList<String>();
 
-                for (LocalizacaoLesao lesao : LocalizacaoLesao.values())
-                {
-                    if(!lesao.equals(LocalizacaoLesao.TRASEIRA))
-                    locaisLesao.add(lesao.getValor());
-                }
-
-                spnLocalLesao.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, locaisLesao));
-            }
+//            if (pc.equals(ParteCorpo.TORAX))
+//            {
+//                ArrayList<String> locaisLesao = new ArrayList<String>();
+//
+//                for (LocalizacaoLesao lesao : LocalizacaoLesao.values())
+//                {
+//                    if(!lesao.equals(LocalizacaoLesao.TRASEIRA))
+//                    locaisLesao.add(lesao.getValor());
+//                }
+//
+//                spnLocalLesao.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, locaisLesao));
+//            }
 
         }
     }
 
-    private void AssociarEventos()
+    private static void AssociarEventos()
     {
         btnAddLesao.setOnClickListener(new View.OnClickListener()
         {

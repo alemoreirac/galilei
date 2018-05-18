@@ -1,5 +1,6 @@
 package ViewHolders;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -8,20 +9,20 @@ import android.widget.TextView;
 
 public class ViewHolderOcorrencia {
 
-    TextView txtTipoDoc;
     TextView txtNumeroDoc;
-    TextView txtData;
-    TextView txtTipoOcorrencia;
     TextView txtEndereco;
     TextView txtOrigem;
     TextView txtDestino;
+    ImageView imgvTipoOcorrencia;
 
-    public TextView getTxtTipoDoc() {
-        return txtTipoDoc;
+    public ImageView getImgvTipoOcorrencia()
+    {
+        return imgvTipoOcorrencia;
     }
 
-    public void setTxtTipoDoc(TextView txtTipoDoc) {
-        this.txtTipoDoc = txtTipoDoc;
+    public void setImgvTipoOcorrencia(ImageView imgvTipoOcorrencia)
+    {
+        this.imgvTipoOcorrencia = imgvTipoOcorrencia;
     }
 
     public TextView getTxtNumeroDoc() {
@@ -30,22 +31,6 @@ public class ViewHolderOcorrencia {
 
     public void setTxtNumeroDoc(TextView txtNumeroDoc) {
         this.txtNumeroDoc = txtNumeroDoc;
-    }
-
-    public TextView getTxtData() {
-        return txtData;
-    }
-
-    public void setTxtData(TextView txtData) {
-        this.txtData = txtData;
-    }
-
-    public TextView getTxtTipoOcorrencia() {
-        return txtTipoOcorrencia;
-    }
-
-    public void setTxtTipoOcorrencia(TextView txtTipoOcorrencia) {
-        this.txtTipoOcorrencia = txtTipoOcorrencia;
     }
 
     public TextView getTxtEndereco() {

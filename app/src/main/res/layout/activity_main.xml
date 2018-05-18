@@ -9,6 +9,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:windowSoftInputMode="adjustPan|adjustResize"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.pefoce.peritolocal.MainActivity">
 
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Alessandro Moreira Collado"
+
             android:id="@+id/txv_Perito"
             />
 
@@ -88,7 +89,41 @@
             android:layout_width="wrap_content"
             android:background="@drawable/border_gray"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_busca"/>
+            android:layout_below="@+id/edt_busca"
+            android:layout_marginBottom="65dp"/>
+
+
+        <Button
+            android:id="@+id/btn_Anterior_Pagina"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+
+            android:background="?attr/actionModeCloseDrawable" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Página 1 de 1"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/btn_Anterior_Pagina"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txv_Pagina"/>
+
+
+        <Button
+            android:id="@+id/btn_Proxima_Pagina"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/txv_Pagina"
+            android:background="?attr/actionModeCloseDrawable"
+            android:rotation="180" />
 
 
     </RelativeLayout>

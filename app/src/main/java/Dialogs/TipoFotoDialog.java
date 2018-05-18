@@ -7,12 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.pefoce.peritolocal.ManterPericiaTransito;
 import com.example.pefoce.peritolocal.R;
 import com.frosquivel.magicalcamera.MagicalCamera;
-
-import Fragments.FragmentsTransito.GerenciarEnvolvido;
-import Model.Transito.OcorrenciaTransito;
 
 /**
  * Created by Pefoce on 03/01/2018.

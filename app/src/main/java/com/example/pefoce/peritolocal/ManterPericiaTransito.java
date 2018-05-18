@@ -20,12 +20,12 @@ import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 
-import Fragments.FragmentsTransito.GerenciarColisoes;
-import Fragments.FragmentsTransito.GerenciarConclusao;
-import Fragments.FragmentsTransito.GerenciarEndereco;
-import Fragments.FragmentsTransito.GerenciarEnvolvido;
-import Fragments.FragmentsTransito.GerenciarFotos;
-import Fragments.FragmentsTransito.GerenciarVeiculo;
+import Fragments.FragmentsTransito.GerenciarColisoesTransito;
+import Fragments.FragmentsTransito.GerenciarConclusaoTransito;
+import Fragments.FragmentsTransito.GerenciarEnderecoTransito;
+import Fragments.FragmentsTransito.GerenciarEnvolvidoTransito;
+import Fragments.FragmentsTransito.GerenciarFotosTransito;
+import Fragments.FragmentsTransito.GerenciarVeiculoTransito;
 import Fragments.FragmentsTransito.OcorrenciaTransitoFragment;
 
 import Model.Ocorrencia;
@@ -175,27 +175,27 @@ public class ManterPericiaTransito extends AppCompatActivity implements StepperL
                     stepOcorrencia.setArguments(bd);
                     return stepOcorrencia;
                 case 1:
-                    GerenciarEndereco stepEndereco = new GerenciarEndereco();
+                    GerenciarEnderecoTransito stepEndereco = new GerenciarEnderecoTransito();
                     stepEndereco.setArguments(bd);
                     return stepEndereco;
                 case 2:
-                    final GerenciarVeiculo stepVeiculo = new GerenciarVeiculo();
+                    final GerenciarVeiculoTransito stepVeiculo = new GerenciarVeiculoTransito();
                     stepVeiculo.setArguments(bd);
                     return stepVeiculo;
                 case 3:
-                    GerenciarEnvolvido stepEnvolvido = new GerenciarEnvolvido();
+                    GerenciarEnvolvidoTransito stepEnvolvido = new GerenciarEnvolvidoTransito();
                     stepEnvolvido.setArguments(bd);
                     return stepEnvolvido;
                 case 4:
-                    final GerenciarColisoes stepColisao = new GerenciarColisoes();
+                    final GerenciarColisoesTransito stepColisao = new GerenciarColisoesTransito();
                     stepColisao.setArguments(bd);
                     return stepColisao;
                 case 5:
-                    final GerenciarFotos stepFoto = new GerenciarFotos();
+                    final GerenciarFotosTransito stepFoto = new GerenciarFotosTransito();
                     stepFoto.setArguments(bd);
                     return stepFoto;
                 case 6:
-                    final GerenciarConclusao stepConclusao = new GerenciarConclusao();
+                    final GerenciarConclusaoTransito stepConclusao = new GerenciarConclusaoTransito();
                     stepConclusao.setArguments(bd);
                     return stepConclusao;
                 default:
@@ -214,6 +214,8 @@ public class ManterPericiaTransito extends AppCompatActivity implements StepperL
     {
 
         Bundle args = new Bundle();
+
+
 
         if (it.getLongExtra("OcorrenciaId", 0) != 0)
         {

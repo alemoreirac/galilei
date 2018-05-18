@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 21/11/2017.
  */
 
-public class LesaoEnvolvido extends SugarRecord<LesaoEnvolvido>
+public class LesaoEnvolvido extends SugarRecord
 {
     Lesao lesao;
     EnvolvidoVida envolvidoVida;

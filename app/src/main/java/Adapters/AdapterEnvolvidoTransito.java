@@ -66,9 +66,14 @@ public class AdapterEnvolvidoTransito extends ArrayAdapter<EnvolvidoTransito>  i
             fatalidade.setText("Vítima Fatal");
 
 
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+//
+//        idade.setText(format.format(envolvido.getNascimento()));
+        if(envolvido.getNascimento()!=null)
+            idade.setText(envolvido.getNascimentoString());
+        else
+            idade.setText("--/--/----");
 
-        idade.setText(format.format(envolvido.getNascimento()));
         return convertView;
 
     }

@@ -2,7 +2,9 @@ package Dialogs;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -13,9 +15,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,60 +48,49 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  * Created by Pefoce on 21/08/2017.
  */
 
-public class AudioDialog extends DialogFragment implements ActivityCompat.OnRequestPermissionsResultCallback
+public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCallback
 {
 
-    public Activity activity = null;
-    public boolean Sobrescrever = false;
-    public LinearLayout buttonStart, buttonStop, buttonPlayLastRecordAudio, buttonStopPlayingRecording;
-    public String pathArquivo = null;
-    public MediaRecorder mediaRecorder;
-    public static final int RequestPermissionCode = 2;
-    public MediaPlayer mediaPlayer;
-    public TextView txvPath = null;
-    public Bundle bundle;
-    public OcorrenciaTransito ocorrenciaTransito;
-    Ocorrencia ocorrencia;
-    public ColisaoTransito colisaoTransito;
-    public boolean Colisao;
-    EnvolvidoVida envolvidoVida;
-    String path;
-    TipoOcorrencia tipoOcorrencia;
-    public EnderecoVida enderecoVida;
-    public OcorrenciaVida ocorrenciaVida;
-    String secaoVida;
+    public static Dialog dialog;
 
-    public AudioDialog()
+  static public Activity activity = null;
+  static public boolean Sobrescrever = false;
+  static public LinearLayout buttonStart, buttonStop, buttonPlayLastRecordAudio, buttonStopPlayingRecording;
+  static public String pathArquivo = null;
+  static public MediaRecorder mediaRecorder;
+  static public   final int RequestPermissionCode = 2;
+  static public MediaPlayer mediaPlayer;
+  static public TextView txvPath = null;
+  static public Bundle bundle;
+  static public OcorrenciaTransito ocorrenciaTransito;
+  static Ocorrencia ocorrencia;
+  static public ColisaoTransito colisaoTransito;
+  static public boolean Colisao;
+  static EnvolvidoVida envolvidoVida;
+  static String path;
+  static TipoOcorrencia tipoOcorrencia;
+  static public EnderecoVida enderecoVida;
+  static public OcorrenciaVida ocorrenciaVida;
+  static String secaoVida;
+
+    public static void show(Activity a,Bundle bundle)
     {
-    }
+        dialog = new Dialog(a);
+        dialog.setContentView(R.layout.dialog_audio);
+        dialog.getWindow().setLayout(500,300);
+        dialog.setTitle("Gravações");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
-    public static AudioDialog newInstance(String title, String local)
-    {
-        AudioDialog frag = new AudioDialog();
+        Bundle bd = bundle;
 
-        Bundle args = new Bundle();
-
-        args.putString("Gravar Áudio", title);
-        args.putString("Local", local);
-
-        frag.setArguments(args);
-
-        return frag;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.dialog_audio, container, false);
-
-        Bundle bd = getArguments();
-
-        activity = getActivity();
+        activity = a;
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, bd.getLong("OcorrenciaId"));
 
+        AssociarLayout(dialog);
 
-        AssociarLayout(view);
+        AssociarEventos();
 
         tipoOcorrencia = ocorrencia.getTipoOcorrencia();
 
@@ -204,45 +197,45 @@ public class AudioDialog extends DialogFragment implements ActivityCompat.OnRequ
                     {
                         case "Endereco":
 
-                                if (enderecoVida.getGravacaoEndereco() != null)
+                            if (enderecoVida.getGravacaoEndereco() != null)
+                            {
+                                File file = new File(enderecoVida.getGravacaoEndereco().getArquivo());
+                                if (file.exists())
                                 {
-                                    File file = new File(enderecoVida.getGravacaoEndereco().getArquivo());
-                                    if (file.exists())
-                                    {
-                                        Sobrescrever = true;
-                                        buttonPlayLastRecordAudio.setEnabled(true);
-                                        txvPath.setText(file.getName());
-                                    } else
-                                    {
-                                        txvPath.setText("Não há arquivo");
-                                    }
-                                }
-                                else
+                                    Sobrescrever = true;
+                                    buttonPlayLastRecordAudio.setEnabled(true);
+                                    txvPath.setText(file.getName());
+                                } else
                                 {
                                     txvPath.setText("Não há arquivo");
-                                    buttonPlayLastRecordAudio.setEnabled(false);
                                 }
+                            }
+                            else
+                            {
+                                txvPath.setText("Não há arquivo");
+                                buttonPlayLastRecordAudio.setEnabled(false);
+                            }
                             break;
                         case "Envolvido":
 
-                                if (envolvidoVida.getGravacaoEnvolvido() != null)
+                            if (envolvidoVida.getGravacaoEnvolvido() != null)
+                            {
+                                File file = new File(envolvidoVida.getGravacaoEnvolvido().getArquivo());
+                                if (file.exists())
                                 {
-                                    File file = new File(envolvidoVida.getGravacaoEnvolvido().getArquivo());
-                                    if (file.exists())
-                                    {
-                                        Sobrescrever = true;
-                                        buttonPlayLastRecordAudio.setEnabled(true);
-                                        txvPath.setText(file.getName());
-                                    } else
-                                    {
-                                        txvPath.setText("Não há arquivo");
-                                    }
-                                }
-                                else
+                                    Sobrescrever = true;
+                                    buttonPlayLastRecordAudio.setEnabled(true);
+                                    txvPath.setText(file.getName());
+                                } else
                                 {
                                     txvPath.setText("Não há arquivo");
-                                    buttonPlayLastRecordAudio.setEnabled(false);
                                 }
+                            }
+                            else
+                            {
+                                txvPath.setText("Não há arquivo");
+                                buttonPlayLastRecordAudio.setEnabled(false);
+                            }
 
                             break;
                     }
@@ -251,37 +244,26 @@ public class AudioDialog extends DialogFragment implements ActivityCompat.OnRequ
             }
         }
 
-
-        return view;
     }
 
-    private void AssociarLayout(View view)
+    private static void AssociarLayout(Dialog d)
     {
 
-        buttonStart = (LinearLayout) view.findViewById(R.id.btn_dialog_REC);
-        buttonStop = (LinearLayout) view.findViewById(R.id.btn_dialog_Stop);
-        buttonPlayLastRecordAudio = (LinearLayout) view.findViewById(R.id.btn_dialog_Play);
-        buttonStopPlayingRecording = (LinearLayout) view.findViewById(R.id.btn_dialog_Stop_Reproduction);
-        txvPath = (TextView) view.findViewById(R.id.txv_Gravacao_Path);
+        buttonStart = (LinearLayout) d.findViewById(R.id.btn_dialog_REC);
+        buttonStop = (LinearLayout) d.findViewById(R.id.btn_dialog_Stop);
+        buttonPlayLastRecordAudio = (LinearLayout) d.findViewById(R.id.btn_dialog_Play);
+        buttonStopPlayingRecording = (LinearLayout) d.findViewById(R.id.btn_dialog_Stop_Reproduction);
+        txvPath = (TextView) d.findViewById(R.id.txv_Gravacao_Path);
 
         buttonStop.setEnabled(false);
         buttonPlayLastRecordAudio.setEnabled(false);
         buttonStopPlayingRecording.setEnabled(false);
-    }
 
-    private void CarregarArquivo()
-    {
 
     }
 
-
-    @Override
-
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    private static void AssociarEventos()
     {
-
-        super.onViewCreated(view, savedInstanceState);
-
         buttonStart.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -338,7 +320,10 @@ public class AudioDialog extends DialogFragment implements ActivityCompat.OnRequ
             @Override
             public void onClick(View view)
             {
+
                 mediaRecorder.stop();
+                mediaRecorder.reset();
+                mediaRecorder.release();
                 buttonStop.setEnabled(false);
                 buttonPlayLastRecordAudio.setEnabled(true);
                 buttonStart.setEnabled(true);
@@ -494,11 +479,10 @@ public class AudioDialog extends DialogFragment implements ActivityCompat.OnRequ
             }
         });
 
-
     }
 
 
-    public void MediaRecorderReady()
+    public static void MediaRecorderReady()
     {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -509,13 +493,14 @@ public class AudioDialog extends DialogFragment implements ActivityCompat.OnRequ
     }
 
 
-    private void requestPermission()
+    private static void requestPermission()
     {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, RequestPermissionCode);
+        dialog.dismiss();
     }
 
 
-    public boolean checkPermission()
+    public static boolean checkPermission()
     {
         int result = ContextCompat.checkSelfPermission(activity,
                 WRITE_EXTERNAL_STORAGE);

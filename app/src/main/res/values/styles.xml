@@ -16,4 +16,10 @@
         <item name="android:background">@color/backgroundgray</item>
     </style>
 
+
+    <style name="colorPickerStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

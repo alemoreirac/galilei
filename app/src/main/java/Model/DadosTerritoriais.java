@@ -9,7 +9,7 @@ import Enums.AreaIntegradaSeguranca;
  * Created by Pefoce on 16/08/2017.
  */
 
-public class DadosTerritoriais extends SugarRecord<DadosTerritoriais>
+public class DadosTerritoriais extends SugarRecord
 {
        @Expose
        String delegacia;

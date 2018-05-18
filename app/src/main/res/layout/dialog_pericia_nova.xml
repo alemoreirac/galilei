@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="12dp"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/view_centro"
+        android:layout_width="500dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/txv_dialog_Titulo_Incidencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Nova Incidência"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Incidencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_dialog_Titulo_Incidencia"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="I20170000000"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/txv_dialog_NumDoc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/view_centro"
+        android:layout_below="@id/txv_dialog_Incidencia"
+        android:layout_marginTop="10dp"
+        android:text="N. Incidência" />
+
+    <EditText
+        android:id="@+id/edt_dialog_NumIncidencia"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/view_centro"
+        android:layout_below="@+id/txv_dialog_NumDoc"
+        android:imeOptions="actionNext"
+        android:layout_marginTop="10dp"
+        android:hint="0000000"
+        android:inputType="number"
+        android:maxLength="7" />
+
+
+    <Spinner
+        android:id="@+id/spn_dialog_Ano_Incidencia"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/edt_dialog_NumIncidencia"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@id/edt_dialog_NumIncidencia"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/txv_dialog_AnoIncidencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/spn_dialog_Ano_Incidencia"
+        android:layout_below="@id/txv_dialog_Incidencia"
+        android:layout_marginTop="10dp"
+        android:text="Ano Incidência" />
+
+    <TextView
+        android:id="@+id/txv_dialog_TipoPericia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txv_dialog_AnoIncidencia"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/spn_dialog_Ano_Incidencia"
+        android:text="Tipo de Ocorrência" />
+
+    <Spinner
+        android:id="@+id/spn_dialog_TipoOcorrencia"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/spn_dialog_Ano_Incidencia"
+        android:layout_alignLeft="@id/txv_dialog_TipoPericia" />
+
+    <TextView
+        android:id="@+id/txv_Tipo_Via_Dialog_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/view_centro"
+        android:layout_below="@id/edt_dialog_NumIncidencia"
+        android:layout_marginTop="10dp"
+        android:text="Tipo Via" />
+
+    <Spinner
+        android:id="@+id/spn_Tipo_Via_Dialog_Ocorrencia"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Tipo_Via_Dialog_Ocorrencia"
+        android:layout_below="@id/txv_Tipo_Via_Dialog_Ocorrencia"
+        android:layout_marginTop="10dp">
+
+    </Spinner>
+
+    <TextView
+        android:id="@+id/txv_dialog_Endereco_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_dialog_NumIncidencia"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/spn_Tipo_Via_Dialog_Ocorrencia"
+        android:text="Endereço" />
+
+    <EditText
+        android:id="@+id/edt_dialog_Endereco_Ocorrencia"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/spn_Tipo_Via_Dialog_Ocorrencia"
+        android:imeOptions="actionNext"
+        android:layout_alignLeft="@id/txv_dialog_Endereco_Ocorrencia"
+        android:inputType="text"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/txv_Complemento_Dialog_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txv_dialog_Endereco_Ocorrencia"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/edt_dialog_Endereco_Ocorrencia"
+        android:text="Complemento" />
+
+    <EditText
+        android:id="@+id/edt_Complemento_Dialog_Ocorrencia"
+        android:layout_width="110dp"
+        android:imeOptions="actionNext"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/edt_dialog_Endereco_Ocorrencia"
+        android:layout_alignLeft="@id/txv_Complemento_Dialog_Ocorrencia"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/txv_dialog_Cidade_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/view_centro"
+        android:layout_below="@id/edt_dialog_Endereco_Ocorrencia"
+        android:layout_marginTop="8dp"
+        android:text="Cidade" />
+
+
+    <AutoCompleteTextView
+        android:id="@+id/auc_dialog_Cidade_Ocorrencia"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_dialog_Cidade_Ocorrencia"
+        android:imeOptions="actionNext"
+        android:layout_below="@+id/txv_dialog_Cidade_Ocorrencia"
+        android:inputType="text"
+        android:maxLines="1"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/auc_dialog_Bairro_Ocorrencia"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/auc_dialog_Cidade_Ocorrencia"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@id/auc_dialog_Cidade_Ocorrencia"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+        android:maxLines="1"/>
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Bairro_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txv_dialog_Cidade_Ocorrencia"
+        android:layout_alignLeft="@id/auc_dialog_Bairro_Ocorrencia"
+        android:text="Bairro" />
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Hora_Chamado_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txv_dialog_Bairro_Ocorrencia"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/auc_dialog_Bairro_Ocorrencia"
+        android:text="Data e Hora Chamado" />
+
+    <TextView
+        android:id="@+id/txv_dialog_Hora_Chamado_Valor_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/auc_dialog_Bairro_Ocorrencia"
+        android:layout_alignLeft="@id/txv_dialog_Hora_Chamado_Ocorrencia"
+        android:layout_marginTop="8dp"
+        android:text="00:00"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/txv_dialog_Data_Chamado_Valor_Ocorrencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txv_dialog_Hora_Chamado_Valor_Ocorrencia"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/txv_dialog_Hora_Chamado_Valor_Ocorrencia"
+        android:text="00/00/0000"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/btn_dialog_IniciarPericia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignRight="@id/view_centro"
+        android:layout_below="@id/txv_dialog_Hora_Chamado_Valor_Ocorrencia"
+        android:layout_marginTop="15dp"
+        android:text="@string/iniciar_pericia"
+        android:textSize="10dp" />
+
+    <Button
+        android:id="@+id/btn_dialog_Cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/btn_dialog_IniciarPericia"
+        android:layout_alignLeft="@+id/view_centro"
+        android:layout_marginTop="15dp"
+        android:text="@string/cancelar"
+        android:textSize="10dp" />
+</RelativeLayout>

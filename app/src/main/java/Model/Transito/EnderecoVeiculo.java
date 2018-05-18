@@ -6,8 +6,8 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 17/07/2017.
  */
 
-public class EnderecoVeiculo extends SugarRecord<EnderecoVeiculo> {
-
+public class EnderecoVeiculo extends SugarRecord
+{
     public EnderecoVeiculo() {
     }
 

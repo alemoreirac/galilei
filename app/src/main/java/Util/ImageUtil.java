@@ -162,12 +162,12 @@ public class ImageUtil
                                         !le.getLesao().getSecaoLesao().equals(Secao.OCCIPITAL_ESQUERDA) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.CERVICAL_ESQUERDA) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.ESCAPULAR_ESQUERDO) &&
-                                        !le.getLesao().getSecaoLesao().equals(Secao.CLAVICULAR_POSTERIOR_ESQUERDO) &&
+                                        !le.getLesao().getSecaoLesao().equals(Secao.TORACICO_ESQUERDO) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.LOMBAR_ESQUERDO) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.ILIACO_POSTERIOR_ESQUERDO) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.GLUTEO_ESQUERDO) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.ESCAPULAR_DIREITO) &&
-                                        !le.getLesao().getSecaoLesao().equals(Secao.CLAVICULAR_POSTERIOR_DIREITO) &&
+                                        !le.getLesao().getSecaoLesao().equals(Secao.TORACICO_DIREITO) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.LOMBAR_DIREITO) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.ILIACO_POSTERIOR_DIREITO) &&
                                         !le.getLesao().getSecaoLesao().equals(Secao.GLUTEO_DIREITO) &&
@@ -178,12 +178,12 @@ public class ImageUtil
                             case POSTERIOR_FEMININO:
                             case POSTERIOR_MASCULINO:
                                 if (le.getLesao().getSecaoLesao().equals(Secao.ESCAPULAR_ESQUERDO) ||
-                                        le.getLesao().getSecaoLesao().equals(Secao.CLAVICULAR_POSTERIOR_ESQUERDO) ||
+                                        le.getLesao().getSecaoLesao().equals(Secao.TORACICO_ESQUERDO) ||
                                         le.getLesao().getSecaoLesao().equals(Secao.LOMBAR_ESQUERDO) ||
                                         le.getLesao().getSecaoLesao().equals(Secao.ILIACO_POSTERIOR_ESQUERDO) ||
                                         le.getLesao().getSecaoLesao().equals(Secao.GLUTEO_ESQUERDO) ||
                                         le.getLesao().getSecaoLesao().equals(Secao.ESCAPULAR_DIREITO) ||
-                                        le.getLesao().getSecaoLesao().equals(Secao.CLAVICULAR_POSTERIOR_DIREITO) ||
+                                        le.getLesao().getSecaoLesao().equals(Secao.TORACICO_DIREITO) ||
                                         le.getLesao().getSecaoLesao().equals(Secao.LOMBAR_DIREITO) ||
                                         le.getLesao().getSecaoLesao().equals(Secao.ILIACO_POSTERIOR_DIREITO) ||
                                         le.getLesao().getSecaoLesao().equals(Secao.GLUTEO_DIREITO) ||
@@ -293,7 +293,7 @@ public class ImageUtil
         if(nome.length()<40)
         cs2.drawText(nome, 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
         else
-        cs2.drawText(nome.substring(0,36)+"...", 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
+        cs2.drawText(StringUtil.checkValue(nome,36,"(Sem nome)"), 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
         return bmp;
     }
 }

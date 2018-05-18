@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import Model.Cidade;
 import Model.DadosTerritoriais;
 import Model.Delegacia;
+import Model.Pessoa;
 
 /**
  * Created by Pefoce on 16/08/2017.
@@ -25,6 +26,18 @@ public class AutoCompleteUtil
             bairros[i] = dados.get(i).getBairro();
 
         return new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,bairros);
+    }
+
+    public static ArrayAdapter<String>getEmails(Context context)
+    {
+        ArrayList<Pessoa> pessoas = (ArrayList<Pessoa>) Pessoa.listAll(Pessoa.class);
+
+        String[] emails = new String[pessoas.size()];
+
+        for(int i = 0; i < pessoas.size();i++)
+            emails[i] = pessoas.get(i).getLogin();
+
+        return new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,emails);
     }
 
     public static ArrayAdapter<String> getCidades(Context context)

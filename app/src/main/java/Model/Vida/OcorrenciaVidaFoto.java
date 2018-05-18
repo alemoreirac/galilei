@@ -10,7 +10,7 @@ import Model.Foto;
  */
 
 
-public class OcorrenciaVidaFoto extends SugarRecord<OcorrenciaVidaFoto>
+public class OcorrenciaVidaFoto extends SugarRecord
 {
 
     public Foto getFoto() {

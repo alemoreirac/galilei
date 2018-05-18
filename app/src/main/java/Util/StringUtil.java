@@ -1,5 +1,7 @@
 package Util;
 
+import com.squareup.picasso.Picasso;
+
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,15 @@ import java.util.List;
 
 public class StringUtil
 {
+    public static boolean isNotNullAndEmpty(String value)
+    {
+        if (value == null)
+            return false;
+        else if (value.isEmpty())
+            return false;
 
+        return true;
+    }
 
     public static String normalize(String entrada)
     {
@@ -43,5 +53,21 @@ public class StringUtil
         }
 
         return tokens;
+
+    }
+
+
+    public static String checkValue(String value, int maxLength, String emptyValue)
+    {
+        if (value == null || value.isEmpty())
+            return emptyValue;
+
+        if (maxLength > 0)
+        {
+            if (value.length() > maxLength)
+                return (value.substring(0, maxLength) + "...");
+        }
+
+        return value;
     }
 }

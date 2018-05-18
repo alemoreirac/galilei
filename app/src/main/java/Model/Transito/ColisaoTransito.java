@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 import Enums.Transito.AtoresColisao;
-import Enums.ConclusaoTransito;
+import Enums.Transito.ConclusaoTransito;
 import Enums.Transito.LocalObjeto;
 import Enums.Transito.LocalPedestre;
 import Enums.OrientacaoGeograficaComposta;
@@ -16,7 +16,7 @@ import Model.Gravacao;
  * Created by Pefoce on 29/08/2017.
  */
 
-public class ColisaoTransito extends SugarRecord<ColisaoTransito>
+public class ColisaoTransito extends SugarRecord
 {
     @Expose
     Veiculo veiculo1;

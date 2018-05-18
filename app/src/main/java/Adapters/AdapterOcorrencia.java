@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pefoce.peritolocal.R;
+import com.squareup.picasso.Picasso;
 
 
 import java.text.DateFormat;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 
 import Enums.TipoOcorrencia;
 import Model.Ocorrencia;
+import Model.Transito.OcorrenciaTransitoEndereco;
+import Model.Vida.EnderecoVida;
 import ViewHolders.ViewHolderOcorrencia;
 
 /**
@@ -56,14 +60,11 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.row_ocorrencia,parent,false);
 
-            viewHolder.setTxtTipoDoc((TextView) convertView.findViewById(R.id.txv_TipoDocumento));
-            viewHolder.setTxtNumeroDoc ((TextView) convertView.findViewById(R.id.txt_NumeroDocumento));
-            viewHolder.setTxtData ((TextView) convertView.findViewById(R.id.txt_DataOcorrencia));
-            viewHolder.setTxtTipoOcorrencia((TextView) convertView.findViewById(R.id.txt_TipoOcorrencia));
-            viewHolder.setTxtEndereco ((TextView) convertView.findViewById(R.id.txt_Endereco));
-            viewHolder.setTxtOrigem ((TextView) convertView.findViewById(R.id.txt_OrgaoOrigem));
-            viewHolder.setTxtDestino ((TextView) convertView.findViewById(R.id.txt_OrgaoDestino));
-
+            viewHolder.setTxtNumeroDoc ((TextView) convertView.findViewById(R.id.txv_row_NumIncidencia));
+            viewHolder.setTxtEndereco ((TextView) convertView.findViewById(R.id.txv_row_EnderecoOcorrencia));
+            viewHolder.setTxtOrigem ((TextView) convertView.findViewById(R.id.txv_row_OrgaoOrigem));
+            viewHolder.setTxtDestino ((TextView) convertView.findViewById(R.id.txv_row_OrgaoDestino));
+            viewHolder.setImgvTipoOcorrencia((ImageView) convertView.findViewById(R.id.imgv_row_TipoOcorrencia));
             convertView.setTag(viewHolder);
         }
         else
@@ -75,40 +76,45 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
 
         if(ocorrencia.getOcorrenciaTransito() != null || ocorrencia.getTipoOcorrencia() == TipoOcorrencia.TRANSITO)
         {
-            if(ocorrencia.getOcorrenciaTransito().getNumIncidencia() != null)
-                viewHolder.getTxtTipoDoc().setText(ocorrencia.getOcorrenciaTransito().getNumIncidencia());
+            OcorrenciaTransitoEndereco ote;
 
-            if(ocorrencia.getTipoOcorrencia() != null)
-                viewHolder.getTxtTipoOcorrencia().setText(ocorrencia.getTipoOcorrencia().getValor());
+            Picasso.with(mContext).load(R.drawable.colisao_veiculos).into(viewHolder.getImgvTipoOcorrencia());
+            try
+            {
+                ote = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrencia.getOcorrenciaTransito().getId().toString()).get(0);
+                viewHolder.getTxtEndereco().setText(ote.getEnderecoTransito().getTipoVia().getValor() +" "+ote.getEnderecoTransito().getDescricaoEndereco()+" "+ ote.getEnderecoTransito().getComplemento());
+            }catch (Exception e)
+            {
+                viewHolder.getTxtEndereco().setText("Sem endereço");
+            }
 
-
-            DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
-
-            viewHolder.getTxtData().setText(dateFormat.getDateInstance().format(ocorrencia.getOcorrenciaTransito().getDataChamado()));
+            viewHolder.getTxtNumeroDoc().setText(ocorrencia.getOcorrenciaTransito().getNumIncidencia()+ " - "+ ocorrencia.getOcorrenciaTransito().getDataAtendimentoString());
 
             if(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem() != null)
                 viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem());
 
             if(ocorrencia.getOcorrenciaTransito().getOrgaoDestino() != null)
+            {
+                if(!ocorrencia.getOcorrenciaTransito().getOrgaoDestino().equals(""))
                 viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaTransito().getOrgaoDestino());
-
-            if(ocorrencia.getOcorrenciaTransito().getDataAtendimento()!= null)
-                viewHolder.getTxtData().setText(ocorrencia.getOcorrenciaTransito().getDataAtendimentoString());
-
+                else
+                    viewHolder.getTxtDestino().setText("(Sem órgão destino)");
+            }
         }
 
         if(ocorrencia.getOcorrenciaVida() != null|| ocorrencia.getTipoOcorrencia() == TipoOcorrencia.VIDA)
         {
-            if(ocorrencia.getOcorrenciaVida().getNumIncidencia() != null)
-                viewHolder.getTxtTipoDoc().setText(ocorrencia.getOcorrenciaVida().getNumIncidencia());
+            Picasso.with(mContext).load(R.drawable.ocorrencia_vida_icon).into(viewHolder.getImgvTipoOcorrencia());
+            try
+            {
+                EnderecoVida enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrencia.getOcorrenciaVida().getId().toString()).get(0);
+                viewHolder.getTxtEndereco().setText(enderecoVida.getTipoVia().getValor()+" "+ enderecoVida.getDescricaoEndereco()+" " + enderecoVida.getComplemento());
+            }catch (Exception e)
+            {
+                viewHolder.getTxtEndereco().setText("Sem endereço");
+            }
 
-            if(ocorrencia.getTipoOcorrencia() != null)
-                viewHolder.getTxtTipoOcorrencia().setText(ocorrencia.getTipoOcorrencia().getValor());
-
-
-            DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
-
-            viewHolder.getTxtData().setText(ocorrencia.getOcorrenciaVida().getDataAtendimentoString());
+            viewHolder.getTxtNumeroDoc().setText(ocorrencia.getOcorrenciaVida().getNumIncidencia()+ " - "+ ocorrencia.getOcorrenciaVida().getDataAtendimentoString());
 
             if(ocorrencia.getOcorrenciaVida().getOrgaoOrigem() != null)
                 viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaVida().getOrgaoOrigem());
@@ -116,9 +122,15 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
             if(ocorrencia.getOcorrenciaVida().getOrgaoDestino() != null)
                 viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaVida().getOrgaoDestino());
 
-            if(ocorrencia.getOcorrenciaVida().getDataAtendimento()!= null)
-                viewHolder.getTxtData().setText(ocorrencia.getOcorrenciaVida().getDataAtendimentoString());
+//            Picasso.with(mContext).
 
+            if(ocorrencia.getOcorrenciaVida().getOrgaoDestino() != null)
+            {
+                if(!ocorrencia.getOcorrenciaVida().getOrgaoDestino().equals(""))
+                    viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaVida().getOrgaoDestino());
+                else
+                    viewHolder.getTxtDestino().setText("(Sem órgão destino)");
+            }
         }
 
         return convertView;

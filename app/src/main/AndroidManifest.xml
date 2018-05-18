@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.pefoce.peritolocal">
+          package="com.example.pefoce.peritolocal"
+    >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -11,6 +12,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.location.gps" />
+
 
     <application
         android:name="com.orm.SugarApp"
@@ -24,7 +27,7 @@
             android:value="pefoce_db.db"/>
         <meta-data
             android:name="VERSION"
-            android:value="2"/>
+            android:value="4"/>
         <meta-data
             android:name="QUERY_LOG"
             android:value="true"/>
@@ -34,6 +37,7 @@
 
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -61,23 +65,33 @@
             android:name=".ManterPericiaTransito"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".GerenciarBracos"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"/>
+
+
+        <activity android:name=".ManterPericiaVida"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity android:name=".GerenciarCorpo"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity android:name=".GerenciarPernas"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity android:name=".GerenciarCabeca"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".GerenciarTorax">
+        </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="689182af5a37c42cec287a8b663ff6ea0255859e"/>
-
-        <activity android:name=".ManterPericiaVida">
-        </activity>
-        <activity android:name=".GerenciarCorpo">
-        </activity>
-        <activity android:name=".GerenciarBracos">
-        </activity>
-        <activity android:name=".GerenciarPernas">
-        </activity>
-        <activity android:name=".GerenciarCabeca">
-        </activity>
-        <activity android:name=".GerenciarTorax">
-        </activity>
     </application>
 
 </manifest>

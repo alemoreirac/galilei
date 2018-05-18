@@ -24,21 +24,20 @@ public class TempoUtil
 
     public static void setTime(final TextView textView, Context ctx)
     {
-        int hour,minute;
+        int hour, minute;
 
-try
-{
-    String[] parts = textView.getText().toString().split(":");
+        try
+        {
+            String[] parts = textView.getText().toString().split(":");
 
-    hour = Integer.valueOf(parts[0]);
+            hour = Integer.valueOf(parts[0]);
 
-    minute = Integer.valueOf(parts[1]);
-}
-catch (Exception e)
-{
-    hour = 0;
-    minute = 0;
-}
+            minute = Integer.valueOf(parts[1]);
+        } catch (Exception e)
+        {
+            hour = 0;
+            minute = 0;
+        }
         TimePickerDialog timePickerDialog = new TimePickerDialog(ctx,
 
                 new TimePickerDialog.OnTimeSetListener()
@@ -47,25 +46,7 @@ catch (Exception e)
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute)
                     {
-                        String result = "";
-
-                        if (hourOfDay > 9)
-                            result+=hourOfDay;
-                        if (hourOfDay < 10)
-                            result+="0"+hourOfDay;
-                        if (hourOfDay == 0)
-                            result+=hourOfDay+"0";
-
-                        result+=":";
-
-                        if (minute > 9)
-                            result+=minute;
-                        if (minute < 10)
-                            result+="0"+minute;
-                        if (minute == 0)
-                            result+=minute+"0";
-
-                        textView.setText(result);
+                        textView.setText(integerToHour(minute,hourOfDay));
                     }
                 }, hour, minute, true);
         timePickerDialog.show();
@@ -80,18 +61,16 @@ catch (Exception e)
 
             mDay = Integer.valueOf(parts[0]);
 
-            mMonth= Integer.valueOf(parts[1]);
+            mMonth = Integer.valueOf(parts[1]);
 
-            mYear= Integer.valueOf(parts[2]);
-        }
-        catch (Exception e)
+            mYear = Integer.valueOf(parts[2]);
+        } catch (Exception e)
         {
             final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
         }
-
 
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(ctx,
@@ -102,23 +81,12 @@ catch (Exception e)
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth)
                     {
-                        String result = "";
-
-                        result+= Parametrize(dayOfMonth);
-
-                        result+="/";
-
-                        result+=Parametrize(monthOfYear);
-
-                        result+="/";
-
-                        result+=year;
-
-                        textView.setText(result);
+                        textView.setText(integerToDate(dayOfMonth,monthOfYear,year));
                     }
                 }, mYear, mMonth, mDay);
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
+
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
     }
 
 
@@ -140,7 +108,6 @@ catch (Exception e)
 
     public static Date stringToTime(String value)
     {
-
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         Date date = null;
         try
@@ -156,7 +123,6 @@ catch (Exception e)
 
     public static String getDataExtenso(Date d)
     {
-
         Locale local = new Locale("pt", "BR");
         DateFormat formato = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", local);
         String dataFormatada = formato.format(d);
@@ -167,6 +133,31 @@ catch (Exception e)
         return dataFormatada;
     }
 
+    public static boolean DataAntesDe(String time, String endtime)
+    {
+
+        String pattern = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        try
+        {
+            Date date1 = sdf.parse(time);
+            Date date2 = sdf.parse(endtime);
+
+            if (date1.before(date2))
+            {
+                return true;
+            } else
+            {
+
+                return false;
+            }
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static boolean HoraAntesDe(String time, String endtime)
     {
@@ -196,13 +187,42 @@ catch (Exception e)
 
     public static String Parametrize(int value)
     {
-String result = "";
-        if (value> 9)
-            result+=value;
-        if (value< 10)
-            result+="0"+value;
+        if (value > 9)
+            return String.valueOf(value);
+        if (value < 10)
+            return "0" + value;
+        return "";
+    }
 
-        return result;
+    public static String integerToHour(int minute,int hour)
+    {
+        String resultHour = "";
+
+        resultHour += Parametrize(hour);
+
+        resultHour += ":";
+
+        resultHour += Parametrize(minute);
+
+        return resultHour;
+    }
+
+
+    public static String integerToDate(int day, int month,int year)
+    {
+        String resultDate = "";
+
+        resultDate += Parametrize(day);
+
+        resultDate += "/";
+
+        resultDate += Parametrize(++month);
+
+        resultDate += "/";
+
+        resultDate += year;
+
+        return resultDate;
     }
 
 }

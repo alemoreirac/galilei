@@ -24,13 +24,13 @@ public final class NumberComparatorTest {
 
     @Test
     public void testNumberComparatorWithNumbers() {
-        int result = comparator.compare("1", "2");
+        int result = comparator.compare("1", "");
         assertEquals(-1, result);
     }
 
     @Test
     public void testComparatorWithNumbers() {
-        int result = comparator.compare("4", "2");
+        int result = comparator.compare("4", "");
         assertEquals(1, result);
     }
 

@@ -46,14 +46,14 @@ public enum Secao
     FLANCO_ESQUERDO("Flanco esquerdo"),//32
     ILIACO_ANTERIOR_ESQUERDO("Ilíaco anterior esquerdo"),//33
 //0
-    CLAVICULAR_POSTERIOR_DIREITO("Clavicular posterior direito"),//34
-    ESCAPULAR_DIREITO("Escapular direito"),//35
+    ESCAPULAR_DIREITO("Escapular direito"),//34
+    TORACICO_DIREITO("Torácico direito"),//35
     LOMBAR_DIREITO("Lombar direita"),//36
     ILIACO_POSTERIOR_DIREITO("Ilíaco posterior direito"),//37
     GLUTEO_DIREITO("Gluteo direito"),//38
 //0
-    CLAVICULAR_POSTERIOR_ESQUERDO("Clavicular posterior esquerdo"),//039
-    ESCAPULAR_ESQUERDO("Escapular esquerda"),//040
+    ESCAPULAR_ESQUERDO("Escapular esquerdo"),//039
+    TORACICO_ESQUERDO("Torácico esquerdo"),//040
     LOMBAR_ESQUERDO("Lombar esquerda"),//041
     ILIACO_POSTERIOR_ESQUERDO("Ilíaco posterior esquerdo"),//042
     GLUTEO_ESQUERDO("Gluteo esquerdo"),//043

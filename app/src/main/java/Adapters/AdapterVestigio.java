@@ -9,14 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pefoce.peritolocal.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import Model.Vida.VestigioVida;
 
+import Util.StringUtil;
 import ViewHolders.ViewHolderVestigioVida;
 
 
@@ -56,6 +59,7 @@ public class AdapterVestigio extends ArrayAdapter<VestigioVida> implements View.
             viewHolder.setTxvCategoriaVestigio((TextView) convertView.findViewById(R.id.txv_row_Categoria_Vestigio));
             viewHolder.setTxvTipoVestigio((TextView) convertView.findViewById(R.id.txv_row_Tipo_Vestigio));
             viewHolder.setTxvObservacaoVestigio((TextView) convertView.findViewById(R.id.txv_row_Observacao_Vestigio));
+            viewHolder.setImgvTipoVestigio((ImageView) convertView.findViewById(R.id.imgv_Vestigio));
             convertView.setTag(viewHolder);
         } else
         {
@@ -65,64 +69,88 @@ public class AdapterVestigio extends ArrayAdapter<VestigioVida> implements View.
         lastPosition = position;
 
         if (vestigioVida.getTipoVestigio() != null)
+        {
             viewHolder.getTxvCategoriaVestigio().setText(vestigioVida.getTipoVestigio().getValor());
-        else
-            viewHolder.getTxvCategoriaVestigio().setText("(Sem categoria definida)");
 
-        if (vestigioVida.getObservacao() != null)
-            viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getObservacao());
-        else
-            viewHolder.getTxvObservacaoVestigio().setText("(Sem observações)");
+            switch (vestigioVida.getTipoVestigio())
+            {
+                case ARMA_DE_FOGO:
+                    Picasso.with(convertView.getContext()).load(R.drawable.vestigio_balistico).into(viewHolder.getImgvTipoVestigio());
+                    viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTipoArma().getValor());
 
-        //VESTÍGIO PAPILOSCÓPICO
-        if (vestigioVida.getTipoDocumento() == null &&
-                vestigioVida.getTiposVestigioBiologico() == null &&
-                vestigioVida.getTipoArma() == null &&
-                vestigioVida.getTipoRecolhimentoAmostraPapiloscopia() != null &&
-                vestigioVida.getCalibreMunicao()== null)
-            viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTipoRecolhimentoAmostraPapiloscopia().getValor());
+                    if (StringUtil.isNotNullAndEmpty(vestigioVida.getNumeracaoArma()))
+                        viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getNumeracaoArma());
+                    else
+                        viewHolder.getTxvObservacaoVestigio().setText("(Sem numeração)");
 
-        //VESTÍGIO BALÍSTICO
-        if (vestigioVida.getTipoDocumento() == null &&
-                vestigioVida.getTiposVestigioBiologico() == null &&
-                vestigioVida.getTipoArma() != null &&
-                vestigioVida.getTipoRecolhimentoAmostraPapiloscopia() == null &&
-                vestigioVida.getCalibreMunicao() == null)
+                    break;
 
-            viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTipoArma().getValor());
+                case BIOLOGICO:
+                    Picasso.with(convertView.getContext()).load(R.drawable.vestigio_biologico).into(viewHolder.getImgvTipoVestigio());
 
-        //VESTÍGIO BIOLÓGICO
-        if (vestigioVida.getTipoDocumento() == null &&
-                vestigioVida.getTiposVestigioBiologico() != null &&
-                vestigioVida.getTipoArma() == null &&
-                vestigioVida.getTipoRecolhimentoAmostraPapiloscopia() == null &&
-                vestigioVida.getCalibreMunicao() == null)
+                    if (vestigioVida.getTiposVestigioBiologico() != null)
+                        viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTiposVestigioBiologico().getValor());
 
-            viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTiposVestigioBiologico().getValor());
+                    if (vestigioVida.getTipoRecolhimentoAmostraBiologica() != null)
+                        viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getTipoRecolhimentoAmostraBiologica().getValor());
+                    break;
 
-        //VESTÍGIO DE DOCUMENTO
+                case DOCUMENTO:
+                    Picasso.with(convertView.getContext()).load(R.drawable.vestigio_documento).into(viewHolder.getImgvTipoVestigio());
 
-        if (vestigioVida.getTipoDocumento() != null &&
-                vestigioVida.getTiposVestigioBiologico() == null &&
-                vestigioVida.getTipoArma() == null &&
-                vestigioVida.getTipoRecolhimentoAmostraPapiloscopia() == null &&
-                vestigioVida.getCalibreMunicao() == null)
+                    if (vestigioVida.getTipoDocumento() != null)
+                        viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTipoDocumento().getValor());
 
-            viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTipoDocumento().getValor());
+//                    if(vestigioVida.getNumDocumento()==null && vestigioVida.getNumDocumento().isEmpty())
+//                        viewHolder.gettxv
 
-        //VESTÍGIO MUNIÇÂO
 
-        if (vestigioVida.getTipoDocumento() == null &&
-                vestigioVida.getTiposVestigioBiologico() == null &&
-                vestigioVida.getTipoArma() == null &&
-                vestigioVida.getTipoRecolhimentoAmostraPapiloscopia() == null &&
-                vestigioVida.getCalibreMunicao() != null)
+                    if (StringUtil.isNotNullAndEmpty(vestigioVida.getNumDocumento()))
+                        viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getNumDocumento());
+                    else
+                        viewHolder.getTxvObservacaoVestigio().setText("(Sem numeração)");
+                    break;
 
-            viewHolder.getTxvTipoVestigio().setText(vestigioVida.getCalibreMunicao().getValor());
+                case MUNICAO:
+                    Picasso.with(convertView.getContext()).load(R.drawable.vestigio_municao).into(viewHolder.getImgvTipoVestigio());
 
-        else
-            viewHolder.getTxvObservacaoVestigio().setText("(Sem tipo)");
+                    if (vestigioVida.getCalibreMunicao() != null)
+                        viewHolder.getTxvTipoVestigio().setText(vestigioVida.getCalibreMunicao().getValor());
 
+                    if (vestigioVida.getTipoMunicao() != null && vestigioVida.getQuantidadeMunicao() > 0)
+                        viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getTipoMunicao().getValor() + " qtde: " + vestigioVida.getQuantidadeMunicao());
+                    break;
+
+                case PAPILOSCOPICO:
+                    Picasso.with(convertView.getContext()).load(R.drawable.vestigio_papiloscopico).into(viewHolder.getImgvTipoVestigio());
+
+                    if (StringUtil.isNotNullAndEmpty(vestigioVida.getObjetoRecolhidoPapiloscopia()))
+
+                        viewHolder.getTxvTipoVestigio().setText(vestigioVida.getObjetoRecolhidoPapiloscopia());
+                    else
+                        viewHolder.getTxvTipoVestigio().setText("(Objeto não identificado)");
+
+                    if (vestigioVida.getTipoRecolhimentoAmostraPapiloscopia() != null)
+                        viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getTipoRecolhimentoAmostraPapiloscopia().getValor());
+
+                    break;
+
+                case OUTRO:
+                    Picasso.with(convertView.getContext()).load(R.drawable.vestigio_outro).into(viewHolder.getImgvTipoVestigio());
+                    if (StringUtil.isNotNullAndEmpty(vestigioVida.getObjetoRecolhido()))
+
+                        viewHolder.getTxvTipoVestigio().setText(vestigioVida.getObjetoRecolhido());
+                    else
+                        viewHolder.getTxvTipoVestigio().setText("(Objeto não identificado)");
+
+                    if (StringUtil.isNotNullAndEmpty(vestigioVida.getObservacao()))
+                        viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getObservacao());
+                    else
+                        viewHolder.getTxvObservacaoVestigio().setText("(Sem observações)");
+
+                    break;
+            }
+        }
 
         return convertView;
     }
