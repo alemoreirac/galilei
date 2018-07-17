@@ -12,6 +12,7 @@ import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.SecaoImagem;
 import Enums.Transito.TipoEnvolvidoTransito;
+import Enums.Vida.IndiciosTempoMorte;
 import Enums.Vida.ParteCorpo;
 import Enums.Vida.PosicaoBraco;
 import Enums.Vida.PosicaoCabeca;
@@ -45,9 +46,7 @@ public class EnvolvidoVida extends SugarRecord
 
     String Observacoes;
 
-    private int periodoMorte;
-
-    private UnidadeTempo unidadeTempo;
+    private IndiciosTempoMorte indiciosTempoMorte;
 
     private TipoMorte tipoMorte;
 
@@ -161,24 +160,14 @@ public class EnvolvidoVida extends SugarRecord
         Observacoes = observacoes;
     }
 
-    public int getPeriodoMorte()
+    public IndiciosTempoMorte getIndiciosTempoMorte()
     {
-        return periodoMorte;
+        return indiciosTempoMorte;
     }
 
-    public void setPeriodoMorte(int periodoMorte)
+    public void setIndiciosTempoMorte(IndiciosTempoMorte indiciosTempoMorte)
     {
-        this.periodoMorte = periodoMorte;
-    }
-
-    public UnidadeTempo getUnidadeTempo()
-    {
-        return unidadeTempo;
-    }
-
-    public void setUnidadeTempo(UnidadeTempo unidadeTempo)
-    {
-        this.unidadeTempo = unidadeTempo;
+        this.indiciosTempoMorte = indiciosTempoMorte;
     }
 
     public PosicaoBraco getPosicaoBracoEsquerdo()
@@ -265,6 +254,8 @@ public class EnvolvidoVida extends SugarRecord
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
+
+//        if(year>)
 
         final Calendar cSave = Calendar.getInstance();
 

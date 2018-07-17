@@ -7,6 +7,7 @@ package Dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 
 import android.support.v4.app.Fragment;
@@ -41,32 +42,29 @@ import Util.BuscadorEnum;
 
 public class VestigioDialog //extends  android.support.v4.app.DialogFragment
 {
-    Dialog dialog;
-    public ColisaoTransito colisaoTransito;
-    public Activity activity = null;
-    public Spinner spnTIpoVestigio;
-    public Button btnLimparVestigio, btnSalvarVestigio;
-    public Button btnAddVestigio;
-    public ListView lstvVestigios;
-    public EditText edtAreaVestigio, edtDistanciaVestigio;
-    public OcorrenciaTransito ocorrenciaTransito;
-    public Ocorrencia ocorrencia;
-    public ArrayAdapter<VestigioTransito> adapterVestigio;
-    public ArrayList<VestigioTransito> vestigioModel;
-    public List<VestigioColisao> vestigioColisaoModel;
-    public CheckBox cxbDeterminante;
-    Fragment fragment;
+  static Dialog dialog;
+  static ColisaoTransito colisaoTransito;
+  static Activity activity = null;
+  static Spinner spnTIpoVestigio;
+  static Button btnLimparVestigio, btnSalvarVestigio;
+  static Button btnAddVestigio;
+  static ListView lstvVestigios;
+  static EditText edtAreaVestigio, edtDistanciaVestigio;
+  static OcorrenciaTransito ocorrenciaTransito;
+  static ArrayAdapter<VestigioTransito> adapterVestigio;
+  static ArrayList<VestigioTransito> vestigioModel;
+  static List<VestigioColisao> vestigioColisaoModel;
+  static CheckBox cxbDeterminante;
+  static Fragment fragment;
 
-    public VestigioDialog(Fragment f, Activity a)
+    public static void show(Fragment f, Context ctx)
     {
         fragment = f;
-        activity = a;
 
         colisaoTransito = ((GerenciarColisoesTransito)fragment).colisaoTransito;
         ocorrenciaTransito = ((ManterPericiaTransito)activity).ocorrenciaTransito;
 
-
-        dialog = new Dialog(a);
+        dialog = new Dialog(ctx);
         dialog.setContentView(R.layout.dialog_vestigios);
         dialog.setTitle("Vestígios");
         dialog.setCanceledOnTouchOutside(false);
@@ -78,7 +76,8 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
     }
 
 
-    private void AssociarLayout()
+
+    private static void AssociarLayout()
     {
         btnAddVestigio = (Button) dialog.findViewById(R.id.btn_dialog_AddVestigio);
         btnLimparVestigio = (Button) dialog.findViewById(R.id.btn_dialog_LimparVestigios);
@@ -99,7 +98,7 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
 
     }
 
-    private void CarregarVestigios()
+    private static void CarregarVestigios()
     {
         vestigioColisaoModel = VestigioColisao.find(VestigioColisao.class, "colisao_transito = ?", colisaoTransito.getId().toString());
 
@@ -117,7 +116,7 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
         lstvVestigios.setAdapter(adapterVestigio);
     }
 
-    private void AssociarEventos()
+    private static void AssociarEventos()
     {
 
         btnAddVestigio.setOnClickListener(new View.OnClickListener()

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.pefoce.peritolocal.GerenciarCabeca"
-    android:background="@color/ms_white">
+    android:background="@color/ms_white"
+    android:padding="16dp">
 
 
 
@@ -17,17 +18,17 @@
         android:layout_alignParentTop="true"
         android:text="Nome do Envolvido: "
         android:textSize="18dp"
-        android:layout_margin="8dp"/>
+        />
 
     <info.hoang8f.android.segmented.SegmentedGroup
         xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sgm_Direita_Esquerda_Cabeca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="30dp"
+
         android:orientation="horizontal"
         segmentedgroup:sc_border_width="2dp"
         segmentedgroup:sc_corner_radius="10dp"
@@ -547,7 +548,7 @@
         android:layout_width="1000dp"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/imgv_Cabeca_Feminina_Esquerda"
@@ -713,8 +714,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_margin="30dp"
         android:text="Voltar"/>
+
+
+
+    <Button
+        android:id="@+id/btn_Thumbnail_Desenho_Cabeca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="left|center_vertical"
+        android:text="Ver Desenho" />
 
 </RelativeLayout>
 

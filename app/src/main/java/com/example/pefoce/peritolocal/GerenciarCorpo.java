@@ -1,24 +1,41 @@
 package com.example.pefoce.peritolocal;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import Dialogs.DesenhoThumbnailDialog;
 import Enums.Genero;
+import Model.Ocorrencia;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.Lesao;
 import Model.Vida.LesaoEnvolvido;
+import Model.Vida.OcorrenciaVida;
+import Util.StringUtil;
+
+import static Dialogs.AudioDialog.ocorrenciaVida;
 
 public class GerenciarCorpo extends AppCompatActivity
 {
+
+    Button btnThumbnail;
+
     ArrayList<Lesao> listLesoes;
     List<LesaoEnvolvido> lesaoEnvolvidos;
     EnvolvidoVida envolvidoVida;
@@ -29,6 +46,7 @@ public class GerenciarCorpo extends AppCompatActivity
 
     RelativeLayout rltvCorpoFeminino;
     RelativeLayout rltvCorpoMasculino;
+
 
     TextView txvCabecaFeminina;
     TextView txvToraxFeminino;
@@ -53,10 +71,8 @@ public class GerenciarCorpo extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerenciar_corpo);
-
         AssociarLayout();
         AssociarEventos();
-
 
         Intent it = getIntent();
 
@@ -87,6 +103,26 @@ public class GerenciarCorpo extends AppCompatActivity
 
             CarregarLesoes();
 
+//            ocorrenciaVida = OcorrenciaVida.findById(OcorrenciaVida.class,ocorrenciaId);
+//
+//            Ocorrencia ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
+//
+//            String path = Environment.getExternalStorageDirectory() +
+//                    "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome()
+//                    + "/Vida/" + ocorrenciaVida.getDataPath() + "/" + ocorrenciaVida.getNumIncidencia() +
+//                    "/Fotos_Envolvidos/" + envolvidoVida.getId().toString() + "_" + StringUtil.normalize(envolvidoVida.getNome()) + ".jpeg";
+//
+//
+//            File imgFile = new File(path);
+//            if (imgFile.exists())
+//            {
+////                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//
+//                Picasso.with(ctx).load(imgFile).resize(150,100).into(imgvThumbnail);
+//            }
+//            else
+//                Picasso.with(ctx).load(R.drawable.placeholder_error).into(imgvThumbnail);
+
 
         } catch (Exception e)
         {
@@ -114,12 +150,12 @@ public class GerenciarCorpo extends AppCompatActivity
 
         txvBracosMasculinos = (TextView) findViewById(R.id.txv_Bracos_Masculinos);
 
-
         txvPernasMasculinas = (TextView) findViewById(R.id.txv_Pernas_Masculinas);
 
         txvCabecaMasculina = (TextView) findViewById(R.id.txv_Cabeca_Masculina);
         txvToraxMasculino = (TextView) findViewById(R.id.txv_Torax_Masculino);
 
+        btnThumbnail = (Button) findViewById(R.id.btn_Thumbnail_Desenho_Corpo);
     }
 
     public void CarregarLesoes()
@@ -220,7 +256,7 @@ public class GerenciarCorpo extends AppCompatActivity
                 {
                     Intent itBraco = new Intent(GerenciarCorpo.this, GerenciarBracos.class);
                     itBraco.putExtra("EnvolvidoId", envolvidoVida.getId());
-                    //   itBraco.putExtra("GeneroEnvolvido", generoParam);
+                    itBraco.putExtra("OcorrenciaId", ocorrenciaId);
                     startActivity(itBraco);
                     finish();
                 }
@@ -230,7 +266,7 @@ public class GerenciarCorpo extends AppCompatActivity
                 {
                     Intent itPerna = new Intent(GerenciarCorpo.this, GerenciarPernas.class);
                     itPerna.putExtra("EnvolvidoId", envolvidoVida.getId());
-                    // itPerna.putExtra("GeneroEnvolvido", generoParam);
+                    itPerna.putExtra("OcorrenciaId", ocorrenciaId);
                     startActivity(itPerna);
                     finish();
                 }
@@ -239,7 +275,7 @@ public class GerenciarCorpo extends AppCompatActivity
                 {
                     Intent itCabeca = new Intent(GerenciarCorpo.this, GerenciarCabeca.class);
                     itCabeca.putExtra("EnvolvidoId", envolvidoVida.getId());
-                    //  itCabeca.putExtra("GeneroEnvolvido", generoParam);
+                    itCabeca.putExtra("OcorrenciaId", ocorrenciaId);
                     startActivity(itCabeca);
                     finish();
                 }
@@ -249,15 +285,23 @@ public class GerenciarCorpo extends AppCompatActivity
                     Intent itTorax = new Intent(GerenciarCorpo.this, GerenciarTorax.class);
                     itTorax.putExtra("EnvolvidoId", envolvidoVida.getId());
                     //   itTorax.putExtra("GeneroEnvolvido", generoParam);
+                    itTorax.putExtra("OcorrenciaId", ocorrenciaId);
                     startActivity(itTorax);
                     finish();
                 }
             }
         };
 
+        btnThumbnail.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DesenhoThumbnailDialog.criarDialog(GerenciarCorpo.this,envolvidoVida, ocorrenciaId);
+            }
+        });
+
         txvBracosMasculinos.setOnClickListener(listener);
-
-
 
         txvPernasMasculinas.setOnClickListener(listener);
 
@@ -265,13 +309,12 @@ public class GerenciarCorpo extends AppCompatActivity
 
         txvCabecaMasculina.setOnClickListener(listener);
 
-
         txvBracosFemininos.setOnClickListener(listener);
-
 
         txvPernasFemininas.setOnClickListener(listener);
 
         txvToraxFeminino.setOnClickListener(listener);
+
         txvCabecaFeminina.setOnClickListener(listener);
 
     }

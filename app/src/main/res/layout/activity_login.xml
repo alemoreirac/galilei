@@ -57,5 +57,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="1.0.1"/>
+        android:id="@+id/txv_Versao"/>
 </RelativeLayout>

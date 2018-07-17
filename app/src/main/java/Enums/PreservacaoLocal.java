@@ -6,7 +6,7 @@ package Enums;
 
 public enum PreservacaoLocal {
     MARCACOES_AMC("Marcações da AMC")
-    ,POLICIA_MILITAR("Polícia Militar")
+    ,AUTORIDADE_LOCAL("Preservado pela autoridade presente")
     ,POPULARES("Preservado por Populares")
     ,NAO_PRESERVADO("Não Preservado");
 

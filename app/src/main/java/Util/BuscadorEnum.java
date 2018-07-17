@@ -52,7 +52,9 @@ import Enums.Transito.TipoVestigioTransito;
 import Enums.Transito.TipoVia;
 import Enums.Transito.TipoEnvolvidoTransito;
 import Enums.Transito.Topografia;
+import Enums.UF;
 import Enums.UnidadeTempo;
+import Enums.Vida.IndiciosTempoMorte;
 import Enums.Vida.LesoesEnabled;
 import Enums.Vida.LocalizacaoLesao;
 import Enums.Vida.NaturezaLesao;
@@ -61,6 +63,7 @@ import Enums.Vida.PosicaoBraco;
 import Enums.Vida.PosicaoCabeca;
 import Enums.Vida.PosicaoPerna;
 import Enums.Vida.PosicaoTorax;
+import Enums.Vida.PresencaEnvolvido;
 import Enums.Vida.Secao;
 import Enums.Vida.TipoAberturaLocal;
 import Enums.Vida.TipoMorte;
@@ -487,6 +490,17 @@ public class BuscadorEnum
         return null;
     }
 
+
+    public static UF BuscarUF(String valor)
+    {
+        for (UF item : UF.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
     public static TercoDano BuscarTercoDano(String valor)
     {
         for (TercoDano item : TercoDano.values())
@@ -598,10 +612,20 @@ public class BuscadorEnum
         return null;
     }
 
-
     public static UnidadeTempo BuscarUnidadeTempo(String valor)
     {
         for (UnidadeTempo item : UnidadeTempo.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+
+    public static IndiciosTempoMorte BuscarIndicioTempoMorte(String valor)
+    {
+        for (IndiciosTempoMorte item : IndiciosTempoMorte.values())
         {
             if (item.getValor() == valor)
                 return item;
@@ -695,6 +719,16 @@ public class BuscadorEnum
     public static DocumentoPessoa BuscarTipoDocumento(String valor)
     {
         for (DocumentoPessoa item : DocumentoPessoa.values())
+        {
+            if (item.getValor() == valor)
+                return item;
+        }
+        return null;
+    }
+
+    public static PresencaEnvolvido BuscarPresencaEnvolvido(String valor)
+    {
+        for (PresencaEnvolvido item : PresencaEnvolvido.values())
         {
             if (item.getValor() == valor)
                 return item;
@@ -807,6 +841,34 @@ public class BuscadorEnum
         return 0;
     }
 
+    public static int PegarPosicaoVeiculoString(List<Veiculo> veiculos, String v)
+    {
+        for (int i = 0; i < veiculos.size(); i++)
+        {
+            if (veiculos.get(i).getId() != null)
+            {
+//                if (veiculos.get(i).getId().equals(v.getId()))
+                if(veiculos.get(i).toString() == v)
+                    return i;
+            }
+        }
+        return 0;
+    }
+
+    public static int PegarPosicaoEnvolvidoTransitoString(List<EnvolvidoTransito> envolvidos, String et)
+    {
+        for (int i = 0; i < envolvidos.size(); i++)
+        {
+            if (envolvidos.get(i).getId() != null)
+            {
+//                if (veiculos.get(i).getId().equals(v.getId()))
+                if(envolvidos.get(i).toString() == et)
+                    return i;
+            }
+        }
+        return 0;
+    }
+
     public static int PegarPosicaoEndereco(List<EnderecoTransito> enderecos, EnderecoTransito et)
     {
         for (int i = 0; i < enderecos.size(); i++)
@@ -853,6 +915,7 @@ public class BuscadorEnum
         }
         return -1;
     }
+
 
     public static int PegarPosicaoFoto(List<Foto> fotos, Foto foto)
     {

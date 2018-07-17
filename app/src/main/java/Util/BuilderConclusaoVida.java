@@ -1,14 +1,21 @@
 package Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.TipoLocalCrime;
+import Enums.Transito.SetorDano;
+import Enums.Vida.ParteCorpo;
 import Enums.Vida.TipoMorte;
 import Model.Ocorrencia;
 import Model.Pessoa;
+import Model.Transito.Dano;
 import Model.Vida.EnderecoVida;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.Lesao;
@@ -156,14 +163,17 @@ public class BuilderConclusaoVida
                     case MORTE_NATURAL:
                         builderConclusao.append(" fora vítima de morte natural.");
                         break;
-                    case MORTE_NAO_IDENTIFICADA:
-                        builderConclusao.append(" não teve a causa da morte identificada");
+                    case MORTE_SUSPEITA:
+                        builderConclusao.append(" fora vítima de uma morte com suspeita de violência.");
+                        break;
+                    case ACHADO_DE_CADAVER:
+                        builderConclusao.append(" fora vítima de uma morte não-violenta");
                         break;
                     case AFOGAMENTO:
                         builderConclusao.append(" fora vítima de um afogamento.");
                         break;
                     case ACIDENTE:
-                        builderConclusao.append(" fora vítima de um acidente não violento.");
+                        builderConclusao.append(" fora vítima de um acidente.");
                         break;
                 }
             }
@@ -189,7 +199,7 @@ public class BuilderConclusaoVida
         builderConclusao.append("com cooordenadas ");
         builderConclusao.append("LAT: ");
         builderConclusao.append(enderecoVida.getLatitude() + ", ");
-        builderConclusao.append("LON: ");
+        builderConclusao.append("LONG: ");
         builderConclusao.append(enderecoVida.getLongitude());
 
 
@@ -215,6 +225,8 @@ public class BuilderConclusaoVida
             builderConclusao.append("\n\nDo cadáver");
         else
             builderConclusao.append("\n\nDos cadáveres");
+
+        HashMap<ParteCorpo, ArrayList<Lesao>> hmLesoes;
 
         for (EnvolvidoVida envolvidoVida : envolvidoVidaList)
         {
@@ -256,14 +268,14 @@ public class BuilderConclusaoVida
                 if (envolvidoVida.getNascimento() != null)
                 {
                     if (!envolvidoVida.getDataNascimentoString().contains("0002"))
-                        builderConclusao.append(", nascido em: " + envolvidoVida.getDataNascimentoString());
+                        builderConclusao.append(", nascida em " + envolvidoVida.getDataNascimentoString());
                     else
                         builderConclusao.append(", cuja data de nascimento não foi informada");
                 }
             }
 
-            if (envolvidoVida.getUnidadeTempo() != null && envolvidoVida.getPeriodoMorte() != 0)
-                builderConclusao.append(", o tempo aproximado de morte é de " + envolvidoVida.getPeriodoMorte() + " " + envolvidoVida.getUnidadeTempo().getValor());
+            if (envolvidoVida.getIndiciosTempoMorte() != null)
+                builderConclusao.append(", os indícios encontrados no cadáver serão listados a seguir, indicando uma estimativa aproxiamda de tempo de morte: " + envolvidoVida.getIndiciosTempoMorte().getValor()+".");
 
             if (envolvidoVida.getVestes() != null)
             {
@@ -282,14 +294,39 @@ public class BuilderConclusaoVida
 
             lesaoEnvolvido = LesaoEnvolvido.find(LesaoEnvolvido.class, "envolvido_vida = ?", envolvidoVida.getId().toString());
 
+            hmLesoes = new HashMap<ParteCorpo, ArrayList<Lesao>>();
+
+
             for (LesaoEnvolvido le : lesaoEnvolvido)
                 lesaoList.add(le.getLesao());
 
             if (lesaoList.size() > 0)
             {
-                builderConclusao.append("\n\nDas Lesões");
-                for (Lesao l : lesaoList)
-                    builderConclusao.append("\n" + l.toString());
+                for(Lesao l : lesaoList)
+                {
+                    if(hmLesoes.containsKey(l.getParteCorpo()))
+
+                        hmLesoes.get(l.getParteCorpo()).add(l);
+                    else
+                    {
+                        hmLesoes.put(l.getParteCorpo(), new ArrayList<>());
+                        hmLesoes.get(l.getParteCorpo()).add(l);
+                    }
+                }
+                Set set = hmLesoes.entrySet();
+                Iterator iterator = set.iterator();
+
+                while(iterator.hasNext())
+                {
+                    Map.Entry entry = (Map.Entry)iterator.next();
+
+                    builderConclusao.append("\n\n " +((ParteCorpo)entry.getKey()).getValor()+": ");
+
+                    for(Lesao l : (ArrayList<Lesao>)entry.getValue())
+                    {
+                        builderConclusao.append(l.exportarLaudo());
+                    }
+                }
             }
         }
     }

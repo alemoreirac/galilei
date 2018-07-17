@@ -392,4 +392,14 @@
         android:layout_alignParentLeft="true"
         android:text="Voltar"/>
 
+
+    <Button
+        android:id="@+id/btn_Thumbnail_Desenho_Bracos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="left|center_vertical"
+        android:text="Ver Desenho" />
+
 </RelativeLayout>

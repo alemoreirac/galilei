@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Fragments.Fragments.OcorrenciaTransitoFragment"
-    android:layout_margin="10dp"
+    android:padding="8dp"
     >
 
     <RelativeLayout
@@ -25,6 +25,7 @@
             android:layout_below="@id/txv_Num_Incidencia"
             android:inputType="text"
             android:maxLines="1"
+            android:imeOptions="actionNext"
             android:layout_alignLeft="@+id/txv_Num_Incidencia"
             android:maxLength="12"/>
 
@@ -116,7 +117,7 @@
 
 
         <TextView
-            android:id="@+id/txv_Placa_Viatura"
+            android:id="@+id/txv_Placa_Viatura_Transito"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/txv_Comandante"
@@ -132,10 +133,19 @@
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
-            android:layout_alignLeft="@id/txv_Placa_Viatura"
+            android:layout_alignLeft="@id/txv_Placa_Viatura_Transito"
             android:layout_alignBottom="@id/edt_Autoridade_Comandante" />
 
 
+        <CheckBox
+            android:id="@+id/cxb_Sem_Autoridade_Transito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sem autoridade presente"
+            android:layout_below="@id/txv_Placa_Viatura_Transito"
+            android:layout_toRightOf="@id/edt_Placa_Viatura_Transito"
+            android:layout_marginLeft="15dp"
+            />
 
         <TextView
             android:id="@+id/txv_Data_Hora_Chamado_Transito"
@@ -250,7 +260,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bairro (Somente para preencher Delegacia)"
-            android:layout_alignLeft="@id/txv_Placa_Viatura"
+            android:layout_alignLeft="@id/txv_Placa_Viatura_Transito"
             android:layout_alignBottom="@id/txv_Orgao_Origem"
             />
         <AutoCompleteTextView

@@ -7,17 +7,12 @@ import android.widget.TextView;
  * Created by Pefoce on 19/06/2017.
  */
 
-public class ViewHolderColisao{
-
-
+public class ViewHolderColisao
+{
     TextView txvAtor1;
     TextView txvAtor2;
     TextView txvTipoInteracao;
     ImageView imgvTipoInteracao;
-    ImageView imgvAudio;
-
-
-
 
 
     public TextView getTxvAtor1() {
@@ -50,13 +45,4 @@ public class ViewHolderColisao{
     public void setImgvTipoInteracao(ImageView imgvTipoInteracao) {
         this.imgvTipoInteracao = imgvTipoInteracao;
     }
-
-    public ImageView getImgvAudio() {
-        return imgvAudio;
-    }
-
-    public void setImgvAudio(ImageView imgvAudio) {
-        this.imgvAudio = imgvAudio;
-    }
-
 }

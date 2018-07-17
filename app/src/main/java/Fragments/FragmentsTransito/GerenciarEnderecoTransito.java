@@ -72,8 +72,10 @@ import Model.Transito.OcorrenciaTransito;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.SingleShotLocationProvider;
+import Util.StringUtil;
 import Util.ViewUtil;
-import okhttp3.internal.Util;
+import br.com.sapereaude.maskedEditText.MaskedEditText;
+//import okhttp3.internal.Util;
 
 import static Util.StringUtil.isNotNullAndEmpty;
 
@@ -107,13 +109,15 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     CheckBox cxbComposta = null;
     CheckBox cxbCurva = null;
     CheckBox cxbHumidade = null;
+    CheckBox cxbMeioFio = null;
     CheckBox cxbMaoDupla = null;
     List<OcorrenciaTransitoEndereco> ocorrenciaEnderecos = null;
     ArrayList<EnderecoTransito> enderecoTransitoModel = null;
     OcorrenciaTransito ocorrenciaTransitoEndereco = null;
     OcorrenciaTransitoEndereco ocorrenciaEndereco = null;
-    EditText edtLatitude = null;
-    EditText edtLongitude = null;
+
+    MaskedEditText edtLatitude = null;
+    MaskedEditText edtLongitude = null;
     RelativeLayout rltv_Endereco = null;
     FloatingActionButton fabFotoEndereco = null;
     private MagicalCamera magicalCamera;
@@ -123,7 +127,6 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     Ocorrencia ocorrencia;
     private String pathImagem;
     EditText edtLargura;
-    private OnFragmentInteractionListener mListener;
     String Bairro;
     String Cidade;
 
@@ -166,12 +169,6 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
     }
 
-    @Override
-    public void onDetach()
-    {
-        super.onDetach();
-        mListener = null;
-    }
 
     @Override
     public VerificationError verifyStep()
@@ -367,6 +364,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         endereco.setCurva(cxbCurva.isChecked());
         endereco.setMolhada(cxbHumidade.isChecked());
         endereco.setMaoDupla(cxbMaoDupla.isChecked());
+        endereco.setMeioFio(cxbMeioFio.isChecked());
         endereco.setComposta(cxbComposta.isChecked());
         endereco.setPreferencial(cxbPreferencial.isChecked());
 
@@ -427,6 +425,8 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         cxbHumidade.setChecked(false);
 
+        cxbMeioFio.setChecked(false);
+
         cxbMaoDupla.setChecked(false);
 
         cxbComposta.setChecked(false);
@@ -459,6 +459,8 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     {
         LimparCampos();
 
+
+
         if (endereco.getCidade() != null)
             aucCidade.setText(endereco.getCidade());
 
@@ -474,14 +476,14 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         if (endereco.getAngulo() == 0)
             edtAngulo.setEnabled(false);
 
-        if(endereco.getComplemento()!=null)
-            edtComplemento.setText(endereco.getComplemento());
-
         else
         {
             edtAngulo.setEnabled(true);
             edtAngulo.setText(String.valueOf(endereco.getAngulo()));
         }
+
+        if(endereco.getComplemento()!=null)
+            edtComplemento.setText(endereco.getComplemento());
 
         cxbPreferencial.setChecked(endereco.isPreferencial());
 
@@ -489,7 +491,11 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         cxbHumidade.setChecked(endereco.isMolhada());
 
+        cxbMeioFio.setChecked(endereco.getMeioFio());
+
         cxbComposta.setChecked(endereco.isComposta());
+
+        cxbMaoDupla.setChecked(endereco.isMaoDupla());
 
         if (endereco.isComposta())
         {
@@ -561,8 +567,9 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         spnSentido_Direcao = (Spinner) v.findViewById(R.id.spn_SentidoVia_Direcao);
 
         cxbCurva = (CheckBox) v.findViewById(R.id.cxb_Tracado);
-        cxbHumidade = (CheckBox) v.findViewById(R.id.cxb_Humidade);
+        cxbHumidade = (CheckBox) v.findViewById(R.id.cxb_Umidade);
         cxbMaoDupla = (CheckBox) v.findViewById(R.id.cxb_MaoDupla);
+        cxbMeioFio = (CheckBox) v.findViewById(R.id.cxb_MeioFio);
         cxbComposta = (CheckBox) v.findViewById(R.id.cxb_ViaComposta);
         cxbPreferencial = (CheckBox) v.findViewById(R.id.cxb_Preferencial);
 
@@ -582,8 +589,8 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         imgbCoordenadas = (ImageButton) v.findViewById(R.id.imgb_Coordenadas_Transito);
 
-        edtLatitude = (EditText) v.findViewById(R.id.edt_latitude);
-        edtLongitude = (EditText) v.findViewById(R.id.edt_longitude);
+        edtLatitude = (MaskedEditText) v.findViewById(R.id.medt_Latitude_Transito);
+        edtLongitude = (MaskedEditText) v.findViewById(R.id.medt_Longitude_Transito);
         edtLargura = (EditText) v.findViewById(R.id.edt_Largura_Via);
 
         fabNovoEndereco = (FloatingActionButton) v.findViewById(R.id.fab_Endereco);
@@ -600,11 +607,11 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         ocorrenciaTransito.setGravacaoConclusao(new Gravacao());
 
-        edtEndereco.setNextFocusRightId(edtComplemento.getId());
-        edtComplemento.setNextFocusRightId(aucCidade.getId());
-        aucCidade.setNextFocusRightId(aucBairro.getId());
-        edtLatitude.setNextFocusRightId(edtLongitude.getId());
-        edtLongitude.setNextFocusRightId(edtLargura.getId());
+        edtEndereco.setNextFocusForwardId(edtComplemento.getId());
+        edtComplemento.setNextFocusForwardId(aucCidade.getId());
+        aucCidade.setNextFocusForwardId(aucBairro.getId());
+        edtLatitude.setNextFocusForwardId(edtLongitude.getId());
+//        edtLongitude.setNextFocusForwardId(edtLargura.getId());
     }
 
     private void AssociarEventos()
@@ -670,7 +677,6 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
                                     dialog.dismiss();
                                     return;
                                 }
-
 
                                 adapterEndereco.remove(ocorrenciaEndereco.getEnderecoTransito());
 
@@ -741,6 +747,10 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
                 listEnderecos.performItemClick(listEnderecos, BuscadorEnum.PegarPosicaoEndereco(enderecoTransitoModel, endereco), listEnderecos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoEndereco(enderecoTransitoModel, endereco)));
 
+//                int index = enderecoTransitoModel.indexOf(endereco);
+//
+//                listEnderecos.performItemClick(listEnderecos, index, listEnderecos.getItemIdAtPosition(index));
+
                 //Ao criar um novo endereço, preenche automáticamente o bairro e cidade de acordo com o primeiro endereço cadastrado
 
                 if (isNotNullAndEmpty(Bairro))
@@ -753,7 +763,6 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
                     aucCidade.setText(Cidade);
 //                    endereco.setCidade(Cidade);
                 }
-
             }
         });
 
@@ -809,20 +818,21 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
                 edtLongitude.setEnabled(false);
 
                 SingleShotLocationProvider.requestSingleUpdate(getActivity(),
-                        new SingleShotLocationProvider.LocationCallback()
+                    new SingleShotLocationProvider.LocationCallback()
+                    {
+                        @Override
+                        public void onNewLocationAvailable(Double lat, Double lng)
                         {
-                            @Override
-                            public void onNewLocationAvailable(Double lat, Double lng)
-                            {
-                                converterCoordenadas(lat, lng, edtLatitude, edtLongitude);
+                            edtLatitude.setText(StringUtil.converterLatitude(lat));
+                            edtLongitude.setText(StringUtil.converterLongitude(lng));
 
-                                imgbCoordenadas.setVisibility(View.VISIBLE);
-                                pbCoordenadas.setVisibility(View.INVISIBLE);
-                                edtLatitude.setEnabled(true);
-                                edtLongitude.setEnabled(true);
-                                checking = false;
-                            }
+                            imgbCoordenadas.setVisibility(View.VISIBLE);
+                            pbCoordenadas.setVisibility(View.INVISIBLE);
+                            edtLatitude.setEnabled(true);
+                            edtLongitude.setEnabled(true);
+                            checking = false;
                         }
+                    }
                 );
 
                 Looper myLooper = Looper.myLooper();

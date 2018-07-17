@@ -1,5 +1,7 @@
 package Util;
 
+import android.location.Location;
+
 import com.squareup.picasso.Picasso;
 
 import java.text.Normalizer;
@@ -54,6 +56,51 @@ public class StringUtil
 
         return tokens;
 
+    }
+
+    public static String converterLatitude(double latitude)
+    {
+        StringBuilder builderLatitude = new StringBuilder();
+        String latitudeDegrees = Location.convert(Math.abs(latitude), Location.FORMAT_SECONDS);
+        String[] latitudeSplit = latitudeDegrees.split(":");
+        builderLatitude.append(latitudeSplit[0]);
+        builderLatitude.append("°");
+        builderLatitude.append(latitudeSplit[1]);
+        builderLatitude.append("'");
+        builderLatitude.append(latitudeSplit[2]);
+        builderLatitude.append("\"");
+
+        if (latitude < 0)
+            builderLatitude.append("S");
+
+        else
+            builderLatitude.append("N");
+
+        return builderLatitude.toString();
+    }
+
+    public static String converterLongitude(double longitude)
+    {
+
+        StringBuilder builderLongitude = new StringBuilder();
+
+        String longitudeDegrees = Location.convert(Math.abs(longitude), Location.FORMAT_SECONDS);
+        String[] longitudeSplit = longitudeDegrees.split(":");
+        builderLongitude.append(longitudeSplit[0]);
+        builderLongitude.append("°");
+        builderLongitude.append(longitudeSplit[1]);
+        builderLongitude.append("'");
+        builderLongitude.append(longitudeSplit[2]);
+        builderLongitude.append("\"");
+
+        if (longitude < 0)
+        {
+            builderLongitude.append("W");
+        } else
+        {
+            builderLongitude.append("E");
+        }
+        return builderLongitude.toString();
     }
 
 

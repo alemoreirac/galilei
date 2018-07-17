@@ -210,13 +210,9 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        //CALL THIS METHOD EVER
+
         magicalCamera.resultPhoto(requestCode, resultCode, data);
 
-        //this is for rotate picture in this method
-        //magicalCamera.resultPhoto(requestCode, resultCode, data, MagicalCamera.ORIENTATION_ROTATE_180);
-//if you need save your bitmap in device use this method and return the path if you need this
-        //You need to send, the bitmap picture, the photo name, the directory name, the picture type, and autoincrement photo name if           //you need this send true, else you have the posibility or realize your standard name for your pictures.
         pathImagem = magicalCamera.savePhotoInMemoryDevice(magicalCamera.getPhoto(), "imagem_pericia", "Imagens " + ocorrenciaTransitoFoto.getId().toString(), MagicalCamera.JPEG, true);
 
         if (pathImagem != null)
@@ -230,56 +226,55 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
 
             Picasso.with(getContext()).load(new File(pathImagem)).error(R.drawable.placeholder_error).into(imgvDetalhe);
 
-            String newPath = "";
+            String newPath = Environment.getExternalStorageDirectory() +
+                    "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome() + "/Transito/" + ocorrenciaTransitoFoto.getDataPath() + "/" + ocorrenciaTransitoFoto.getNumIncidencia();
 
             switch (spnCategoriaFoto.getSelectedItem().toString())
             {
                 case "Endereços":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome() + "/Transito/" + ocorrenciaTransitoFoto.getDataPath() + "/" + ocorrenciaTransitoFoto.getNumIncidencia() + "/Fotos_Enderecos/";
+                    newPath += "/Fotos_Enderecos/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_endereco" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_endereco";
                     break;
 
                 case "Veículos":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome() + "/Transito/" + ocorrenciaTransitoFoto.getDataPath() + "/" + ocorrenciaTransitoFoto.getNumIncidencia() + "/Fotos_Veiculos/";
+                    newPath += "/Fotos_Veiculos/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_veiculo" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_veiculo" ;
                     break;
                 case "Envolvidos":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome() + "/Transito/" + ocorrenciaTransitoFoto.getDataPath() + "/" + ocorrenciaTransitoFoto.getNumIncidencia() + "/Fotos_Envolvidos/";
+                    newPath += "/Fotos_Envolvidos/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_envolvido" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_envolvido" ;
                     break;
                 case "Outros":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome() + "/Transito/" + ocorrenciaTransitoFoto.getDataPath() + "/" + ocorrenciaTransitoFoto.getNumIncidencia() + "/Fotos_Outros/";
+                    newPath += "/Fotos_Outros/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_outros" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_outros";
                     break;
                 default:
-                    newPath += "foto" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto";
                     break;
             }
 
+
+            newPath+=DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
 
             if (newFile.renameTo(new File(newPath)))
             {
@@ -329,6 +324,7 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
         {
             categorias.add(cf.getValor());
         }
+        categorias.remove(CategoriaFoto.DESENHO.getValor());
 
         spnCategoriaFoto.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, categorias));
     }
@@ -337,6 +333,7 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
     {
         fabFoto.setOnClickListener(new View.OnClickListener()
         {
+            //TODO: refazer chekc permission utilizando o auto permission do android arsenal ou apenas implementar a negativa da permissão//
             @Override
             public void onClick(View v)
             {
@@ -358,7 +355,7 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
 
                 LimparCampos();
 
-                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarFotosTransito.this, getActivity(), magicalCamera);
+                TipoFotoDialog.show(GerenciarFotosTransito.this, getActivity(), magicalCamera);
 
             }
         });
@@ -426,7 +423,7 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
 
                                 adapterGaleria.remove(ocorrenciaFotoDelete.getFoto());
 
-                                ocorrenciaFotos.remove(ocorrenciaFotoDelete.getFoto());
+                                ocorrenciaFotos.remove(ocorrenciaFotoDelete);
                                 ocorrenciaFotoDelete.getFoto().delete();
                                 ocorrenciaFotoDelete.delete();
                                 LimparCampos();
@@ -446,26 +443,6 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
                 return true;
             }
         });
-
-
-//        btnCancelar.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvDetalhe);
-//                edtDetalhe.setText(foto.getDescricao());
-//            }
-//        });
-//
-//        btnSave.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                SalvarFoto();
-//            }
-//        });
     }
 
     private void SalvarFoto()
@@ -496,8 +473,8 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
     public void carregarDadosFoto()
     {
         Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvDetalhe);
-        //imgvDetalhe.setImageBitmap(ImageUtil.byteToBitmap(f.getArquivo()));
         edtDetalhe.setText(foto.getDescricao());
+
         if (foto.getCategoriaFoto() != null)
             spnCategoriaFoto.setSelection(BuscadorEnum.getIndex(spnCategoriaFoto, foto.getCategoriaFoto().getValor()));
         else

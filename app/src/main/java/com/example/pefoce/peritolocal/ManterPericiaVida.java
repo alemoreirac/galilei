@@ -49,7 +49,6 @@ public class ManterPericiaVida extends AppCompatActivity implements StepperLayou
 
         it = getIntent();
 
-
         AssociarLayout();
 
         toolbar.setTitle("");
@@ -71,7 +70,6 @@ public class ManterPericiaVida extends AppCompatActivity implements StepperLayou
     {
         Bundle args = new Bundle();
 
-
         if(it.getLongExtra("OcorrenciaId",0)!=0)
         {
             args.putLong("OcorrenciaId",it.getLongExtra("OcorrenciaId",0));
@@ -84,8 +82,7 @@ public class ManterPericiaVida extends AppCompatActivity implements StepperLayou
                 EnvolvidoVida envolvidoVida = EnvolvidoVida.findById(EnvolvidoVida.class, it.getLongExtra("EnvolvidoId", 0));
                 OcorrenciaEnvolvidoVida ocorrenciaEnvolvidoVida = OcorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "envolvido_vida = ?", envolvidoVida.getId().toString()).get(0);
                 ocorrenciaVida = ocorrenciaEnvolvidoVida.getOcorrenciaVida();
-            }catch (Exception e)
-            {}
+            }catch (Exception e){}
             //ocorrenciaVida = OcorrenciaVida.find(OcorrenciaVida.class,"")
             stepperLayout.setCurrentStepPosition(2);
             return;

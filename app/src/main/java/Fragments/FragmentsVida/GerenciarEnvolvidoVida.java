@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +13,10 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +27,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pefoce.peritolocal.DesenhoEnvolvidoActivity;
 import com.example.pefoce.peritolocal.GerenciarCorpo;
 import com.example.pefoce.peritolocal.ManterPericiaVida;
 import com.example.pefoce.peritolocal.R;
@@ -50,6 +55,7 @@ import Enums.CategoriaFoto;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.UnidadeTempo;
+import Enums.Vida.IndiciosTempoMorte;
 import Enums.Vida.TipoMorte;
 import Model.Foto;
 import Model.Ocorrencia;
@@ -58,6 +64,7 @@ import Model.Vida.EnvolvidoVida;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
 import Util.BuscadorEnum;
+import Util.StringUtil;
 import Util.TempoUtil;
 import Util.ViewUtil;
 
@@ -77,22 +84,28 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
     EditText edtNomeEnvolvido;
     EditText edtNumDocumento;
     Spinner spnTipoDocumento;
-    TextView txvDataNascimento;
-    EditText edtTempoMorte;
-    Spinner spnUnidadeTempo;
+    //    TextView txvDataNascimento;
+    EditText edtDiaNascimento;
+    EditText edtMesNascimento;
+    EditText edtAnoNascimento;
+    Spinner spnIndiciosTempoMorte;
+//    EditText edtTempoMorte;
+//    Spinner spnUnidadeTempo;
     Spinner spnGenero;
     EditText edtVestimentas;
     EditText edtObservacoes;
     CheckBox cxbDesconhecido;
     Button btnLesoes;
+    Button btnDesenho;
     Button btnPosicaoCadaver;
     Spinner spnTipoMorte;
     //    CheckBox cxbViolencia;
+    LinearLayout llDatePicker;
     ImageButton imgbAudio;
     ImageButton imgbCamera;
     FloatingActionButton fabEnvolvidos;
 
-
+    boolean lastClick;
     private MagicalCamera magicalCamera;
     private MagicalPermissions magicalPermissions;
     private static final int RESIZE_PHOTO_PIXELS_PERCENTAGE = 50;
@@ -150,12 +163,6 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         return mView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri)
-    {
-        if (mListener != null)
-            mListener.onFragmentInteraction(uri);
-    }
 
     @Override
     public void onDetach()
@@ -170,10 +177,21 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         if (rltvEnvolvido.getChildAt(0).isEnabled())
             try
             {
-                SalvarEnvolvidoVida();
+               if(!TempoUtil.checkValues(llDatePicker))
+               {
+                    edtDiaNascimento.setTextColor(Color.RED);
+                    Toast.makeText(getContext(), "Dia inválido", Toast.LENGTH_LONG).show();
+                   VerificationError ve = new VerificationError("");
+                   return ve;
+                }
+                else
+                    SalvarEnvolvidoVida();
+
+
             } catch (Exception e)
             {
                 VerificationError ve = new VerificationError(e.getMessage());
+                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_LONG).show();
                 return ve;
             }
         return null;
@@ -273,17 +291,23 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
     public void AssociarLayout(View view)
     {
+        llDatePicker = (LinearLayout) view.findViewById(R.id.ll_Data_Nascimento_Envolvido_Vida);
         spnGenero = (Spinner) view.findViewById(R.id.spn_Genero_Envolvido_Vida);
-        spnUnidadeTempo = (Spinner) view.findViewById(R.id.spn_Unidade_Tempo_Morte_Envolvido_Vida);
+        spnIndiciosTempoMorte = (Spinner) view.findViewById(R.id.spn_Indicios_Tempo_Morte_Envolvido_Vida);
+//        spnUnidadeTempo = (Spinner) view.findViewById(R.id.spn_Indicios_Tempo_Morte_Envolvido_Vida);
         spnTipoDocumento = (Spinner) view.findViewById(R.id.spn_Tipo_Documento_Envolvido_Vida);
         edtNomeEnvolvido = (EditText) view.findViewById(R.id.edt_Nome_Envolvido_Vida);
         edtVestimentas = (EditText) view.findViewById(R.id.edt_Vestimentas_Envolvido_Vida);
         edtNumDocumento = (EditText) view.findViewById(R.id.edt_NumDocumento_Envolvido_Vida);
         edtObservacoes = (EditText) view.findViewById(R.id.edt_Observacao_Envolvido_Vida);
-        edtTempoMorte = (EditText) view.findViewById(R.id.edt_Tempo_Morte_Envolvido_Vida);
-        txvDataNascimento = (TextView) view.findViewById(R.id.txv_Data_Nascimento_Valor_Envolvido_Vida);
+//        edtTempoMorte = (EditText) view.findViewById(R.id.edt_Tempo_Morte_Envolvido_Vida);
+//        txvDataNascimento = (TextView) view.findViewById(R.id.txv_Data_Nascimento_Valor_Envolvido_Vida);
+        edtDiaNascimento = (EditText) view.findViewById(R.id.edt_Dia_Nascimento_Envolvido_Vida);
+        edtMesNascimento = (EditText) view.findViewById(R.id.edt_Mes_Nascimento_Envolvido_Vida);
+        edtAnoNascimento = (EditText) view.findViewById(R.id.edt_Ano_Nascimento_Envolvido_Vida);
         cxbDesconhecido = (CheckBox) view.findViewById(R.id.cxb_Envolvido_Vida_Desconhecido);
         btnLesoes = (Button) view.findViewById(R.id.btn_Lesoes_Envolvido_Vida);
+        btnDesenho = (Button) view.findViewById(R.id.btn_Desenho_Envolvido_Vida);
         btnPosicaoCadaver = (Button) view.findViewById(R.id.btn_Posicao_Cadaver_Envolvido_Vida);
         rltvEnvolvido = (RelativeLayout) view.findViewById(R.id.rltv_Detalhe_Envolvido_Vida);
         fabEnvolvidos = (FloatingActionButton) view.findViewById(R.id.fab_Envolvido_Vida);
@@ -323,12 +347,12 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
         spnTipoDocumento.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, tiposDocumento));
 
-        List<String> unidadesTempo = new ArrayList<>();
+        List<String> indiciosMorte = new ArrayList<>();
 
-        for (UnidadeTempo ut : UnidadeTempo.values())
-            unidadesTempo.add(ut.getValor());
+        for (IndiciosTempoMorte itm : IndiciosTempoMorte.values())
+            indiciosMorte.add(itm.getValor());
 
-        spnUnidadeTempo.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, unidadesTempo));
+        spnIndiciosTempoMorte.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, indiciosMorte));
 
         List<String> generos = new ArrayList<>();
 
@@ -386,12 +410,18 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                 {
                     edtNomeEnvolvido.setText("Desconhecido(a)");
                     edtNumDocumento.setText("");
-                    txvDataNascimento.setText("--/--/----");
+//                    txvDataNascimento.setText("--/--/----");
                     spnTipoDocumento.setSelection(0);
                     spnTipoDocumento.setEnabled(false);
                     edtNumDocumento.setEnabled(false);
                     edtNomeEnvolvido.setEnabled(false);
-                    txvDataNascimento.setEnabled(false);
+//                    txvDataNascimento.setEnabled(false);
+                    edtAnoNascimento.setEnabled(false);
+                    edtMesNascimento.setEnabled(false);
+                    edtDiaNascimento.setEnabled(false);
+                    edtAnoNascimento.setText("");
+                    edtMesNascimento.setText("");
+                    edtDiaNascimento.setText("");
                 } else
                 {
 
@@ -399,7 +429,11 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                     spnTipoDocumento.setEnabled(true);
                     edtNumDocumento.setEnabled(true);
                     edtNomeEnvolvido.setEnabled(true);
-                    txvDataNascimento.setEnabled(true);
+//                    txvDataNascimento.setEnabled(true);
+                    edtAnoNascimento.setEnabled(true);
+                    edtMesNascimento.setEnabled(true);
+                    edtDiaNascimento.setEnabled(true);
+
                 }
             }
         });
@@ -439,7 +473,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                 magicalPermissions = new MagicalPermissions(GerenciarEnvolvidoVida.this, permissions);
                 magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE, magicalPermissions);
 
-                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarEnvolvidoVida.this, getActivity(), magicalCamera);
+                TipoFotoDialog.show(GerenciarEnvolvidoVida.this, getActivity(), magicalCamera);
             }
         });
 
@@ -522,13 +556,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             {
                 if (lastPosition != -1 && lastPosition != position)
                 {
-//                    try
-//                    {
-//                        ocorrenciaEnvolvidoVida = ocorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "envolvido_vida = ?", envolvidoVida.getId().toString()).get(0);
-//                    } catch (Exception e)
-//                    {
-//                        ocorrenciaEnvolvidoVida = new OcorrenciaEnvolvidoVida();
-//                    }
+
                     SalvarEnvolvidoVida();
                 }
 
@@ -571,7 +599,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             @Override
             public void onClick(View v)
             {
-                PosicaoCadaverDialog pcd = new PosicaoCadaverDialog(GerenciarEnvolvidoVida.this, getActivity());
+                PosicaoCadaverDialog.show(GerenciarEnvolvidoVida.this, getActivity());
             }
         });
 
@@ -589,14 +617,202 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             }
         });
 
-        txvDataNascimento.setOnClickListener(new View.OnClickListener()
+        btnDesenho.setOnClickListener(new View.OnClickListener()
         {
+            //TODO: utilize um dialog para confirmar que a foto antiga será apagada, tentar exibir foto antiga?
+
             @Override
             public void onClick(View v)
             {
-                TempoUtil.setDate(txvDataNascimento, getActivity());
+                SalvarEnvolvidoVida();
+                Intent it = new Intent(getContext(), DesenhoEnvolvidoActivity.class);
+                it.putExtra("EnvolvidoId", envolvidoVida.getId());
+                it.putExtra("OcorrenciaId", ocorrenciaVida.getId());
+                it.putExtra("GeneroEnvolvido", spnGenero.getSelectedItem().toString());
+                startActivity(it);
             }
         });
+
+        lastClick = false;
+        edtDiaNascimento.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+            {
+                int current = 0;
+
+                try
+                {
+                    current = Integer.valueOf(charSequence.toString());
+                } catch (Exception e)
+                {
+
+                }
+                if (current > 31 || (current < 1 && charSequence.length() > 1))
+                {
+                    edtDiaNascimento.setText(charSequence.toString().substring(0, charSequence.length() - 1));
+                    edtDiaNascimento.setSelection(edtDiaNascimento.getText().length());
+                }
+
+                if (edtDiaNascimento.getText().toString().length() == 2)
+                    edtMesNascimento.requestFocus();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+                if(edtDiaNascimento.getCurrentTextColor() == Color.RED)
+                    edtDiaNascimento.setTextColor(Color.BLACK);
+            }
+        });
+
+        edtMesNascimento.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+            {
+                int current = 0;
+
+                try
+                {
+                    current = Integer.valueOf(charSequence.toString());
+                } catch (Exception e)
+                {
+
+                }
+                if (current > 12 || (current < 1 && charSequence.length() > 1))
+                {
+                    edtMesNascimento.setText(charSequence.toString().substring(0, charSequence.length() - 1));
+                    edtMesNascimento.setSelection(edtMesNascimento.getText().length());
+                }
+
+                if (edtMesNascimento.getText().toString().length() == 2)
+                    edtAnoNascimento.requestFocus();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+
+            }
+        });
+
+        edtAnoNascimento.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+            {
+                int current = 0;
+
+                try
+                {
+                    current = Integer.valueOf(charSequence.toString());
+                } catch (Exception e)
+                {
+
+                }
+
+                if (current > (Calendar.getInstance().get(Calendar.YEAR)) || (current < 1 && charSequence.length() > 1))
+                {
+                    edtAnoNascimento.setText(charSequence.toString().substring(0, charSequence.length() - 1));
+                    edtAnoNascimento.setSelection(edtAnoNascimento.getText().length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+
+            }
+        });
+
+
+        edtAnoNascimento.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL)
+                {
+
+                    if (edtAnoNascimento.getText().length() != 0)
+                        edtAnoNascimento.setText(edtAnoNascimento.getText().toString().substring(0, edtAnoNascimento.getText().toString().length() - 1));
+                    edtAnoNascimento.setSelection(edtAnoNascimento.getText().length());
+
+                    if (edtAnoNascimento.getText().toString().length() == 0)
+                    {
+                        if (!lastClick)
+                            lastClick = true;
+                        else
+                        {
+                            edtMesNascimento.requestFocus();
+                            edtMesNascimento.setSelection(edtMesNascimento.getText().length());
+                            lastClick = false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        edtMesNascimento.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL)
+                {
+
+                    if (edtMesNascimento.getText().length() != 0)
+                        edtMesNascimento.setText(edtMesNascimento.getText().toString().substring(0, edtMesNascimento.getText().toString().length() - 1));
+                    edtMesNascimento.setSelection(edtMesNascimento.getText().length());
+
+                    if (edtMesNascimento.getText().toString().length() == 0)
+                    {
+                        if (!lastClick)
+                            lastClick = true;
+                        else
+                        {
+                            edtDiaNascimento.requestFocus();
+                            edtDiaNascimento.setSelection(edtDiaNascimento.getText().length());
+
+                            lastClick = false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+//        txvDataNascimento.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                TempoUtil.setDate(txvDataNascimento, getActivity());
+//            }
+//        });
     }
 
     public void CarregarEnvolvido()
@@ -615,18 +831,27 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                 edtNomeEnvolvido.setText(envolvidoVida.getNome());
 
             if (envolvidoVida.getNascimento() != null)
-                txvDataNascimento.setText(envolvidoVida.getDataNascimentoString());
-            else
-                txvDataNascimento.setText("--/--/----");
-
+            {
+                String[] datas = envolvidoVida.getDataNascimentoString().split("/");
+                if (datas != null && datas.length == 3)
+                {
+                    edtDiaNascimento.setText(datas[0]);
+                    edtMesNascimento.setText(datas[1]);
+                    edtAnoNascimento.setText(datas[2]);
+                }
+            } else
+            {
+                edtDiaNascimento.setText("");
+                edtMesNascimento.setText("");
+                edtAnoNascimento.setText("");
+            }
             if (envolvidoVida.getDocumentoTipo() != null)
             {
                 if (envolvidoVida.getDocumentoTipo().equals(DocumentoPessoa.NP))
                 {
                     edtNumDocumento.setText("");
                     edtNumDocumento.setEnabled(false);
-                }
-                else
+                } else
                     spnTipoDocumento.setSelection(BuscadorEnum.getIndex(spnTipoDocumento, envolvidoVida.getDocumentoTipo().getValor()));
             }
 
@@ -641,11 +866,10 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         if (envolvidoVida.getGenero() != null)
             spnGenero.setSelection(BuscadorEnum.getIndex(spnGenero, envolvidoVida.getGenero().getValor()));
 
-        if (envolvidoVida.getUnidadeTempo() != null)
-            spnUnidadeTempo.setSelection(BuscadorEnum.getIndex(spnUnidadeTempo, envolvidoVida.getUnidadeTempo().getValor()));
-
-        if (envolvidoVida.getPeriodoMorte() != 0)
-            edtTempoMorte.setText(String.valueOf(envolvidoVida.getPeriodoMorte()));
+        if(envolvidoVida.getIndiciosTempoMorte() != null)
+        {
+            spnIndiciosTempoMorte.setSelection(BuscadorEnum.getIndex(spnIndiciosTempoMorte, envolvidoVida.getIndiciosTempoMorte().getValor()));
+        }
 
         if (envolvidoVida.getVestes() != null)
             edtVestimentas.setText(envolvidoVida.getVestes());
@@ -661,18 +885,28 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         envolvidoVida.setDocumentoValor(edtNumDocumento.getText().toString());
         envolvidoVida.setObservacoes(edtObservacoes.getText().toString());
         envolvidoVida.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
-        envolvidoVida.setUnidadeTempo(BuscadorEnum.BuscarUnidadeTempo(spnUnidadeTempo.getSelectedItem().toString()));
-        envolvidoVida.setDataNascimentoString(txvDataNascimento.getText().toString());
+        envolvidoVida.setIndiciosTempoMorte(BuscadorEnum.BuscarIndicioTempoMorte(spnIndiciosTempoMorte.getSelectedItem().toString()));
+
+//        envolvidoVida.setDataNascimentoString(txvDataNascimento.getText().toString());
+
         envolvidoVida.setVestes(edtVestimentas.getText().toString());
         envolvidoVida.setTipoMorte(BuscadorEnum.BuscarTipoMorte(spnTipoMorte.getSelectedItem().toString()));
-        try
-        {
-            envolvidoVida.setPeriodoMorte(Integer.valueOf(edtTempoMorte.getText().toString()));
-        } catch (Exception e)
-        {
-            envolvidoVida.setPeriodoMorte(0);
-        }
 
+
+        if(!edtAnoNascimento.getText().toString().equals("") &&
+                !edtMesNascimento.getText().toString().equals("") &&
+                !edtDiaNascimento.getText().toString().equals(""))
+        {
+            try
+            {
+                envolvidoVida.setDataNascimentoString(edtDiaNascimento.getText() + "/"
+                        + edtMesNascimento.getText() + "/" + edtAnoNascimento.getText().toString());
+            }catch (Exception e)
+            {
+                envolvidoVida.setNascimento(null);
+            }
+
+        }
         envolvidoVida.save();
 
         ocorrenciaEnvolvidoVida.setEnvolvidoVida(envolvidoVida);
@@ -681,11 +915,19 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         ocorrenciaEnvolvidoVida.save();
 
         adapterEnvolvidoVida.notifyDataSetChanged();
+
+//        String path = Environment.getExternalStorageDirectory() +
+//                "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome().substring(0, 5)
+//                + "/Vida/" + ocorrenciaVida.getDataPath() + "/" + ocorrenciaVida.getNumIncidencia() +
+//                "/Fotos_Envolvidos/" + envolvidoVida.getId().toString()+"_"+ StringUtil.normalize(envolvidoVida.getNome()) + ".jpeg";;
+//
+//        File f = new File(path);
+//
+//        if(!f.exists())
     }
 
     public void LimparCampos()
     {
-        edtTempoMorte.setText("");
         edtObservacoes.setText("");
         edtVestimentas.setText("");
         edtNomeEnvolvido.setText("");
@@ -696,10 +938,14 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         spnTipoMorte.setSelection(0);
 
         spnGenero.setSelection(0);
-        spnUnidadeTempo.setSelection(0);
+        spnIndiciosTempoMorte.setSelection(0);
         spnTipoDocumento.setSelection(0);
 
-        txvDataNascimento.setText("00/00/0000");
+        edtAnoNascimento.setText("");
+        edtMesNascimento.setText("");
+        edtDiaNascimento.setText("");
+
+//        txvDataNascimento.setText("00/00/0000");
     }
 
     public interface OnFragmentInteractionListener
@@ -718,9 +964,11 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         edtNomeEnvolvido = null;
         edtNumDocumento = null;
         spnTipoDocumento = null;
-        txvDataNascimento = null;
-        edtTempoMorte = null;
-        spnUnidadeTempo = null;
+//        txvDataNascimento = null;
+        edtAnoNascimento = null;
+        edtMesNascimento = null;
+        edtDiaNascimento = null;
+        spnIndiciosTempoMorte = null;
         spnGenero = null;
         edtVestimentas = null;
         edtObservacoes = null;

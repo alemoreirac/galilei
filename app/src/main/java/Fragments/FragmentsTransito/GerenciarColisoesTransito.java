@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -39,8 +40,11 @@ import Dialogs.VestigioDialog;
 
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
+import com.thomashaertel.widget.MultiSpinner;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import Adapters.AdapterColisao;
@@ -58,6 +62,7 @@ import Enums.TipoInteracao;
 import Enums.Transito.TipoJustificativa_Inconclusao;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.EnderecoTransito;
+import Model.Transito.EnvolvidoColisao;
 import Model.Transito.EnvolvidoTransito;
 import Model.Transito.OcorrenciaTransitoColisao;
 import Model.Transito.OcorrenciaTransitoEndereco;
@@ -78,6 +83,9 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
 {
     int lastPosition;
     int lastCheckedId = 0;
+    //    int lastSpinnerPosition = 0;
+    boolean flagVisualLstv = false;
+    int countColisoes = 0;
     GerenciarColisoesTransito fragment = null;
     Spinner spnVeiculo1 = null;
     Spinner spnVeiculo2 = null;
@@ -87,13 +95,14 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
     Spinner spnFaixa2 = null;
     Spinner spnSentido1 = null;
     Spinner spnSentido2 = null;
-    Spinner spnEnvolvido = null;
+    MultiSpinner spnEnvolvidosAtropelados = null;
     Spinner spnEnvolvido_Local = null;
     Spinner spnVeiculo1Causa = null;
     Spinner spnVeiculo2Causa = null;
     Spinner spnObjeto_Local = null;
     Spinner spnAnimal_Local = null;
     Spinner spnTipoInteracao = null;
+    Spinner spnOrdem = null;
     Spinner spnJustificativaInconclusao = null;
     EditText edtEnvolvido_Observacao = null;
     EditText edtObjetoDescricao = null;
@@ -139,6 +148,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
     List<OcorrenciaTransitoColisao> colisoesList = null;
     ArrayList<EnvolvidoTransito> envolvidosModel = null;
     ArrayList<ColisaoTransito> colisaoTransitoModel = null;
+    List<EnvolvidoColisao> envolvidoColisaoList = null;
     RelativeLayout rltvBase = null;
     public ColisaoTransito colisaoTransito = null;
     OcorrenciaTransitoColisao ocorrenciaColisao = null;
@@ -146,10 +156,9 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
     ArrayList<String> tipoColisaoAdapter = null;
     InconclusivoDialog inconclusivoDialog = null;
     private OnFragmentInteractionListener mListener;
-
+    boolean[] envolvidosSelecionados = null;
     ArrayList<Veiculo> veiculosModel2 = null;
     ArrayAdapter<Veiculo> adapterVeiculo2 = null;
-
     ArrayList<String> conclusoesVeiculo1 = null;
     ArrayList<String> conclusoesVeiculo2 = null;
     ArrayAdapter<String> adapterConclusoesVeiculo1 = null;
@@ -211,80 +220,80 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
     {
         super.onDestroyView();
 
-         spnVeiculo1 = null;
-         spnVeiculo2 = null;
-         spnEndereco1 = null;
-         spnEndereco2 = null;
-         spnFaixa1 = null;
-         spnFaixa2 = null;
-         spnSentido1 = null;
-         spnSentido2 = null;
-         spnEnvolvido = null;
-         spnEnvolvido_Local = null;
-         spnVeiculo1Causa = null;
-         spnVeiculo2Causa = null;
-         spnObjeto_Local = null;
-         spnAnimal_Local = null;
-         spnTipoInteracao = null;
-         spnJustificativaInconclusao = null;
-         edtEnvolvido_Observacao = null;
-         edtObjetoDescricao = null;
-         edtObjetoObservacao = null;
-         edtDistancia = null;
-         edtAnimalDescricao = null;
-         edtAnimalObservacao = null;
-         edtObservacoes = null;
-         cxbContraMaoVeiculo1 = null;
-         cxbContraMaoVeiculo2 = null;
-         cxbCausaVeiculo1 = null;
-         cxbCausaVeiculo2 = null;
-         cxbCausaPedestre = null;
-         ll_Vestigio = null;
-         ll_Inconclusao = null;
-         imgbGravar_Colisao = null;
-         sgOpcoes = null;
-         rbtnOpcaoVeiculo = null;
-         rbtnOpcaoPedestre = null;
-         rbtnOpcaoObjeto = null;
-         rbtnOpcaoAnimal = null;
-         rbtnNenhum = null;
-         fabColisoes = null;
-         rltvVeiculo2 = null;
-         rltvVeiculo1 = null;
-         rltvObjeto = null;
-         rltvPedestre = null;
-         rltvNenhum = null;
-         rltvAnimal = null;
-         rltvBlock_Veiculo1= null;
-         rltvBlock_Veiculo2= null;
-         rltvBlock_Envolvido= null;
-         rltvBlock_Animal= null;
-         rltvBlock_Objeto= null;
-         listColisoes = null;
-         mView = null;
+        spnVeiculo1 = null;
+        spnVeiculo2 = null;
+        spnEndereco1 = null;
+        spnEndereco2 = null;
+        spnFaixa1 = null;
+        spnFaixa2 = null;
+        spnSentido1 = null;
+        spnSentido2 = null;
+        spnEnvolvidosAtropelados = null;
+        spnEnvolvido_Local = null;
+        spnVeiculo1Causa = null;
+        spnVeiculo2Causa = null;
+        spnObjeto_Local = null;
+        spnAnimal_Local = null;
+        spnTipoInteracao = null;
+        spnJustificativaInconclusao = null;
+        edtEnvolvido_Observacao = null;
+        edtObjetoDescricao = null;
+        edtObjetoObservacao = null;
+        edtDistancia = null;
+        edtAnimalDescricao = null;
+        edtAnimalObservacao = null;
+        edtObservacoes = null;
+        cxbContraMaoVeiculo1 = null;
+        cxbContraMaoVeiculo2 = null;
+        cxbCausaVeiculo1 = null;
+        cxbCausaVeiculo2 = null;
+        cxbCausaPedestre = null;
+        ll_Vestigio = null;
+        ll_Inconclusao = null;
+        imgbGravar_Colisao = null;
+        sgOpcoes = null;
+        rbtnOpcaoVeiculo = null;
+        rbtnOpcaoPedestre = null;
+        rbtnOpcaoObjeto = null;
+        rbtnOpcaoAnimal = null;
+        rbtnNenhum = null;
+        fabColisoes = null;
+        rltvVeiculo2 = null;
+        rltvVeiculo1 = null;
+        rltvObjeto = null;
+        rltvPedestre = null;
+        rltvNenhum = null;
+        rltvAnimal = null;
+        rltvBlock_Veiculo1 = null;
+        rltvBlock_Veiculo2 = null;
+        rltvBlock_Envolvido = null;
+        rltvBlock_Animal = null;
+        rltvBlock_Objeto = null;
+        listColisoes = null;
+        mView = null;
         ocorrenciaTransitoColisao = null;
         enderecosList = null;
         enderecoModel = null;
-         veiculosModel = null;
+        veiculosModel = null;
         veiculosList = null;
         envolvidosList = null;
         colisoesList = null;
-         envolvidosModel = null;
-         colisaoTransitoModel = null;
-          rltvBase = null;
-         colisaoTransito = null;
-          ocorrenciaColisao = null;
-          adp = null;
+        envolvidosModel = null;
+        colisaoTransitoModel = null;
+        rltvBase = null;
+        colisaoTransito = null;
+        ocorrenciaColisao = null;
+        adp = null;
         tipoColisaoAdapter = null;
-          inconclusivoDialog = null;
+        inconclusivoDialog = null;
         veiculosModel2 = null;
-         adapterVeiculo2 = null;
-         conclusoesVeiculo1 = null;
-         conclusoesVeiculo2 = null;
+        adapterVeiculo2 = null;
+        conclusoesVeiculo1 = null;
+        conclusoesVeiculo2 = null;
         adapterConclusoesVeiculo1 = null;
         adapterConclusoesVeiculo2 = null;
-        veiculoEvadido= null;
-        envolvidoEvadido= null;
+        veiculoEvadido = null;
+        envolvidoEvadido = null;
         tipoJustificativa_inconclusao = null;
     }
 
@@ -298,29 +307,31 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
     @Override
     public VerificationError verifyStep()
     {
-        if (rltvBase.getChildAt(0).isEnabled())
-        {
+        if (colisaoTransito != null)
             try
             {
-//                if(colisaoTransito.getInconclusivo())
-//                    SalvarColisaoInconclusiva();
-//                else
+
                 SalvarColisao();
             } catch (Exception e)
             {
-                VerificationError ve = new VerificationError(e.getMessage());
-                return ve;
+                return new VerificationError(e.getMessage());
             }
-        }
+
         return null;
     }
-
 
     @Override
     public void onSelected()
     {
         lastPosition = -1;
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        View view = getActivity().getCurrentFocus();
+        if (view != null)
+        {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
         fragment = this;
         ocorrenciaTransitoColisao = ((ManterPericiaTransito) getActivity()).ocorrenciaTransito;
@@ -338,6 +349,15 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         veiculosModel = new ArrayList<>();
 
         colisoesList = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class, "ocorrencia_transito = ?", ocorrenciaTransitoColisao.getId().toString());
+
+        Collections.sort(colisoesList, new Comparator<OcorrenciaTransitoColisao>()
+        {
+            @Override
+            public int compare(OcorrenciaTransitoColisao c1, OcorrenciaTransitoColisao c2)
+            {
+                return c1.getColisaoTransito().getOrdemAcontecimento() - c2.getColisaoTransito().getOrdemAcontecimento();
+            }
+        });
 
         colisaoTransitoModel = new ArrayList<>();
 
@@ -408,7 +428,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         spnVeiculo1 = (Spinner) v.findViewById(R.id.spn_Veiculo1);
         spnVeiculo2 = (Spinner) v.findViewById(R.id.spn_Veiculo2);
         spnJustificativaInconclusao = (Spinner) v.findViewById(R.id.spn_dialog_Justificativa);
-        spnEnvolvido = (Spinner) v.findViewById(R.id.spn_Envolvido_Dinamica);
+        spnEnvolvidosAtropelados = (MultiSpinner) v.findViewById(R.id.mspn_Envolvido_Dinamica);
         spnEnvolvido_Local = (Spinner) v.findViewById(R.id.spn_Envolvido_Posicao);
         edtEnvolvido_Observacao = (EditText) v.findViewById(R.id.edt_Envolvido_Distancia);
 
@@ -425,7 +445,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
 
         imgbGravar_Colisao = (ImageButton) v.findViewById(R.id.imgb_Audio_Veiculo_Vida);
 
-        edtObservacoes = (EditText) v.findViewById(R.id.edt_Observacao);
+        edtObservacoes = (EditText) v.findViewById(R.id.edt_Observacao_Colisao);
         edtDistancia = (EditText) v.findViewById(R.id.edt_Envolvido_Distancia);
 
         rbtnNenhum = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Nenhum);
@@ -460,8 +480,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         fabColisoes = (FloatingActionButton) v.findViewById(R.id.fab_Colisao);
         listColisoes = (ListView) v.findViewById(R.id.lstv_Colisoes);
 
-//        btnSave = (Button) v.findViewById(R.id.btn_Salvar_Colisao);
-
+        spnOrdem = (Spinner) v.findViewById(R.id.spn_Ordem_Interacao);
         spnVeiculo1Causa = (Spinner) v.findViewById(R.id.spn_Causa_Veiculo1);
 
         spnVeiculo2Causa = (Spinner) v.findViewById(R.id.spn_Causa_Veiculo2);
@@ -470,7 +489,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         cxbCausaVeiculo2 = (CheckBox) v.findViewById(R.id.cxb_Veiculo2_Culpado);
 
         cxbCausaPedestre = (CheckBox) v.findViewById(R.id.cxb_Envolvido_Culpado);
-        //cxbInconclusivo = (CheckBox) v.findViewById(R.id.cxb_in);
+
         ll_Inconclusao = (LinearLayout) v.findViewById(R.id.ll_Inconclusao);
         ll_Vestigio = (LinearLayout) v.findViewById(R.id.ll_Vestigio);
 
@@ -487,7 +506,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             public void onClick(View view) throws IllegalArgumentException,
                     SecurityException, IllegalStateException
             {
-                VestigioDialog vestigioDialog = new VestigioDialog(GerenciarColisoesTransito.this, getActivity());
+                VestigioDialog.show(GerenciarColisoesTransito.this, getActivity());
             }
         });
 
@@ -497,7 +516,6 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             public void onClick(View view) throws IllegalArgumentException,
                     SecurityException, IllegalStateException
             {
-
                 android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
 
                 inconclusivoDialog = new InconclusivoDialog();
@@ -511,7 +529,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
 
                 bd.putLong("ColisaoID", colisaoTransito.getId());
 
-                bd.putBoolean("Inconclusivo",inconclusivo);
+                bd.putBoolean("Inconclusivo", inconclusivo);
 
                 if (envolvidoEvadido != null)
                     bd.putLong("EnvolvidoEvasorId", envolvidoEvadido.getId());
@@ -535,6 +553,11 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
+                if (flagVisualLstv)
+                {
+                    flagVisualLstv = false;
+                    return;
+                }
 
                 if (lastPosition != -1 && lastPosition != position)
                     SalvarColisao();
@@ -595,6 +618,8 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
                                 colisoesList.remove(position);
 
                                 LimparCampos();
+
+                                atualizarOrdem();
 
                                 HabilitarInterface(false);
                                 Toast.makeText(getActivity(), "Colisão Deletada com sucesso!", Toast.LENGTH_LONG).show();
@@ -987,10 +1012,72 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
                 }
             }
         });
+
+        recontarSpinner();
+
+        spnOrdem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (ocorrenciaColisao == null)
+                    return;
+
+//                adp.remove(ocorrenciaColisao.getColisaoTransito());
+//                adp.insert(colisaoTransito,position);
+//
+                colisaoTransitoModel.remove(colisaoTransito);
+                colisaoTransitoModel.add(position, colisaoTransito);
+
+                adp.notifyDataSetChanged();
+//                colisoesList.remove(ocorrenciaColisao);
+//                colisoesList.add(position, ocorrenciaColisao);
+
+                atualizarOrdem();
+
+                //Permite que apenas o layout seja atualizado, sem cometer operações de banco
+                flagVisualLstv = true;
+
+                listColisoes.performItemClick(listColisoes, BuscadorEnum.PegarPosicaoColisao(colisaoTransitoModel, colisaoTransito), listColisoes.getItemIdAtPosition(BuscadorEnum.PegarPosicaoColisao(colisaoTransitoModel, colisaoTransito)));
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+    }
+
+    private void atualizarOrdem()
+    {
+        for (ColisaoTransito ct : colisaoTransitoModel)
+        {
+            ct.setOrdemAcontecimento(colisaoTransitoModel.indexOf(ct) + 1);
+            ct.save();
+        }
+    }
+
+    private void recontarSpinner()
+    {
+        countColisoes = colisoesList.size();
+
+        ArrayList<String> total = new ArrayList<String>();
+
+        for (int i = 1; i < countColisoes + 1; i++)
+        {
+            total.add(Integer.toString(i));
+        }
+
+        spnOrdem.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, total));
     }
 
     private void CarregarColisao()
     {
+        recontarSpinner();
+
         inconclusivo = colisaoTransito.getInconclusivo();
 
         InterfaceInconclusiva(inconclusivo);
@@ -1070,11 +1157,24 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
                 cxbContraMaoVeiculo2.setChecked(colisaoTransito.isVeiculo2ContraMao());
                 rbtnOpcaoVeiculo.performClick();
                 break;
+
             case PEDESTRE:
-                if (colisaoTransito.getPedestre() == null)
-                    spnEnvolvido.setSelection(0);
-                else
-                    spnEnvolvido.setSelection(BuscadorEnum.getEnvolvidoIndexById(spnEnvolvido, colisaoTransito.getPedestre().getId()));
+
+                envolvidoColisaoList = EnvolvidoColisao.find(EnvolvidoColisao.class,"colisao_transito = ?",colisaoTransito.getId().toString());
+
+                envolvidosSelecionados = new boolean[envolvidosList.size()];
+
+                for(EnvolvidoColisao ec : envolvidoColisaoList)
+                {
+                    for(EnvolvidoTransito envolvidoTransito : envolvidosModel)
+                    {
+                        if (ec.getEnvolvidoTransito().getId().equals(envolvidoTransito.getId()))
+                            envolvidosSelecionados[envolvidosModel.indexOf(envolvidoTransito)] = true;
+                    }
+                }
+
+                spnEnvolvidosAtropelados.setSelected(envolvidosSelecionados);
+
                 if (colisaoTransito.getDistancia() != 0)
                 {
                     edtDistancia.setEnabled(true);
@@ -1106,7 +1206,10 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
                 break;
         }
 
-
+        if (colisaoTransito.getOrdemAcontecimento() - 1 >= 0)
+            spnOrdem.setSelection(colisaoTransito.getOrdemAcontecimento() - 1);
+        else
+            spnOrdem.setSelection(0);
 
 
         spnVeiculo1.setSelection(BuscadorEnum.getVeiculoIndexById(spnVeiculo1, colisaoTransito.getVeiculo1().getId()));
@@ -1152,13 +1255,13 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         {
             colisaoTransito.setJustificativaInconclusao(tipoJustificativa_inconclusao);
 
-            switch (tipoJustificativa_inconclusao.toString())
+            switch (tipoJustificativa_inconclusao)
             {
-                case "Envolvido se evadiu":
+                case ENVOLVIDO_EVADIU:
                     colisaoTransito.setEnvolvidoEvadido(envolvidoEvadido);
                     colisaoTransito.setVeiculoEvadido(null);
                     break;
-                case "Condutor se evadiu":
+                case CONDUTOR_EVADIU:
                     colisaoTransito.setEnvolvidoEvadido(null);
                     colisaoTransito.setVeiculoEvadido(veiculoEvadido);
                     break;
@@ -1176,6 +1279,8 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         envolvidoEvadido = null;
         veiculoEvadido = null;
         inconclusivoDialog = null;
+
+        colisaoTransito.setOrdemAcontecimento(spnOrdem.getSelectedItemPosition() + 1);
 
         colisaoTransito.setEndereco_veiculo1((EnderecoTransito) spnEndereco1.getSelectedItem());
         colisaoTransito.setVeiculo1((Veiculo) spnVeiculo1.getSelectedItem());
@@ -1222,7 +1327,25 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         if (rbtnOpcaoPedestre.isChecked())
         {
             colisaoTransito.setAtoresColisao(AtoresColisao.PEDESTRE);
-            colisaoTransito.setPedestre((EnvolvidoTransito) spnEnvolvido.getSelectedItem());
+//            colisaoTransito.setPedestre((EnvolvidoTransito) spnEnvolvidosAtropelados.getSelectedItem());
+
+            for(int i = 0;i < envolvidosModel.size();i++)
+            {
+                if(envolvidosSelecionados[i] &&
+                   EnvolvidoColisao.find(EnvolvidoColisao.class,"envolvido_transito = ? and colisao_transito = ?",envolvidosModel.get(i).getId().toString(),colisaoTransito.getId().toString()).size()==0)
+                {
+                    EnvolvidoColisao ec = new EnvolvidoColisao(envolvidosList.get(i).getEnvolvidoTransito(),colisaoTransito);
+                    ec.save();
+                }
+
+                if(!envolvidosSelecionados[i] &&
+                        EnvolvidoColisao.find(EnvolvidoColisao.class,"envolvido_transito = ? and colisao_transito = ?"
+                                ,envolvidosModel.get(i).getId().toString(),colisaoTransito.getId().toString()).size()>0)
+                {
+                     EnvolvidoColisao.deleteAll(EnvolvidoColisao.class,"envolvido_transito = ? and colisao_transito = ?",envolvidosModel.get(i).getId().toString(),colisaoTransito.getId().toString());
+                }
+            }
+
             colisaoTransito.setPosicaoPedestre(BuscadorEnum.BuscarLocalPedestre(spnEnvolvido_Local.getSelectedItem().toString()));
             colisaoTransito.setCulpaPedestre(cxbCausaPedestre.isChecked());
             try
@@ -1249,41 +1372,14 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         }
 
         colisaoTransito.setObservacoesColisao(edtObservacoes.getText().toString());
-       try
-       {
-           colisaoTransito.setTipoInteracao(BuscadorEnum.BuscarTipoInteracao(spnTipoInteracao.getSelectedItem().toString()));
+        try
+        {
+            colisaoTransito.setTipoInteracao(BuscadorEnum.BuscarTipoInteracao(spnTipoInteracao.getSelectedItem().toString()));
 
-       }catch (Exception e)
-       {
-           colisaoTransito.setTipoInteracao(null);
-       }
-        //  if(dialogFragment != null)
-        //  colisaoTransito.setAudioObservacoes(dialogFragment.Arquivo);
-
-//        if(inconclusivoDialog != null)
-//        {
-//            colisaoTransito.setInconclusivo(inconclusivoDialog.cxbInconclusivo.isChecked());
-//            colisaoTransito.setJustificativaInconclusao(BuscadorEnum.BuscarJustificativa(inconclusivoDialog.spnJustificativa.getSelectedItem().toString()));
-//            switch (inconclusivoDialog.spnJustificativa.getSelectedItem().toString())
-//            {
-//                case "Envolvido se evadiu":
-//                    colisaoTransito.setEnvolvidoEvadido((EnvolvidoTransito) inconclusivoDialog.spnEvadido.getSelectedItem());
-//                    colisaoTransito.setVeiculoEvadido(null);
-//                    break;
-//                case "Condutor se evadiu":
-//                    colisaoTransito.setEnvolvidoEvadido(null);
-//                    colisaoTransito.setVeiculoEvadido((Veiculo)inconclusivoDialog.spnEvadido.getSelectedItem());
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//        else
-//        {
-//            colisaoTransito.setJustificativaInconclusao(null);
-//            colisaoTransito.setVeiculoEvadido(null);
-//            colisaoTransito.setEnvolvidoEvadido(null);
-//        }
+        } catch (Exception e)
+        {
+            colisaoTransito.setTipoInteracao(null);
+        }
 
         colisaoTransito.save();
 
@@ -1299,7 +1395,11 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
 
     private void LimparCampos()
     {
-        spnEnvolvido.setSelection(0);
+        if(envolvidosSelecionados!=null)
+        {
+            for (int i = 0; i < envolvidosSelecionados.length; i++)
+                envolvidosSelecionados[i] = false;
+        }
         spnEndereco1.setSelection(0);
         spnEndereco2.setSelection(0);
 
@@ -1406,11 +1506,25 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         spnObjeto_Local.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, localObjeto));
         spnAnimal_Local.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, localObjeto));
 
+        ArrayAdapter<EnvolvidoTransito> adapterEnvolvidos = new ArrayAdapter<EnvolvidoTransito>(ctx, android.R.layout.simple_spinner_item);
+
         for (OcorrenciaTransitoEnvolvido oe : envolvidosList)
         {
             envolvidosModel.add(oe.getEnvolvidoTransito());
+            adapterEnvolvidos.add(oe.getEnvolvidoTransito());
         }
-        spnEnvolvido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(ctx, android.R.layout.simple_spinner_dropdown_item, envolvidosModel));
+
+        MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener()
+        {
+            public void onItemsSelected(boolean[] selected)
+            {
+                envolvidosSelecionados = selected;
+            }
+        };
+
+//        spnEnvolvidosAtropelados.setAdapter(new ArrayAdapter<EnvolvidoTransito>(ctx, android.R.layout.simple_spinner_dropdown_item, envolvidosModel));
+
+        spnEnvolvidosAtropelados.setAdapter(adapterEnvolvidos, false, onSelectedListener);
 
         conclusoesVeiculo1 = new ArrayList<>();
 
@@ -1522,39 +1636,12 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         ll_Vestigio.setEnabled(true);
         imgbGravar_Colisao.setEnabled(true);
 
-
-//        rbtnOpcaoAnimal.setEnabled(!bloquearInterface);
-
         if (veiculosModel.size() < 2)
             rbtnOpcaoVeiculo.setEnabled(false);
         else
             rbtnOpcaoVeiculo.setEnabled(!bloquearInterface);
 
-//        rbtnNenhum.setEnabled(!bloquearInterface);
-//        rbtnOpcaoObjeto.setEnabled(!bloquearInterface);
-//        rbtnOpcaoPedestre.setEnabled(!bloquearInterface);
-//
-//        //VIEWS V1 e V2
-//        spnSentido1.setEnabled(!bloquearInterface);
-//        spnSentido2.setEnabled(!bloquearInterface);
-//
-//        cxbCausaVeiculo1.setEnabled(!bloquearInterface);
-//        cxbCausaVeiculo2.setEnabled(!bloquearInterface);
-//
-//        spnFaixa1.setEnabled(!bloquearInterface);
-//        spnFaixa2.setEnabled(!bloquearInterface);
-//
-//        cxbContraMaoVeiculo1.setEnabled(!bloquearInterface);
-//        cxbContraMaoVeiculo2.setEnabled(!bloquearInterface);
-//
-//        spnVeiculo1Causa.setEnabled(!bloquearInterface);
-//        spnVeiculo2Causa.setEnabled(!bloquearInterface);
-//
-//        //VIEWS PEDESTRE
-//        spnEnvolvido_Local.setEnabled(!bloquearInterface);
-
-
-        if (bloquearInterface == false && colisaoTransito.getPosicaoPedestre() != null)
+        if (!bloquearInterface && colisaoTransito.getPosicaoPedestre() != null)
         {
             if (colisaoTransito.getPosicaoPedestre() == LocalPedestre.PROXIMO_FAIXA
                     || colisaoTransito.getPosicaoPedestre() == LocalPedestre.PROXIMO_PASSARELA)
@@ -1572,19 +1659,6 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             edtDistancia.setEnabled(false);
             edtDistancia.setText("");
         }
-
-
-//        cxbCausaPedestre.setEnabled(!bloquearInterface);
-//
-//        //VIEWS OBJETO
-//        spnObjeto_Local.setEnabled(!bloquearInterface);
-//        edtObjetoObservacao.setEnabled(!bloquearInterface);
-//        edtObjetoDescricao.setEnabled(!bloquearInterface);
-//
-//        //VIEWS ANIMAL
-//        spnAnimal_Local.setEnabled(!bloquearInterface);
-//        edtAnimalDescricao.setEnabled(!bloquearInterface);
-//        edtAnimalObservacao.setEnabled(!bloquearInterface);
     }
 
 
@@ -1717,18 +1791,23 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
 
         public void salvarNovaColisao()
         {
+
+            colisaoTransito.setOrdemAcontecimento(countColisoes + 1);
+
             colisaoTransito.save();
+
             ocorrenciaColisao = new OcorrenciaTransitoColisao();
             ocorrenciaColisao.setOcorrenciaTransito(ocorrenciaTransitoColisao);
             ocorrenciaColisao.setColisaoTransito(colisaoTransito);
             ocorrenciaColisao.save();
             colisoesList.add(ocorrenciaColisao);
 
+            recontarSpinner();
+
             adp.add(colisaoTransito);
             adp.notifyDataSetChanged();
             listColisoes.performItemClick(listColisoes, BuscadorEnum.PegarPosicaoColisao(colisaoTransitoModel, colisaoTransito), listColisoes.getItemIdAtPosition(BuscadorEnum.PegarPosicaoColisao(colisaoTransitoModel, colisaoTransito)));
+
         }
     }
-
-
 }

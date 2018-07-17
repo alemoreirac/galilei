@@ -89,4 +89,23 @@ public class Lesao extends SugarRecord
         } else
             return "Lesão de tipo não definido";
     }
+
+    public String exportarLaudo()
+    {
+        String lesao = "Do tipo ";
+
+        if (this.natureza != null)
+            lesao += natureza.getValor().toLowerCase();
+
+        if (this.localizacaoLesao != null)
+            lesao += ", no terço " + localizacaoLesao.getValor().toLowerCase();
+
+        if (this.compatibilidade)
+            lesao += " compatível com a colisão; ";
+
+        else
+            lesao += " incompatível com a colisão; ";
+
+        return lesao;
+    }
 }

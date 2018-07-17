@@ -17,8 +17,7 @@ public class Dano extends SugarRecord
     @Expose
     public SetorDano setor;
     @Expose
-    public Boolean Compatibilidade;
-
+    public Boolean compatibilidade;
 
     //TODO trocar para varios tipos de dano
 
@@ -54,12 +53,12 @@ public class Dano extends SugarRecord
 
     public Boolean getCompatibilidade()
     {
-        return Compatibilidade;
+        return compatibilidade;
     }
 
     public void setCompatibilidade(Boolean compatibilidade)
     {
-        Compatibilidade = compatibilidade;
+        this.compatibilidade = compatibilidade;
     }
 
 
@@ -72,7 +71,7 @@ public class Dano extends SugarRecord
         this.setor = setord;
         this.tipo = tipod;
         this.terco = tercod;
-        this.Compatibilidade = compatibilidade;
+        this.compatibilidade = compatibilidade;
     }
 
     @Override
@@ -102,21 +101,19 @@ public class Dano extends SugarRecord
         String dano = "Do tipo ";
 
         if (this.tipo != null)
-            dano += tipo.getValor();
+            dano += tipo.getValor().toLowerCase();
 
         if (this.terco != null)
-            dano += ", no terço " + terco.getValor();
-
-        if (this.setor != null)
-            dano += "no Setor " + setor.getValor() + ". ";
+            dano += ", no terço " + terco.getValor().toLowerCase();
 
         if (this.getCompatibilidade())
-            dano += "Compatível com a colisão.";
+            dano += " compatível com a colisão; ";
 
         else
-            dano += "Incompatível com a colisão.";
+            dano += " incompatível com a colisão; ";
 
         return dano;
     }
+
 }
 

@@ -37,46 +37,43 @@ import Util.BuscadorEnum;
 public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragment
 
 {
-    Spinner spnCabeca;
-    Spinner spnTorax;
-    Spinner spnBracoDireito;
-    Spinner spnBracoEsquerdo;
-    Spinner spnPernaDireita;
-    Spinner spnPernaEsquerda;
+ static  Spinner spnCabeca;
+ static  Spinner spnTorax;
+ static  Spinner spnBracoDireito;
+ static  Spinner spnBracoEsquerdo;
+ static  Spinner spnPernaDireita;
+ static  Spinner spnPernaEsquerda;
 
-    Button btnCancelar;
-    Button btnSalvar;
+ static  Button btnCancelar;
+ static  Button btnSalvar;
 
-    TextView txvResultado;
+ static  TextView txvResultado;
 
-    Fragment fragment;
-    Activity activity = null;
-    Context context;
+ static  Fragment fragment;
+// static  Activity activity = null;
+ static  Context context;
 
-    ArrayList<String> resultado = null;
+ static  ArrayList<String> resultado = null;
 
-    EnvolvidoVida envolvidoVida;
+ static  EnvolvidoVida envolvidoVida;
 
-    // OcorrenciaTransito ot;
-    Dialog dialog;
+ static  Dialog dialog;
 
-    @SuppressLint("ValidFragment")
-    public PosicaoCadaverDialog(Fragment f, Activity a)
+
+    public static void show(Fragment f, Context ctx)
     {
-        super();
         fragment = f;
-        context = a;
 
-        dialog = new Dialog(a);
+        context = ctx;
+
+        dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_posicao_cadaver);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setTitle("Posição do Cadáver");
-        dialog.getWindow().setLayout(580,570);
         dialog.show();
 
         envolvidoVida = ((GerenciarEnvolvidoVida)f).envolvidoVida;
 
-        activity = a;
         //   ot = ((ManterPericiaTransito) context).ocorrenciaTransito;
 
         resultado = new ArrayList<>();
@@ -88,7 +85,14 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
         CarregarPosicoes();
     }
 
-    private void CarregarPosicoes()
+    @SuppressLint("ValidFragment")
+    public PosicaoCadaverDialog(Fragment f, Activity a)
+    {
+        super();
+
+    }
+
+    private static void CarregarPosicoes()
     {
         if(envolvidoVida.getPosicaoBracoDireito()!=null)
             spnBracoDireito.setSelection(BuscadorEnum.getIndex(spnBracoDireito,envolvidoVida.getPosicaoBracoDireito().getValor()));
@@ -110,7 +114,7 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
     }
 
 
-    private void AssociarLayout()
+    private static void AssociarLayout()
     {
         spnBracoDireito = (Spinner) dialog.findViewById(R.id.spn_Posicao_Braco_Direito);
         spnBracoEsquerdo= (Spinner) dialog.findViewById(R.id.spn_Posicao_Braco_Esquerdo);
@@ -130,16 +134,16 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
         for(PosicaoBraco pb : PosicaoBraco.values())
             posicoesBracos.add(pb.getValor());
 
-        spnBracoEsquerdo.setAdapter(new ArrayAdapter<String>(activity,R.layout.support_simple_spinner_dropdown_item,posicoesBracos));
-        spnBracoDireito.setAdapter(new ArrayAdapter<String>(activity,R.layout.support_simple_spinner_dropdown_item,posicoesBracos));
+        spnBracoEsquerdo.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,posicoesBracos));
+        spnBracoDireito.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,posicoesBracos));
 
         List<String> posicoesPernas = new ArrayList<>();
 
         for(PosicaoPerna pp : PosicaoPerna.values())
             posicoesPernas.add(pp.getValor());
 
-        spnPernaEsquerda.setAdapter(new ArrayAdapter<String>(activity,R.layout.support_simple_spinner_dropdown_item,posicoesPernas));
-        spnPernaDireita.setAdapter(new ArrayAdapter<String>(activity,R.layout.support_simple_spinner_dropdown_item,posicoesPernas));
+        spnPernaEsquerda.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,posicoesPernas));
+        spnPernaDireita.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,posicoesPernas));
 
 
         List<String> posicoesCabeca = new ArrayList<>();
@@ -147,7 +151,7 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
         for(PosicaoCabeca pc : PosicaoCabeca.values())
             posicoesCabeca.add(pc.getValor());
 
-        spnCabeca.setAdapter(new ArrayAdapter<String>(activity,R.layout.support_simple_spinner_dropdown_item,posicoesCabeca));
+        spnCabeca.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,posicoesCabeca));
 
 
         List<String> posicoesTorax = new ArrayList<>();
@@ -155,11 +159,11 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
         for(PosicaoTorax pt : PosicaoTorax.values())
             posicoesTorax.add(pt.getValor());
 
-        spnTorax.setAdapter(new ArrayAdapter<String>(activity,R.layout.support_simple_spinner_dropdown_item,posicoesTorax));
+        spnTorax.setAdapter(new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,posicoesTorax));
 
     }
 
-    public void AtualizarResultado()
+    public static void AtualizarResultado()
     {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -179,7 +183,7 @@ public class PosicaoCadaverDialog //extends android.support.v4.app.DialogFragmen
         txvResultado.setText(stringBuilder.toString());
     }
 
-    public void AssociarEventos()
+    public static void AssociarEventos()
     {
         AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener()
         {

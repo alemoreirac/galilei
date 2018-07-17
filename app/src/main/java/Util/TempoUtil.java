@@ -3,16 +3,22 @@ package Util;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.support.v7.widget.AppCompatEditText;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -21,6 +27,55 @@ import java.util.Locale;
 
 public class TempoUtil
 {
+    private static LinearLayout llPicker;
+
+    public static boolean checkValues(LinearLayout ll)
+    {
+        llPicker = ll;
+
+        EditText edtDia= null,edtMes=null,edtAno=null;
+
+        for (int i = 0; i < llPicker.getChildCount(); i++)
+        {
+            View v = llPicker.getChildAt(i);
+            if(v.getClass().equals(AppCompatEditText.class))
+            {
+                if(i == 0)
+                    edtDia = (AppCompatEditText) v;
+
+                if(i == 2)
+                    edtMes = (AppCompatEditText) v;
+
+                if(i == 4)
+                    edtAno = (AppCompatEditText) v;
+            }
+        }
+
+        if(edtMes.getText().toString().isEmpty() &&
+                edtDia.getText().toString().isEmpty() &&
+                edtAno.getText().toString().isEmpty() )
+return true;
+                try
+                {
+                    int dia,mes,ano;
+                    dia = Integer.valueOf(edtDia.getText().toString());
+                    mes = Integer.valueOf(edtMes.getText().toString());
+                    ano = Integer.valueOf(edtAno.getText().toString());
+
+
+                    Calendar c = Calendar.getInstance();
+
+                    c.setLenient(false);
+                    c.set(ano, mes-1, dia);
+                    c.getTime();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
+    }
 
     public static void setTime(final TextView textView, Context ctx)
     {
@@ -92,16 +147,38 @@ public class TempoUtil
 
     public static Date stringToDate(String value)
     {
-
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
         Date date = null;
+
+
+
         try
         {
             date = format.parse(value);
+
+
         } catch (ParseException e)
         {
             e.printStackTrace();
         }
+
+//        Calendar c = Calendar.getInstance();
+//
+//        c.setTime(date);
+//
+//        if(c.YEAR<1850)
+//
+//            return null;
+//        if(c.MONTH>12 || c.MONTH<0)
+//            return null;
+//        if(c.DAY_OF_MONTH>31 || c.DAY_OF_MONTH<0)
+//            return null;
+//        c.setLenient();
+//
+//        if(date.after(Calendar.getInstance().getTime()))
+//            return null;
+
 
         return date;
     }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -60,8 +61,6 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
     Spinner spnCategoriaFoto;
     MagicalPermissions magicalPermissions;
     MagicalCamera magicalCamera;
-//    Button btnCancelarFoto;
-//    Button btnSalvarFoto;
     RelativeLayout rltvFotos;
     ArrayList<Foto> fotosModel;
     List<OcorrenciaVidaFoto> fotosOcorrenciaVida;
@@ -74,20 +73,13 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
     final int RESIZE_PHOTO_PIXELS_PERCENTAGE = 50;
     AdapterGaleria adapterGaleria;
 
+    ArrayList<String> categorias;
+
+
     public GerenciarFotosVida()
     {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GerenciarFotosVida.
-     */
-    // TODO: Rename and change types and number of parameters
     public static GerenciarFotosVida newInstance(String param1, String param2)
     {
         GerenciarFotosVida fragment = new GerenciarFotosVida();
@@ -113,7 +105,8 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         //CALL THIS METHOD EVER
         magicalCamera.resultPhoto(requestCode, resultCode, data);
@@ -122,115 +115,112 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
         //magicalCamera.resultPhoto(requestCode, resultCode, data, MagicalCamera.ORIENTATION_ROTATE_180);
 //if you need save your bitmap in device use this method and return the path if you need this
         //You need to send, the bitmap picture, the photo name, the directory name, the picture type, and autoincrement photo name if           //you need this send true, else you have the posibility or realize your standard name for your pictures.
-        pathImagem = magicalCamera.savePhotoInMemoryDevice(magicalCamera.getPhoto(),"imagem_pericia","Imagens " + ocorrenciaVida.getId().toString(), MagicalCamera.JPEG, true);
+        pathImagem = magicalCamera.savePhotoInMemoryDevice(magicalCamera.getPhoto(), "imagem_pericia", "Imagens " + ocorrenciaVida.getId().toString(), MagicalCamera.JPEG, true);
 
-        if(pathImagem != null)
+        if (pathImagem != null)
         {
-
             imgvFotoDetalhe.setImageBitmap(magicalCamera.getPhoto());
 
             File newFile = new File(pathImagem);
 
             Picasso.with(getContext()).load(new File(pathImagem)).error(R.drawable.placeholder_error).into(imgvFotoDetalhe);
 
-            String newPath = "";
+            String newPath = Environment.getExternalStorageDirectory() +
+                    "/Galilei/" + ocorrencia.getPerito().getId() + "_" + ocorrencia.getPerito().getNome() + "/Vida/" + ocorrenciaVida.getDataPath() + "/" + ocorrenciaVida.getNumIncidencia();
 
-            switch(spnCategoriaFoto.getSelectedItem().toString())
+            switch (spnCategoriaFoto.getSelectedItem().toString())
             {
                 case "Endereços":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() +"_"+ ocorrencia.getPerito().getNome() + "/Vida/" + ocorrenciaVida.getDataPath()+"/"+ocorrenciaVida.getNumIncidencia() + "/Fotos_Enderecos/";
+                    newPath += "/Fotos_Enderecos/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_endereco" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_endereco";
                     break;
 
                 case "Veículos":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() +"_"+ ocorrencia.getPerito().getNome() + "/Vida/" + ocorrenciaVida.getDataPath()+"/"+ocorrenciaVida.getNumIncidencia() + "/Fotos_Veiculos/";
+                    newPath += "/Fotos_Veiculos/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_veiculo" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_veiculo";
                     break;
+
                 case "Local Ocorrência":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() +"_"+ ocorrencia.getPerito().getNome() + "/Vida/" + ocorrenciaVida.getDataPath()+"/"+ocorrenciaVida.getNumIncidencia() + "/Fotos_Local_Ocorrencia/";
+                    newPath += "/Fotos_Local_Ocorrencia/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_local_ocorrencia" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_local_ocorrencia";
                     break;
                 case "Vestígios":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() +"_"+ ocorrencia.getPerito().getNome() + "/Vida/" + ocorrenciaVida.getDataPath()+"/"+ocorrenciaVida.getNumIncidencia() + "/Fotos_Vestigios/";
+                    newPath += "/Fotos_Vestigios/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_vestigios" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_vestigio";
+
                     break;
                 case "Envolvidos":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() +"_"+ ocorrencia.getPerito().getNome() + "/Transito/" + ocorrenciaVida.getDataPath()+"/"+ocorrenciaVida.getNumIncidencia() + "/Fotos_Envolvidos/";
+                    newPath += "/Fotos_Envolvidos/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_envolvido" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_envolvido";
                     break;
                 case "Outros":
-                    newPath = Environment.getExternalStorageDirectory() +
-                            "/Galilei/" + ocorrencia.getPerito().getId() +"_"+ ocorrencia.getPerito().getNome() + "/Transito/" + ocorrenciaVida.getDataPath()+"/"+ocorrenciaVida.getNumIncidencia() + "/Fotos_Outros/";
+                    newPath += "/Fotos_Outros/";
 
                     folder = new File(newPath);
                     if (!folder.exists())
                         folder.mkdirs();
 
-                    newPath += "foto_outros" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto_outros";
                     break;
                 default:
-                    newPath += "foto" + DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+                    newPath += "foto";
                     break;
             }
 
-            if(newFile.renameTo(new File(newPath)))
+            newPath += DateFormat.format("yyyy_MM_dd hh-mm-ss", Calendar.getInstance().getTime()).toString() + ".jpeg";
+
+            if (newFile.renameTo(new File(newPath)))
             {
                 foto = new Foto(edtDetalhe.getText().toString(), newPath);
                 pathImagem = newPath;
-            }
-            else
-                foto = new Foto(edtDetalhe.getText().toString(),pathImagem);
+            } else
+                foto = new Foto(edtDetalhe.getText().toString(), pathImagem);
 
             foto.save();
             ocorrenciaVidaFoto = new OcorrenciaVidaFoto();
-            ocorrenciaVidaFoto .setFoto(foto);
-            ocorrenciaVidaFoto .setOcorrenciaVida(ocorrenciaVida);
-            ocorrenciaVidaFoto .save();
+            ocorrenciaVidaFoto.setFoto(foto);
+            ocorrenciaVidaFoto.setOcorrenciaVida(ocorrenciaVida);
+            ocorrenciaVidaFoto.save();
             fotosOcorrenciaVida.add(ocorrenciaVidaFoto);
             adapterGaleria.add(foto);
             adapterGaleria.notifyDataSetChanged();
 
-            if(pathImagem!= null)
+            if (pathImagem != null)
                 Toast.makeText(getActivity(), "Foto salva no caminho: " + pathImagem, Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(getActivity(), "Ocorreu um erro na gravação, entre em contato com o suporte!", Toast.LENGTH_LONG).show();
-            lstvFOtos.performItemClick(lstvFOtos, BuscadorEnum.PegarPosicaoFoto(fotosModel,foto),lstvFOtos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoFoto(fotosModel,foto)));
+
+            lstvFOtos.performItemClick(lstvFOtos, BuscadorEnum.PegarPosicaoFoto(fotosModel, foto), lstvFOtos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoFoto(fotosModel, foto)));
 
         }
 
-        ViewUtil.modifyAll(rltvFotos,true);
+        ViewUtil.modifyAll(rltvFotos, true);
     }
-
 
 
     public void AssociarEventos()
@@ -240,6 +230,7 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
             @Override
             public void onClick(View v)
             {
+                //TODO: refazer chekc permission utilizando o auto permission do android arsenal ou apenas implementar a negativa da permissão//
                 String[] permissions = new String[]{
                         Manifest.permission.CAMERA,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -250,14 +241,14 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
                 magicalPermissions = new MagicalPermissions(GerenciarFotosVida.this, permissions);
                 magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE, magicalPermissions);
 
-                if(foto!= null)
+                if (foto != null)
                     SalvarFoto();
 
                 foto = new Foto();
 
                 LimparCampos();
 
-                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarFotosVida.this, getActivity(), magicalCamera);
+                TipoFotoDialog.show(GerenciarFotosVida.this, getActivity(), magicalCamera);
 
             }
         });
@@ -267,12 +258,12 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if(lastPosition!= -1 && lastPosition != position)
+                if (lastPosition != -1 && lastPosition != position)
                 {
                     try
                     {
                         ocorrenciaVidaFoto = OcorrenciaVidaFoto.find(OcorrenciaVidaFoto.class, "foto = ?", foto.getId().toString()).get(0);
-                    }catch (Exception e)
+                    } catch (Exception e)
                     {
                         ocorrenciaVidaFoto = new OcorrenciaVidaFoto();
                     }
@@ -291,7 +282,7 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
                 pathImagem = foto.getArquivo();
                 try
                 {
-                    ocorrenciaVidaFoto = OcorrenciaVidaFoto.find(OcorrenciaVidaFoto.class, "foto = ?",foto.getId().toString()).get(0);
+                    ocorrenciaVidaFoto = OcorrenciaVidaFoto.find(OcorrenciaVidaFoto.class, "foto = ?", foto.getId().toString()).get(0);
                 } catch (Exception e)
                 {
                     ocorrenciaVidaFoto = new OcorrenciaVidaFoto();
@@ -321,10 +312,12 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
-
                                 OcorrenciaVidaFoto ocorrenciaFotoDelete = fotosOcorrenciaVida.get(position);
+
                                 adapterGaleria.remove(ocorrenciaFotoDelete.getFoto());
-                                fotosOcorrenciaVida.remove(ocorrenciaFotoDelete.getFoto());
+
+                                fotosOcorrenciaVida.remove(ocorrenciaFotoDelete);
+
                                 ocorrenciaFotoDelete.getFoto().delete();
                                 ocorrenciaFotoDelete.delete();
                                 LimparCampos();
@@ -369,19 +362,24 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
 
     private void SalvarFoto()
     {
-        foto.setDescricao(edtDetalhe.getText().toString());
+        if (!foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
+            foto.setCategoriaFoto(BuscadorEnum.BuscarCategoriaFoto(spnCategoriaFoto.getSelectedItem().toString()));
 
-        foto.setArquivo(pathImagem);
+        if (foto.getCategoriaFoto() != null
+                && !foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
 
-        foto.setCategoriaFoto(BuscadorEnum.BuscarCategoriaFoto(spnCategoriaFoto.getSelectedItem().toString()));
+        {
+            foto.setDescricao(edtDetalhe.getText().toString());
+            foto.setArquivo(pathImagem);
+        }
+
         foto.save();
 
         if (ocorrenciaVidaFoto != null)
         {
             ocorrenciaVidaFoto.setFoto(foto);
             ocorrenciaVidaFoto.save();
-        }
-        else
+        } else
         {
             ocorrenciaVidaFoto = new OcorrenciaVidaFoto();
             ocorrenciaVidaFoto.setFoto(foto);
@@ -398,11 +396,38 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
     {
         pathImagem = foto.getArquivo();
         Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvFotoDetalhe);
-        edtDetalhe.setText(foto.getDescricao());
-        if(foto.getCategoriaFoto()!=null)
-            spnCategoriaFoto.setSelection(BuscadorEnum.getIndex(spnCategoriaFoto,foto.getCategoriaFoto().getValor()));
-        else
-            spnCategoriaFoto.setSelection(0);
+
+
+        if (foto.getCategoriaFoto() != null)
+        {
+            if (!foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
+            {
+                if (!spnCategoriaFoto.isEnabled())
+                {
+                    if(categorias.contains(CategoriaFoto.DESENHO.getValor()))
+                    {
+                        categorias.remove(CategoriaFoto.DESENHO.getValor());
+                        spnCategoriaFoto.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, categorias));
+                    }
+                    spnCategoriaFoto.setEnabled(true);
+                }
+                spnCategoriaFoto.setSelection(BuscadorEnum.getIndex(spnCategoriaFoto, foto.getCategoriaFoto().getValor()));
+                edtDetalhe.setText(foto.getDescricao());
+
+            } else
+            {
+                categorias = new ArrayList<>();
+                for (CategoriaFoto cf : CategoriaFoto.values())
+                    categorias.add(cf.getValor());
+
+                spnCategoriaFoto.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, categorias));
+
+                spnCategoriaFoto.setSelection(BuscadorEnum.getIndex(spnCategoriaFoto, CategoriaFoto.DESENHO.getValor()));
+
+                spnCategoriaFoto.setEnabled(false);
+            }
+        }
+
     }
 
     private void LimparCampos()
@@ -420,7 +445,7 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
     @Override
     public void onSelected()
     {
-        lastPosition= -1;
+        lastPosition = -1;
         AssociarLayout(getView());
 
         AssociarEventos();
@@ -477,14 +502,14 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
         rltvFotos = (RelativeLayout) view.findViewById(R.id.rltv_Detalhe_Foto_Vida);
         spnCategoriaFoto = (Spinner) view.findViewById(R.id.spn_Categoria_Foto_Vida);
 
-
-        ArrayList<String> categorias = new ArrayList<>();
-        for(CategoriaFoto cf : CategoriaFoto.values())
+        categorias = new ArrayList<>();
+        for (CategoriaFoto cf : CategoriaFoto.values())
         {
             categorias.add(cf.getValor());
         }
+        categorias.remove(CategoriaFoto.DESENHO.getValor());
 
-        spnCategoriaFoto.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,categorias));
+        spnCategoriaFoto.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, categorias));
 
     }
 

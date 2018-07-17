@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/lstv_dialog_ListLesoes"
         android:layout_below="@id/lstv_dialog_ListLesoes"
-        android:text="Salvar"
+        android:text="Fechar"
         android:id="@+id/btn_dialog_SalvarLesao_Detalhe"/>
 
     <Button

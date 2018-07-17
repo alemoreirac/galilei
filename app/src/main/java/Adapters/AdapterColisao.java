@@ -21,16 +21,16 @@ import ViewHolders.ViewHolderColisao;
 public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements View.OnClickListener
 {
 
-    private ArrayList<ColisaoTransito> dataSet;
+//    private ArrayList<ColisaoTransito> dataSet;
 
     Context mContext;
 
-    private int lastPosition = -1;
+//    private int lastPosition = -1;
 
     public AdapterColisao(ArrayList<ColisaoTransito> data, Context context)
     {
         super(context, R.layout.row_ocorrencia,data);
-        this.dataSet = data;
+//        this.dataSet = data;
         this.mContext = context;
     }
 
@@ -54,7 +54,7 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
             viewHolder.setTxvAtor2((TextView) convertView.findViewById(R.id.txv_row_Ator2));
             viewHolder.setTxvTipoInteracao((TextView) convertView.findViewById(R.id.txv_row_TipoInteracao));
             viewHolder.setImgvTipoInteracao((ImageView) convertView.findViewById(R.id.imgv_row_TipoInteracao));
-            viewHolder.setImgvAudio((ImageView) convertView.findViewById(R.id.imgv_row_AudioColisao));
+//            viewHolder.setImgvAudio((ImageView) convertView.findViewById(R.id.imgv_row_AudioColisao));
             convertView.setTag(viewHolder);
         }
         else
@@ -84,7 +84,7 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
                         .into(viewHolder.getImgvTipoInteracao());
 
                 if(colisaoTransito.getVeiculo2() != null)
-                    viewHolder.getTxvAtor2().setText(colisaoTransito.getVeiculo2().toString());
+                viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getVeiculo2().toString(),17,"(Não descrito)"));
                 break;
             case ANIMAL:
                 Picasso.with(convertView.getContext())
@@ -112,22 +112,22 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
                 break;
         }
 
-        if(colisaoTransito.getGravacaoObservacoes() != null)
-        {
-            Picasso.with(convertView.getContext())
-                    .load(R.drawable.microfone)
-                    .into(viewHolder.getImgvAudio());
-        }
-        else
-        {
-            Picasso.with(convertView.getContext())
-                    .load(R.drawable.microfone_apagado)
-                    .into(viewHolder.getImgvAudio());
-        }
+//        if(colisaoTransito.getGravacaoObservacoes() != null)
+//        {
+//            Picasso.with(convertView.getContext())
+//                    .load(R.drawable.microfone)
+//                    .into(viewHolder.getImgvAudio());
+//        }
+//        else
+//        {
+//            Picasso.with(convertView.getContext())
+//                    .load(R.drawable.microfone_apagado)
+//                    .into(viewHolder.getImgvAudio());
+//        }
 
-        lastPosition = position;
         if(colisaoTransito.getVeiculo1() != null)
-        viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString());
+        viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString() + " "+ colisaoTransito.getOrdemAcontecimento());
+
         if(colisaoTransito.getTipoInteracao() != null)
         viewHolder.getTxvTipoInteracao().setText(colisaoTransito.getTipoInteracao().getValor());
 

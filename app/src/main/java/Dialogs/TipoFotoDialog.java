@@ -16,17 +16,16 @@ import com.frosquivel.magicalcamera.MagicalCamera;
 
 public class TipoFotoDialog
 {
-    Fragment fragment;
-    Activity activity = null;
-    Context context;
-    ImageView imgvCamera, imgvGaleria;
-   // OcorrenciaTransito ot;
-    Dialog dialog;
-MagicalCamera magicalCamera;
-    public TipoFotoDialog(Fragment f,Activity a, MagicalCamera mc)
+    static Fragment fragment;
+    static Context context;
+    static ImageView imgvCamera, imgvGaleria;
+    static Dialog dialog;
+    static MagicalCamera magicalCamera;
+
+    public static void show(Fragment f, Context ctx, MagicalCamera mc)
     {
         fragment = f;
-        context = a;
+        context = ctx;
         magicalCamera = mc;
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_tipo_foto);
@@ -34,21 +33,17 @@ MagicalCamera magicalCamera;
         dialog.setTitle("Escolha a fonte da Fotografia");
         dialog.show();
 
-        activity = a;
-     //   ot = ((ManterPericiaTransito) context).ocorrenciaTransito;
-
         AssociarLayout();
         AssociarEventos();
     }
 
-
-    private void AssociarLayout()
+    private static void AssociarLayout()
     {
         imgvCamera = (ImageView) dialog.findViewById(R.id.imgv_Opcao_camera);
         imgvGaleria = (ImageView) dialog.findViewById(R.id.imgv_Opcao_galeria);
     }
 
-    public void AssociarEventos()
+    public static void AssociarEventos()
     {
         imgvCamera.setOnClickListener(new View.OnClickListener()
         {
@@ -57,7 +52,8 @@ MagicalCamera magicalCamera;
                     SecurityException, IllegalStateException
             {
                 magicalCamera.takeFragmentPhoto(fragment);
-                dialog.dismiss();}
+                dialog.dismiss();
+            }
         });
 
         imgvGaleria.setOnClickListener(new View.OnClickListener()
@@ -67,7 +63,8 @@ MagicalCamera magicalCamera;
                     SecurityException, IllegalStateException
             {
                 magicalCamera.selectFragmentPicture(fragment, "Selecione Uma Imagem");
-                dialog.dismiss();}
+                dialog.dismiss();
+            }
         });
     }
 }

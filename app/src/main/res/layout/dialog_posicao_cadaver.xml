@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="8dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/ms_white"
-            android:textAlignment="center"
-            android:id="@+id/txv_Resultado_Posicao"
-            android:lineSpacingExtra="4dp"
-            android:textSize="18dp"
-            android:padding="10dp"
-            android:text="Texto resultado da posição"/>
+
+    <Button
+        android:id="@+id/btn_Salvar_Posicao_Corpo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/>
+
+    <Button
+        android:id="@+id/btn_Cancelar_Posicao_Corpo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:background="@color/ms_white"
+        android:textAlignment="center"
+        android:id="@+id/txv_Resultado_Posicao"
+        android:lineSpacingExtra="4dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="18dp"
+        android:padding="10dp"
+        android:text="Texto resultado da posição"/>
 
     <View
         android:id="@+id/view_separador_Posicao"
@@ -33,14 +51,6 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/txv_Resultado_Posicao"/>
 
-    <Spinner
-        android:id="@+id/spn_Posicao_Cabeca"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_posicao_cabeca"
-        android:layout_marginTop="20dp"
-        android:layout_toLeftOf="@id/view_separador_Posicao"
-        android:layout_marginRight="8dp"/>
 
 
     <TextView
@@ -48,25 +58,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/view_posicao_cabeca"
-        android:layout_alignLeft="@id/spn_Posicao_Cabeca"
+        android:layout_alignLeft="@id/btn_Salvar_Posicao_Corpo"
         android:text="Posição da Cabeça"/>
 
-    <TextView
-        android:id="@+id/txv_Posicao_Torax"
-        android:layout_width="wrap_content"
+
+    <Spinner
+        android:id="@+id/spn_Posicao_Cabeca"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/view_posicao_cabeca"
-        android:layout_toRightOf="@id/spn_Posicao_Cabeca"
-        android:layout_marginLeft="30dp"
-        android:text="Posição do Tórax"/>
+        android:layout_below="@id/txv_Posicao_Cabeca"
+        android:layout_marginTop="20dp"
+        android:layout_alignLeft="@id/txv_Posicao_Cabeca"
+        android:layout_marginRight="10dp"/>
 
     <Spinner
         android:id="@+id/spn_Posicao_Torax"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/spn_Posicao_Cabeca"
-        android:layout_alignLeft="@id/txv_Posicao_Torax"
+        android:layout_alignRight="@id/btn_Cancelar_Posicao_Corpo"
         android:layout_marginTop="8dp"/>
+
+
+    <TextView
+        android:id="@+id/txv_Posicao_Torax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_posicao_cabeca"
+        android:layout_alignLeft="@id/spn_Posicao_Torax"
+        android:layout_marginLeft="30dp"
+        android:text="Posição do Tórax"/>
+
 
     <View
         android:id="@+id/view_posicao_bracos"
@@ -160,20 +182,5 @@
         android:layout_alignLeft="@id/txv_Posicao_Perna_Esquerda"/>
 
 
-    <Button
-        android:id="@+id/btn_Salvar_Posicao_Corpo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Salvar"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
-
-    <Button
-        android:id="@+id/btn_Cancelar_Posicao_Corpo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancelar"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

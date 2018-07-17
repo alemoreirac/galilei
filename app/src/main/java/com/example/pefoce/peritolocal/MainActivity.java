@@ -1,5 +1,6 @@
 package com.example.pefoce.peritolocal;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,7 +9,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -24,8 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 
 import Adapters.AdapterOcorrencia;
-import Enums.DocumentoSolicitacao;
 import Enums.TipoOcorrencia;
 import Enums.Transito.TipoVia;
 import Model.Transito.DanoVeiculo;
@@ -58,11 +55,11 @@ import Model.Vida.OcorrenciaVidaFoto;
 import Model.Vida.VestigioVidaOcorrencia;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
-import Util.BusinessOcorrencia;
+import Util.PaginatorOcorrencia;
 import Util.TempoUtil;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends Activity
 {
     Button btnLogout = null;
     ArrayList<Ocorrencia> ocorrencias = null;
@@ -83,6 +80,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         AssociarLayout();
@@ -113,16 +111,16 @@ public class MainActivity extends AppCompatActivity
         paginaAtual = 1;
         btnAnterior.setEnabled(false);
 
-        BusinessOcorrencia.refreshOcorrencias(perito.getId());
+        PaginatorOcorrencia.refreshOcorrencias(perito.getId());
 
-        ocorrencias = BusinessOcorrencia.findByFilterPaginated("", paginaAtual);
+        ocorrencias = PaginatorOcorrencia.findByFilterPaginated("", paginaAtual);
 
-        maximoPaginas = BusinessOcorrencia.maxPages;
+        maximoPaginas = PaginatorOcorrencia.maxPages;
 
-        if(maximoPaginas == 1)
+        if (maximoPaginas == 1)
             btnProxima.setEnabled(false);
 
-        txvPaginas.setText("Página "+paginaAtual + " de "+ maximoPaginas);
+        txvPaginas.setText("Página " + paginaAtual + " de " + maximoPaginas);
 
         if (ocorrencias != null)
         {
@@ -152,17 +150,17 @@ public class MainActivity extends AppCompatActivity
                 {
                     public void onClick(View v)
                     {
-                        adapter = new AdapterOcorrencia(BusinessOcorrencia.findByFilterPaginated(edtBusca.getText().toString().trim(), ++paginaAtual), getApplicationContext());
-                        maximoPaginas = BusinessOcorrencia.maxPages;
+                        adapter = new AdapterOcorrencia(PaginatorOcorrencia.findByFilterPaginated(edtBusca.getText().toString().trim(), ++paginaAtual), getApplicationContext());
+                        maximoPaginas = PaginatorOcorrencia.maxPages;
                         lstvOcorrencias.setAdapter(adapter);
 
-                        if(paginaAtual == maximoPaginas)
+                        if (paginaAtual == maximoPaginas)
 
                             btnProxima.setEnabled(false);
 
                         btnAnterior.setEnabled(true);
 
-                        txvPaginas.setText("Página "+paginaAtual+ " de "+ maximoPaginas);
+                        txvPaginas.setText("Página " + paginaAtual + " de " + maximoPaginas);
 
                     }
                 });
@@ -172,16 +170,16 @@ public class MainActivity extends AppCompatActivity
                 {
                     public void onClick(View v)
                     {
-                        adapter = new AdapterOcorrencia(BusinessOcorrencia.findByFilterPaginated(edtBusca.getText().toString().trim(), --paginaAtual), getApplicationContext());
-                        maximoPaginas = BusinessOcorrencia.maxPages;
+                        adapter = new AdapterOcorrencia(PaginatorOcorrencia.findByFilterPaginated(edtBusca.getText().toString().trim(), --paginaAtual), getApplicationContext());
+                        maximoPaginas = PaginatorOcorrencia.maxPages;
                         lstvOcorrencias.setAdapter(adapter);
 
-                        if(paginaAtual == 1)
+                        if (paginaAtual == 1)
                             btnAnterior.setEnabled(false);
 
                         btnProxima.setEnabled(true);
 
-                        txvPaginas.setText("Página "+paginaAtual+ " de "+ maximoPaginas);
+                        txvPaginas.setText("Página " + paginaAtual + " de " + maximoPaginas);
                     }
                 });
 
@@ -203,8 +201,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void afterTextChanged(Editable s)
             {
-                adapter = new AdapterOcorrencia(BusinessOcorrencia.findByFilterPaginated(s.toString().trim(), 1), getApplicationContext());
-                maximoPaginas = BusinessOcorrencia.maxPages;
+                adapter = new AdapterOcorrencia(PaginatorOcorrencia.findByFilterPaginated(s.toString().trim(), 1), getApplicationContext());
+                maximoPaginas = PaginatorOcorrencia.maxPages;
 
                 lstvOcorrencias.setAdapter(adapter);
 
@@ -212,15 +210,15 @@ public class MainActivity extends AppCompatActivity
 
                 paginaAtual = 1;
 
-                if(maximoPaginas == 1)
+                if (maximoPaginas == 1)
 
                     btnProxima.setEnabled(false);
 
                 else
 
-                btnProxima.setEnabled(true);
+                    btnProxima.setEnabled(true);
 
-                txvPaginas.setText("Página "+1 + " de "+ maximoPaginas);
+                txvPaginas.setText("Página " + 1 + " de " + maximoPaginas);
 
             }
         });

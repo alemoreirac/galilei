@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="0dp"
     tools:context="Fragments.FragmentsVida.GerenciarEnvolvidoVida">
 
     <android.support.design.widget.CoordinatorLayout
@@ -36,10 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+
         android:layout_toRightOf="@+id/lista_envolvidos_vida"
-        android:padding="15dp">
+        android:padding="10dp">
 
         <RelativeLayout
             android:id="@+id/rltv_Detalhe_Envolvido_Vida"
@@ -111,16 +111,65 @@
                 android:layout_toRightOf="@id/txv_NumDocumento_Envolvido_Vida"
                 android:text="Data de Nascimento" />
 
-            <TextView
-                android:id="@+id/txv_Data_Nascimento_Valor_Envolvido_Vida"
+            <!--<TextView-->
+            <!--android:id="@+id/txv_Data_Nascimento_Valor_Envolvido_Vida"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignLeft="@id/txv_Data_Nasciimento_Envolvido_Vida"-->
+            <!--android:layout_below="@id/txv_Data_Nasciimento_Envolvido_Vida"-->
+            <!--android:layout_marginTop="6dp"-->
+            <!--android:clickable="true"-->
+            <!--android:text="01/01/2000"-->
+            <!--android:textSize="20dp" />-->
+
+            <LinearLayout
+                android:id="@+id/ll_Data_Nascimento_Envolvido_Vida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/edt_NumDocumento_Envolvido_Vida"
                 android:layout_alignLeft="@id/txv_Data_Nasciimento_Envolvido_Vida"
-                android:layout_below="@id/txv_Data_Nasciimento_Envolvido_Vida"
-                android:layout_marginTop="6dp"
-                android:clickable="true"
-                android:text="01/01/2000"
-                android:textSize="20dp" />
+                android:layout_marginTop="6dp">
+
+
+                <EditText
+                    android:id="@+id/edt_Dia_Nascimento_Envolvido_Vida"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:hint="01"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/edt_Mes_Nascimento_Envolvido_Vida"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:hint="01"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/edt_Ano_Nascimento_Envolvido_Vida"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:hint="1990"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/view_separador_envolvido"
@@ -154,32 +203,31 @@
                 android:layout_alignBottom="@id/txv_Genero_Envolvido_Vida"
                 android:layout_alignLeft="@id/txv_NumDocumento_Envolvido_Vida"
                 android:layout_marginTop="10dp"
-                android:text="Tempo de morte (aproximado)" />
+                android:text="Indícios de passagem do tempo" />
 
-            <EditText
-                android:id="@+id/edt_Tempo_Morte_Envolvido_Vida"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/txv_Tempo_Morte_Envolvido_Vida"
+            <!--<EditText-->
+            <!--android:id="@+id/edt_Tempo_Morte_Envolvido_Vida"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignLeft="@+id/txv_Tempo_Morte_Envolvido_Vida"-->
 
-                android:layout_below="@id/txv_Tempo_Morte_Envolvido_Vida"
-                android:inputType="number"
-                android:maxLines="1" />
+            <!--android:layout_below="@id/txv_Tempo_Morte_Envolvido_Vida"-->
+            <!--android:inputType="number"-->
+            <!--android:maxLines="1" />-->
 
             <Spinner
-                android:id="@+id/spn_Unidade_Tempo_Morte_Envolvido_Vida"
-                android:layout_width="wrap_content"
+                android:id="@+id/spn_Indicios_Tempo_Morte_Envolvido_Vida"
+                android:layout_width="400dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/edt_Tempo_Morte_Envolvido_Vida"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/edt_Tempo_Morte_Envolvido_Vida" />
+                android:layout_alignLeft="@+id/txv_Tempo_Morte_Envolvido_Vida"
+                android:layout_below="@id/txv_Tempo_Morte_Envolvido_Vida" />
 
 
             <TextView
                 android:id="@+id/txv_Vestimentas_Envolvido_Vida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/edt_Tempo_Morte_Envolvido_Vida"
+                android:layout_below="@id/spn_Genero_Envolvido_Vida"
                 android:layout_marginTop="10dp"
                 android:text="Vestimentas" />
 
@@ -211,8 +259,8 @@
                 android:layout_below="@+id/txv_Observacoes_Envolvido_Vida"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border_gray"
-                android:imeOptions="actionDone"
                 android:gravity="top|left"
+                android:imeOptions="actionDone"
                 android:inputType="textMultiLine" />
 
             <TextView
@@ -221,14 +269,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/txv_Tempo_Morte_Envolvido_Vida"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/spn_Unidade_Tempo_Morte_Envolvido_Vida"
+                android:layout_toRightOf="@id/spn_Indicios_Tempo_Morte_Envolvido_Vida"
                 android:text="Tipo de Morte" />
 
             <Spinner
                 android:id="@+id/spn_Tipo_Morte_Envolvido_Vida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/spn_Unidade_Tempo_Morte_Envolvido_Vida"
+                android:layout_alignBottom="@id/spn_Indicios_Tempo_Morte_Envolvido_Vida"
                 android:layout_alignLeft="@id/txv_Tipo_Morte_Envolvido_Vida" />
 
             <!--<CheckBox-->
@@ -253,11 +301,21 @@
                 android:text="Lesões" />
 
             <Button
+                android:id="@+id/btn_Desenho_Envolvido_Vida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/btn_Lesoes_Envolvido_Vida"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/btn_Lesoes_Envolvido_Vida"
+                android:text="Desenho" />
+
+            <Button
                 android:id="@+id/btn_Posicao_Cadaver_Envolvido_Vida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/btn_Lesoes_Envolvido_Vida"
-                android:layout_alignLeft="@+id/txv_Tempo_Morte_Envolvido_Vida"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/btn_Desenho_Envolvido_Vida"
                 android:text="Posição do Cadáver" />
 
 

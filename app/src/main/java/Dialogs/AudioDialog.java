@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,7 +59,7 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
   static public LinearLayout buttonStart, buttonStop, buttonPlayLastRecordAudio, buttonStopPlayingRecording;
   static public String pathArquivo = null;
   static public MediaRecorder mediaRecorder;
-  static public   final int RequestPermissionCode = 2;
+  static public final int RequestPermissionCode = 2;
   static public MediaPlayer mediaPlayer;
   static public TextView txvPath = null;
   static public Bundle bundle;
@@ -77,9 +78,10 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
     {
         dialog = new Dialog(a);
         dialog.setContentView(R.layout.dialog_audio);
-        dialog.getWindow().setLayout(500,300);
+//        dialog.getWindow().setLayout(500,300);
         dialog.setTitle("Gravações");
         dialog.setCanceledOnTouchOutside(false);
+
         dialog.show();
 
         Bundle bd = bundle;
@@ -277,7 +279,6 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
                         if (!file.isDirectory())
                             file.delete();
 
-
                     boolean success = true;
                     if (!folder.exists())
                     {
@@ -309,7 +310,8 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
                     Toast.makeText(activity, "Início de gravação", Toast.LENGTH_LONG).show();
                 } else
                 {
-                    requestPermission();
+//                    requestPermission();
+                    dialog.dismiss();
                 }
 
             }
@@ -496,12 +498,14 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
     private static void requestPermission()
     {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, RequestPermissionCode);
-        dialog.dismiss();
+//        dialog.dismiss();
     }
 
 
     public static boolean checkPermission()
     {
+        requestPermission();
+
         int result = ContextCompat.checkSelfPermission(activity,
                 WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(activity,
@@ -517,7 +521,6 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
         {
             case RequestPermissionCode:
             {
-
                 if (grantResults.length == 0
                         || grantResults[0] !=
                         PackageManager.PERMISSION_GRANTED)
@@ -525,11 +528,10 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
 
                 } else
                 {
+                    dialog.dismiss();
                 }
                 return;
             }
         }
     }
-
-
 }

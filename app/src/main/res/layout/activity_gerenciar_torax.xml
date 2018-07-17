@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.pefoce.peritolocal.GerenciarTorax"
+    android:padding="16dp"
     android:background="@color/ms_white">
 
     <info.hoang8f.android.segmented.SegmentedGroup
@@ -18,9 +19,9 @@
         segmentedgroup:sc_border_width="2dp"
         segmentedgroup:sc_tint_color="@color/colorPrimary"
         segmentedgroup:sc_corner_radius="10dp"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="30dp">
+        >
 
         <RadioButton
             android:id="@+id/rbtn_Opcao_Frente_Torax"
@@ -48,8 +49,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="Nome do Envolvido: "
-        android:textSize="18dp"
-        android:layout_margin="8dp"/>
+        android:textSize="18dp" />
 
     <RelativeLayout
         android:id="@+id/rltv_Costas_Femininas"
@@ -670,6 +670,16 @@
     android:text="Voltar"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
-    android:layout_margin="30dp"/>
+    />
+
+
+    <Button
+        android:id="@+id/btn_Thumbnail_Desenho_Torax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="left|center_vertical"
+        android:text="Ver Desenho" />
 
 </RelativeLayout>

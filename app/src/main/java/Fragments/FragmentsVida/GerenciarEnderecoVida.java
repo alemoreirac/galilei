@@ -53,6 +53,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import Dialogs.AudioDialog;
+import Dialogs.MapDialog;
 import Dialogs.TipoFotoDialog;
 import Enums.CategoriaFoto;
 import Enums.Comodo;
@@ -76,8 +77,11 @@ import Model.Vida.OcorrenciaVidaFoto;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.SingleShotLocationProvider;
+import Util.StringUtil;
 import Util.ViewUtil;
+import br.com.sapereaude.maskedEditText.MaskedEditText;
 import info.hoang8f.android.segmented.SegmentedGroup;
+import io.fabric.sdk.android.services.common.SafeToast;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -95,13 +99,15 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     LocationManager locationManager;
     Spinner spnTipoVia;
 
+    Bundle bd;
+
     AutoCompleteTextView aucCidade;
     AutoCompleteTextView aucBairro;
 
     EditText edtEndereco;
     EditText edtComplemento;
-    EditText edtLatitude;
-    EditText edtLongitude;
+    MaskedEditText edtLatitude;
+    MaskedEditText edtLongitude;
 
     ImageButton imgbCoordenadas;
     ImageButton imgbCamera;
@@ -147,6 +153,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     EnderecoVida enderecoVida;
 
     LinearLayout llVeiculo;
+    Fragment fragment;
 
     FusedLocationProviderClient mFusedLocationClient;
 
@@ -240,6 +247,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     {
         super.onViewCreated(view, savedInstanceState);
 
+        bd = savedInstanceState;
         mView = view;
 
         if (view != null)
@@ -291,6 +299,8 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
         Bundle bd = getArguments();
 
+        fragment = this;
+
         AssociarLayout(mView);
         PovoarSpinners(mView.getContext());
         AssociarEventos();
@@ -319,7 +329,6 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     {
 
     }
-
 
     private void AssociarEventos()
     {
@@ -386,7 +395,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                 magicalPermissions = new MagicalPermissions(GerenciarEnderecoVida.this, permissions);
                 magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE, magicalPermissions);
 
-                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarEnderecoVida.this, getActivity(), magicalCamera);
+                TipoFotoDialog.show(GerenciarEnderecoVida.this, getActivity(), magicalCamera);
             }
         });
 
@@ -395,16 +404,11 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             @Override
             public void onClick(View v)
             {
-//                FragmentManager fm = getActivity().getFragmentManager();
-//                dialogFragment = new AudioDialog();
-
                 Bundle bd = new Bundle();
                 bd.putString("Local", "conclusão");
                 bd.putLong("OcorrenciaId", ocorrencia.getId());
                 bd.putString("SecaoVida", "Endereco");
                 AudioDialog.show(getActivity(), bd);
-//                dialogFragment.setArguments(bd);
-//                dialogFragment.show(fm, "Seleção");
             }
         });
 
@@ -661,91 +665,72 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
 
         imgbCoordenadas.setOnClickListener(new View.OnClickListener()
-         {
-             boolean checking = true;
+            {
+                boolean checking = true;
 
-             @Override
-             public void onClick(View v)
-             {
-                 pbCoordenadas.setVisibility(View.VISIBLE);
-                 imgbCoordenadas.setVisibility(View.INVISIBLE);
-                 edtLatitude.setEnabled(false);
-                 edtLongitude.setEnabled(false);
+                @Override
+                public void onClick(View v)
+                {
+                    pbCoordenadas.setVisibility(View.VISIBLE);
+                    imgbCoordenadas.setVisibility(View.INVISIBLE);
+                    edtLatitude.setEnabled(false);
+                    edtLongitude.setEnabled(false);
 
-                 SingleShotLocationProvider.requestSingleUpdate(getActivity(),
-                         new SingleShotLocationProvider.LocationCallback()
-                         {
-                             @Override
-                             public void onNewLocationAvailable(Double lat, Double lng)
-                                 {
+                    SingleShotLocationProvider.requestSingleUpdate(getActivity(),
+                            new SingleShotLocationProvider.LocationCallback()
+                            {
+                                @Override
+                                public void onNewLocationAvailable(Double lat, Double lng)
+                                {
+                                    edtLatitude.setText(StringUtil.converterLatitude(lat));
+                                    edtLongitude.setText(StringUtil.converterLongitude(lng));
 
-//                                 Toast.makeText(getContext(), "lat: " + String.valueOf(lat) + " lon: " + String.valueOf(lng), Toast.LENGTH_LONG).show();
+                                    imgbCoordenadas.setVisibility(View.VISIBLE);
+                                    pbCoordenadas.setVisibility(View.INVISIBLE);
+                                    edtLatitude.setEnabled(true);
+                                    edtLongitude.setEnabled(true);
+                                    checking = false;
+                                }
+                            }
+                    );
 
-                                 converterCoordenadas(lat, lng, edtLatitude, edtLongitude);
+                    Looper myLooper = Looper.myLooper();
+
+                    final Handler myHandler = new Handler(myLooper);
+                    myHandler.postDelayed(new Runnable()
+                    {
+                        public void run()
+                        {
+                            if (checking)
+                            {
+                             try
+                             {
+                                 SingleShotLocationProvider.cancelUpdate();
+                                 Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
 
                                  imgbCoordenadas.setVisibility(View.VISIBLE);
                                  pbCoordenadas.setVisibility(View.INVISIBLE);
                                  edtLatitude.setEnabled(true);
                                  edtLongitude.setEnabled(true);
-                                 checking  = false;
+                             }catch (Exception e)
+                             {
+                                 Toast.makeText(getActivity(),"Erro! Tente novamente",Toast.LENGTH_LONG);
+                                 imgbCoordenadas.setVisibility(View.VISIBLE);
+                                 pbCoordenadas.setVisibility(View.INVISIBLE);
+                                 edtLatitude.setEnabled(true);
+                                 edtLongitude.setEnabled(true);
+
                              }
-                         }
-                 );
-
-                 Looper myLooper = Looper.myLooper();
-
-                 final Handler myHandler = new Handler(myLooper);
-                 myHandler.postDelayed(new Runnable()
-                 {
-                     public void run()
-                     {
-                         if(checking)
-                         {
-                             SingleShotLocationProvider.cancelUpdate();
-                             Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
-
-                             imgbCoordenadas.setVisibility(View.VISIBLE);
-                             pbCoordenadas.setVisibility(View.INVISIBLE);
-                             edtLatitude.setEnabled(true);
-                             edtLongitude.setEnabled(true);
-                         }
-                     }
-                 }, 1000 * 120);
-
-
-             }
-         }
+                            }
+                        }
+                    }, 1000 * 120);
+                }
+            }
         );
 
     }
 
-    private void requestRuntimePermission(Activity activity, String runtimePermission, int requestCode)
-    {
-        ActivityCompat.requestPermissions(activity, new String[]{runtimePermission}, requestCode);
-    }
 
-    // This method is used to check whether current app has required runtime permission.
-    private boolean hasRuntimePermission(Context context, String runtimePermission)
-    {
-        boolean ret = false;
-
-        // Get current android os version.
-        int currentAndroidVersion = Build.VERSION.SDK_INT;
-
-        // Build.VERSION_CODES.M's value is 23.
-        if (currentAndroidVersion > Build.VERSION_CODES.M)
-        {
-            // Only android version 23+ need to check runtime permission.
-            if (ContextCompat.checkSelfPermission(context, runtimePermission) == PackageManager.PERMISSION_GRANTED)
-            {
-                ret = true;
-            }
-        } else
-        {
-            ret = true;
-        }
-        return ret;
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
@@ -924,8 +909,8 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     {
         //Dados Gerais
         edtEndereco = (EditText) view.findViewById(R.id.edt_Endereco_Vida);
-        edtLatitude = (EditText) view.findViewById(R.id.edt_latitude_Vida);
-        edtLongitude = (EditText) view.findViewById(R.id.edt_longitude_Vida);
+        edtLatitude = (MaskedEditText) view.findViewById(R.id.edt_latitude_Vida);
+        edtLongitude = (MaskedEditText) view.findViewById(R.id.edt_longitude_Vida);
         edtComplemento = (EditText) view.findViewById(R.id.edt_Complemento_End_Vida);
 
         pbCoordenadas = (ProgressBar) view.findViewById(R.id.pgb_Carregar_Coordenadas_Vida);
@@ -978,11 +963,11 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         imgbAudio = (ImageButton) view.findViewById(R.id.imgb_Audio_Endereco_Vida);
 
 
-        edtEndereco.setNextFocusRightId(edtComplemento.getId());
-        edtComplemento.setNextFocusRightId(aucCidade.getId());
-        aucCidade.setNextFocusRightId(aucBairro.getId());
-        aucBairro.setNextFocusRightId(edtLatitude.getId());
-        edtLatitude.setNextFocusRightId(edtLongitude.getId());
+        edtEndereco.setNextFocusForwardId(edtComplemento.getId());
+        edtComplemento.setNextFocusForwardId(aucCidade.getId());
+        aucCidade.setNextFocusForwardId(aucBairro.getId());
+//        aucBairro.setNextFocusForwardId(edtLatitude.getId());
+        edtLatitude.setNextFocusForwardId(edtLongitude.getId());
 
     }
 
@@ -1132,48 +1117,17 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         }
     }
 
-    private void converterCoordenadas(double latitude, double longitude, EditText edtLatitude, EditText edtLongitude)
+
+    public void DialogResult(Bundle bd)
     {
-        StringBuilder builderLatitude = new StringBuilder();
-        String latitudeDegrees = Location.convert(Math.abs(latitude), Location.FORMAT_SECONDS);
-        String[] latitudeSplit = latitudeDegrees.split(":");
-        builderLatitude.append(latitudeSplit[0]);
-        builderLatitude.append("°");
-        builderLatitude.append(latitudeSplit[1]);
-        builderLatitude.append("'");
-        builderLatitude.append(latitudeSplit[2]);
-        builderLatitude.append("\"");
-
-        if (latitude < 0)
-           builderLatitude.append("S ");
-
-         else
-            builderLatitude.append("N ");
-
-
-        edtLatitude.setText(builderLatitude.toString());
-
-
-        StringBuilder builderLongitude = new StringBuilder();
-
-        String longitudeDegrees = Location.convert(Math.abs(longitude), Location.FORMAT_SECONDS);
-        String[] longitudeSplit = longitudeDegrees.split(":");
-        builderLongitude.append(longitudeSplit[0]);
-        builderLongitude.append("°");
-        builderLongitude.append(longitudeSplit[1]);
-        builderLongitude.append("'");
-        builderLongitude.append(longitudeSplit[2]);
-        builderLongitude.append("\"");
-
-        if (longitude < 0)
+        if (bd != null)
         {
-            builderLongitude.append("W ");
-        } else
-        {
-            builderLongitude.append("E ");
+            if (!bd.getString("Latitude", "").equals("")) ;
+            edtLatitude.setText(bd.getString("Latitude", ""));
+
+            if (!bd.getString("Longitude", "").equals("")) ;
+            edtLongitude.setText(bd.getString("Longitude", ""));
         }
-
-        edtLongitude.setText(builderLongitude.toString());
     }
 
     @Override

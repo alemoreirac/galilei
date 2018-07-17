@@ -6,7 +6,7 @@ package Enums.Vida;
 
 public enum PosicaoBraco
 {
-    ESTENDIDO("Estendido"),DOBRADO("Dobrado"),ACIMA_OUTRO("Por cima do outro braço"),BAIXO_OUTRO("Por baixo do outro braço"),ACIMA_PERNA_DIREITA("Acima da perna direita"),ACIMA_PERNA_ESQUERDA("Acima da perna esquerda");
+    ESTENDIDO("Estendido"),FLEXIONADO("Flexionado"),SEMIFLEXIONADO("Semiflexionado");
 
     String valor;
 

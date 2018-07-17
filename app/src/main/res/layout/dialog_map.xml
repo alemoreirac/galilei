@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rltv_Map_Container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/txv_dialog_Coordenadas"
+        android:text="Tecle e segure no marcador para alterar manualmente as coordenadas."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.gms.maps.MapView
+        android:layout_below="@id/txv_dialog_Coordenadas"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="60dp"
+        android:id="@+id/mpv_dialog_Ponto_Ocorrencia"
+        android:layout_width="match_parent"
+        android:background="@color/ms_black"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btn_dialog_Alterar_Coordenadas"
+        android:layout_width="wrap_content"
+        android:text="Alterar Coordenadas"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_dialog_Cancelar_Coordenadas"
+        android:layout_width="wrap_content"
+        android:text="Cancelar Alterações"
+
+        android:textColor="@color/ms_errorColor"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

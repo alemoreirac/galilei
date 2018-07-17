@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,6 +98,13 @@ public class GerenciarConclusaoTransito extends android.support.v4.app.Fragment 
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        View view = getActivity().getCurrentFocus();
+        if (view != null)
+        {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
         ((ManterPericiaTransito) getActivity()).txvToolbarTitulo.setText("Conclusão");
 
         ocorrenciaTransitoConclusao = ((ManterPericiaTransito) getActivity()).ocorrenciaTransito;
@@ -111,10 +119,6 @@ public class GerenciarConclusaoTransito extends android.support.v4.app.Fragment 
 
     }
 
-    private void ConclusaoCaso()
-    {
-
-    }
 
 
     @Override
@@ -123,11 +127,6 @@ public class GerenciarConclusaoTransito extends android.support.v4.app.Fragment 
 
     }
 
-    public interface OnFragmentInteractionListener
-    {
-
-        void onFragmentInteraction(Uri uri);
-    }
 
     private void AssociarLayout(View v)
     {

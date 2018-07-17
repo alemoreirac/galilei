@@ -6,6 +6,7 @@ package Enums.Transito;
 
 public enum CondicaoPista {
     BOA("Boa")
+    ,REGULAR("Regular")
     ,RUIM("Má");
 
 

@@ -65,10 +65,21 @@ public class EnderecoTransito extends SugarRecord
     String latitude;
     @Expose
     String longitude;
-
+    @Expose
+    private boolean meioFio;
     @Expose
     Long largura;
 
+
+    public boolean getMeioFio()
+    {
+        return meioFio;
+    }
+
+    public void setMeioFio(boolean meioFio)
+    {
+        this.meioFio = meioFio;
+    }
 
     public TipoVia getTipoVia()
     {

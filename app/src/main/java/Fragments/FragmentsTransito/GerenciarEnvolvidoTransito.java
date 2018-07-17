@@ -5,12 +5,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -44,10 +49,12 @@ import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.Transito.Lesao;
 import Enums.Transito.TipoEnvolvidoTransito;
+import Enums.Vida.PresencaEnvolvido;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.EnvolvidoTransito;
 import Model.Foto;
 import Model.Ocorrencia;
+import Model.Transito.OcorrenciaTransitoColisao;
 import Model.Transito.OcorrenciaTransitoEnvolvido;
 import Model.Transito.OcorrenciaTransitoFoto;
 import Model.Transito.OcorrenciaTransito;
@@ -61,20 +68,24 @@ import Util.ViewUtil;
 public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment implements Step
 {
     AdapterEnvolvidoTransito adapterEnvolvido = null;
-
+    boolean lastClick;
     EditText edtNome = null;
     int lastPosition;
     CheckBox cxbDesconhecido = null;
-    TextView txvNascimento = null;
+    //    TextView txvNascimento = null;
     Spinner spnTipoDocumento = null;
     Spinner spnGenero = null;
     Spinner spnLesao = null;
     Spinner spnVeiculo = null;
     Spinner spnTipoEnvolvido = null;
+    Spinner spnPresencaEnvolvido = null;
     EditText edtNumDocumento = null;
     List<Veiculo> veiculos = null;
     RelativeLayout rltv_Envolvido = null;
     View mView;
+    EditText edtDiaNascimento;
+    EditText edtMesNascimento;
+    EditText edtAnoNascimento;
     ListView lstvEnvolvidos = null;
     FloatingActionButton fabEnvolvido = null;
     FloatingActionButton fabFotoEnvolvido = null;
@@ -83,11 +94,14 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
     private MagicalPermissions magicalPermissions;
     //    Button btnCancel = null;
 //    Button btnSave = null;
+    LinearLayout llDataNascimento;
+
     TextView txvVeiculo = null;
     EnvolvidoTransito envolvido = null;
     OcorrenciaTransitoEnvolvido ocorrenciaEnvolvido = null;
     Ocorrencia ocorrencia;
-
+    List<OcorrenciaTransitoColisao> colisoesOcorrencia;
+    List<ColisaoTransito> colisoesList;
     List<OcorrenciaTransitoEnvolvido> ocorrenciaEnvolvidos = null;
 
     OcorrenciaTransito ocorrenciaTransitoEnvolvido;
@@ -215,11 +229,17 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
 
         edtNumDocumento.setText("");
 
-        txvNascimento.setText("00/00/0000");
+//        txvNascimento.setText("00/00/0000");
+
+        edtAnoNascimento.setText("");
+        edtMesNascimento.setText("");
+        edtDiaNascimento.setText("");
 
         spnTipoDocumento.setSelection(0);
 
         spnLesao.setSelection(0);
+
+        spnPresencaEnvolvido.setSelection(0);
 
         spnVeiculo.setSelection(0);
 
@@ -244,11 +264,17 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
         spnGenero = (Spinner) v.findViewById(R.id.spn_EnvolvidoGenero);
         spnVeiculo = (Spinner) v.findViewById(R.id.spn_Veiculo_Envolvido);
         spnTipoEnvolvido = (Spinner) v.findViewById(R.id.spn_Tipo_Envolvido);
-        txvNascimento = (TextView) v.findViewById(R.id.txv_DataNascimento_Envolvido_Valor);
+        spnPresencaEnvolvido = (Spinner) v.findViewById(R.id.spn_Presenca);
+
+        llDataNascimento = (LinearLayout) v.findViewById(R.id.ll_Data_Nascimento_Envolvido_Transito);
         //cxbFatal = (CheckBox) v.findViewById(R.id.cxb_EnvolvidoFatal);
         spnLesao = (Spinner) v.findViewById(R.id.spn_Lesao);
 //        spnLesao.toString();
         txvVeiculo = (TextView) v.findViewById(R.id.txv_Envolvido_Veiculo);
+
+        edtDiaNascimento = (EditText) v.findViewById(R.id.edt_Dia_Nascimento_Envolvido_Transito);
+        edtMesNascimento = (EditText) v.findViewById(R.id.edt_Mes_Nascimento_Envolvido_Transito);
+        edtAnoNascimento = (EditText) v.findViewById(R.id.edt_Ano_Nascimento_Envolvido_Transito);
         rltv_Envolvido = (RelativeLayout) v.findViewById(R.id.rltv_Detalhe_Envolvido);
         lstvEnvolvidos = (ListView) v.findViewById(R.id.lstv_Envolvidos);
         fabEnvolvido = (FloatingActionButton) v.findViewById(R.id.fab_Envolvido);
@@ -277,6 +303,15 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
         spnGenero.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, generos));
 
 
+        ArrayList<String> presencas = new ArrayList<>();
+
+        for (PresencaEnvolvido pe : PresencaEnvolvido.values())
+            presencas.add(pe.getValor());
+
+
+        spnPresencaEnvolvido.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, presencas));
+
+
         ArrayList<String> lesoes = new ArrayList<>();
 
         for (Lesao l : Lesao.values())
@@ -300,6 +335,19 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
             tipos.add(tet.getValor());
 
         spnTipoEnvolvido.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, tipos));
+
+
+        colisoesOcorrencia = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class, "ocorrencia_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString());
+
+        colisoesList = new ArrayList<>();
+
+        for (OcorrenciaTransitoColisao co : colisoesOcorrencia)
+        {
+            if (co.getColisaoTransito().getEnvolvidoEvadido() != null)
+                colisoesList.add(co.getColisaoTransito());
+        }
+
+
     }
 
     private void CarregarEnvolvido()
@@ -314,15 +362,47 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
             {
                 edtNome.setText(envolvido.getNome());
 
-                if(envolvido.getNascimento()!=null)
-                txvNascimento.setText(envolvido.getNascimentoString());
-                else
-                    txvNascimento.setText("--/--/----");
+                if (envolvido.getNascimento() != null)
+                {
+                    String[] datas = envolvido.getNascimentoString().split("/");
+                    if (datas != null && datas.length == 3)
+                    {
+                        edtDiaNascimento.setText(datas[0]);
+                        edtMesNascimento.setText(datas[1]);
+                        edtAnoNascimento.setText(datas[2]);
+                    }
+                } else
+                {
+                    edtDiaNascimento.setText("");
+                    edtMesNascimento.setText("");
+                    edtAnoNascimento.setText("");
+                }
 
                 if (envolvido.getDocumentoTipo() != null)
                     spnTipoDocumento.setSelection(BuscadorEnum.getIndex(spnTipoDocumento, envolvido.getDocumentoTipo().getValor()));
             }
         }
+
+        ArrayList<String> presenca = new ArrayList<>();
+
+        for (PresencaEnvolvido pe : PresencaEnvolvido.values())
+        {
+            presenca.add(pe.getValor());
+        }
+
+        for (ColisaoTransito c : colisoesList)
+        {
+            if (c.getEnvolvidoEvadido() != null && c.getEnvolvidoEvadido().getId() == envolvido.getId())
+            {
+                presenca.remove(PresencaEnvolvido.PRESENTE.getValor());
+                break;
+            }
+        }
+
+        spnPresencaEnvolvido.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, presenca));
+
+        if (envolvido.getPresencaEnvolvido() != null)
+            spnPresencaEnvolvido.setSelection(BuscadorEnum.getIndex(spnPresencaEnvolvido, envolvido.getPresencaEnvolvido().getValor()));
 
         if (envolvido.getDocumentoValor() != null)
             edtNumDocumento.setText(envolvido.getDocumentoValor());
@@ -352,13 +432,25 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
         envolvido.setNome(edtNome.getText().toString());
         envolvido.setDocumentoValor(edtNumDocumento.getText().toString());
         //envolvido.setCondutor(cxbCondutor.isChecked());
-        envolvido.setDataNascimentoString(txvNascimento.getText().toString());
+//        envolvido.setDataNascimentoString(txvNascimento.getText().toString());
+
         envolvido.setVeiculoEnvolvido((Veiculo) spnVeiculo.getSelectedItem());
         envolvido.setDocumentoTipo(BuscadorEnum.BuscarTipoDocumento(spnTipoDocumento.getSelectedItem().toString()));
         envolvido.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
         envolvido.setLesao(BuscadorEnum.BuscarLesao(spnLesao.getSelectedItem().toString()));
         envolvido.setTipoEnvolvido(BuscadorEnum.BuscarTipoEnvolvido(spnTipoEnvolvido.getSelectedItem().toString()));
-//
+        envolvido.setPresencaEnvolvido(BuscadorEnum.BuscarPresencaEnvolvido(spnPresencaEnvolvido.getSelectedItem().toString()));
+
+
+        if (!edtAnoNascimento.getText().toString().equals("") &&
+                !edtMesNascimento.getText().toString().equals("") &&
+                !edtDiaNascimento.getText().toString().equals(""))
+
+            envolvido.setDataNascimentoString(edtDiaNascimento.getText() + "/"
+                    + edtMesNascimento.getText() + "/" + edtAnoNascimento.getText().toString());
+
+
+        //
 //        envolvido.setDocumentoTipo(DocumentoPessoa.valueOf(DocumentoPessoa.class,spnTipoDocumento.getSelectedItem().toString()));
 //        envolvido.setGenero(Genero.valueOf(Genero.class,spnGenero.getSelectedItem().toString()));
 //        envolvido.setLesao(Lesao.valueOf(Lesao.class,spnLesao.getSelectedItem().toString()));
@@ -375,6 +467,178 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
 
     private void AssociarEventos()
     {
+        lastClick = false;
+        edtDiaNascimento.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+            {
+                int current = 0;
+
+                try
+                {
+                    current = Integer.valueOf(charSequence.toString());
+                } catch (Exception e)
+                {
+
+                }
+                if (current > 31 || (current < 1 && charSequence.length() > 1))
+                {
+                    edtDiaNascimento.setText(charSequence.toString().substring(0, charSequence.length() - 1));
+                    edtDiaNascimento.setSelection(edtDiaNascimento.getText().length());
+                }
+
+                if (edtDiaNascimento.getText().toString().length() == 2)
+                    edtMesNascimento.requestFocus();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+                if (edtDiaNascimento.getCurrentTextColor() == Color.RED)
+                    edtDiaNascimento.setTextColor(Color.BLACK);
+            }
+        });
+
+        edtMesNascimento.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+            {
+                int current = 0;
+
+                try
+                {
+                    current = Integer.valueOf(charSequence.toString());
+                } catch (Exception e)
+                {
+
+                }
+                if (current > 12 || (current < 1 && charSequence.length() > 1))
+                {
+                    edtMesNascimento.setText(charSequence.toString().substring(0, charSequence.length() - 1));
+                    edtMesNascimento.setSelection(edtMesNascimento.getText().length());
+                }
+
+                if (edtMesNascimento.getText().toString().length() == 2)
+                    edtAnoNascimento.requestFocus();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+
+            }
+        });
+
+        edtAnoNascimento.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+            {
+                int current = 0;
+
+                try
+                {
+                    current = Integer.valueOf(charSequence.toString());
+                } catch (Exception e)
+                {
+
+                }
+
+                if (current > (Calendar.getInstance().get(Calendar.YEAR)) || (current < 1 && charSequence.length() > 1))
+                {
+                    edtAnoNascimento.setText(charSequence.toString().substring(0, charSequence.length() - 1));
+                    edtAnoNascimento.setSelection(edtAnoNascimento.getText().length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+
+            }
+        });
+
+
+        edtAnoNascimento.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL)
+                {
+
+                    if (edtAnoNascimento.getText().length() != 0)
+                        edtAnoNascimento.setText(edtAnoNascimento.getText().toString().substring(0, edtAnoNascimento.getText().toString().length() - 1));
+                    edtAnoNascimento.setSelection(edtAnoNascimento.getText().length());
+
+                    if (edtAnoNascimento.getText().toString().length() == 0)
+                    {
+                        if (!lastClick)
+                            lastClick = true;
+                        else
+                        {
+                            edtMesNascimento.requestFocus();
+                            edtMesNascimento.setSelection(edtMesNascimento.getText().length());
+                            lastClick = false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        edtMesNascimento.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL)
+                {
+                    if (edtMesNascimento.getText().length() != 0)
+                        edtMesNascimento.setText(edtMesNascimento.getText().toString().substring(0, edtMesNascimento.getText().toString().length() - 1));
+
+                    edtMesNascimento.setSelection(edtMesNascimento.getText().length());
+
+                    if (edtMesNascimento.getText().toString().length() == 0)
+                    {
+                        if (!lastClick)
+                            lastClick = true;
+                        else
+                        {
+                            edtDiaNascimento.requestFocus();
+                            edtDiaNascimento.setSelection(edtDiaNascimento.getText().length());
+                            lastClick = false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
         spnTipoEnvolvido.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -427,14 +691,6 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
             }
         });
 
-        txvNascimento.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                TempoUtil.setDate(txvNascimento, getActivity());
-            }
-        });
 
         lstvEnvolvidos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
@@ -546,7 +802,7 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
                 magicalPermissions = new MagicalPermissions(GerenciarEnvolvidoTransito.this, permissions);
                 magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE, magicalPermissions);
 
-                TipoFotoDialog tfd = new TipoFotoDialog(GerenciarEnvolvidoTransito.this, getActivity(), magicalCamera);
+                TipoFotoDialog.show(GerenciarEnvolvidoTransito.this, getActivity(), magicalCamera);
             }
         });
 
@@ -570,30 +826,6 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
             }
         });
 
-//        btnSave.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//
-//                SalvarEnvolvido();
-//
-//                Toast.makeText(v.getContext(), "Envolvido salvo com Sucesso!", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//
-//        btnCancel.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//
-//                CarregarEnvolvido();
-//                Toast.makeText(v.getContext(), "Operação desfeita!", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
         cxbDesconhecido.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -603,17 +835,25 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
                 {
                     spnTipoDocumento.setEnabled(false);
                     edtNumDocumento.setEnabled(false);
-                    txvNascimento.setEnabled(false);
+//                    txvNascimento.setEnabled(false);
+
                     edtNome.setEnabled(false);
                     edtNome.setText("Desconhecido(a)");
                     edtNumDocumento.setText("0");
-                    txvNascimento.setText("--/--/----");
+                    edtAnoNascimento.setEnabled(false);
+                    edtMesNascimento.setEnabled(false);
+                    edtDiaNascimento.setEnabled(false);
+                    edtAnoNascimento.setText("");
+                    edtMesNascimento.setText("");
+                    edtDiaNascimento.setText("");
                     spnTipoDocumento.setSelection(0);
                 } else
                 {
                     spnTipoDocumento.setEnabled(true);
                     edtNumDocumento.setEnabled(true);
-                    txvNascimento.setEnabled(true);
+                    edtAnoNascimento.setEnabled(true);
+                    edtMesNascimento.setEnabled(true);
+                    edtDiaNascimento.setEnabled(true);
                     edtNome.setEnabled(true);
                     edtNome.setText("");
                     edtNumDocumento.setText("");

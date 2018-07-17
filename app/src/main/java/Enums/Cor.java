@@ -11,6 +11,7 @@ public enum Cor {
     CINZA("Cinza"),
     LARANJA("Laranja"),
     BEGE("Bege"),
+    PRATA("Prata"),
     PRETO("Preto"),
     ROXO("Roxo"),
     ROSA("Rosa"),

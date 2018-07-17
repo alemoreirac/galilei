@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import Dialogs.DesenhoThumbnailDialog;
 import Dialogs.LesaoDialog;
 import Enums.Genero;
 import Enums.Vida.LesoesEnabled;
@@ -75,12 +76,13 @@ public class GerenciarBracos extends AppCompatActivity
 
     String generoParam;
 
+    Button btnThumbnail;
     Button btnVoltar;
 
     ArrayList<Lesao> lesoesList;
     List<LesaoEnvolvido> lesoesEnvolvidos;
 
-
+    Long ocorrenciaId;
 
     @Override
     public void onBackPressed()
@@ -96,7 +98,9 @@ public class GerenciarBracos extends AppCompatActivity
 
         Intent it = getIntent();
 
-       generoParam = "";
+        generoParam = "";
+
+        ocorrenciaId = it.getLongExtra("OcorrenciaId",0l);
 
         AssociarLayout();
         AssociarEventos();
@@ -149,8 +153,19 @@ public class GerenciarBracos extends AppCompatActivity
             {
                 Intent it = new Intent(GerenciarBracos.this,GerenciarCorpo.class);
                 it.putExtra("EnvolvidoId",envolvidoVida.getId());
-             //   it.putExtra("GeneroEnvolvido",generoParam);
+                it.putExtra("OcorrenciaId", ocorrenciaId);
                 startActivity(it);
+            }
+        });
+        btnThumbnail.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(envolvidoVida!=null && ocorrenciaId!= 0)
+                DesenhoThumbnailDialog.criarDialog(GerenciarBracos.this,envolvidoVida,ocorrenciaId);
+//                else
+//                    Toast.makeText()
             }
         });
     }
@@ -188,7 +203,6 @@ public class GerenciarBracos extends AppCompatActivity
         LesaoDialog.show(GerenciarBracos.this,envolvidoVida,BuscadorEnum.BuscarSecao(txvView.getText().toString()), LesoesEnabled.TODOS);
     }
 
-
     public void AssociarLayout()
     {
         rltvFeminino = (RelativeLayout) findViewById(R.id.rltv_Bracos_Femininos);
@@ -199,6 +213,7 @@ public class GerenciarBracos extends AppCompatActivity
         txvNomeEnvolvido = (TextView) findViewById(R.id.txv_Nome_Envolvido_Lesoes);
 
         btnVoltar = (Button) findViewById(R.id.btn_Voltar_bracos);
+        btnThumbnail = (Button) findViewById(R.id.btn_Thumbnail_Desenho_Bracos);
 
         txv_SecaoSuperior_BracoEsquerdo_Feminino = (TextView) findViewById(R.id.txv_Secao_Superior_Braco_Esquerdo_Feminino);
         txv_SecaoInferior_BracoEsquerdo_Feminino = (TextView) findViewById(R.id.txv_Secao_Inferior_Braco_Esquerdo_Feminino);

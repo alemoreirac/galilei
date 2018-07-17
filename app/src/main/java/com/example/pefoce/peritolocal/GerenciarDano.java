@@ -1,55 +1,62 @@
 package com.example.pefoce.peritolocal;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Enums.Transito.SetorDano;
 import Enums.Transito.TercoDano;
 import Enums.Transito.TipoDano;
 import Model.Transito.Dano;
 import Model.Transito.DanoVeiculo;
 import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
+import Util.ComparatorUtil;
 
 public class GerenciarDano extends AppCompatActivity
 {
-
-
-    ArrayAdapter<Dano> adapterDano = null;
-    CheckBox cxbCompatibilidade = null;
-    Spinner spnTipoDano = null;
-    Spinner spnTercoDano = null;
-    ListView lstvDanosDialog = null;
-    Button btnAddDano = null;
-    Button btnSalvarDano = null;
-    Button btnLimparDanos = null;
+    RelativeLayout rltvBase = null;
+    Button btnVOltar = null;
     TextView txvDetalhe = null;
 
     TextView txvAnterior = null;
     TextView txvPosterior = null;
+    TextView txvLadoDireito = null;
+    TextView txvLadoEsquerdo = null;
 
+
+    CheckBox cxbCompatibilidade = null;
+
+    CheckBox cxbDanoContuso = null;
+    CheckBox cxbDanoCortante = null;
+    CheckBox cxbDanoFriccao = null;
+    CheckBox cxbDanoPerfurante = null;
+
+    CheckBox cxbTercoSuperior = null;
+    CheckBox cxbTercoMedio = null;
+    CheckBox cxbTercoInferior = null;
+
+    boolean isTercoSuperior, isTercoInferior, isTercoMedio, isDanoContuso, isDanoCortante, isDanoFriccao, isDanoPerfurante, isCompativel;
+
+    List<DanoVeiculo> danosVeiculo = null;
+
+    ArrayList<Dano> danosIniciais = null;
 
     public List<Dano> danosTotais = null;
 
     ArrayList<String> setores = new ArrayList<>();
-    ArrayList<Dano> danos = new ArrayList<>();
     Veiculo veiculo = null;
     Long ocorrenciaId = null;
 
@@ -58,13 +65,15 @@ public class GerenciarDano extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerenciar_dano);
+        AssociarLayout();
 
-        txvDetalhe = (TextView) findViewById(R.id.txv_Subtitulo_Veiculo);
+        cxbCompatibilidade.setSelected(true);
 
         Intent it = getIntent();
 
         ocorrenciaId = it.getLongExtra("OcorrenciaId", 0);
 
+        danosIniciais = new ArrayList<>();
         danosTotais = new ArrayList<>();
 
         if (it.getLongExtra("VeiculoId", 0) != 0)
@@ -72,11 +81,16 @@ public class GerenciarDano extends AppCompatActivity
             veiculo = Veiculo.findById(Veiculo.class, it.getLongExtra("VeiculoId", 0));
             txvDetalhe.setText(veiculo.getModelo());
 
-            List<DanoVeiculo> danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", veiculo.getId().toString());
+            cxbCompatibilidade.performClick();
+
+            danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", veiculo.getId().toString());
+
             for (DanoVeiculo dv : danosVeiculo)
             {
-                danosTotais.add(dv.getDano());
+                danosIniciais.add(dv.getDano());
             }
+
+            danosTotais.addAll(danosIniciais);
 
             for (Dano d : danosTotais)
             {
@@ -87,30 +101,33 @@ public class GerenciarDano extends AppCompatActivity
 
             ColorirTxv_Angulos();
 
-            txvAnterior = (TextView) findViewById(R.id.txv_Anterior_Veiculo);
-            txvPosterior = (TextView) findViewById(R.id.txv_Posterior_Veiculo);
 
             txvAnterior.setText("A\nN\nT\nE\nR\nI\nO\nR");
             txvPosterior.setText("P\nO\nS\nT\nE\nR\nI\nO\nR");
 
-            Button btnFechar = (Button) findViewById(R.id.btn_SalvarDano_Veiculo);
-            btnFechar.setOnClickListener(new View.OnClickListener()
+            btnVOltar.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    List<DanoVeiculo> danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", veiculo.getId().toString());
-
-                    for (DanoVeiculo danov : danosVeiculo)
+                    for (Dano d : danosIniciais)
                     {
-                        danov.delete();
+                        if (!ComparatorUtil.containsId(d, danosTotais))
+                        {
+                            DanoVeiculo dv = DanoVeiculo.find(DanoVeiculo.class, "dano = ?", d.getId().toString()).get(0);
+                            dv.getDano().delete();
+                            dv.delete();
+                        }
                     }
 
-                    for (Dano dano : danosTotais)
+                    for (Dano d : danosTotais)
                     {
-                        dano.save();
-                        DanoVeiculo dv = new DanoVeiculo(dano, veiculo);
-                        dv.save();
+                        if (d.getId() == null)
+                        {
+                            DanoVeiculo dv = new DanoVeiculo(d, veiculo);
+                            dv.getDano().save();
+                            dv.save();
+                        }
                     }
 
                     Intent it = new Intent(GerenciarDano.this, ManterPericiaTransito.class);
@@ -118,478 +135,157 @@ public class GerenciarDano extends AppCompatActivity
                     it.putExtra("OcorrenciaId", ocorrenciaId);
                     it.putExtra("DiretoParaVeiculo", true);
                     startActivity(it);
-                }
 
-                ;
+                }
             });
         }
     }
 
-    private void ColorirTxv_Angulos()
+    public void NovoDano(final View viewLado)
     {
-
-        for (String s : setores)
+        if (!isCompativel ||
+                (!isDanoPerfurante && !isDanoFriccao && !isDanoCortante && !isDanoContuso)
+              ||(!isTercoMedio && !isTercoInferior && !isTercoSuperior))
         {
-            switch (s)
-            {
-                case "AAD":
-                    ((TextView) findViewById(R.id.txv_AAD)).setTextColor(Color.GREEN);
-                    break;
-                case "LAD":
-                    ((TextView) findViewById(R.id.txv_LAD)).setTextColor(Color.GREEN);
-                    break;
-                case "LMD":
-                    ((TextView) findViewById(R.id.txv_LMD)).setTextColor(Color.GREEN);
-                    break;
-                case "LPD":
-                    ((TextView) findViewById(R.id.txv_LPD)).setTextColor(Color.GREEN);
-                    break;
-                case "APD":
-                    ((TextView) findViewById(R.id.txv_APD)).setTextColor(Color.GREEN);
-                    break;
-                case "PPD":
-                    ((TextView) findViewById(R.id.txv_PPD)).setTextColor(Color.GREEN);
-                    break;
-                case "PPM":
-                    ((TextView) findViewById(R.id.txv_PPM)).setTextColor(Color.GREEN);
-                    break;
-                case "PPE":
-                    ((TextView) findViewById(R.id.txv_PPE)).setTextColor(Color.GREEN);
-                    break;
-                case "APE":
-                    ((TextView) findViewById(R.id.txv_APE)).setTextColor(Color.GREEN);
-                    break;
-                case "LPE":
-                    ((TextView) findViewById(R.id.txv_LPE)).setTextColor(Color.GREEN);
-                    break;
-                case "LME":
-                    ((TextView) findViewById(R.id.txv_LME)).setTextColor(Color.GREEN);
-                    break;
-                case "LAE":
-                    ((TextView) findViewById(R.id.txv_LAE)).setTextColor(Color.GREEN);
-                    break;
-                case "AAE":
-                    ((TextView) findViewById(R.id.txv_AAE)).setTextColor(Color.GREEN);
-                    break;
-                case "PAE":
-                    ((TextView) findViewById(R.id.txv_PAE)).setTextColor(Color.GREEN);
-                    break;
-                case "PAM":
-                    ((TextView) findViewById(R.id.txv_PAM)).setTextColor(Color.GREEN);
-                    break;
-                case "PAD":
-                    ((TextView) findViewById(R.id.txv_PAD)).setTextColor(Color.GREEN);
-                    break;
-            }
+            Toast.makeText(this, "O dano está classificado como incompatível", Toast.LENGTH_LONG).show();
+            return;
         }
-    }
-
-    public void Selecionar_Lado(final View viewLado)
-    {
-
-        final Dialog dialog = new Dialog(GerenciarDano.this);
-        dialog.setTitle("Lateral Completa");
-        dialog.setContentView(R.layout.dialog_dano_detalhe);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                // Prevent dialog close on back press button
-                return keyCode == KeyEvent.KEYCODE_BACK;
-            }
-        });
 
         final TextView txv = (TextView) viewLado;
-        txv.setTextColor(Color.GREEN);
+        txv.setTextColor(Color.RED);
 
-        switch (txv.getText().toString())
+        String anguloValor = txv.getText().toString();
+        anguloValor = anguloValor.replace("\n", "");
+
+        ArrayList<Dano> danosNovos = new ArrayList<>();
+
+        if (isTercoInferior)
         {
-            case "LADO ESQUERDO":
-                ((TextView) findViewById(R.id.txv_LME)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_LAE)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_LPE)).setTextColor(Color.GREEN);
-                break;
-            case "LADO DIREITO":
-                ((TextView) findViewById(R.id.txv_LMD)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_LAD)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_LPD)).setTextColor(Color.GREEN);
-                break;
-            case "ANTERIOR":
-                ((TextView) findViewById(R.id.txv_PAD)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_PAM)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_PAE)).setTextColor(Color.GREEN);
-                break;
-            case "POSTERIOR":
-                ((TextView) findViewById(R.id.txv_PPM)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_PPD)).setTextColor(Color.GREEN);
-                ((TextView) findViewById(R.id.txv_PPE)).setTextColor(Color.GREEN);
-                break;
+            if (isDanoContuso)
+                danosNovos.add(new Dano(TipoDano.CONTUSO, TercoDano.INFERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
+
+            if (isDanoCortante)
+                danosNovos.add(new Dano(TipoDano.CORTANTE, TercoDano.INFERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
+
+            if (isDanoFriccao)
+                danosNovos.add(new Dano(TipoDano.FRICCAO, TercoDano.INFERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
+
+            if (isDanoPerfurante)
+                danosNovos.add(new Dano(TipoDano.PERFURANTE, TercoDano.INFERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
         }
 
-        dialog.setTitle("Dano " + (((TextView) viewLado).getText().toString()));
-        dialog.show();
-
-        Carregar_DanoDetalhe(dialog);
-
-        for (Dano d : danosTotais)
+        if (isTercoMedio)
         {
-            switch (txv.getText().toString())
-            {
-                case "LADO ESQUERDO":
-                    if (d.getSetor() == SetorDano.LME || d.getSetor() == SetorDano.LPE || d.getSetor() == SetorDano.LAE)
-                        danos.add(d);
-                    break;
-                case "LADO DIREITO":
-                    if (d.getSetor() == SetorDano.LMD || d.getSetor() == SetorDano.LPD || d.getSetor() == SetorDano.LAD)
-                        danos.add(d);
-                    break;
-                case "ANTERIOR":
-                    if (d.getSetor() == SetorDano.PAD || d.getSetor() == SetorDano.PAM || d.getSetor() == SetorDano.PAE)
-                        danos.add(d);
-                    break;
-                case "POSTERIOR":
-                    if (d.getSetor() == SetorDano.PPM || d.getSetor() == SetorDano.PPD || d.getSetor() == SetorDano.PPE)
-                        danos.add(d);
-                    break;
-            }
+            if (isDanoContuso)
+                danosNovos.add(new Dano(TipoDano.CONTUSO, TercoDano.MEDIO, BuscadorEnum.BuscarSetorDano(anguloValor), true));
+
+            if (isDanoCortante)
+                danosNovos.add(new Dano(TipoDano.CORTANTE, TercoDano.MEDIO, BuscadorEnum.BuscarSetorDano(anguloValor), true));
+
+            if (isDanoFriccao)
+                danosNovos.add(new Dano(TipoDano.FRICCAO, TercoDano.MEDIO, BuscadorEnum.BuscarSetorDano(anguloValor), true));
+
+            if (isDanoPerfurante)
+                danosNovos.add(new Dano(TipoDano.PERFURANTE, TercoDano.MEDIO, BuscadorEnum.BuscarSetorDano(anguloValor), true));
         }
 
-        adapterDano = new ArrayAdapter<Dano>(GerenciarDano.this, android.R.layout.simple_spinner_dropdown_item, danos);
-
-
-        btnAddDano.setOnClickListener(new View.OnClickListener()
+        if (isTercoSuperior)
         {
-            @Override
-            public void onClick(View v)
-            {
-                String texto = txv.getText().toString();
-                texto = texto.replace("\n","");
+            if (isDanoContuso)
+                danosNovos.add(new Dano(TipoDano.CONTUSO, TercoDano.SUPERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
 
-                switch (texto)
-                {
+            if (isDanoCortante)
+                danosNovos.add(new Dano(TipoDano.CORTANTE, TercoDano.SUPERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
 
-                    case "LADO ESQUERDO":
-                        Dano danoEsquerdo = new Dano();
-                        danoEsquerdo.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoEsquerdo.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoEsquerdo.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoEsquerdo.setSetor(BuscadorEnum.BuscarSetorDano("LME"));
-                        adapterDano.add(danoEsquerdo);
+            if (isDanoFriccao)
+                danosNovos.add(new Dano(TipoDano.FRICCAO, TercoDano.SUPERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
 
-                        danoEsquerdo = new Dano();
-                        danoEsquerdo.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoEsquerdo.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoEsquerdo.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoEsquerdo.setSetor(BuscadorEnum.BuscarSetorDano("LAE"));
+            if (isDanoPerfurante)
+                danosNovos.add(new Dano(TipoDano.PERFURANTE, TercoDano.SUPERIOR, BuscadorEnum.BuscarSetorDano(anguloValor), true));
+        }
 
-                        adapterDano.add(danoEsquerdo);
-
-                        danoEsquerdo = new Dano();
-                        danoEsquerdo.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoEsquerdo.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoEsquerdo.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoEsquerdo.setSetor(BuscadorEnum.BuscarSetorDano("LPE"));
-                        adapterDano.add(danoEsquerdo);
-                        break;
-                    case "LADO DIREITO":
-                        Dano danoDireito = new Dano();
-                        danoDireito.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoDireito.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoDireito.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoDireito.setSetor(BuscadorEnum.BuscarSetorDano("LMD"));
-                        adapterDano.add(danoDireito);
-
-                        danoDireito = new Dano();
-                        danoDireito.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoDireito.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoDireito.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoDireito.setSetor(BuscadorEnum.BuscarSetorDano("LAD"));
-                        adapterDano.add(danoDireito);
-
-                        danoDireito = new Dano();
-                        danoDireito.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoDireito.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoDireito.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoDireito.setSetor(BuscadorEnum.BuscarSetorDano("LPD"));
-                        adapterDano.add(danoDireito);
-                        break;
-
-                    case "ANTERIOR":
-                        Dano danoAnterior = new Dano();
-                        danoAnterior.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoAnterior.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoAnterior.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoAnterior.setSetor(BuscadorEnum.BuscarSetorDano("PAD"));
-                        adapterDano.add(danoAnterior);
-
-                        danoAnterior = new Dano();
-                        danoAnterior.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoAnterior.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoAnterior.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoAnterior.setSetor(BuscadorEnum.BuscarSetorDano("PAM"));
-                        adapterDano.add(danoAnterior);
-
-                        danoAnterior = new Dano();
-                        danoAnterior.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoAnterior.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoAnterior.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoAnterior.setSetor(BuscadorEnum.BuscarSetorDano("PAE"));
-                        adapterDano.add(danoAnterior);
-                        break;
-
-                    case "POSTERIOR":
-                        Dano danoPosterior = new Dano();
-                        danoPosterior.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoPosterior.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoPosterior.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoPosterior.setSetor(BuscadorEnum.BuscarSetorDano("PPD"));
-                        adapterDano.add(danoPosterior);
-
-                        danoPosterior = new Dano();
-                        danoPosterior.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoPosterior.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoPosterior.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoPosterior.setSetor(BuscadorEnum.BuscarSetorDano("PPM"));
-                        adapterDano.add(danoPosterior);
-
-                        danoPosterior = new Dano();
-                        danoPosterior.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                        danoPosterior.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                        danoPosterior.setCompatibilidade(cxbCompatibilidade.isChecked());
-                        danoPosterior.setSetor(BuscadorEnum.BuscarSetorDano("PPE"));
-                        adapterDano.add(danoPosterior);
-                        break;
-                }
-            }
-        });
-
-
-        btnLimparDanos.setOnClickListener(new View.OnClickListener()
+        for (Dano dNovo : danosNovos)
         {
-            @Override
-            public void onClick(View v)
-            {
+            if (!ComparatorUtil.containsDano(dNovo, danosTotais))
+                danosTotais.add(dNovo);
+        }
 
-                for (int i = 0; i < adapterDano.getCount(); i++)
-
-                    danosTotais.remove(adapterDano.getItem(i));
-
-                adapterDano.clear();
-            }
-        });
-
-        btnSalvarDano.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                for (int i = 0; i < adapterDano.getCount(); i++)
-                {
-                    if (!danosTotais.contains(adapterDano.getItem(i)))
-                        danosTotais.add(adapterDano.getItem(i));
-                }
-
-                if (adapterDano.getCount() == 0)
-                    ((TextView) viewLado).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-
-                //Removendo os \n para ler o TextView de Anterior e Posterior, que estão na vertical.
-                String texto = txv.getText().toString();
-                texto = texto.replace("\n","");
-
-                switch (texto)
-                {
-                    case "LADO ESQUERDO":
-                        ((TextView) findViewById(R.id.txv_LME)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_LAE)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_LPE)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        for (Dano dano : danosTotais)
-                        {
-                            if (dano.getSetor().equals(SetorDano.LPE))
-                                ((TextView) findViewById(R.id.txv_LPE)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.LAE))
-                                ((TextView) findViewById(R.id.txv_LAE)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.LME))
-                                ((TextView) findViewById(R.id.txv_LME)).setTextColor(Color.GREEN);
-                        }
-                        break;
-                    case "LADO DIREITO":
-                        ((TextView) findViewById(R.id.txv_LMD)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_LAD)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_LPD)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        for (Dano dano : danosTotais)
-                        {
-                            if (dano.getSetor().equals(SetorDano.LMD))
-                                ((TextView) findViewById(R.id.txv_LMD)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.LAD))
-                                ((TextView) findViewById(R.id.txv_LAD)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.LPD))
-                                ((TextView) findViewById(R.id.txv_LPD)).setTextColor(Color.GREEN);
-                        }
-                        break;
-                    case "ANTERIOR":
-                        ((TextView) findViewById(R.id.txv_PAD)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_PAM)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_PAE)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        for (Dano dano : danosTotais)
-                        {
-                            if (dano.getSetor().equals(SetorDano.PAD))
-                                ((TextView) findViewById(R.id.txv_PAD)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.PAM))
-                                ((TextView) findViewById(R.id.txv_PAM)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.PAE))
-                                ((TextView) findViewById(R.id.txv_PAE)).setTextColor(Color.GREEN);
-                        }
-                        break;
-                    case "POSTERIOR":
-                        ((TextView) findViewById(R.id.txv_PPM)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_PPD)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        ((TextView) findViewById(R.id.txv_PPE)).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-                        for (Dano dano : danosTotais)
-                        {
-                            if (dano.getSetor().equals(SetorDano.PPM))
-                                ((TextView) findViewById(R.id.txv_PPM)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.PPD))
-                                ((TextView) findViewById(R.id.txv_PPD)).setTextColor(Color.GREEN);
-                            if (dano.getSetor().equals(SetorDano.PPE))
-                                ((TextView) findViewById(R.id.txv_PPE)).setTextColor(Color.GREEN);
-                        }
-                        break;
-                }
-
-
-                adapterDano.clear();
-
-                dialog.dismiss();
-            }
-
-            ;
-
-
-        });
-
-
-        adapterDano.notifyDataSetChanged();
-        lstvDanosDialog.setAdapter(adapterDano);
+        if (danosNovos.size() == 0)
+            Toast.makeText(this, "Selecione uma opção válida!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, "Danos salvos!", Toast.LENGTH_SHORT).show();
     }
 
 
-    public void Selecionar_Angulo(final View viewAngulo)
+    private void RemoverTodos(final View viewLado)
     {
-        TextView txv = (TextView) viewAngulo;
+        final TextView txv = (TextView) viewLado;
+        txv.setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
 
+        String anguloValor = txv.getText().toString();
+        anguloValor = anguloValor.replace("\n", "");
 
-        final Dialog dialog = new Dialog(GerenciarDano.this);
-        dialog.setContentView(R.layout.dialog_dano_detalhe);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                // Prevent dialog close on back press button
-                return keyCode == KeyEvent.KEYCODE_BACK;
-            }
-        });
-
-
-        if (txv.getTextColors().equals(Color.GREEN))
-            txv.setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-
-        else
-            txv.setTextColor(Color.GREEN);
-
-
-        dialog.setTitle("Dano " + (((TextView) viewAngulo).getText().toString()));
-        dialog.show();
-
-
-        Carregar_DanoDetalhe(dialog);
-
+        List<Dano> danosRemovidos = new ArrayList<>();
 
         for (Dano d : danosTotais)
         {
-            if (d.getSetor() == (BuscadorEnum.BuscarSetorDano(((TextView) viewAngulo).getText().toString())))
-            {
-                danos.add(d);
-            }
-
+            if (d.setor.toString().equals(anguloValor))
+                danosRemovidos.add(d);
         }
 
-        adapterDano = new ArrayAdapter<Dano>(GerenciarDano.this, android.R.layout.simple_spinner_dropdown_item, danos);
+        danosTotais.removeAll(danosRemovidos);
+    }
 
-        btnSalvarDano.setOnClickListener(new View.OnClickListener()
+    private void AssociarLayout()
+    {
+        rltvBase = (RelativeLayout) findViewById(R.id.rltv_Gerenciar_Dano);
+
+        btnVOltar = (Button) findViewById(R.id.btn_SalvarDano_Veiculo);
+        txvDetalhe = (TextView) findViewById(R.id.txv_Subtitulo_Veiculo);
+        txvAnterior = (TextView) findViewById(R.id.txv_Anterior_Veiculo);
+        txvPosterior = (TextView) findViewById(R.id.txv_Posterior_Veiculo);
+        txvLadoDireito = (TextView) findViewById(R.id.txv_Lado_Direito_Veiculo);
+        txvLadoEsquerdo = (TextView) findViewById(R.id.txv_Lado_Esquerdo_Veiculo);
+
+        cxbCompatibilidade = (CheckBox) findViewById(R.id.cxb_Compatibilidade_Dano_Activity);
+        cxbDanoContuso = (CheckBox) findViewById(R.id.cxb_Danos_Contusos);
+        cxbDanoCortante = (CheckBox) findViewById(R.id.cxb_Danos_Cortantes);
+        cxbDanoFriccao = (CheckBox) findViewById(R.id.cxb_Danos_Friccao);
+        cxbDanoPerfurante = (CheckBox) findViewById(R.id.cxb_Danos_Perfurante);
+
+        cxbTercoSuperior = (CheckBox) findViewById(R.id.cxb_Terco_Superior);
+        cxbTercoMedio = (CheckBox) findViewById(R.id.cxb_Terco_Medio);
+        cxbTercoInferior = (CheckBox) findViewById(R.id.cxb_Terco_Inferior);
+
+        View.OnClickListener listener = new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                for (int i = 0; i < adapterDano.getCount(); i++)
-                {
-                    if (!danosTotais.contains(adapterDano.getItem(i)))
-                        danosTotais.add(adapterDano.getItem(i));
-                }
-
-                if (adapterDano.getCount() == 0)
-                    ((TextView) viewAngulo).setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
-
-                adapterDano.clear();
-
-                dialog.dismiss();
+                NovoDano(v);
             }
+        };
 
-            ;
-
-        });
-
-        btnAddDano.setOnClickListener(new View.OnClickListener()
+        View.OnLongClickListener longListener = new View.OnLongClickListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onLongClick(View v)
             {
-                Dano d = new Dano();
+                AlertDialog.Builder builder;
 
-                d.setTerco(BuscadorEnum.BuscarTercoDano(spnTercoDano.getSelectedItem().toString()));
-                d.setTipo(BuscadorEnum.BuscarTipoDano(spnTipoDano.getSelectedItem().toString()));
-                d.setCompatibilidade(cxbCompatibilidade.isChecked());
-                d.setSetor(BuscadorEnum.BuscarSetorDanoSigla(((TextView) viewAngulo).getText().toString()));
-                adapterDano.add(d);
-            }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    builder = new AlertDialog.Builder(GerenciarDano.this, android.R.style.Theme_Material_Dialog_Alert);
 
-            ;
-        });
+                else
+                    builder = new AlertDialog.Builder(GerenciarDano.this);
 
-        btnLimparDanos.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                for (int i = 0; i < adapterDano.getCount(); i++)
-
-                    danosTotais.remove(adapterDano.getItem(i));
-
-                adapterDano.clear();
-            }
-
-            ;
-
-        });
-
-        lstvDanosDialog.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-        {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View v, final int position, long id)
-            {
-                new AlertDialog.Builder(GerenciarDano.this)
-                        .setTitle("Deletar Dano")
-                        .setMessage("Você deseja deletar este Dano?")
+                builder.setTitle("Deletar Danos")
+                        .setMessage("Remover os danos do ângulo?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                danosTotais.remove(adapterDano.getItem(position));
-                                adapterDano.remove(adapterDano.getItem(position));
+                                RemoverTodos(v);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
@@ -600,48 +296,302 @@ public class GerenciarDano extends AppCompatActivity
                             }
                         })
                         .show();
+
                 return true;
+            }
+        };
+
+
+        View.OnClickListener listenerLado = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                TextView txv = (TextView) v;
+
+                if (isCompativel &&
+                        (isDanoPerfurante || isDanoFriccao || isDanoCortante || isDanoContuso)
+                        &&(isTercoMedio || isTercoInferior || isTercoSuperior))
+
+                    txv.setTextColor(Color.RED);
+
+                switch (txv.getText().toString())
+                {
+                    case "LADO DIREITO":
+                        NovoDano(findViewById(R.id.txv_LAD));
+                        NovoDano(findViewById(R.id.txv_LMD));
+                        NovoDano(findViewById(R.id.txv_LPD));
+                        break;
+                    case "LADO ESQUERDO":
+                        NovoDano(findViewById(R.id.txv_LAE));
+                        NovoDano(findViewById(R.id.txv_LME));
+                        NovoDano(findViewById(R.id.txv_LPE));
+                        break;
+                    case "P\nO\nS\nT\nE\nR\nI\nO\nR":
+                        NovoDano(findViewById(R.id.txv_PPD));
+                        NovoDano(findViewById(R.id.txv_PPM));
+                        NovoDano(findViewById(R.id.txv_PPE));
+                        break;
+                    case "A\nN\nT\nE\nR\nI\nO\nR":
+                        NovoDano(findViewById(R.id.txv_PAD));
+                        NovoDano(findViewById(R.id.txv_PAM));
+                        NovoDano(findViewById(R.id.txv_PAE));
+                        break;
+                }
+            }
+        };
+
+        View.OnLongClickListener longListenerLado = new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                AlertDialog.Builder builder;
+
+                builder = new AlertDialog.Builder(GerenciarDano.this);
+
+                builder.setTitle("Deletar Danos")
+                        .setMessage("Remover os danos do ângulo?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                TextView txv = (TextView) v;
+
+                                txv.setTextColor(GerenciarDano.this.getResources().getColor(R.color.DefaultTextColor));
+
+                                switch (txv.getText().toString())
+                                {
+                                    case "LADO DIREITO":
+                                        RemoverTodos(findViewById(R.id.txv_LAD));
+                                        RemoverTodos(findViewById(R.id.txv_LMD));
+                                        RemoverTodos(findViewById(R.id.txv_LPD));
+
+                                        break;
+                                    case "LADO ESQUERDO":
+                                        RemoverTodos(findViewById(R.id.txv_LAE));
+                                        RemoverTodos(findViewById(R.id.txv_LME));
+                                        RemoverTodos(findViewById(R.id.txv_LPE));
+
+                                        break;
+                                    case "P\nO\nS\nT\nE\nR\nI\nO\nR":
+                                        RemoverTodos(findViewById(R.id.txv_PPD));
+                                        RemoverTodos(findViewById(R.id.txv_PPM));
+                                        RemoverTodos(findViewById(R.id.txv_PPE));
+
+                                        break;
+                                    case "A\nN\nT\nE\nR\nI\nO\nR":
+                                        RemoverTodos(findViewById(R.id.txv_PAD));
+                                        RemoverTodos(findViewById(R.id.txv_PAM));
+                                        RemoverTodos(findViewById(R.id.txv_PAE));
+
+                                        break;
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
+        };
+
+
+        txvLadoEsquerdo.setOnClickListener(listenerLado);
+        txvLadoDireito.setOnClickListener(listenerLado);
+        txvPosterior.setOnClickListener(listenerLado);
+        txvAnterior.setOnClickListener(listenerLado);
+
+        txvLadoEsquerdo.setOnLongClickListener(longListenerLado);
+        txvLadoDireito.setOnLongClickListener(longListenerLado);
+        txvPosterior.setOnLongClickListener(longListenerLado);
+        txvAnterior.setOnLongClickListener(longListenerLado);
+
+        for (int i = 0; i < rltvBase.getChildCount(); i++)
+        {
+            try
+            {
+                TextView txv = (TextView) rltvBase.getChildAt(i);
+                if (BuscadorEnum.BuscarSetorDano(txv.getText().toString()) != null)
+                {
+                    txv.setOnClickListener(listener);
+                    txv.setOnLongClickListener(longListener);
+                }
+
+            } catch (Exception e)
+            {
+            }
+        }
+        cxbCompatibilidade.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isCompativel = cxbCompatibilidade.isChecked();
+            }
+        });
+        cxbDanoCortante.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isDanoCortante = cxbDanoCortante.isChecked();
+            }
+        });
+        cxbDanoContuso.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isDanoContuso = cxbDanoContuso.isChecked();
+            }
+        });
+        cxbDanoFriccao.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isDanoFriccao = cxbDanoFriccao.isChecked();
+            }
+        });
+        cxbDanoPerfurante.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isDanoPerfurante = cxbDanoPerfurante.isChecked();
+            }
+        });
+        cxbTercoInferior.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isTercoInferior = cxbTercoInferior.isChecked();
+            }
+        });
+        cxbTercoMedio.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isTercoMedio = cxbTercoMedio.isChecked();
             }
         });
 
-        adapterDano.notifyDataSetChanged();
-        lstvDanosDialog.setAdapter(adapterDano);
+        cxbTercoSuperior.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isTercoSuperior = cxbTercoSuperior.isChecked();
+            }
+        });
 
     }
 
-
-    private void Carregar_DanoDetalhe(Dialog dialog)
+    private void ColorirTxv_Angulos()
     {
-        lstvDanosDialog = (ListView) dialog.findViewById(R.id.lstv_dialog_ListDanos);
-        btnAddDano = (Button) dialog.findViewById(R.id.btn_dialog_AddDano);
-        btnSalvarDano = (Button) dialog.findViewById(R.id.btn_dialog_SalvarDano_Detalhe);
-        btnLimparDanos = (Button) dialog.findViewById(R.id.btn_dialog_LimparDano);
-        spnTipoDano = (Spinner) dialog.findViewById(R.id.spn_dialog_TipoDano);
-        spnTercoDano = (Spinner) dialog.findViewById(R.id.spn_dialog_TercoDano);
-        cxbCompatibilidade = (CheckBox) dialog.findViewById(R.id.cxb_dialog_CompatibilidadeDano);
 
-        ArrayList<String> tipoDano = new ArrayList<String>();
-
-        for (TipoDano td : TipoDano.values())
+        for (String s : setores)
         {
-            tipoDano.add(td.getValor());
+            switch (s)
+            {
+                case "AAD":
+                    ((TextView) findViewById(R.id.txv_AAD)).setTextColor(Color.RED);
+                    break;
+                case "LAD":
+                    ((TextView) findViewById(R.id.txv_LAD)).setTextColor(Color.RED);
+                    break;
+                case "LMD":
+                    ((TextView) findViewById(R.id.txv_LMD)).setTextColor(Color.RED);
+                    break;
+                case "LPD":
+                    ((TextView) findViewById(R.id.txv_LPD)).setTextColor(Color.RED);
+                    break;
+                case "APD":
+                    ((TextView) findViewById(R.id.txv_APD)).setTextColor(Color.RED);
+                    break;
+                case "PPD":
+                    ((TextView) findViewById(R.id.txv_PPD)).setTextColor(Color.RED);
+                    break;
+                case "PPM":
+                    ((TextView) findViewById(R.id.txv_PPM)).setTextColor(Color.RED);
+                    break;
+                case "PPE":
+                    ((TextView) findViewById(R.id.txv_PPE)).setTextColor(Color.RED);
+                    break;
+                case "APE":
+                    ((TextView) findViewById(R.id.txv_APE)).setTextColor(Color.RED);
+                    break;
+                case "LPE":
+                    ((TextView) findViewById(R.id.txv_LPE)).setTextColor(Color.RED);
+                    break;
+                case "LME":
+                    ((TextView) findViewById(R.id.txv_LME)).setTextColor(Color.RED);
+                    break;
+                case "LAE":
+                    ((TextView) findViewById(R.id.txv_LAE)).setTextColor(Color.RED);
+                    break;
+                case "AAE":
+                    ((TextView) findViewById(R.id.txv_AAE)).setTextColor(Color.RED);
+                    break;
+                case "PAE":
+                    ((TextView) findViewById(R.id.txv_PAE)).setTextColor(Color.RED);
+                    break;
+                case "PAM":
+                    ((TextView) findViewById(R.id.txv_PAM)).setTextColor(Color.RED);
+                    break;
+                case "PAD":
+                    ((TextView) findViewById(R.id.txv_PAD)).setTextColor(Color.RED);
+                    break;
+            }
         }
 
-        spnTipoDano.setAdapter(new ArrayAdapter<String>(GerenciarDano.this, android.R.layout.simple_spinner_dropdown_item, tipoDano));
+        if (((TextView) findViewById(R.id.txv_LAE)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_LME)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_LPE)).getCurrentTextColor() == Color.RED
+                )
 
-        ArrayList<String> tercoDano = new ArrayList<String>();
-
-        for (TercoDano td : TercoDano.values())
         {
-            tercoDano.add(td.getValor());
+            txvLadoEsquerdo.setTextColor(Color.RED);
         }
 
-        spnTercoDano.setAdapter(new ArrayAdapter<String>(GerenciarDano.this, android.R.layout.simple_spinner_dropdown_item, tercoDano));
+
+        if (((TextView) findViewById(R.id.txv_LAD)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_LMD)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_LPD)).getCurrentTextColor() == Color.RED
+                )
+
+        {
+            txvLadoDireito.setTextColor(Color.RED);
+        }
+
+        if (((TextView) findViewById(R.id.txv_PAD)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_PAM)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_PAE)).getCurrentTextColor() == Color.RED
+                )
+
+        {
+            txvAnterior.setTextColor(Color.RED);
+        }
+
+
+        if (((TextView) findViewById(R.id.txv_PPD)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_PPM)).getCurrentTextColor() == Color.RED &&
+                ((TextView) findViewById(R.id.txv_PPE)).getCurrentTextColor() == Color.RED
+                )
+
+        {
+            txvPosterior.setTextColor(Color.RED);
+        }
     }
 
-    public void onBackPressed()
-    {
-//        Intent it = new Intent(this, MainActivity.class);
-//        startActivity(it);
-    }
+
 }

@@ -1,235 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent" android:layout_height="match_parent"
-                android:layout_margin="10dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rltv_Gerenciar_Dano"
+    android:padding="8dp">
 
     <ImageView
+        android:id="@+id/imgv_Carro"
         android:layout_width="550dp"
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:scaleType="centerInside"
-        android:src="@drawable/carro_angulo"
-        android:id="@+id/imgv_Carro"  />
+        android:src="@drawable/carro_angulo" />
 
     <TextView
         android:id="@+id/txv_Titulo_VeiculoDanos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Danos do Veiculo"
-        android:textSize="25dp"
-        />
+        android:textSize="25dp" />
 
 
     <TextView
         android:id="@+id/txv_Subtitulo_Veiculo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_below="@+id/txv_Titulo_VeiculoDanos"
         android:layout_alignLeft="@+id/txv_Titulo_VeiculoDanos"
-        />
+        android:layout_below="@+id/txv_Titulo_VeiculoDanos"
+        android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/txv_LadoDireito_Veiculo"
+        android:id="@+id/txv_Lado_Direito_Veiculo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LADO DIREITO"
-        android:textSize="35dp"
-        android:onClick="Selecionar_Lado"
-        android:layout_marginBottom="60dp"
         android:layout_above="@id/imgv_Carro"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+
+        android:text="LADO DIREITO"
+        android:textSize="35dp" />
 
     <View
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/imgv_Carro"
-        android:layout_marginBottom="58dp"
         android:layout_width="220dp"
         android:layout_height="1dp"
-        android:background="@android:color/black"/>
+        android:layout_above="@id/imgv_Carro"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="58dp"
+        android:background="@android:color/black" />
 
     <TextView
-        android:onClick="Selecionar_Angulo"
-        android:text="LMD"
-        android:textSize="25dp"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_above="@id/imgv_Carro"
         android:id="@+id/txv_LMD"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/imgv_Carro"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+
+        android:text="LMD"
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/txv_LAD"
-        android:onClick="Selecionar_Angulo"
-        android:text="LAD"
-        android:textSize="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/txv_LMD"
-        android:layout_toLeftOf="@id/txv_LMD"
         android:layout_marginRight="70dp"
-        />
+        android:layout_toLeftOf="@id/txv_LMD"
+
+        android:text="LAD"
+        android:textSize="25dp" />
 
     <TextView
 
-        android:onClick="Selecionar_Angulo"
-        android:text="AAD"
-        android:textSize="25dp"
+        android:id="@+id/txv_AAD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txv_LMD"
-        android:layout_toLeftOf="@id/txv_LAD"
         android:layout_marginRight="70dp"
-        android:id="@+id/txv_AAD" />
+        android:layout_toLeftOf="@id/txv_LAD"
+
+        android:text="AAD"
+        android:textSize="25dp" />
 
     <TextView
-        android:onClick="Selecionar_Angulo"
-        android:text="PAD"
-        android:textSize="25dp"
+        android:id="@+id/txv_PAD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txv_AAD"
-        android:layout_toLeftOf="@id/imgv_Carro"
         android:layout_marginRight="8dp"
         android:layout_marginTop="70dp"
-        android:id="@+id/txv_PAD" />
+        android:layout_toLeftOf="@id/imgv_Carro"
+
+        android:text="PAD"
+        android:textSize="25dp" />
 
     <TextView
 
-        android:onClick="Selecionar_Angulo"
-        android:text="PAM"
-        android:textSize="25dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txv_PAD"
         android:id="@+id/txv_PAM"
-        android:layout_below="@id/txv_PAD"
-        android:layout_marginTop="32dp"/>
-
-
-    <TextView
-
-        android:onClick="Selecionar_Angulo"
-        android:text="PAE"
-        android:textSize="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txv_PAM"
         android:layout_alignLeft="@+id/txv_PAD"
+        android:layout_below="@id/txv_PAD"
+        android:layout_marginTop="32dp"
+
+        android:text="PAM"
+        android:textSize="25dp" />
+
+
+    <TextView
+
+        android:id="@+id/txv_PAE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_PAD"
+        android:layout_below="@id/txv_PAM"
         android:layout_marginTop="30dp"
-        android:id="@+id/txv_PAE" />
+
+        android:text="PAE"
+        android:textSize="25dp" />
 
 
     <TextView
 
-        android:onClick="Selecionar_Angulo"
-        android:text="AAE"
-        android:textSize="25dp"
+        android:id="@+id/txv_AAE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgv_Carro"
         android:layout_alignLeft="@+id/txv_AAD"
+        android:layout_below="@id/imgv_Carro"
 
-        android:id="@+id/txv_AAE" />
+        android:text="AAE"
+
+        android:textSize="25dp" />
 
 
     <TextView
 
-        android:onClick="Selecionar_Angulo"
-        android:text="PPE"
-        android:textSize="25dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/txv_PPE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@id/txv_PAE"
-        android:layout_alignLeft="@+id/txv_PPD" />
+        android:layout_alignLeft="@+id/txv_PPD"
+
+        android:text="PPE"
+        android:textSize="25dp" />
 
 
     <TextView
-        android:onClick="Selecionar_Angulo"
-        android:text="LPD"
-        android:textSize="25dp"
+        android:id="@+id/txv_LPD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:id="@+id/txv_LPD"
         android:layout_alignBaseline="@+id/txv_LMD"
         android:layout_alignBottom="@+id/txv_LMD"
-        android:layout_toRightOf="@+id/txv_LME" />
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/txv_LME"
+
+        android:text="LPD"
+        android:textSize="25dp" />
 
     <TextView
 
-        android:onClick="Selecionar_Angulo"
-        android:text="APD"
-        android:textSize="25dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/txv_APD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@id/txv_LPD"
+        android:layout_marginLeft="75dp"
         android:layout_toRightOf="@id/txv_LPD"
-        android:layout_marginLeft="75dp"/>
+
+        android:text="APD"
+        android:textSize="25dp" />
 
     <TextView
 
-        android:onClick="Selecionar_Angulo"
-        android:text="APE"
-        android:textSize="25dp"
+        android:id="@+id/txv_APE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txv_APE"
-        android:layout_marginTop="8dp"
+        android:layout_alignLeft="@id/txv_APD"
         android:layout_below="@+id/imgv_Carro"
-        android:layout_alignLeft="@id/txv_APD"/>
+        android:layout_marginTop="8dp"
+
+        android:text="APE"
+        android:textSize="25dp" />
 
 
     <TextView
         android:id="@+id/txv_LAE"
-        android:onClick="Selecionar_Angulo"
-        android:text="LAE"
-        android:textSize="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_below="@id/imgv_Carro"
         android:layout_alignLeft="@+id/txv_LAD"
-        android:layout_marginRight="50dp"/>
+        android:layout_below="@id/imgv_Carro"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="8dp"
+
+        android:text="LAE"
+        android:textSize="25dp" />
 
     <TextView
-    android:onClick="Selecionar_Angulo"
-    android:text="LME"
-    android:textSize="25dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/txv_LME"
-    android:layout_alignBottom="@+id/txv_LAE"
-    android:layout_centerHorizontal="true"
-    android:layout_marginRight="50dp"/>
-
-    <TextView
-
-        android:onClick="Selecionar_Angulo"
-        android:text="LPE"
-        android:textSize="25dp"
+        android:id="@+id/txv_LME"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txv_LAE"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="50dp"
+
+        android:text="LME"
+        android:textSize="25dp" />
+
+    <TextView
+
         android:id="@+id/txv_LPE"
-        android:layout_marginTop="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txv_LME"
         android:layout_alignLeft="@+id/txv_LPD"
-        />
+
+        android:layout_marginTop="27dp"
+
+        android:text="LPE"
+        android:textSize="25dp" />
+
     <Button
         android:id="@+id/btn_SalvarDano_Veiculo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Voltar"
-        android:layout_marginTop="50dp"
-        android:layout_below="@id/imgv_Carro"
-
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Voltar" />
 
     <!--<Button-->
     <!--android:id="@+id/btn_dialog_LimparDano_Veiculo"-->
@@ -242,92 +239,180 @@
     <!--/>-->
 
 
-
-
     <TextView
-        android:id="@+id/txv_LadoEsquerdo_Veiculo"
+        android:id="@+id/txv_Lado_Esquerdo_Veiculo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LADO ESQUERDO"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/txv_LME"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:onClick="Selecionar_Lado"
-        android:textSize="35dp"/>
 
+        android:text="LADO ESQUERDO"
+        android:textSize="35dp" />
 
 
     <View
-        android:layout_centerHorizontal="true"
         android:layout_width="270dp"
         android:layout_height="1dp"
         android:layout_below="@id/txv_LME"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
-        android:background="@android:color/black"/>
+        android:background="@android:color/black" />
 
 
     <TextView
         android:id="@+id/txv_Anterior_Veiculo"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
-        android:text="ANTERIOR"
-        android:textSize="25dp"
         android:layout_centerVertical="true"
-        android:onClick="Selecionar_Lado"
+        android:layout_marginRight="20dp"
         android:layout_toLeftOf="@id/txv_PAM"
-        android:layout_marginRight="20dp"/>
+
+        android:text="ANTERIOR"
+        android:textSize="25dp" />
 
     <View
-        android:layout_centerVertical="true"
         android:layout_width="1dp"
         android:layout_height="250dp"
-        android:layout_toLeftOf="@id/txv_PAD"
+        android:layout_centerVertical="true"
         android:layout_marginRight="18dp"
-        android:background="@android:color/black"/>
+        android:layout_toLeftOf="@id/txv_PAD"
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/txv_Posterior_Veiculo"
         android:layout_width="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_height="wrap_content"
-        android:text="POSTERIOR"
-        android:textSize="25dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
         android:layout_toRightOf="@id/txv_PPD"
-        android:onClick="Selecionar_Lado"/>
+
+        android:text="POSTERIOR"
+        android:textSize="25dp" />
 
     <View
-        android:layout_toRightOf="@id/txv_PPD"
-        android:layout_marginLeft="15dp"
         android:layout_width="1dp"
         android:layout_height="275dp"
         android:layout_centerVertical="true"
-        android:background="@android:color/black"/>
-
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/txv_PPD"
+        android:background="@android:color/black" />
 
 
     <TextView
 
-        android:onClick="Selecionar_Angulo"
-        android:text="PPD"
-        android:textSize="25dp"
+        android:id="@+id/txv_PPD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txv_PPD"
         android:layout_alignBottom="@id/txv_PAD"
-        android:layout_toRightOf="@id/imgv_Carro"
         android:layout_marginLeft="8dp"
-        />
+        android:layout_toRightOf="@id/imgv_Carro"
+
+        android:text="PPD"
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/txv_PPM"
-        android:onClick="Selecionar_Angulo"
-        android:text="PPM"
-        android:textSize="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_PPD"
         android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/txv_PPD" />
+
+        android:text="PPM"
+        android:textSize="25dp" />
+
+    <TextView
+
+        android:id="@+id/txv_Grupo_Danos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txv_Subtitulo_Veiculo"
+        android:layout_marginTop="10dp"
+        android:text="Danos" />
+
+    <CheckBox
+        android:id="@+id/cxb_Danos_Contusos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/txv_Grupo_Danos"
+        android:layout_marginTop="10dp"
+        android:text="Danos contusos" />
+
+    <CheckBox
+        android:id="@+id/cxb_Danos_Cortantes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/cxb_Danos_Contusos"
+        android:text="Danos cortantes" />
+
+    <CheckBox
+        android:id="@+id/cxb_Danos_Friccao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/cxb_Danos_Cortantes"
+        android:text="Danos de Fricção" />
+
+    <CheckBox
+        android:id="@+id/cxb_Danos_Perfurante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/cxb_Danos_Friccao"
+        android:text="Danos perfurantes" />
 
 
+    <TextView
+
+        android:id="@+id/txv_Grupo_Tercos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/txv_Anterior_Veiculo"
+        android:layout_marginTop="10dp"
+        android:text="Terço" />
+
+    <CheckBox
+        android:id="@+id/cxb_Terco_Superior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/txv_Grupo_Tercos"
+        android:layout_marginTop="10dp"
+        android:text="Superior" />
+
+
+    <CheckBox
+        android:id="@+id/cxb_Terco_Medio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/cxb_Terco_Superior"
+        android:text="Médio" />
+
+    <CheckBox
+        android:id="@+id/cxb_Terco_Inferior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Grupo_Danos"
+        android:layout_below="@id/cxb_Terco_Medio"
+        android:text="Inferior" />
+
+    <View
+        android:id="@+id/view_divisor_Grupos2"
+        android:layout_width="200dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/cxb_Terco_Inferior"
+        android:layout_marginTop="10dp"
+        android:background="@color/ms_black" />
+
+    <CheckBox
+        android:id="@+id/cxb_Compatibilidade_Dano_Activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_divisor_Grupos2"
+        android:layout_marginTop="10dp"
+        android:text="Dano Compatível c/ Ocorrido" />
 </RelativeLayout>

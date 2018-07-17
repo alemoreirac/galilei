@@ -10,9 +10,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.raed.drawingview.DrawingView;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import Dialogs.DesenhoThumbnailDialog;
 import Dialogs.LesaoDialog;
 import Enums.Genero;
 import Enums.Vida.ParteCorpo;
@@ -27,6 +30,8 @@ import info.hoang8f.android.segmented.SegmentedGroup;
 public class GerenciarTorax extends AppCompatActivity
 {
     EnvolvidoVida envolvidoVida;
+
+    Long ocorrenciaId;
 
 //    TextView txvClavicularEsquerdoMasculinoCostas;
     TextView txvToracicoEsquerdoMasculino;
@@ -100,6 +105,7 @@ public class GerenciarTorax extends AppCompatActivity
     RadioButton rbtnCostas;
 
     Button btnVoltar;
+    Button btnThumbnail;
 
     TextView txvNomeEnvolvido;
 
@@ -116,6 +122,8 @@ public class GerenciarTorax extends AppCompatActivity
         setContentView(R.layout.activity_gerenciar_torax);
 
         Intent it = getIntent();
+
+        ocorrenciaId = it.getLongExtra("OcorrenciaId",0l);
 
         AssociarLayout();
         AssociarEventos();
@@ -176,6 +184,7 @@ public class GerenciarTorax extends AppCompatActivity
         rltvMasculinoFrente = (RelativeLayout) findViewById(R.id.rltv_Frente_Masculina);
 
         btnVoltar = (Button) findViewById(R.id.btn_Torax_Voltar);
+        btnThumbnail = (Button) findViewById(R.id.btn_Thumbnail_Desenho_Torax);
 
         sgmtFrenteCostas = (SegmentedGroup) findViewById(R.id.sgm_Frente_Costas_Torax);
 
@@ -342,6 +351,15 @@ public class GerenciarTorax extends AppCompatActivity
             }
         });
 
+        btnThumbnail.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DesenhoThumbnailDialog.criarDialog(GerenciarTorax.this,envolvidoVida,ocorrenciaId);
+            }
+        });
+
         btnVoltar.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -349,68 +367,11 @@ public class GerenciarTorax extends AppCompatActivity
             {
                 Intent it = new Intent(GerenciarTorax.this,GerenciarCorpo.class);
                 it.putExtra("EnvolvidoId",envolvidoVida.getId());
+                it.putExtra("OcorrenciaId",ocorrenciaId);
                 it.putExtra("GeneroEnvolvido",generoParam);
                 startActivity(it);
             }
         });
-//        txvClavicularEsquerdoMasculinoCostas.setOnClickListener(listener);
-//        txvEscapularEsquerdoMasculino.setOnClickListener(listener);
-//        txvLombarEsquerdoMasculino.setOnClickListener(listener);
-//        txvIliacoEsquerdoMasculinoCostas.setOnClickListener(listener);
-//        txvNadegaEsquerdaMasculina.setOnClickListener(listener);
-//
-//        txvClavicularDireitoMasculinoCostas.setOnClickListener(listener);
-//        txvEscapularDireitoMasculino.setOnClickListener(listener);
-//        txvLombarDireitoMasculino.setOnClickListener(listener);
-//        txvIliacoDireitoMasculinoCostas.setOnClickListener(listener);
-//        txvNadegaDireitaMasculina.setOnClickListener(listener);
-//
-//        txvAnusMasculino.setOnClickListener(listener);
-//
-//
-//        txvClavicularEsquerdoFemininoCostas.setOnClickListener(listener);
-//        txvEscapularEsquerdoFeminino.setOnClickListener(listener);
-//        txvLombarEsquerdoFeminino.setOnClickListener(listener);
-//        txvIliacoEsquerdoFemininoCostas.setOnClickListener(listener);
-//        txvNadegaEsquerdaFeminina.setOnClickListener(listener);
-//
-//        txvClavicularDireitoFemininoCostas.setOnClickListener(listener);
-//        txvEscapularDireitoFeminino.setOnClickListener(listener);
-//        txvLombarDireitoFeminino.setOnClickListener(listener);
-//        txvIliacoDireitoFemininoCostas.setOnClickListener(listener);
-//        txvNadegaDireitaFeminina.setOnClickListener(listener);
-//
-//        txvAnusFeminino.setOnClickListener(listener);
-//
-//
-//        txvClavicularEsquerdoMasculinoFrente.setOnClickListener(listener);
-//        txvPeitoralEsquerdoMasculino.setOnClickListener(listener);
-//        txvHipocondrioEsquerdoMasculino.setOnClickListener(listener);
-//        txvFlancoEsquerdoMasculino.setOnClickListener(listener);
-//        txvIliacoEsquerdoMasculinoFrente.setOnClickListener(listener);
-//
-//        txvClavicularDireitoMasculinoFrente.setOnClickListener(listener);
-//        txvPeitoralDireitoMasculino.setOnClickListener(listener);
-//        txvHipocondrioDireitoMasculino.setOnClickListener(listener);
-//        txvFlancoDireitoMasculino.setOnClickListener(listener);
-//        txvIliacoDireitoMasculinoFrente.setOnClickListener(listener);
-//
-//        txvGenitalMasculino.setOnClickListener(listener);
-//
-//        txvClavicularEsquerdoFemininoFrente.setOnClickListener(listener);
-//        txvPeitoralEsquerdoFeminino.setOnClickListener(listener);
-//        txvHipocondrioEsquerdoFeminino.setOnClickListener(listener);
-//        txvFlancoEsquerdoFeminino.setOnClickListener(listener);
-//        txvIliacoEsquerdoFemininoFrente.setOnClickListener(listener);
-//
-//        txvClavicularDireitoFemininoFrente.setOnClickListener(listener);
-//        txvPeitoralDireitoFeminino.setOnClickListener(listener);
-//        txvHipocondrioDireitoFeminino.setOnClickListener(listener);
-//        txvFlancoDireitoFeminino.setOnClickListener(listener);
-//        txvIliacoDireitoFemininoFrente.setOnClickListener(listener);
-//
-//        txvGenitalFeminino.setOnClickListener(listener);
-//
     }
 
     public void addLesaoTorax(View view)

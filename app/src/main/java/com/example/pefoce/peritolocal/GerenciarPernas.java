@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import Dialogs.DesenhoThumbnailDialog;
 import Dialogs.LesaoDialog;
 import Enums.Genero;
 import Enums.Vida.LesoesEnabled;
@@ -58,6 +59,9 @@ public class GerenciarPernas extends AppCompatActivity
     EnvolvidoVida envolvidoVida;
 
     Button btnVoltar;
+    Button btnThumbnail;
+
+    Long ocorrenciaId;
 
     ArrayList<Lesao> lesoesList;
     List<LesaoEnvolvido> lesoesEnvolvidos;
@@ -74,7 +78,7 @@ public class GerenciarPernas extends AppCompatActivity
         setContentView(R.layout.activity_gerenciar_pernas);
         Intent it = getIntent();
 
-        //generoParam = it.getStringExtra("GeneroEnvolvido");
+        ocorrenciaId = it.getLongExtra("OcorrenciaId",0l);
 
         AssociarLayout();
         AssociarEventos();
@@ -146,9 +150,18 @@ public class GerenciarPernas extends AppCompatActivity
             {
                 Intent it = new Intent(GerenciarPernas.this,GerenciarCorpo.class);
                 it.putExtra("EnvolvidoId",envolvidoVida.getId());
-             //   it.putExtra("GeneroEnvolvido",generoParam);
+                it.putExtra("OcorrenciaId", ocorrenciaId);
                 startActivity(it);
                 finish();
+            }
+        });
+
+        btnThumbnail.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DesenhoThumbnailDialog.criarDialog(GerenciarPernas.this,envolvidoVida,ocorrenciaId);
             }
         });
     }
@@ -165,6 +178,7 @@ public class GerenciarPernas extends AppCompatActivity
     {
         btnVoltar = (Button) findViewById(R.id.btn_Voltar_pernas);
 
+        btnThumbnail = (Button) findViewById(R.id.btn_Thumbnail_Desenho_Pernas);
         txvNomeEnvolvido = (TextView) findViewById(R.id.txv_Nome_Envolvido_Lesoes);
 
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent" android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:id="@+id/row_rltv_Endereco"
-                android:background="@drawable/selector"
-    >
+    android:id="@+id/row_rltv_Endereco"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/selector"
+    android:padding="8dp">
 
 
     <TextView
@@ -12,26 +13,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="20dp"
-        />
+        android:textSize="20dp" />
 
 
     <TextView
         android:id="@+id/txv_row_Endereco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:layout_toRightOf="@id/txv_row_TipoVia"
         android:layout_marginLeft="4dp"
-        android:textSize="20dp"/>
+        android:layout_toRightOf="@id/txv_row_TipoVia"
+        android:text=""
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/txv_row_Bairro"
-        android:layout_alignLeft="@+id/txv_row_TipoVia"
-        android:layout_below="@id/txv_row_TipoVia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:text=""/>
+        android:layout_alignLeft="@+id/txv_row_TipoVia"
+        android:layout_below="@id/txv_row_TipoVia"
+        android:text=""
+        android:textSize="15dp" />
 
 </RelativeLayout>

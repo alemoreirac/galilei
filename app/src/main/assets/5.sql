@@ -1,0 +1,2 @@
+alter table VEICULO add UF_PLACA REAL;
+alter table VEICULO add MUNICIPIO_PLACA TEXT;

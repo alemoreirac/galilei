@@ -1,6 +1,7 @@
 package Dialogs;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pefoce.peritolocal.ManterPericiaTransito;
 import com.example.pefoce.peritolocal.R;
@@ -22,7 +24,9 @@ import com.example.pefoce.peritolocal.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import Enums.Transito.TipoEnvolvidoTransito;
 import Enums.Transito.TipoJustificativa_Inconclusao;
+import Enums.Vida.PresencaEnvolvido;
 import Fragments.FragmentsTransito.GerenciarColisoesTransito;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.EnvolvidoTransito;
@@ -31,6 +35,7 @@ import Model.Transito.OcorrenciaTransito;
 import Model.Transito.OcorrenciaTransitoVeiculo;
 import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
+import Util.ListUtil;
 
 /**
  * Created by Pefoce on 17/10/2017.
@@ -53,33 +58,35 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
     public Long veiculoId = 0l;
     public String tipoJustificativa_inconclusao;
     public boolean inconclusivo;
-
+    ArrayList<String> justificativas;
+    ArrayList<String> veiculosString;
+    ArrayList<String> envolvidosString;
+    Context ctx;
 
     public InconclusivoDialog()
     {
     }
 
-//    public static VestigioDialog newInstance(String title, String local)
-//    {
-//        VestigioDialog frag = new VestigioDialog();
-//
-//        Bundle args = new Bundle();
-//
-//        args.putString("Gravar Áudio", title);
-//        args.putString("Local", local);
-//
-//        frag.setArguments(args);
-//
-//        return frag;
-//    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.dialog_inconclusivo, container, false);
 
+        ctx = view.getContext();
+
         WindowManager.LayoutParams wmlp = getDialog().getWindow().getAttributes();
         wmlp.gravity = Gravity.CENTER;
+
+
+        return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
 
         Bundle bd = getArguments();
 
@@ -104,7 +111,10 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
         envolvidos = new ArrayList<EnvolvidoTransito>();
 
         for (OcorrenciaTransitoEnvolvido oe : ocorrenciaEnvolvidos)
-            envolvidos.add(oe.getEnvolvidoTransito());
+        {
+            if(oe.getEnvolvidoTransito().getPresencaEnvolvido()!=PresencaEnvolvido.PRESENTE)
+                envolvidos.add(oe.getEnvolvidoTransito());
+        }
 
         List<OcorrenciaTransitoVeiculo> ocorrenciaVeiculos = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString());
         veiculos = new ArrayList<Veiculo>();
@@ -115,18 +125,24 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
 
         activity = getActivity();
 
-        AssociarLayout(view);
+        AssociarLayout(getView());
         AssociarEventos();
 
-//        if (colisaoTransito.getJustificativaInconclusao() != null || colisaoTransito.getEnvolvidoEvadido() != null
-//                || colisaoTransito.getVeiculoEvadido() != null || colisaoTransito.getInconclusivo())
         if(inconclusivo || veiculoId!=0l || envolvidoId != 0l || tipoJustificativa_inconclusao!= null)
-            CarregarInconclusivo(view);
+            CarregarInconclusivo();
 
-        return view;
+        spnEvadido.setSelection(1);
     }
 
-    private void CarregarInconclusivo(View v)
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+
+    }
+
+    private void CarregarInconclusivo()
     {
         if (tipoJustificativa_inconclusao!= null)
         {
@@ -144,16 +160,35 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
         {
             if (veiculoId != null && veiculoId != 0l)
             {
-                spnEvadido.setAdapter(new ArrayAdapter<Veiculo>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, veiculos));
-                spnEvadido.setSelection(BuscadorEnum.PegarPosicaoVeiculo(veiculos,Veiculo.findById(Veiculo.class,envolvidoId)));
+                veiculosString= new ArrayList<>();
+                for(Veiculo v : veiculos)
+                    veiculosString.add(v.toString());
+
+                spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, veiculosString));
+//                spnEvadido.getAdapter().notify();
+//                spnEvadido.setSelection(BuscadorEnum.PegarPosicaoVeiculoString(veiculos,spnEvadido.getSelectedItem().toString()));
+                spnEvadido.setSelection(veiculosString.indexOf(Veiculo.findById(Veiculo.class,veiculoId).toString()));
             }
             if (colisaoTransito.getEnvolvidoEvadido() != null)
             {
-                spnEvadido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, envolvidos));
-                spnEvadido.setSelection(BuscadorEnum.PegarPosicaoEnvolvidoTransito(envolvidos, EnvolvidoTransito.findById(EnvolvidoTransito.class,envolvidoId)));
+                envolvidosString = new ArrayList<>();
+
+                for(EnvolvidoTransito et : envolvidos)
+                    envolvidosString.add(et.toString());
+
+                spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidosString));
+
+                spnEvadido.setSelection(envolvidosString.indexOf(EnvolvidoTransito.findById(EnvolvidoTransito.class,envolvidoId).toString()));
+
+//                spnEvadido.setSelection(envolvidosString.indexOf(spnEvadido.getSelectedItem().toString()));
+
+//                spnEvadido.setSelection(BuscadorEnum.PegarPosicaoEnvolvidoTransitoString(envolvidos,spnEvadido.getSelectedItem().toString()));
+
+//                spnEvadido.setSelection(envolvidos.indexOf(EnvolvidoTransito.findById(EnvolvidoTransito.class,envolvidoId)),false);
             }
-        } catch (Exception e)
+        }catch (Exception e)
         {
+            Toast.makeText(getContext(),"Envolvido indisponível",Toast.LENGTH_LONG);
             spnEvadido.setSelection(0);
         }
     }
@@ -180,23 +215,15 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
 
                 if (cxbInconclusivo.isChecked())
                 {
-//                    colisaoTransito.setInconclusivo(true);
-//                    colisaoTransito.setJustificativaInconclusao(BuscadorEnum.BuscarJustificativa(spnJustificativa.getSelectedItem().toString()));
 
                     bd.putString("justificativa", spnJustificativa.getSelectedItem().toString());
 
                     if (spnJustificativa.getSelectedItem().toString().equals(TipoJustificativa_Inconclusao.CONDUTOR_EVADIU.getValor()))
-//                        colisaoTransito.setVeiculoEvadido((Veiculo) spnEvadido.getSelectedItem());
                         bd.putLong("veiculo", ((Veiculo) spnEvadido.getSelectedItem()).getId());
 
                     if (spnJustificativa.getSelectedItem().toString().equals(TipoJustificativa_Inconclusao.ENVOLVIDO_EVADIU.getValor()))
-//                        colisaoTransito.setEnvolvidoEvadido((EnvolvidoTransito) spnEvadido.getSelectedItem());
                         bd.putLong("envolvido", ((EnvolvidoTransito) spnEvadido.getSelectedItem()).getId());
-
-//                    colisaoTransito.save();
-                    //colisaoTransito.set
                 }
-
 
                 ((GerenciarColisoesTransito) getTargetFragment()).DialogResult(bd);
 
@@ -213,6 +240,35 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                 {
                     txvJustificativa.setVisibility(View.VISIBLE);
                     spnJustificativa.setVisibility(View.VISIBLE);
+
+                    switch (spnJustificativa.getSelectedItem().toString())
+                    {
+                        case "Envolvido se evadiu":
+                            txvAtorEvadido.setText("Envolvido que evadiu: ");
+
+                            envolvidosString = new ArrayList<>();
+                            for(EnvolvidoTransito et : envolvidos)
+                                envolvidosString.add(et.toString());
+
+                            spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidosString));
+
+                            txvAtorEvadido.setVisibility(View.VISIBLE);
+                            spnEvadido.setVisibility(View.VISIBLE);
+                            break;
+                        case "Condutor se evadiu":
+                            txvAtorEvadido.setText("Condutor que evadiu: ");
+
+
+                            veiculosString= new ArrayList<>();
+                            for(Veiculo v : veiculos)
+                                veiculosString.add(v.toString());
+
+                            spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, veiculosString));
+
+                            txvAtorEvadido.setVisibility(View.VISIBLE);
+                            spnEvadido.setVisibility(View.VISIBLE);
+                            break;
+                    }
                 } else
                 {
                     spnEvadido.setVisibility(View.INVISIBLE);
@@ -223,7 +279,6 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
             }
         });
 
-
         spnJustificativa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -233,14 +288,26 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                 {
                     case "Envolvido se evadiu":
                         txvAtorEvadido.setText("Envolvido que evadiu: ");
-                        spnEvadido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(view.getContext(), R.layout.support_simple_spinner_dropdown_item, envolvidos));
+
+
+                        envolvidosString = new ArrayList<>();
+                        for(EnvolvidoTransito et : envolvidos)
+                            envolvidosString.add(et.toString());
+
+
+                        spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidosString));
 
                         txvAtorEvadido.setVisibility(View.VISIBLE);
                         spnEvadido.setVisibility(View.VISIBLE);
                         break;
                     case "Condutor se evadiu":
                         txvAtorEvadido.setText("Condutor que evadiu: ");
-                        spnEvadido.setAdapter(new ArrayAdapter<Veiculo>(view.getContext(), R.layout.support_simple_spinner_dropdown_item, veiculos));
+
+                        veiculosString = new ArrayList<>();
+                        for(Veiculo v : veiculos)
+                            veiculosString.add(v.toString());
+
+                        spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, veiculosString));
 
                         txvAtorEvadido.setVisibility(View.VISIBLE);
                         spnEvadido.setVisibility(View.VISIBLE);
@@ -254,21 +321,8 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
 
             @Override
             public void onNothingSelected(AdapterView<?> parent)
-            {
-
-            }
+            {}
         });
-
-
-    }
-
-
-    private void sendResult(boolean resultado)
-    {
-        Intent intent = new Intent();
-        intent.putExtra("Inconclusivo", resultado);
-        getTargetFragment().onActivityResult(
-                getTargetRequestCode(), 1, intent);
     }
 
     private void AssociarLayout(View view)
@@ -281,19 +335,16 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
         txvAtorEvadido = (TextView) view.findViewById(R.id.txv_dialog_Evadido);
         txvJustificativa = (TextView) view.findViewById(R.id.txv_dialog_Justificativa);
 
-        ArrayList<String> justificativas = new ArrayList<>();
-
+        justificativas = new ArrayList<>();
 
         for (TipoJustificativa_Inconclusao tji : TipoJustificativa_Inconclusao.values())
             justificativas.add(tji.getValor());
 
         //Caso não seja um atropelamento, é removida a opção de um envolvido se evadir.
-        if (semEvasores || spnEvadido.getCount() == 0)
-            justificativas.remove(justificativas.size() - 1);
-
+        if (semEvasores || envolvidos.size() == 0)
+            justificativas.remove(TipoJustificativa_Inconclusao.ENVOLVIDO_EVADIU.getValor());
 
         spnJustificativa.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_dropdown_item, justificativas));
 
     }
-
 }

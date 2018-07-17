@@ -1,5 +1,6 @@
 package com.example.pefoce.peritolocal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import Dialogs.DesenhoThumbnailDialog;
 import Dialogs.LesaoDialog;
 import Enums.Genero;
 import Enums.SecaoImagem;
@@ -40,6 +42,7 @@ public class GerenciarCabeca extends AppCompatActivity
     RelativeLayout rltvFemininoDireito;
 
     Button btnVoltar;
+    Button btnThumbnail;
 
     TextView txvNomeEnvolvido;
 
@@ -98,7 +101,6 @@ public class GerenciarCabeca extends AppCompatActivity
 
     String generoParam;
 
-
     SegmentedGroup sgmtEsquerdaDireita;
     RadioButton rbtnEsquerda;
     RadioButton rbtnDireita;
@@ -112,7 +114,6 @@ public class GerenciarCabeca extends AppCompatActivity
 
         AssociarLayout();
         AssociarEventos();
-
 
         //generoParam = it.getStringExtra("GeneroEnvolvido");
         try
@@ -199,6 +200,16 @@ public class GerenciarCabeca extends AppCompatActivity
             }
         });
 
+        btnThumbnail.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DesenhoThumbnailDialog.criarDialog(GerenciarCabeca.this,envolvidoVida, ocorrenciaVidaId);
+            }
+        });
+
+
 
         btnVoltar.setOnClickListener(new View.OnClickListener()
         {
@@ -217,6 +228,7 @@ public class GerenciarCabeca extends AppCompatActivity
                 {
                     Intent it = new Intent(GerenciarCabeca.this, GerenciarCorpo.class);
                     it.putExtra("EnvolvidoId", envolvidoVida.getId());
+                    it.putExtra("OcorrenciaId",ocorrenciaVidaId);
                     startActivity(it);
                     finish();
                 }
@@ -257,20 +269,19 @@ public class GerenciarCabeca extends AppCompatActivity
 
     }
 
-
     public void addLesaoCabeca(View view)
     {
         TextView txvView = (TextView) view;
 
 //        LesaoDialog lesaoDialog = new LesaoDialog(GerenciarCabeca.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()));
         LesaoDialog.show(GerenciarCabeca.this, envolvidoVida, BuscadorEnum.BuscarSecao(txvView.getText().toString()), LesoesEnabled.ANTERIOR);
-
     }
 
 
     public void AssociarLayout()
     {
         btnVoltar = (Button) findViewById(R.id.btn_Voltar_Cabeca);
+        btnThumbnail = (Button) findViewById(R.id.btn_Thumbnail_Desenho_Cabeca);
 
         txvNomeEnvolvido = (TextView) findViewById(R.id.txv_Nome_Envolvido_Lesoes);
 

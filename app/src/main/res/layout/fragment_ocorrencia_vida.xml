@@ -2,11 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+
     tools:context="Fragments.Fragments.FragmentsVida.GerenciarOcorrenciaVida">
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:padding="8dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -22,6 +23,7 @@
             android:layout_alignLeft="@+id/txv_Incidencia_Vida"
             android:layout_below="@id/txv_Incidencia_Vida"
             android:inputType="text"
+            android:imeOptions="actionNext"
             android:maxLength="12"
             android:maxLines="1" />
 
@@ -57,6 +59,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/txv_NumDocVida"
+            android:imeOptions="actionNext"
             android:layout_below="@id/txv_NumDocVida"
             android:inputType="text"
             android:maxLines="1" />
@@ -90,6 +93,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/txv_Autoridade_Comandante_Vida"
+            android:imeOptions="actionNext"
             android:layout_below="@id/txv_Autoridade_Comandante_Vida"
             android:inputType="text"
             android:maxLines="1" />
@@ -100,16 +104,28 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/txv_Autoridade_Comandante_Vida"
             android:layout_toRightOf="@id/edt_Autoridade_Comandante_Vida"
-            android:text="Placa Viatura" />
+            android:layout_marginLeft="10dp"
+            android:text="Placa/Prefixo Viatura" />
 
         <EditText
             android:id="@+id/edt_Placa_Viatura_Vida"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
             android:layout_alignLeft="@id/txv_Placa_Viatura_Vida"
             android:layout_below="@id/txv_Placa_Viatura_Vida"
             android:inputType="text"
             android:maxLines="1" />
+
+        <CheckBox
+            android:id="@+id/cxb_Sem_Autoridade_Vida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sem autoridade presente"
+            android:layout_below="@id/txv_Placa_Viatura_Vida"
+            android:layout_toRightOf="@id/edt_Placa_Viatura_Vida"
+            android:layout_marginLeft="15dp"
+            />
 
         <TextView
             android:id="@+id/txv_Data_Hora_Chamado_Vida"
@@ -218,10 +234,11 @@
 
         <AutoCompleteTextView
             android:id="@+id/auc_Orgao_Origem_Vida"
-            android:layout_width="400dp"
+            android:layout_width="515dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/txv_Orgao_Origem_Vida"
             android:layout_below="@+id/txv_Orgao_Origem_Vida"
+            android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
             android:layout_marginTop="6dp" />
@@ -237,9 +254,10 @@
 
         <AutoCompleteTextView
             android:id="@+id/auc_Orgao_Destino_Vida"
-            android:layout_width="400dp"
+            android:layout_width="515dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/txv_Orgao_Origem_Vida"
+            android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
             android:layout_below="@+id/txv_Orgao_Destino_Vida"
@@ -251,7 +269,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/txv_Orgao_Destino_Vida"
-            android:layout_toRightOf="@id/auc_Orgao_Origem_Vida"
+            android:layout_alignLeft="@id/txv_Placa_Viatura_Vida"
             android:text="Bairro (Delegacia de destino)" />
 
         <AutoCompleteTextView
@@ -259,6 +277,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:imeOptions="actionNext"
             android:maxLines="1"
             android:layout_alignBottom="@id/auc_Orgao_Destino_Vida"
             android:layout_alignLeft="@id/txv_Bairro_Delegacia_Vida" />
@@ -290,7 +309,7 @@
 
         <EditText
             android:id="@+id/edt_Delegado_Vida"
-            android:layout_width="400dp"
+            android:layout_width="515dp"
             android:inputType="text"
             android:maxLines="1"
             android:imeOptions="actionDone"

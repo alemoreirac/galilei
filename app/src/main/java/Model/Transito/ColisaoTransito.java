@@ -37,6 +37,8 @@ public class ColisaoTransito extends SugarRecord
     @Expose
     boolean isVeiculo2ContraMao;
     @Expose
+    int ordemAcontecimento;
+    @Expose
     int veiculo1_Faixa;
     @Expose
     int veiculo2_Faixa;
@@ -158,6 +160,8 @@ public class ColisaoTransito extends SugarRecord
         this.animalPosicao = null;
         this.Inconclusivo = false;
 
+        this.ordemAcontecimento = 0;
+
     }
 
     public ColisaoTransito()
@@ -165,6 +169,15 @@ public class ColisaoTransito extends SugarRecord
         setTipoInteracao(TipoInteracao.ADERNAMENTO);
     }
 
+    public int getOrdemAcontecimento()
+    {
+        return ordemAcontecimento;
+    }
+
+    public void setOrdemAcontecimento(int ordemAcontecimento)
+    {
+        this.ordemAcontecimento = ordemAcontecimento;
+    }
 
     public Veiculo getVeiculo1()
     {

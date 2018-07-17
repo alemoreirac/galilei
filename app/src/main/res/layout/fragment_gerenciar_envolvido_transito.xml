@@ -19,8 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lstv_Envolvidos"
-            android:choiceMode="singleChoice"
-            >
+            android:choiceMode="singleChoice">
 
         </ListView>
 
@@ -109,7 +108,7 @@
         android:layout_height="3dp"
         android:layout_width="match_parent"
         android:background="@color/colorAccent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:alpha="0.2"
         android:layout_below="@id/spn_TipoDocumentoEnvolvido">
     </View>
@@ -135,22 +134,71 @@
         android:id="@+id/txv_DataNascimento_Envolvido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/txv_NumDocEnvolvido"
+        android:layout_toRightOf="@+id/edt_NumDocEnvolvido"
         android:layout_alignBottom="@+id/txv_NumDocEnvolvido"
         android:text="@string/data_nascimento"
-        android:layout_marginLeft="150dp"/>
+        android:layout_marginLeft="30dp"/>
 
-    <TextView
-        android:id="@+id/txv_DataNascimento_Envolvido_Valor"
+    <!--<TextView-->
+        <!--android:id="@+id/txv_DataNascimento_Envolvido_Valor"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="20dp"-->
+        <!--android:layout_alignLeft="@id/txv_DataNascimento_Envolvido"-->
+        <!--android:layout_below="@id/txv_DataNascimento_Envolvido"-->
+        <!--android:clickable="true"-->
+        <!--android:text="00/00/0000"-->
+        <!--android:layout_marginTop="6dp"-->
+        <!--android:textStyle="bold"/>-->
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
         android:layout_alignLeft="@id/txv_DataNascimento_Envolvido"
-        android:layout_below="@id/txv_DataNascimento_Envolvido"
-        android:clickable="true"
-        android:text="00/00/0000"
+        android:layout_alignBottom="@id/edt_NumDocEnvolvido"
         android:layout_marginTop="6dp"
-        android:textStyle="bold"/>
+        android:id="@+id/ll_Data_Nascimento_Envolvido_Transito">
+
+
+        <EditText
+            android:id="@+id/edt_Dia_Nascimento_Envolvido_Transito"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:hint="01"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textAlignment="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"/>
+
+        <EditText
+            android:id="@+id/edt_Mes_Nascimento_Envolvido_Transito"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:hint="01"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"/>
+
+        <EditText
+            android:id="@+id/edt_Ano_Nascimento_Envolvido_Transito"
+            android:layout_width="60dp"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:hint="1990"
+            android:inputType="number"
+            android:maxLength="4" />
+
+    </LinearLayout>
 
 
     <TextView
@@ -166,6 +214,21 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/txv_Lesao"
+        android:layout_alignBottom="@id/spn_EnvolvidoGenero"/>
+
+    <TextView
+        android:id="@+id/txv_Presenca"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txv_DataNascimento_Envolvido"
+        android:layout_alignBottom="@+id/txv_EnvolvidoGenero"
+        android:text="Presença"/>
+
+    <Spinner
+        android:id="@+id/spn_Presenca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txv_Presenca"
         android:layout_alignBottom="@id/spn_EnvolvidoGenero"/>
 
 

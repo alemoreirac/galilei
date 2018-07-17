@@ -5,7 +5,16 @@ package Enums;
  */
 public enum Orgao
 {
-    AM("Autarquia Municipal"), PRF("Polícia Rodoviária Federal"), PRE("Polícia Rodoviária Estadual"),PM("Polícia Militar"),GM("Guarda Municipal");
+    NP("Sem autoridade presente"),
+    AM("Autarquia Municipal"),
+    BO("Bombeiros"),
+    DEM("DEMUTRAN"),
+    PC("Polícia Civil"),
+    PF("Polícia Federal"),
+    PRF("Polícia Rodoviária Federal"),
+    PRE("Polícia Rodoviária Estadual"),
+    PM("Polícia Militar"),
+    GM("Guarda Municipal");
 
     String valor;
 

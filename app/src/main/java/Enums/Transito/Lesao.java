@@ -4,20 +4,21 @@ package Enums.Transito;
  * Created by Pefoce on 11/08/2017.
  */
 
-public enum Lesao {
+public enum Lesao
+{
 
-     LEVE("Leve")
-    ,GRAVE("Grave")
-    ,FATAL("Fatal");
+    ILESO("Sem lesões"), LEVE("Leve"), GRAVE("Grave"), FATAL("Fatal");
 
     String valor;
 
-    public String getValor() {
+    public String getValor()
+    {
         return valor;
     }
 
 
-    Lesao(String s) {
+    Lesao(String s)
+    {
         this.valor = s;
     }
 }

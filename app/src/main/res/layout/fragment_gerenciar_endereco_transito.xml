@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
     xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
@@ -77,6 +78,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/spn_TipoVia"
+                android:imeOptions="actionNext"
                 android:inputType="textCapWords"
                 android:maxLines="1" />
 
@@ -94,7 +96,10 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/edt_Endereco"
-                android:layout_alignLeft="@id/txv_Complemento_End_Transito" />
+                android:layout_alignLeft="@id/txv_Complemento_End_Transito"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/txv_Cidade"
@@ -110,7 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/txv_Cidade"
                 android:layout_below="@id/txv_Cidade"
-                android:inputType="textCapWords"
+                android:imeOptions="actionNext"
+                android:inputType="text"
                 android:maxLines="1" />
 
             <TextView
@@ -127,15 +133,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/auc_Cidade"
                 android:layout_alignLeft="@+id/txv_Bairro"
-                android:inputType="textCapWords"
+                android:imeOptions="actionDone"
+                android:inputType="text"
                 android:maxLines="1" />
 
             <ImageButton
                 android:id="@+id/imgb_Coordenadas_Transito"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_toRightOf="@id/auc_Bairro"
                 android:layout_below="@id/edt_Endereco"
+                android:layout_toRightOf="@id/auc_Bairro"
 
                 android:background="@drawable/pin_icon"
                 android:scaleType="centerCrop" />
@@ -148,44 +155,49 @@
                 android:layout_alignTop="@id/imgb_Coordenadas_Transito"
                 android:visibility="invisible" />
 
-            <EditText
-                android:id="@+id/edt_latitude"
-                android:layout_width="180dp"
+
+            <br.com.sapereaude.maskedEditText.MaskedEditText
+                android:id="@+id/medt_Latitude_Transito"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/auc_Bairro"
                 android:layout_toRightOf="@id/imgb_Coordenadas_Transito"
-                android:digits="0123456789'*-ºSW,"
+                android:hint="300000000"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:typeface="normal"
+                mask:allowed_chars="1234567890"
+                mask:mask="#º##'#,#####&quot;S" />
 
-                android:hint="@string/latitude"
-                android:inputType="text"
-                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/txv_Coordenadas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/edt_latitude"
+                android:layout_alignLeft="@id/medt_Latitude_Transito"
                 android:layout_alignTop="@id/imgb_Coordenadas_Transito"
                 android:text="Coordenadas" />
 
-            <EditText
-                android:id="@+id/edt_longitude"
-                android:layout_width="180dp"
+            <br.com.sapereaude.maskedEditText.MaskedEditText
+                android:id="@+id/medt_Longitude_Transito"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/auc_Bairro"
-                android:layout_toRightOf="@id/edt_latitude"
-                android:digits="0123456789'*-ºSW,"
-                android:hint="@string/longitude"
+                android:layout_alignRight="@id/edt_Complemento_End_Transito"
+                android:hint="3800000000"
                 android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLines="1"/>
+                android:textAlignment="center"
+                android:typeface="normal"
+                mask:allowed_chars="1234567890"
 
+                mask:mask="##º##'#,#####&quot;W" />
 
             <TextView
                 android:id="@+id/txv_Semaforo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/edt_longitude"
+                android:layout_below="@id/medt_Longitude_Transito"
                 android:layout_marginTop="35dp"
                 android:text="@string/semaforo" />
 
@@ -201,7 +213,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/spn_Semaforo"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="60dp"
                 android:layout_toRightOf="@id/spn_Semaforo" />
 
             <TextView
@@ -237,7 +249,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/spn_Iluminacao"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="60dp"
                 android:layout_toRightOf="@id/spn_Pavimentacao" />
 
             <TextView
@@ -253,8 +265,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/spn_Iluminacao"
-                android:layout_marginLeft="40dp"
-                android:layout_toRightOf="@id/spn_Iluminacao" />
+                android:layout_alignLeft="@id/spn_Pavimentacao" />
 
             <TextView
                 android:id="@+id/txv_SinalPare"
@@ -316,8 +327,7 @@
                 android:layout_width="140dp"
                 android:layout_height="40dp"
                 android:layout_alignBottom="@id/cxb_ViaComposta"
-                android:layout_marginLeft="55dp"
-                android:layout_toRightOf="@id/cxb_ViaComposta"
+                android:layout_alignLeft="@id/spn_Pavimentacao"
                 numberpicker:custom_layout="@layout/number_picker_layout"
                 numberpicker:focusable="false"
                 numberpicker:max="5"
@@ -340,8 +350,7 @@
                 android:layout_width="140dp"
                 android:layout_height="40dp"
                 android:layout_alignBottom="@id/cxb_ViaComposta"
-                android:layout_marginLeft="25dp"
-                android:layout_toRightOf="@id/npck_Faixas"
+                android:layout_alignLeft="@id/spn_CondicaoVia"
                 numberpicker:custom_layout="@layout/number_picker_layout"
                 numberpicker:focusable="false"
                 numberpicker:max="5"
@@ -438,15 +447,14 @@
                 android:layout_toRightOf="@id/cxb_Preferencial"
                 android:hint="@string/curva" />
 
-
             <CheckBox
-                android:id="@+id/cxb_Humidade"
+                android:id="@+id/cxb_Umidade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/cxb_Preferencial"
                 android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@id/cxb_Tracado"
-                android:hint="@string/humidade_via" />
+                android:hint="Pista molhada" />
 
             <CheckBox
                 android:id="@+id/cxb_MaoDupla"
@@ -454,8 +462,18 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/cxb_Preferencial"
                 android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@id/cxb_Humidade"
+                android:layout_toRightOf="@id/cxb_Umidade"
                 android:hint="Mão Dupla" />
+
+
+            <CheckBox
+                android:id="@+id/cxb_MeioFio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/cxb_Preferencial"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/cxb_MaoDupla"
+                android:hint="Meio Fio" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_Foto_Endereco"
@@ -464,7 +482,7 @@
                 android:layout_alignBottom="@id/cxb_MaoDupla"
                 android:layout_gravity="bottom|end"
                 android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@+id/cxb_MaoDupla"
+                android:layout_toRightOf="@+id/cxb_MeioFio"
                 android:src="@drawable/camera_white" />
 
         </RelativeLayout>

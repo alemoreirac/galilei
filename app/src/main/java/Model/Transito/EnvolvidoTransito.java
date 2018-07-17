@@ -11,6 +11,7 @@ import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.Transito.Lesao;
 import Enums.Transito.TipoEnvolvidoTransito;
+import Enums.Vida.PresencaEnvolvido;
 import Util.TempoUtil;
 
 
@@ -28,6 +29,8 @@ public class EnvolvidoTransito extends SugarRecord
     String documentoValor;
     @Expose
     TipoEnvolvidoTransito tipoEnvolvido;
+    @Expose
+    PresencaEnvolvido presencaEnvolvido;
     @Expose
     Date nascimento;
     @Expose
@@ -179,7 +182,17 @@ public class EnvolvidoTransito extends SugarRecord
         return "";
     }
 
-//    public String toStringDoc()
+    public PresencaEnvolvido getPresencaEnvolvido()
+    {
+        return presencaEnvolvido;
+    }
+
+    public void setPresencaEnvolvido(PresencaEnvolvido presencaEnvolvido)
+    {
+        this.presencaEnvolvido = presencaEnvolvido;
+    }
+
+    //    public String toStringDoc()
 //    {
 //        if(this.lesao.equals(Lesao.FATAL))
 //            return this.nome + " " + this.documentoTipo.getValor() + " " + this.documentoValor + " "+"Vítima Fatal";

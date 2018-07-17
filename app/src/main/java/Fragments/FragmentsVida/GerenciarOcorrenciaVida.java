@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import Model.Vida.EnderecoVida;
 import Model.Vida.OcorrenciaVida;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
+import Util.StringUtil;
 import Util.TempoUtil;
 
 
@@ -62,7 +64,11 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
     Spinner spnTipoDocumentoVida;
     Spinner spnAIS;
 
+    CheckBox cxbSemAutoridade;
+
     View mView;
+
+    ArrayList<String> autoridadePresente;
 
     public GerenciarOcorrenciaVida()
     {
@@ -223,11 +229,11 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 
                 try
                 {
-                    EnderecoVida ev = EnderecoVida.find(EnderecoVida.class,"ocorrencia_id = ?",ocorrenciaVida.getId().toString()).get(0);
+                    EnderecoVida ev = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
                     CarregarBairro(ev.getBairro());
                     aucBairro.setText(ev.getBairro());
 
-                }catch (Exception e)
+                } catch (Exception e)
                 {
                     aucBairro.setText("");
                 }
@@ -281,18 +287,42 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
             }
         });
 
+        cxbSemAutoridade.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (cxbSemAutoridade.isChecked())
+                {
+                    edtComandante.setText("(Sem autoridade presente)");
+                    edtComandante.setEnabled(false);
+                    edtViatura.setText("-");
+                    edtViatura.setEnabled(false);
+
+                    spnAutoridadePresente.setSelection(BuscadorEnum.getIndex(spnAutoridadePresente, Orgao.NP.getValor()));
+                    spnAutoridadePresente.setEnabled(false);
+
+                    autoridadePresente.add(0, Orgao.NP.getValor());
+                    spnAutoridadePresente.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, autoridadePresente));
+                    spnAutoridadePresente.setSelection(0);
+                } else
+                {
+                    edtComandante.setText("");
+                    edtComandante.setEnabled(true);
+                    edtViatura.setText("");
+                    edtViatura.setEnabled(true);
+
+                    spnAutoridadePresente.setEnabled(true);
+                    autoridadePresente.remove(Orgao.NP.getValor());
+                    spnAutoridadePresente.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, autoridadePresente));
+                    spnAutoridadePresente.setSelection(0);
+                }
+            }
+        });
     }
 
     public void PovoarSpinners(Context ctx)
     {
-
-//        ArrayList<String> tipoOCorrenciaVida = new ArrayList<>();
-//
-//        for (TipoMorte tov : TipoMorte.values())
-//            tipoOCorrenciaVida.add(tov.getValor());
-
-//        spnTipoOcorrenciaVida.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, tipoOCorrenciaVida));
-
         ArrayList<String> preservacaoLocal = new ArrayList<>();
 
         for (PreservacaoLocal pl : PreservacaoLocal.values())
@@ -307,10 +337,15 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 
         spnTipoDocumentoVida.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, tiposDocumentoVida));
 
-        ArrayList<String> autoridadePresente = new ArrayList<>();
+        autoridadePresente = new ArrayList<>();
 
         for (Orgao orgao : Orgao.values())
+        {
             autoridadePresente.add(orgao.getValor());
+        }
+
+        //Remove esta opção e apenas a insere no
+        autoridadePresente.remove(Orgao.NP.getValor());
 
         spnAutoridadePresente.setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_dropdown_item, autoridadePresente));
 
@@ -336,6 +371,8 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         spnTipoDocumentoVida = (Spinner) view.findViewById(R.id.spn_TipoDocumentoOcorrenciaVida);
 //        spnTipoOcorrenciaVida = (Spinner) view.findViewById(R.id.spn_Tipo_Ocorrencia_Vida);
         spnAIS = (Spinner) view.findViewById(R.id.spn_AIS_Vida);
+
+        cxbSemAutoridade = (CheckBox) view.findViewById(R.id.cxb_Sem_Autoridade_Vida);
 
         aucBairro = (AutoCompleteTextView) view.findViewById(R.id.auc_Bairro_Delegacia_Vida);
         aucOrgaoDestino = (AutoCompleteTextView) view.findViewById(R.id.auc_Orgao_Destino_Vida);
@@ -363,12 +400,12 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
             }
         });
 
-        edtNumIncidencia.setNextFocusRightId(edtNumDocVida.getId());
-        edtNumDocVida.setNextFocusRightId(edtComandante.getId());
-        edtComandante.setNextFocusRightId(edtViatura.getId());
-        aucOrgaoOrigem.setNextFocusRightId(aucOrgaoDestino.getId());
-        aucOrgaoDestino.setNextFocusRightId(edtDelegado.getId());
-        aucBairro.setNextFocusRightId(aucOrgaoDestino.getId());
+        edtNumIncidencia.setNextFocusForwardId(edtNumDocVida.getId());
+        edtNumDocVida.setNextFocusForwardId(edtComandante.getId());
+        edtComandante.setNextFocusForwardId(edtViatura.getId());
+        aucOrgaoOrigem.setNextFocusForwardId(aucOrgaoDestino.getId());
+        aucOrgaoDestino.setNextFocusForwardId(edtDelegado.getId());
+        aucBairro.setNextFocusForwardId(aucOrgaoDestino.getId());
     }
 
     public void CarregarBairro(String bairro)
@@ -397,16 +434,28 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
         if (ocorrenciaVida.getDelegado() != null)
             edtDelegado.setText(ocorrenciaVida.getDelegado());
 
-        edtComandante.setText(ocorrenciaVida.getComandante());
 
         edtNumDocVida.setText(ocorrenciaVida.getDocumento().getValor());
 
         edtNumIncidencia.setText(ocorrenciaVida.getNumIncidencia());
 
-        edtViatura.setText(ocorrenciaVida.getViatura());
+        if (StringUtil.isNotNullAndEmpty(ocorrenciaVida.getComandante()) &&
+                ocorrenciaVida.getComandante().equals("(Sem autoridade presente)"))
+        {
+            cxbSemAutoridade.setChecked(false);
+            cxbSemAutoridade.performClick();
+        } else
+        {
+            edtComandante.setText(ocorrenciaVida.getComandante());
 
-        if (ocorrenciaVida.getAutoridadePresente() != null)
-            spnAutoridadePresente.setSelection(BuscadorEnum.getIndex(spnAutoridadePresente, ocorrenciaVida.getAutoridadePresente().getValor()));
+            if (ocorrenciaVida.getViatura() != null && ocorrenciaVida.getViatura().length() >= 8)
+                edtViatura.setText(ocorrenciaVida.getViatura());
+
+
+            if (ocorrenciaVida.getAutoridadePresente() != null)
+                spnAutoridadePresente.setSelection(BuscadorEnum.getIndex(spnAutoridadePresente, ocorrenciaVida.getAutoridadePresente().getValor()));
+        }
+
 
         if (ocorrenciaVida.getAis() != null)
             spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, ocorrenciaVida.getAis().getValor()));

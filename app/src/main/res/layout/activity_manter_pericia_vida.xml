@@ -7,7 +7,8 @@
     android:id="@+id/rltv_Pericia_Vida"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.pefoce.peritolocal.ManterPericiaVida">
+    tools:context="com.example.pefoce.peritolocal.ManterPericiaVida"
+    >
 
 
     <android.support.design.widget.AppBarLayout
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:textColor="@color/ms_white"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="30dp"
                 android:text="Teste"/>
 
         </android.support.v7.widget.Toolbar>
@@ -49,9 +50,6 @@
         android:layout_below="@+id/toolbar_vida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         app:ms_backButtonText="Anterior"
         app:ms_nextButtonText="Próximo"
         app:ms_completeButtonText="Finalizar"

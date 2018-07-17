@@ -413,10 +413,6 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
             {
                 AlertDialog.Builder builder;
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Dialog_Alert);
-
-                else
                     builder = new AlertDialog.Builder(getActivity());
 
                 builder.setTitle("Deletar Envolvido")
@@ -462,6 +458,9 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
             @Override
             public void onClick(View v)
             {
+                if(vestigioVida != null)
+                    SalvarVestigio();
+
                 vestigioVida = new VestigioVida();
 
                 vestigioVida.save();
@@ -527,11 +526,15 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
 
                     if (vestigioVida.getObservacao() != null)
                         edtObservacoesVestigioBiologico.setText(vestigioVida.getObservacao());
+
                     break;
 
                 case MUNICAO:
                     if (vestigioVida.getCalibreMunicao() != null)
                         spnCalibreMunicao.setSelection(BuscadorEnum.getIndex(spnCalibreMunicao, vestigioVida.getCalibreMunicao().getValor()));
+
+                    if(vestigioVida.getTipoMunicao()!=null)
+                        spnTipoMunicao.setSelection(BuscadorEnum.getIndex(spnTipoMunicao,vestigioVida.getTipoMunicao().getValor()));
 
                     if (vestigioVida.getObservacao() != null)
                         edtOBservacoesMunicao.setText(vestigioVida.getObservacao());
@@ -585,7 +588,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
             case MUNICAO:
                 vestigioVida.setCalibreMunicao(BuscadorEnum.BuscarCalibre(spnCalibreMunicao.getSelectedItem().toString()));
                 vestigioVida.setTipoMunicao(BuscadorEnum.BuscarTipoMunicao(spnTipoMunicao.getSelectedItem().toString()));
-                vestigioVida.setObservacao(edtOBservacoesArma.getText().toString());
+                vestigioVida.setObservacao(edtOBservacoesMunicao.getText().toString());
                 vestigioVida.setCondicaoMunicao(cxbMunicaoBoaCondicao.isChecked());
                 try
                 {

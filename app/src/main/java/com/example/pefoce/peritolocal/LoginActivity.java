@@ -1,11 +1,11 @@
 package com.example.pefoce.peritolocal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,38 +15,38 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import Dialogs.InconclusivoDialog;
-import Enums.Genero;
-import Enums.Vida.Secao;
 import Model.Pessoa;
-import Model.Vida.EnvolvidoVida;
-import Model.Vida.Lesao;
-import Model.Vida.LesaoEnvolvido;
+import Model.Vida.EnderecoVida;
+import Model.Vida.OcorrenciaEnvolvidoVida;
 import Util.AutoCompleteUtil;
-import Util.BusinessOcorrencia;
+import Util.CryptUtil;
 import Util.Initializer;
 
 import com.crashlytics.android.Crashlytics;
-import com.orm.query.Select;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import Util.SecaoDrawableUtil;
+import Util.StringUtil;
 import io.fabric.sdk.android.Fabric;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-import static Util.ImageUtil.Overlay;
+/**
+ *
+ */
 
 public class LoginActivity extends AppCompatActivity
 {
-
     SharedPreferences sharedpreferences;
     AutoCompleteTextView aucLogin;
     EditText edtSenha;
     Button btnLogin;
-
+    TextView txvVersao;
 
     public static final String Preferencias = "Minhas_Preferencias";
     public static final String PrimeiroUso = "Primeiro_Uso";
@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
 
-
         sharedpreferences = getSharedPreferences(Preferencias, Context.MODE_PRIVATE);
 
         if (sharedpreferences.getBoolean(PrimeiroUso, true))
@@ -67,16 +66,12 @@ public class LoginActivity extends AppCompatActivity
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putBoolean(PrimeiroUso, false);
             editor.commit();
-            Toast.makeText(LoginActivity.this, "Thanks", Toast.LENGTH_LONG).show();
         }
 
         logUser();
         AssociarLayout();
 
-
-// Verifica se é a primeira utilização do usuário, para inicializar o banco de dados de usuários pre-cadastrados
-
-
+        //Verifica se é a primeira utilização do usuário, para inicializar o banco de dados de usuários pre-cadastrados
         btnLogin.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -118,6 +113,8 @@ public class LoginActivity extends AppCompatActivity
 
         btnLogin = (Button) findViewById(R.id.btn_login);
 
+        txvVersao = (TextView) findViewById(R.id.txv_Versao);
+
         aucLogin.setAdapter(AutoCompleteUtil.getEmails(this));
 
         aucLogin.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -143,6 +140,8 @@ public class LoginActivity extends AppCompatActivity
                 return false;
             }
         });
+
+        txvVersao.setText(BuildConfig.VERSION_NAME);
     }
 
     private void logUser()
@@ -153,9 +152,64 @@ public class LoginActivity extends AppCompatActivity
     }
 
     public void onBackPressed()
+    {}
+
+
+    /**
+     *
+     */
+    public void checarVersao()
     {
 
+        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, String> asyncTask2 = new AsyncTask<Void, Void, String>()
+        {
+
+
+            @Override
+            protected String doInBackground(Void... params)
+            {
+                try
+                {
+//                    EnderecoVida enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
+
+                    String android_id = Settings.Secure.getString(getContentResolver(),
+                            Settings.Secure.ANDROID_ID);
+
+
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody requestBody = new FormBody.Builder().build();
+
+                    Request request = new Request.Builder()
+                            .addHeader("senha", CryptUtil.MD5_Hash("123456"))
+                            .url("http://189.90.160.48:7070/galileiWebService/cliente/formOcorrencia")
+                            .post(requestBody)
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+
+
+                    return response.body().string();
+
+                } catch (Exception e)
+                {
+                    return e.toString();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String s)
+            {
+                super.onPostExecute(s);
+                if (s != null)
+                {
+//                    txvVersao.
+                    //todo: atualizar as cidades, delegacias e usuários
+                }
+            }
+        };
+
+        asyncTask2.execute();
+
+
     }
-
-
 }

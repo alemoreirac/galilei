@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.PictureDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -24,51 +25,6 @@ import Model.Vida.LesaoEnvolvido;
 public class ImageUtil
 {
 
-//    public static byte[] getByteFromString(String s)
-//    {
-//        String[] byteValues = s.substring(1, s.length() - 1).split(",");
-//        byte[] bytes = new byte[byteValues.length];
-//
-//        for (int i = 0, len = bytes.length; i < len; i++)
-//        {
-//            bytes[i] = Byte.parseByte(byteValues[i].trim());
-//        }
-//        return bytes;
-//    }
-//
-//
-//    public static byte[] GetByteFromBitmap(Bitmap bmp)
-//    {
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//        return stream.toByteArray();
-//    }
-//
-//    public static Bitmap convertByteArrayToBitmap(byte[] byteArrayToBeCOnvertedIntoBitMap)
-//    {
-//        Bitmap bitMapImage = BitmapFactory.decodeByteArray(
-//                byteArrayToBeCOnvertedIntoBitMap, 0,
-//                byteArrayToBeCOnvertedIntoBitMap.length);
-//        return bitMapImage;
-//    }
-//
-//    public static Bitmap byteToBitmap(String s)
-//    {
-//        byte[] decodedString = Base64.decode(s, Base64.DEFAULT);
-//        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//        decodedString = null;
-//        return bitmap;
-//    }
-//
-//    public static String bitmapToString(Bitmap bitmap)
-//    {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
-//        byte[] byteArray = byteArrayOutputStream.toByteArray();
-//        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-//        byteArrayOutputStream = null;
-//        return encoded;
-//    }
 
     public static Bitmap gerarImagens(EnvolvidoVida envolvidoVida, SecaoImagem parte, Context ctx)
     {
@@ -89,7 +45,6 @@ public class ImageUtil
             height = 650;
         }
 
-        //List<Bitmap> imagens = new ArrayList<Bitmap>();
 
         Context context = ctx;
         Bitmap molde = null;
@@ -259,27 +214,34 @@ public class ImageUtil
         return result;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static Bitmap Overlay(Bitmap Bitmap1, Bitmap Bitmap2)
-    {
-        Bitmap bmp1 = Bitmap.createScaledBitmap(Bitmap2, Bitmap1.getWidth(), Bitmap1.getHeight(), true);
-        Bitmap bmp2 = Bitmap.createBitmap(Bitmap1.getWidth(), Bitmap1.getHeight(), Bitmap1.getConfig());
-        Paint localPaint = new Paint();
-        localPaint.setAlpha(255);
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    public static Bitmap Overlay(Bitmap Bitmap1, Bitmap Bitmap2)
+//    {
+//        Bitmap bmp1 = Bitmap.createScaledBitmap(Bitmap2, Bitmap1.getWidth(), Bitmap1.getHeight(), true);
+//        Bitmap bmp2 = Bitmap.createBitmap(Bitmap1.getWidth(), Bitmap1.getHeight(), Bitmap1.getConfig());
+//        Paint localPaint = new Paint();
+//        localPaint.setAlpha(255);
+//
+//        Canvas localCanvas = new Canvas(bmp2);
+//        Matrix localMatrix = new Matrix();
+//
+//        localCanvas.drawBitmap(Bitmap1, localMatrix, null);
+//        localCanvas.drawBitmap(bmp1, localMatrix, localPaint);
+//
+//        //  bmp2.recycle();
+//        bmp1.recycle();
+//        System.gc();
+//        return bmp2;
+//    }
+//
+//    public static Bitmap pictureDrawableToBitmap(PictureDrawable pictureDrawable){
+//        Bitmap bmp = Bitmap.createBitmap(pictureDrawable.getIntrinsicWidth(), pictureDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(bmp);
+//        canvas.drawPicture(pictureDrawable.getPicture());
+//        return bmp;
+//    }
 
-        Canvas localCanvas = new Canvas(bmp2);
-        Matrix localMatrix = new Matrix();
-
-        localCanvas.drawBitmap(Bitmap1, localMatrix, null);
-        localCanvas.drawBitmap(bmp1, localMatrix, localPaint);
-
-        //  bmp2.recycle();
-        bmp1.recycle();
-        System.gc();
-        return bmp2;
-    }
-
-    private static Bitmap escreverNome(Bitmap bmp, String nome)
+    public static Bitmap escreverNome(Bitmap bmp, String nome)
     {
         Canvas cs2 = new Canvas(bmp);
         Paint tPaint2 = new Paint();
@@ -291,9 +253,28 @@ public class ImageUtil
 
 
         if(nome.length()<40)
-        cs2.drawText(nome, 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
+            cs2.drawText(nome, 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
         else
-        cs2.drawText(StringUtil.checkValue(nome,36,"(Sem nome)"), 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
+            cs2.drawText(StringUtil.checkValue(nome,36,"(Sem nome)"), 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
+        return bmp;
+    }
+
+    public static Bitmap escreverNomeDesenho(Bitmap bmp, String nome)
+    {
+        Canvas cs2 = new Canvas(bmp);
+        Paint tPaint2 = new Paint();
+        tPaint2.setTextSize(30);
+//        tPaint2.setColor("004A6D");
+        tPaint2.setColor(Color.parseColor("#004A6D"));
+        tPaint2.setStyle(Paint.Style.FILL);
+        cs2.drawBitmap(bmp, 0f, 0f, null);
+        float height2 = bmp.getHeight();
+
+
+        if(nome.length()<40)
+            cs2.drawText(nome, 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
+        else
+            cs2.drawText(StringUtil.checkValue(nome,36,"(Sem nome)"), 2f, height2 - 15f, tPaint2); // 15f is to put space between top edge and the text, if you want to change it, you can
         return bmp;
     }
 }

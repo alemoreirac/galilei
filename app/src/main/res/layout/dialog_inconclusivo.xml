@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="300dp"
-              android:layout_height="300dp"
+              android:layout_width="400dp"
+              android:layout_height="330dp"
     android:padding="8dp"
     android:layout_margin="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="Colisão inconclusiva"
+        android:id="@+id/txv_dialog_Titulo_Inconclusivo"
+        android:layout_centerHorizontal="true"/>
 
     <CheckBox
         android:id="@+id/cxb_dialog_Inconclusivo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@id/txv_dialog_Titulo_Inconclusivo"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/txv_dialog_Titulo_Inconclusivo"
         android:hint="Inconclusivo"/>
 
 

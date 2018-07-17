@@ -9,6 +9,7 @@ public enum TipoVestigioTransito
     FRAGMENTOS_VITREOS("Fragmentos vítreos")
     ,FRENAGEM("Frenagem")
     ,FRAGMENTOS_METALICOS("Fragmentos metálicos")
+    ,FRAGMENTOS_PLASTICOS("Fragmentos plásticos")
     ,DERRAPAGEM("Derrapagem")
     ,DERRAPAGEM_CURVA("Derrapagem em curva")
     ,SULCAGEM("Sulcagem")

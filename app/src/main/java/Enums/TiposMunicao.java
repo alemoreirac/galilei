@@ -7,9 +7,10 @@ package Enums;
 public enum TiposMunicao
 {
     NAO_DEFLAGRADA("Não deflagrada"),
-    CAPSULA("Capsula"),
+    ESTOJO("Estojo"),
     PROJETIL("Projétil"),
-    CAMISA("Camisa"),
+    JAQUETA("Jaqueta"),
+    NUCLEO("Núcleo"),
     FRAGMENTO("Fragmento");
 
     String valor;

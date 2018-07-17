@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.pefoce.peritolocal.DesenhoEnvolvidoActivity">
+
+    <Button
+        android:id="@+id/btn_Esconder_Opcoes"
+        android:background="@drawable/stroke_placa_transito"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Esconder"
+        android:layout_margin="5dp"
+        android:layout_alignParentRight="true"
+        android:textAlignment="center"
+        />
+
+
+    <com.raed.drawingview.DrawingView
+        android:id="@+id/dv_Corpo"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
+
+    <LinearLayout
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_Opcoes_Draw"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        android:padding="2dp"
+        android:layout_margin="5dp"
+        android:background="@color/ms_white"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="10dp"
+            android:src="@drawable/galilei"/>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_draw_Caneta_Borracha"
+            android:text="Caneta"/>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_draw_Desfazer"
+            android:text="Desfazer"/>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_draw_Refazer"
+            android:text="Refazer"/>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_draw_Limpar"
+            android:text="Limpar"/>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_draw_Salvar"
+            android:text="Salvar"/>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_draw_Voltar"
+            android:text="Voltar"/>
+
+    </LinearLayout>
+</RelativeLayout>

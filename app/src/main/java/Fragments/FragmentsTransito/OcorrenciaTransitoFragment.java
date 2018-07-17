@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,17 +31,15 @@ import Enums.PreservacaoLocal;
 import Model.DadosTerritoriais;
 import Model.DocumentoOcorrencia;
 import Model.Ocorrencia;
-import Model.Transito.EnderecoTransito;
 import Model.Transito.OcorrenciaTransito;
 import Model.Transito.OcorrenciaTransitoEndereco;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
+import Util.StringUtil;
 import Util.TempoUtil;
 
 public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment implements Step
 {
-
-
     OcorrenciaTransito ocorrenciaTransito = null;
     Ocorrencia ocorrencia = null;
 
@@ -56,10 +52,7 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
     EditText edtComandante = null;
     EditText edtViatura = null;
 
-
     EditText edtIncidencia = null;
-
-    //    TextView txvIncidenciaMask = null;
 
     TextView txvDataAtendimento = null;
     TextView txvHoraAtendimento = null;
@@ -72,7 +65,9 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
     AutoCompleteTextView autocBairro = null;
 
     CheckBox cxbUltimaForma = null;
+    CheckBox cxbSemAutoridade = null;
 
+    ArrayList<String> autoridadePresente;
     View v = null;
 
     public OcorrenciaTransitoFragment()
@@ -100,7 +95,7 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
         return inflater.inflate(R.layout.fragment_ocorrencia_transito, container, false);
     }
 
-    private void PopularSpinners(View view)
+    private void PovoarSpinners(View view)
     {
 
         ArrayList<String> preservacaoLocal = new ArrayList<String>();
@@ -125,12 +120,17 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
         spnDocumento.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, docs));
 
-        ArrayList<String> orgao = new ArrayList<String>();
+        autoridadePresente = new ArrayList<>();
 
-        for (Orgao o : Orgao.values())
-            orgao.add(o.getValor());
+        for (Orgao orgao : Orgao.values())
+        {
+            autoridadePresente.add(orgao.getValor());
+        }
 
-        spnOrgaoPresente.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, orgao));
+        //Remove esta opção e apenas a insere no
+        autoridadePresente.remove(Orgao.NP.getValor());
+
+        spnOrgaoPresente.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, autoridadePresente));
 
         ArrayList<String> arrayAIS = new ArrayList<>();
 
@@ -145,40 +145,38 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
     {
         try
         {
-        txvHoraChamado.setTextColor(getResources().getColor(R.color.DefaultTextColor));
-        txvHoraAtendimento.setTextColor(getResources().getColor(R.color.DefaultTextColor));
-        txvDataChamado.setTextColor(getResources().getColor(R.color.DefaultTextColor));
-        txvDataAtendimento.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+            txvHoraChamado.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+            txvHoraAtendimento.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+            txvDataChamado.setTextColor(getResources().getColor(R.color.DefaultTextColor));
+            txvDataAtendimento.setTextColor(getResources().getColor(R.color.DefaultTextColor));
 
-        if(txvDataChamado.getText().toString().equals(txvDataAtendimento.getText().toString()))
-        {
-            if (TempoUtil.HoraAntesDe(txvHoraAtendimento.getText().toString(), txvHoraChamado.getText().toString()))
+            if (txvDataChamado.getText().toString().equals(txvDataAtendimento.getText().toString()))
             {
-                txvHoraAtendimento.setTextColor(Color.RED);
-                VerificationError ve = new VerificationError("Hora do atendimento antes do chamado!");
-                return ve;
-            }
-        }
-        else
-        {
-            if(TempoUtil.DataAntesDe(txvDataAtendimento.getText().toString(),txvDataChamado.getText().toString()))
+                if (TempoUtil.HoraAntesDe(txvHoraAtendimento.getText().toString(), txvHoraChamado.getText().toString()))
+                {
+                    txvHoraAtendimento.setTextColor(Color.RED);
+                    VerificationError ve = new VerificationError("Hora do atendimento antes do chamado!");
+                    return ve;
+                }
+            } else
             {
-                txvDataAtendimento.setTextColor(Color.RED);
-                VerificationError ve = new VerificationError("Data do atendimento antes do chamado!");
-                return ve;
+                if (TempoUtil.DataAntesDe(txvDataAtendimento.getText().toString(), txvDataChamado.getText().toString()))
+                {
+                    txvDataAtendimento.setTextColor(Color.RED);
+                    VerificationError ve = new VerificationError("Data do atendimento antes do chamado!");
+                    return ve;
+                }
             }
+
+            SalvarOcorrencia();
+
+        } catch (Exception e)
+        {
+            VerificationError ve = new VerificationError(e.getMessage());
+            return ve;
         }
-
-
-        SalvarOcorrencia();
-
-    } catch (Exception e)
-    {
-        VerificationError ve = new VerificationError(e.getMessage());
-        return ve;
-    }
         return null;
-}
+    }
 
 
     @Override
@@ -189,10 +187,10 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
         Bundle bd = getArguments();
 
         AssociarLayout(v);
+
         AssociarEventos(v);
-        PopularSpinners(v);
 
-
+        PovoarSpinners(v);
 
         if (bd != null)
         {
@@ -209,7 +207,7 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
                     OcorrenciaTransitoEndereco ote = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString()).get(0);
                     CarregarBairro(ote.getEnderecoTransito().getBairro());
                     autocBairro.setText(ote.getEnderecoTransito().getBairro());
-                }catch (Exception e)
+                } catch (Exception e)
                 {
                     autocBairro.setText("");
                 }
@@ -224,51 +222,56 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
     }
 
-    private void CarregarValores(OcorrenciaTransito ot)
+    private void CarregarValores(OcorrenciaTransito mOcorrenciaTransito)
     {
-        AssociarLayout(v);
+//        AssociarLayout(v);
 
-        txvDataChamado.setText(ot.getDataChamadoString());
+        txvDataChamado.setText(mOcorrenciaTransito.getDataChamadoString());
 
-        txvHoraChamado.setText(ot.getHoraChamadoString());
+        txvHoraChamado.setText(mOcorrenciaTransito.getHoraChamadoString());
 
-        txvHoraAtendimento.setText(ot.getHoraAtendimentoString());
+        txvHoraAtendimento.setText(mOcorrenciaTransito.getHoraAtendimentoString());
 
-        txvDataAtendimento.setText(ot.getDataAtendimentoString());
+        txvDataAtendimento.setText(mOcorrenciaTransito.getDataAtendimentoString());
 
-        cxbUltimaForma.setChecked(ot.getUltimaForma());
+        cxbUltimaForma.setChecked(mOcorrenciaTransito.getUltimaForma());
 
-        if (ot.getNumIncidencia() != null)
-            edtIncidencia.setText(ot.getNumIncidencia());
+        if (mOcorrenciaTransito.getNumIncidencia() != null)
+            edtIncidencia.setText(mOcorrenciaTransito.getNumIncidencia());
 
-        if (ot.getDocumentoOcorrencia().getValor() != null)
-            edtValorDocumento.setText(ot.getDocumentoOcorrencia().getValor().toString());
+        if (mOcorrenciaTransito.getDocumentoOcorrencia().getValor() != null)
+            edtValorDocumento.setText(mOcorrenciaTransito.getDocumentoOcorrencia().getValor().toString());
 
-        if (ot.getPreservacaoLocal() != null)
-            spnLocal.setSelection(BuscadorEnum.getIndex(spnLocal, ot.getPreservacaoLocal().getValor()));
+        if (mOcorrenciaTransito.getPreservacaoLocal() != null)
+            spnLocal.setSelection(BuscadorEnum.getIndex(spnLocal, mOcorrenciaTransito.getPreservacaoLocal().getValor()));
 
-        if (ot.getDocumentoOcorrencia().getTipodocumento() != null)
-            spnDocumento.setSelection(BuscadorEnum.getIndex(spnDocumento, ot.getDocumentoOcorrencia().getTipodocumento().getValor()));
+        if (mOcorrenciaTransito.getDocumentoOcorrencia().getTipodocumento() != null)
+            spnDocumento.setSelection(BuscadorEnum.getIndex(spnDocumento, mOcorrenciaTransito.getDocumentoOcorrencia().getTipodocumento().getValor()));
 
-        if (ot.getOrgaoPresente() != null)
-            spnOrgaoPresente.setSelection(BuscadorEnum.getIndex(spnOrgaoPresente, ot.getOrgaoPresente().getValor()));
+        if (mOcorrenciaTransito.getOrgaoPresente() != null)
+            spnOrgaoPresente.setSelection(BuscadorEnum.getIndex(spnOrgaoPresente, mOcorrenciaTransito.getOrgaoPresente().getValor()));
 
-        if (ot.getAis() != null)
-            spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, ot.getAis().getValor()));
+        if (mOcorrenciaTransito.getAis() != null)
+            spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, mOcorrenciaTransito.getAis().getValor()));
 
-        autocOrgaoOrigem.setText((ot.getOrgaoOrigem() == null) ? "CIOPS - Coordenadoria Integrada de Operações de Segurança" : ot.getOrgaoOrigem());
-
-        autocOrgaoDestino.setText((ot.getOrgaoDestino() == null) ? "" : ot.getOrgaoDestino());
-
-        if (ot.getComandante() != null)
-            edtComandante.setText(ot.getComandante());
-
-        if (ot.getViatura().length() >= 8)
+        if (StringUtil.isNotNullAndEmpty(mOcorrenciaTransito.getComandante()) &&
+                mOcorrenciaTransito.getComandante().equals("(Sem autoridade presente)"))
         {
-            edtViatura.setText(ot.getViatura());
-//            edtPlacaViatura_Letras.setText(ot.getViatura().substring(0, 3));
-//            edtPlacaViatura_Numeros.setText(ot.getViatura().substring(4, 8));
+            cxbSemAutoridade.setChecked(false);
+            cxbSemAutoridade.performClick();
+        } else
+        {
+            edtComandante.setText(mOcorrenciaTransito.getComandante());
+
+            if (mOcorrenciaTransito.getViatura().length() >= 8)
+                edtViatura.setText(mOcorrenciaTransito.getViatura());
+
         }
+        autocOrgaoOrigem.setText((mOcorrenciaTransito.getOrgaoOrigem() == null) ? "CIOPS - Coordenadoria Integrada de Operações de Segurança" : mOcorrenciaTransito.getOrgaoOrigem());
+
+        autocOrgaoDestino.setText((mOcorrenciaTransito.getOrgaoDestino() == null) ? "" : mOcorrenciaTransito.getOrgaoDestino());
+
+
     }
 
     private void SalvarOcorrencia()
@@ -299,13 +302,13 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
         if (txvHoraAtendimento.getText().toString() != null)
             ocorrenciaTransito.setHoraAtendimento(txvHoraAtendimento.getText().toString());
 
-        if(txvDataAtendimento.getText().toString()!=null)
+        if (txvDataAtendimento.getText().toString() != null)
             ocorrenciaTransito.setDataAtendimento(txvDataAtendimento.getText().toString());
 
-        if(txvDataChamado.getText().toString()!=null)
+        if (txvDataChamado.getText().toString() != null)
             ocorrenciaTransito.setDataChamado(txvDataChamado.getText().toString());
 
-        if(txvHoraChamado.getText().toString()!=null)
+        if (txvHoraChamado.getText().toString() != null)
             ocorrenciaTransito.setHoraChamado(txvHoraChamado.getText().toString());
 
         if (autocOrgaoDestino != null)
@@ -315,11 +318,11 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
             ocorrenciaTransito.setOrgaoOrigem(autocOrgaoOrigem.getText().toString());
 
 
-        if (edtComandante!= null)
+        if (edtComandante != null)
             ocorrenciaTransito.setComandante(edtComandante.getText().toString());
 
-        if(edtViatura!=null)
-        ocorrenciaTransito.setViatura(edtViatura.getText().toString());
+        if (edtViatura != null)
+            ocorrenciaTransito.setViatura(edtViatura.getText().toString());
 
 //        if (edtPlacaViatura_Letras.getText().toString() != null && edtPlacaViatura_Numeros.getText().toString() != null)
 //            ocorrenciaTransito.setViatura(edtPlacaViatura_Letras.getText().toString() + "-" + edtPlacaViatura_Numeros.getText().toString());
@@ -337,7 +340,38 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
     private void AssociarEventos(View mView)
     {
+        cxbSemAutoridade.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (cxbSemAutoridade.isChecked())
+                {
+                    edtComandante.setText("(Sem autoridade presente)");
+                    edtComandante.setEnabled(false);
+                    edtViatura.setText("-");
+                    edtViatura.setEnabled(false);
 
+                    spnOrgaoPresente.setSelection(BuscadorEnum.getIndex(spnOrgaoPresente, Orgao.NP.getValor()));
+                    spnOrgaoPresente.setEnabled(false);
+
+                    autoridadePresente.add(0, Orgao.NP.getValor());
+                    spnOrgaoPresente.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, autoridadePresente));
+                    spnOrgaoPresente.setSelection(0);
+                } else
+                {
+                    edtComandante.setText("");
+                    edtComandante.setEnabled(true);
+                    edtViatura.setText("");
+                    edtViatura.setEnabled(true);
+
+                    spnOrgaoPresente.setEnabled(true);
+                    autoridadePresente.remove(Orgao.NP.getValor());
+                    spnOrgaoPresente.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, autoridadePresente));
+                    spnOrgaoPresente.setSelection(0);
+                }
+            }
+        });
         txvDataChamado.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -393,6 +427,8 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
         edtComandante = (EditText) view.findViewById(R.id.edt_Autoridade_Comandante);
 
+        cxbSemAutoridade = (CheckBox) view.findViewById(R.id.cxb_Sem_Autoridade_Transito);
+
         edtViatura = (EditText) view.findViewById(R.id.edt_Placa_Viatura_Transito);
 
 //        edtPlacaViatura_Numeros = (EditText) view.findViewById(R.id.edt_PlacaNumeros_Viatura);
@@ -406,26 +442,23 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
         cxbUltimaForma = (CheckBox) view.findViewById(R.id.cxb_Ultima_Forma);
 
-        edtIncidencia.setNextFocusRightId(edtValorDocumento.getId());
-        edtValorDocumento.setNextFocusRightId(edtComandante.getId());
-        edtComandante.setNextFocusRightId(edtViatura.getId());
-        edtViatura.setNextFocusRightId(autocOrgaoOrigem.getId());
-        autocOrgaoOrigem.setNextFocusRightId(autocOrgaoDestino.getId());
-        autocBairro.setNextFocusRightId(autocOrgaoDestino.getId());
+        edtIncidencia.setNextFocusForwardId(edtValorDocumento.getId());
+        edtValorDocumento.setNextFocusForwardId(edtComandante.getId());
+        edtComandante.setNextFocusForwardId(edtViatura.getId());
+        edtViatura.setNextFocusForwardId(autocBairro.getId());
+        autocOrgaoOrigem.setNextFocusForwardId(autocOrgaoDestino.getId());
+        autocBairro.setNextFocusForwardId(autocOrgaoDestino.getId());
 
         autocBairro.setAdapter(AutoCompleteUtil.getBairros(view.getContext()));
 
         autocBairro.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3)
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
             {
                 CarregarBairro(autocBairro.getText().toString());
             }
         });
-
     }
 
     public void CarregarBairro(String bairro)

@@ -83,7 +83,7 @@
 
             <Spinner
                 android:id="@+id/spn_Tipo_Documento_Vestigio_Vida"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txv_Tipo_Documento_Vestigio_Vida"/>
 
@@ -247,7 +247,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/txv_Quantidade_Municao"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
                 android:layout_below="@id/txv_Quantidade_Municao"/>
@@ -377,7 +377,7 @@
 
             <Spinner
                 android:id="@+id/spn_TipoRecolhimento_Amostra_Papiloscopica"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txv_Tipo_Recolhimento_Amostra_Papiloscopica"
                 android:layout_alignLeft="@id/txv_Tipo_Recolhimento_Amostra_Papiloscopica"/>

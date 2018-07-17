@@ -291,22 +291,22 @@ public class ManterPericiaTransito extends AppCompatActivity implements StepperL
         }
     }
 
-    public void TrocaData(View v)
-    {
-        final TextView txv;
-        switch (v.getId())
-        {
-            case R.id.txv_Data_Atendimento_Valor_Transito:
-                txv = (TextView) v.findViewById(R.id.txv_Data_Atendimento_Valor_Transito);
-                TempoUtil.setDate(txv, this);
-                break;
-
-            case R.id.txv_DataNascimento_Envolvido_Valor:
-                txv = (TextView) v.findViewById(R.id.txv_DataNascimento_Envolvido_Valor);
-                TempoUtil.setDate(txv, this);
-                break;
-        }
-    }
+//    public void TrocaData(View v)
+//    {
+//        final TextView txv;
+//        switch (v.getId())
+//        {
+//            case R.id.txv_Data_Atendimento_Valor_Transito:
+//                txv = (TextView) v.findViewById(R.id.txv_Data_Atendimento_Valor_Transito);
+//                TempoUtil.setDate(txv, this);
+//                break;
+//
+//            case R.id.txv_DataNascimento_Envolvido_Valor:
+//                txv = (TextView) v.findViewById(R.id.txv_DataNascimento_Envolvido_Valor);
+//                TempoUtil.setDate(txv, this);
+//                break;
+//        }
+//    }
 
     @Override
     public void onBackPressed()

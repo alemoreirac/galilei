@@ -14,12 +14,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -55,6 +57,7 @@ import Enums.CategoriaFoto;
 import Enums.Cor;
 import Enums.Transito.TipoCNH;
 import Enums.Transito.TipoVeiculo;
+import Enums.UF;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.Dano;
 import Model.Transito.DanoVeiculo;
@@ -66,6 +69,7 @@ import Model.Transito.OcorrenciaTransito;
 import Model.Transito.OcorrenciaTransitoVeiculo;
 import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
+import Util.StringUtil;
 import Util.ViewUtil;
 
 public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment implements Step
@@ -93,19 +97,19 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
     Spinner spnCor = null;
     Spinner spnAnoVeiculo = null;
     Spinner spnAnoFabricacao = null;
+    Spinner spnUF = null;
 
     EditText edtModeloVeiculo = null;
     EditText edtMarcaVeiculo = null;
     EditText edtPlaca_Letras = null;
     EditText edtPlaca_Numeros = null;
+    EditText edtMunicipio = null;
 
     TextView txvProprietarioNome = null;
     TextView txvProprietarioNumero = null;
 
     TextView txvCondutorNome = null;
     TextView txvCondutorNumero = null;
-
-    Button btnSelecionarOk = null;
 
     Veiculo veiculo = null;
     OcorrenciaTransitoVeiculo ocorrenciaVeiculo = null;
@@ -284,6 +288,10 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
             veiculo.setAnoFabricacao(0);
         }
 
+        veiculo.setMunicipioPlaca(edtMunicipio.getText().toString());
+
+        veiculo.setUfPlaca(BuscadorEnum.BuscarUF(spnUF.getSelectedItem().toString()));
+
         veiculo.setTipoVeiculo(BuscadorEnum.BuscarTipoVeiculo(spnTipoVeiculo.getSelectedItem().toString()));
         veiculo.setModelo(edtModeloVeiculo.getText().toString());
         veiculo.setMarca(edtMarcaVeiculo.getText().toString());
@@ -330,6 +338,7 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
     private void carregarDadosVeiculo()
     {
         LimparCampos();
+
         if (veiculo.getAnoModelo() != 0)
             //            spnTipoVeiculo.setSelection(veiculo.getAnoModelo());
             spnAnoVeiculo.setSelection(adapterAno.getPosition(String.valueOf(veiculo.getAnoModelo())));
@@ -360,8 +369,14 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
                 cxbVeiculoDesconhecido.performClick();
         }
 
+        if (veiculo.getMunicipioPlaca() != null)
+            edtMunicipio.setText(veiculo.getMunicipioPlaca());
+
+        if (veiculo.getUfPlaca() != null)
+            spnUF.setSelection(BuscadorEnum.getIndex(spnUF, veiculo.getUfPlaca().getValor()));
+
         if (veiculo.getNomeCondutor() != null)
-            txvCondutorNome.setText(veiculo.getNomeCondutor());
+            txvCondutorNome.setText(StringUtil.checkValue(veiculo.getNomeCondutor(), 10, ""));
 
         if (veiculo.getNumeroDocumentoCondutor() != null)
             txvCondutorNumero.setText(veiculo.getNumeroDocumentoCondutor());
@@ -390,7 +405,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
         lstvDanos.setAdapter(adapterDano);
 
         adapterDano.notifyDataSetChanged();
-
     }
 
     public void LimparCampos()
@@ -401,6 +415,10 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
         edtModeloVeiculo.setText("");
         edtMarcaVeiculo.setText("");
         spnTipoVeiculo.setSelection(0);
+
+        spnUF.setSelection(BuscadorEnum.getIndex(spnUF, UF.CE.getValor()));
+
+        edtMunicipio.setText("");
         edtPlaca_Letras.setText("");
         edtPlaca_Numeros.setText("");
         //  spnEnderecoVeiculo.setSelection(0);
@@ -481,14 +499,26 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
             {
                 if (cxbVeiculoDesconhecido.isChecked())
                 {
+                    edtMunicipio.setEnabled(false);
+                    spnUF.setEnabled(false);
                     edtPlaca_Numeros.setEnabled(false);
                     edtPlaca_Letras.setEnabled(false);
                     edtPlaca_Letras.setText("");
                     edtPlaca_Numeros.setText("");
+                    edtMunicipio.setText("");
+                    spnUF.setSelection(0);
+                    edtPlaca_Numeros.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.stroke_placa_transito_disabled));
+                    edtPlaca_Letras.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.stroke_placa_transito_disabled));
+
                 } else
                 {
+                    edtMunicipio.setEnabled(true);
+                    spnUF.setEnabled(true);
                     edtPlaca_Numeros.setEnabled(true);
+                    spnUF.setSelection(BuscadorEnum.getIndex(spnUF, UF.CE.getValor()));
                     edtPlaca_Letras.setEnabled(true);
+                    edtPlaca_Numeros.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.stroke_placa_transito));
+                    edtPlaca_Letras.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.stroke_placa_transito));
                 }
             }
         });
@@ -664,7 +694,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
                 LimparCampos();
                 ViewUtil.modifyAll(rltv_Veiculo, true);
-//                ViewUtil.modifyAll(rltvProprietario, true);
 
                 lstvVeiculos.performItemClick(lstvVeiculos, BuscadorEnum.PegarPosicaoVeiculo(veiculosModel, veiculo), lstvVeiculos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoVeiculo(veiculosModel, veiculo)));
             }
@@ -672,6 +701,7 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
         fabFotoVeiculo.setOnClickListener(new View.OnClickListener()
         {
+            //TODO: refazer chekc permission utilizando o auto permission do android arsenal ou apenas implementar a negativa da permissão//
             public void onClick(View v)
             {
                 String[] permissions = new String[]
@@ -717,7 +747,7 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
     {
         final EditText edtNomeProprietario = (EditText) d.findViewById(R.id.edt_NomeProprietario);
         final EditText edtDocumentoProprietario = (EditText) d.findViewById(R.id.edt_ProprietarioCNH);
-        final Spinner spnTipoCNHProprietario = (Spinner) d.findViewById(R.id.spn_CNH_Proprietario_720);
+        final Spinner spnTipoCNHProprietario = (Spinner) d.findViewById(R.id.spn_CNH_Proprietario);
         final CheckBox cxbProprietarioDesabilitado = (CheckBox) d.findViewById(R.id.cxb_Proprietario_Nao_Habilitado);
         final CheckBox cxbProprietarioDesconhecido = (CheckBox) d.findViewById(R.id.cxb_Proprietario_Nao_Identificado);
 
@@ -725,7 +755,7 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
         final EditText edtNomeCondutor = (EditText) d.findViewById(R.id.edt_Nome_Condutor);
         final EditText edtDocumentoCondutor = (EditText) d.findViewById(R.id.edt_CondutorCNH);
-        final Spinner spnTipoCNHCondutor = (Spinner) d.findViewById(R.id.spn_CNH_Condutor_720);
+        final Spinner spnTipoCNHCondutor = (Spinner) d.findViewById(R.id.spn_CNH_Condutor);
         final CheckBox cxbCondutorDesabilitado = (CheckBox) d.findViewById(R.id.cxb_Condutor_Nao_Habilitado);
         final CheckBox cxbCondutorDesconhecido = (CheckBox) d.findViewById(R.id.cxb_Condutor_Nao_Identificado);
         final TextView txvTituloProprietarioNome = (TextView) d.findViewById(R.id.txv_Nome_Proprietario);
@@ -830,7 +860,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
                     }
                 }
 
-
                 txvProprietarioNome.setText(veiculo.getNomeProprietario());
 
                 if (veiculo.getNumeroDocumentoProprietario() != "0")
@@ -845,6 +874,7 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
                     txvCondutorNumero.setText("(Não habilitado)");
 
                 d.dismiss();
+
             }
         });
 
@@ -857,7 +887,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
             {
                 d.dismiss();
             }
-
         });
 
 
@@ -899,7 +928,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
                     txvTituloProprietarioCategoria.setVisibility(View.INVISIBLE);
 
                     txvCondutorProprietario.setVisibility(View.VISIBLE);
-
 
 
                 } else
@@ -1078,10 +1106,17 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
     private void PovoarSpinner(Context ctx)
     {
+        ArrayList<String> listaUF = new ArrayList<>();
+
+        for (UF uf : UF.values())
+            listaUF.add(uf.getValor());
+
+        spnUF.setAdapter(new ArrayAdapter<>(ctx, android.R.layout.simple_spinner_dropdown_item, listaUF));
+
         if (anos.size() > 0)
             anos.clear();
 
-//        {
+
         int esteAno = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = esteAno; i >= 1920; i--)
         {
@@ -1093,17 +1128,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
         spnAnoVeiculo.setAdapter(adapterAno);
 
         spnAnoFabricacao.setAdapter(adapterAno);
-        //   }
-        //     if(ocorrenciaEnderecos != null)
-        //     {
-        //         for(int i = 0; i<ocorrenciaEnderecos.size();i++)
-        //             enderecosTransito.add(ocorrenciaEnderecos.get(i).getEnderecoTransito());
-        //
-        //         spnEnderecoVeiculo.setAdapter(new ArrayAdapter<EnderecoTransito>(ctx,android.R.layout.simple_spinner_dropdown_item,enderecosTransito));
-        //     }
-        //
-        //     if(enderecoVeiculo != null)
-        //          spnEnderecoVeiculo.setSelection(enderecosTransito.indexOf(enderecoVeiculo.getEnderecoTransito()));
 
 
         ArrayList<String> tipoVeiculo = new ArrayList<>();
@@ -1124,7 +1148,8 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
         spnAnoVeiculo.setSelection(0);
         spnAnoFabricacao.setSelection(0);
-        //   spnEnderecoVeiculo.setSelection(0);
+
+
 
     }
 
@@ -1136,6 +1161,9 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
         edtPlaca_Letras = (EditText) v.findViewById(R.id.edt_PlacaLetras_Envolvido);
         lstvVeiculos = (ListView) v.findViewById(R.id.lstv_Veiculos);
 
+        edtMunicipio = (EditText) v.findViewById(R.id.edt_Municipio_Veiculo);
+        spnUF = (Spinner) v.findViewById(R.id.spn_UF_Placa_Veiculo);
+
         fabVeiculo = (FloatingActionButton) v.findViewById(R.id.fab_Veiculo);
         fabFotoVeiculo = (FloatingActionButton) v.findViewById(R.id.fab_Foto_Veiculo);
         txvProprietarioNumero = (TextView) v.findViewById(R.id.txv_Proprietario_Documento);
@@ -1145,14 +1173,10 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
         txvCondutorNumero = (TextView) v.findViewById(R.id.txv_Condutor_Documento);
 
         spnAnoFabricacao = (Spinner) v.findViewById(R.id.spn_Ano_Veiculo_Fabricacao);
-        spnAnoVeiculo = (Spinner) v.findViewById(R.id.spn_Ano_Veiculo);
+        spnAnoVeiculo = (Spinner) v.findViewById(R.id.spn_Ano_Veiculo_Modelo);
         //   spnEnderecoVeiculo = (Spinner) v.findViewById(R.id.spn_EnderecoVeiculo);
         spnTipoVeiculo = (Spinner) v.findViewById(R.id.spn_TipoVeiculo);
-        spnCor = (Spinner) v.findViewById(R.id.spn_CorVeiculo);
-
-//        btnSalvarVeiculo = (Button) v.findViewById(R.id.btn_Salvar_Veiculo);
-//
-//        btnCancelarVeiculo = (Button) v.findViewById(R.id.btn_Cancelar_Veiculo);
+        spnCor = (Spinner) v.findViewById(R.id.spn_Cor_Veiculo);
 
         cxbVeiculoDesconhecido = (CheckBox) v.findViewById(R.id.cxb_Veiculo_Desconhecido);
         rltv_Veiculo = (RelativeLayout) v.findViewById(R.id.rltv_Detalhe_Veiculo);
@@ -1180,17 +1204,21 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
         lstvDanos = (ListView) v.findViewById(R.id.lstv_Danos_Veiculo);
 
-//        adapterDano = new ArrayAdapter<Dano>(v.getContext(), android.R.layout.simple_spinner_dropdown_item, danosTotais);
-//
-//        lstvDanos.setAdapter(adapterDano);
-//
-//        adapterDano.notifyDataSetChanged();
-
         rltvProprietario = (RelativeLayout) v.findViewById(R.id.rltv_Proprietario_Condutor);
+
+        edtMarcaVeiculo.setNextFocusForwardId(edtModeloVeiculo.getId());
+        edtModeloVeiculo.setNextFocusForwardId(edtPlaca_Letras.getId());
+
+        lstvDanos.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
     }
-
-
-
 
 
     public class TipoFotoDialog

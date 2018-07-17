@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Enums.CategoriaFoto;
 import Model.Foto;
 import Util.ImageItem;
 import Util.ImageUtil;
@@ -61,17 +62,6 @@ public class AdapterGaleria extends ArrayAdapter
         }
 
         Foto foto = (Foto) data.get(position);
-        //   File f = new File("");
-        //  try {
-        //      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(f));
-        //      bos.write(ImageUtil.getByteFromString(foto.getArquivo()));
-        //      bos.flush();
-        //      bos.close();
-        //  } catch (IOException e) {
-        //      e.printStackTrace();
-        //  }
-
-        //holder.getImgvFoto().setImageBitmap(ImageUtil.byteToBitmap(foto.getArquivo()));
 
         if (foto.getArquivo() != null)
             Picasso.with(getContext()).load(new File(foto.getArquivo())).resize(50, 50).placeholder(R.drawable.placeholder).into(holder.getImgvFoto());
@@ -80,10 +70,18 @@ public class AdapterGaleria extends ArrayAdapter
                     .into(holder.getImgvFoto());
 
 
-        if (foto.getCategoriaFoto() != null && foto.getDescricao() != null)
-            holder.getTxvTitulo().setText(foto.getCategoriaFoto().getValor() + " - " + foto.getDescricao());
-        else
+        if (foto.getCategoriaFoto() == null || foto.getDescricao() == null)
+        {
             holder.getTxvTitulo().setText("(Foto sem descrição)");
+            return convertView;
+        }
+        else
+        {
+            if(!foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
+                holder.getTxvTitulo().setText(foto.getCategoriaFoto().getValor() + " - " + foto.getDescricao());
+            else
+                holder.getTxvTitulo().setText("Mapa das lesões");
+        }
 
         return convertView;
     }

@@ -62,14 +62,15 @@
         android:layout_width="122dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:inputType="textCapWords"
+        android:maxLength="11"
+        android:inputType="number"
         android:imeOptions="actionDone"
         android:layout_alignLeft="@id/edt_NomeProprietario"
         android:layout_below="@id/txv_CNH_Proprietario" />
 
 
     <Spinner
-        android:id="@+id/spn_CNH_Proprietario_720"
+        android:id="@+id/spn_CNH_Proprietario"
         android:layout_width="122dp"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/edt_NomeProprietario"
@@ -80,7 +81,7 @@
         android:id="@+id/txv_Categoria_Proprietario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/spn_CNH_Proprietario_720"
+        android:layout_alignLeft="@id/spn_CNH_Proprietario"
         android:layout_below="@id/edt_NomeProprietario"
         android:text="@string/categoria" />
 
@@ -129,14 +130,15 @@
         android:layout_width="122dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:inputType="textCapWords"
+        android:maxLength="11"
+        android:inputType="number"
         android:imeOptions="actionDone"
         android:layout_alignLeft="@id/edt_Nome_Condutor"
         android:layout_below="@id/txv_CNH_Condutor" />
 
 
     <Spinner
-        android:id="@+id/spn_CNH_Condutor_720"
+        android:id="@+id/spn_CNH_Condutor"
         android:layout_width="122dp"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/edt_Nome_Condutor"
@@ -147,7 +149,7 @@
         android:id="@+id/txv_Categoria_Condutor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/spn_CNH_Condutor_720"
+        android:layout_alignLeft="@id/spn_CNH_Condutor"
         android:layout_below="@id/edt_Nome_Condutor"
         android:text="@string/categoria" />
 

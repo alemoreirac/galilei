@@ -6,7 +6,7 @@ import java.util.List;
 import Model.Ocorrencia;
 
 
-public class BusinessOcorrencia
+public class PaginatorOcorrencia
 {
     public static int maxPages;
 
@@ -24,13 +24,13 @@ public class BusinessOcorrencia
     public static ArrayList<Ocorrencia> findByFilterPaginated(String filtro, int pageRequested)
     {
 
-        if (filtro == "")
+        if (filtro.isEmpty())
         {
             //indica o máximo de páginas, dividindo o size do array por 10 e somando 1 para acertar o número de páginas
 
             maxPages = (ocorrencias.size() / 10);
 
-            if (ocorrencias.size() % 10 > 0)
+            if (ocorrencias.size() % 10 > 0 || maxPages == 0)
                 maxPages++;
 
             //pageAux é o deslocamento de 10 itens na página
@@ -87,7 +87,6 @@ public class BusinessOcorrencia
             }
         }
 
-
         maxPages = (ocorrenciaResultado.size() / 10);
 
         if (ocorrenciaResultado.size() % 10 > 0)
@@ -95,7 +94,6 @@ public class BusinessOcorrencia
 
         //pageAux é o deslocamento de 10 itens na página
         int pageAux = pageRequested * 10;
-
 
 //            if(pageRequested<(pageAux/10)+1)
         if (pageRequested < maxPages)
