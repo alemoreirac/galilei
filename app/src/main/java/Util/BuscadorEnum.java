@@ -74,6 +74,7 @@ import Model.Transito.EnderecoTransito;
 import Model.Transito.EnvolvidoTransito;
 import Model.Foto;
 import Model.Transito.Veiculo;
+import Model.Vida.EnderecoVida;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.VestigioVida;
 
@@ -790,7 +791,21 @@ public class BuscadorEnum
         return 0;
     }
 
-    public static Integer getVeiculoIndexById(Spinner spinner, Long id)
+
+    public static int getVeiculoIndexById(Spinner spinner, Long id)
+    {
+        for (int i = 0; i < spinner.getCount(); i++)
+        {
+            if (((Veiculo) spinner.getItemAtPosition(i)).getId() != null)
+            {
+                if (((Veiculo) spinner.getItemAtPosition(i)).getId().equals(id))
+                    return i;
+            }
+        }
+        return 0;
+    }
+
+    public static int getEnderecoVidaById(Spinner spinner, Long id)
     {
         for (int i = 0; i < spinner.getCount(); i++)
         {
@@ -869,12 +884,23 @@ public class BuscadorEnum
         return 0;
     }
 
-    public static int PegarPosicaoEndereco(List<EnderecoTransito> enderecos, EnderecoTransito et)
+
+
+    public static int PegarPosicaoEnderecoTransito(List<EnderecoTransito> enderecos, EnderecoTransito et)
     {
         for (int i = 0; i < enderecos.size(); i++)
         {
-//            if (enderecos.get(i).getId().equals(et.getId()))
-                return enderecos.indexOf(et);
+            return enderecos.indexOf(et);
+        }
+        return -1;
+    }
+
+
+    public static int PegarPosicaoEnderecoVida(List<EnderecoVida> enderecos, EnderecoTransito et)
+    {
+        for (int i = 0; i < enderecos.size(); i++)
+        {
+            return enderecos.indexOf(et);
         }
         return -1;
     }

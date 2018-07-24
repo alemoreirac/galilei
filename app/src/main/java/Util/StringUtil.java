@@ -67,7 +67,7 @@ public class StringUtil
         builderLatitude.append("°");
         builderLatitude.append(latitudeSplit[1]);
         builderLatitude.append("'");
-        builderLatitude.append(latitudeSplit[2]);
+        builderLatitude.append(latitudeSplit[2].charAt(0));
         builderLatitude.append("\"");
 
         if (latitude < 0)
@@ -75,6 +75,8 @@ public class StringUtil
 
         else
             builderLatitude.append("N");
+
+
 
         return builderLatitude.toString();
     }
@@ -90,7 +92,7 @@ public class StringUtil
         builderLongitude.append("°");
         builderLongitude.append(longitudeSplit[1]);
         builderLongitude.append("'");
-        builderLongitude.append(longitudeSplit[2]);
+        builderLongitude.append(longitudeSplit[2].charAt(0));
         builderLongitude.append("\"");
 
         if (longitude < 0)

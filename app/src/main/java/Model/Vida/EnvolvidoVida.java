@@ -30,27 +30,27 @@ import Util.TempoUtil;
 
 public class EnvolvidoVida extends SugarRecord
 {
-    String nome;
+    private String nome;
 
-    DocumentoPessoa documentoTipo;
+    private DocumentoPessoa documentoTipo;
 
-    String documentoValor;
+    private String documentoValor;
 
-    Date nascimento;
+    private Date nascimento;
 
-    Genero genero;
+    private Genero genero;
 
-    String vestes;
+    private String vestes;
 
     private Gravacao gravacaoEnvolvido;
 
-    String Observacoes;
+    private String Observacoes;
 
     private IndiciosTempoMorte indiciosTempoMorte;
 
     private TipoMorte tipoMorte;
 
-//    private boolean morteViolenta;
+    private Long enderecoId;
 
     private PosicaoBraco posicaoBracoEsquerdo;
 
@@ -108,6 +108,16 @@ public class EnvolvidoVida extends SugarRecord
         this.posicaoCabeca = PosicaoCabeca.APOIADA_SOLO;
         this.posicaoPernaDireita = PosicaoPerna.ESTENDIDO;
         this.posicaoPernaEsquerda = PosicaoPerna.ESTENDIDO;
+    }
+
+    public Long getEnderecoId()
+    {
+        return enderecoId;
+    }
+
+    public void setEnderecoId(Long enderecoId)
+    {
+        this.enderecoId = enderecoId;
     }
 
     public String getDocumentoValor()

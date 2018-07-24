@@ -310,7 +310,6 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         if (colisaoTransito != null)
             try
             {
-
                 SalvarColisao();
             } catch (Exception e)
             {

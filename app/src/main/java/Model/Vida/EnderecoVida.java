@@ -16,6 +16,7 @@ import Enums.Transito.TipoCNH;
 import Enums.Transito.TipoVia;
 import Enums.Vida.TipoAberturaLocal;
 import Model.Gravacao;
+import Util.StringUtil;
 
 /**
  * Created by Pefoce on 15/11/2017.
@@ -64,8 +65,6 @@ public class EnderecoVida extends SugarRecord
     private Pavimentacao pavimentacao;
 
     private LocalObjeto posicaoVia;
-
-    private Long ocorrenciaId;
 
     private TipoVia tipoVia;
 
@@ -249,15 +248,6 @@ public class EnderecoVida extends SugarRecord
         this.posicaoVia = posicaoVia;
     }
 
-    public Long getOcorrenciaId()
-    {
-        return ocorrenciaId;
-    }
-
-    public void setOcorrenciaId(Long ocorrenciaId)
-    {
-        this.ocorrenciaId = ocorrenciaId;
-    }
 
 
 
@@ -367,17 +357,50 @@ public class EnderecoVida extends SugarRecord
     public String toString()
     {
         String value = "";
+
         if(tipoVia!=null)
-            value += tipoVia.getValor()+ " ";
+            value += tipoVia.getValor() + " ";
 
-        if(descricaoEndereco !=null)
-            value += descricaoEndereco + " ";
+       value += StringUtil.checkValue(descricaoEndereco,-1,"(Sem endereço) ");
 
-        if(bairro!=null)
-            value += bairro+ " ";
+//        if(descricaoEndereco !=null)
+//            value += descricaoEndereco;
 
-        if(cidade!=null)
-            value += cidade;
+
+        if(tipoLocalCrime !=null && tipoLocalCrime.getValor()!=null)
+        value += "; " + tipoLocalCrime.getValor();
+
+        value +=" ";
+
+        if(tipoLocalCrime!=null)
+        {
+            switch (tipoLocalCrime)
+            {
+                case OUTRO:
+                    value += observacao+ " ";
+                    break;
+                case PRAIA:
+                    if(localPraia!=null)
+                        value += localPraia.getValor()+ " ";
+                    break;
+                case RESIDENCIAL:
+                    if(comodo!=null)
+                        value += comodo.getValor()+ " ";
+                    break;
+                case RURAL:
+                    if(localAberto!=null)
+                        value += localAberto.getValor() + " ";
+                    if(tipoVegetacao!=null)
+                        value += tipoVegetacao.getValor()+ " ";
+                    break;
+                case VIA_PUBLICA:
+                    if(posicaoVia!=null)
+                        value += posicaoVia.getValor()+ " ";
+                    if(pavimentacao!=null)
+                        value += pavimentacao.getValor()+ " ";
+                    break;
+            }
+        }
 
         return value;
     }
@@ -397,7 +420,6 @@ public class EnderecoVida extends SugarRecord
         this.descricaoEndereco = "";
 
         this.localResidencia = null;
-        this.ocorrenciaId = null;
         this.posicaoVia = null;
         this.localPraia = null;
 //      this.modeloVeiculo = null;
@@ -414,5 +436,23 @@ public class EnderecoVida extends SugarRecord
 
         this.pavimentacao = null;
         this.tipoVegetacao = null;
+    }
+
+    public String getEnderecoPost()
+    {
+        String value = "";
+        if(tipoVia!=null)
+            value += tipoVia.getValor()+ " ";
+
+        if(descricaoEndereco !=null)
+            value += descricaoEndereco + " ";
+
+        if(bairro!=null)
+            value += bairro+ " ";
+
+        if(cidade!=null)
+            value += cidade;
+
+        return value;
     }
 }

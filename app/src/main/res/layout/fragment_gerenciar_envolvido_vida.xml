@@ -37,7 +37,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-
         android:layout_toRightOf="@+id/lista_envolvidos_vida"
         android:padding="10dp">
 
@@ -233,7 +232,7 @@
 
             <EditText
                 android:id="@+id/edt_Vestimentas_Envolvido_Vida"
-                android:layout_width="600dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -242,26 +241,6 @@
                 android:maxLines="1" />
 
 
-            <TextView
-                android:id="@+id/txv_Observacoes_Envolvido_Vida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/edt_Vestimentas_Envolvido_Vida"
-                android:layout_marginTop="15dp"
-                android:text="Observações" />
-
-            <EditText
-                android:id="@+id/edt_Observacao_Envolvido_Vida"
-                android:layout_width="1100dp"
-                android:layout_height="40dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txv_Observacoes_Envolvido_Vida"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/border_gray"
-                android:gravity="top|left"
-                android:imeOptions="actionDone"
-                android:inputType="textMultiLine" />
 
             <TextView
                 android:id="@+id/txv_Tipo_Morte_Envolvido_Vida"
@@ -279,16 +258,44 @@
                 android:layout_alignBottom="@id/spn_Indicios_Tempo_Morte_Envolvido_Vida"
                 android:layout_alignLeft="@id/txv_Tipo_Morte_Envolvido_Vida" />
 
-            <!--<CheckBox-->
-            <!--android:id="@+id/cxb_Violencia_vida"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Suspeita de morte violenta"-->
-            <!--android:checked="true"-->
-            <!--android:layout_below="@id/view_separador_envolvido"-->
-            <!--android:layout_toRightOf="@id/txv_Tempo_Morte_Envolvido_Vida"-->
-            <!--android:layout_marginLeft="20dp"-->
-            <!--android:layout_marginTop="10dp"/>-->
+
+
+            <TextView
+                android:id="@+id/txv_Endereco_Envolvido_Vida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_Vestimentas_Envolvido_Vida"
+                android:layout_alignLeft="@id/edt_Vestimentas_Envolvido_Vida"
+                android:text="Local encontrado" />
+
+            <Spinner
+                android:id="@+id/spn_Endereco_Envolvido_Vida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txv_Endereco_Envolvido_Vida"
+                android:layout_alignLeft="@id/txv_Endereco_Envolvido_Vida" />
+
+            <TextView
+                android:id="@+id/txv_Observacoes_Envolvido_Vida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spn_Endereco_Envolvido_Vida"
+                android:layout_marginTop="15dp"
+                android:text="Observações" />
+
+            <EditText
+                android:id="@+id/edt_Observacao_Envolvido_Vida"
+                android:layout_width="1100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txv_Observacoes_Envolvido_Vida"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_gray"
+                android:gravity="top|left"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine" />
+
 
             <Button
                 android:id="@+id/btn_Lesoes_Envolvido_Vida"

@@ -420,6 +420,7 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
         {
             if (envolvido.getVeiculoEnvolvido() != null)
                 spnVeiculo.setSelection(BuscadorEnum.getVeiculoIndexById(spnVeiculo, envolvido.getVeiculoEnvolvido().getId()));
+
         }
         //cxbCondutor.setChecked(envolvido.getCondutor());
         if (envolvido.getTipoEnvolvido() != null)

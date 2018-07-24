@@ -2,8 +2,10 @@ package Fragments.FragmentsVida;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,6 +17,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +35,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -52,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import Adapters.AdapterEnderecoVida;
 import Dialogs.AudioDialog;
 import Dialogs.MapDialog;
 import Dialogs.TipoFotoDialog;
@@ -72,8 +77,10 @@ import Enums.Vida.TipoAberturaLocal;
 import Model.Foto;
 import Model.Ocorrencia;
 import Model.Vida.EnderecoVida;
+import Model.Vida.OcorrenciaEnderecoVida;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
+import Util.AndroidDatabaseManager;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.SingleShotLocationProvider;
@@ -98,6 +105,10 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     AudioDialog dialogFragment = null;
     LocationManager locationManager;
     Spinner spnTipoVia;
+
+    int lastPosition;
+
+    RelativeLayout rltvBase;
 
     Bundle bd;
 
@@ -150,6 +161,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     Ocorrencia ocorrencia;
     OcorrenciaVida ocorrenciaVida;
+    OcorrenciaEnderecoVida ocorrenciaEnderecoVida;
     EnderecoVida enderecoVida;
 
     LinearLayout llVeiculo;
@@ -160,6 +172,12 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     ProgressBar pbCoordenadas;
 
     View mView;
+
+    FloatingActionButton fabNovoEndereco;
+    ListView lstvEnderecos;
+    ArrayList<EnderecoVida> enderecosVidaModel;
+    List<OcorrenciaEnderecoVida> listOcorrenciaEndereco;
+    AdapterEnderecoVida adapterEndereco;
 
     private static final int RESIZE_PHOTO_PIXELS_PERCENTAGE = 50;
     private MagicalCamera magicalCamera;
@@ -175,6 +193,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     public void SalvarEndereco()
     {
+
         enderecoVida.AnularCampos();
 
         enderecoVida.setDescricaoEndereco(edtEndereco.getText().toString());
@@ -184,7 +203,6 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
         enderecoVida.setTipoVia(BuscadorEnum.BuscarTipoVia(spnTipoVia.getSelectedItem().toString()));
 
-        enderecoVida.setOcorrenciaId(ocorrenciaVida.getId());
 
         enderecoVida.setLatitude(edtLatitude.getText().toString());
         enderecoVida.setLongitude(edtLongitude.getText().toString());
@@ -284,6 +302,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     @Override
     public VerificationError verifyStep()
     {
+        if(enderecoVida!=null)
         SalvarEndereco();
         return null;
     }
@@ -291,6 +310,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     @Override
     public void onSelected()
     {
+        lastPosition = -1;
         ((ManterPericiaVida) getActivity()).txvToolbarTitulo.setText("Local do Crime");
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -305,21 +325,37 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         PovoarSpinners(mView.getContext());
         AssociarEventos();
 
+        ViewUtil.modifyAll(rltvBase, false);
+
         if (bd != null)
         {
             if (bd.getLong("OcorrenciaId", 0) != 0)
             {
                 ocorrenciaVida = OcorrenciaVida.findById(OcorrenciaVida.class, bd.getLong("OcorrenciaId", 0));
+
                 try
                 {
                     ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
-                    enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
+
+//                    enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
+
+                    listOcorrenciaEndereco = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class,"ocorrencia_vida = ?",ocorrenciaVida.getId().toString());
+
+                    enderecosVidaModel = new ArrayList<>();
+
+                    for(OcorrenciaEnderecoVida oev : listOcorrenciaEndereco)
+                        enderecosVidaModel.add(oev.getEnderecoVida());
+
+                    adapterEndereco = new AdapterEnderecoVida(enderecosVidaModel,getActivity());
+
+                    lstvEnderecos.setAdapter(adapterEndereco);
+
                 } catch (Exception e)
                 {
                     enderecoVida = new EnderecoVida();
                 }
                 LimparCampos();
-                CarregarEndereco(enderecoVida);
+//                CarregarEndereco();
             }
         }
     }
@@ -332,7 +368,39 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     private void AssociarEventos()
     {
+        fabNovoEndereco.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(enderecoVida!=null)
+                    SalvarEndereco();
 
+                enderecoVida = new EnderecoVida();
+
+                ocorrenciaEnderecoVida = new OcorrenciaEnderecoVida();
+
+                enderecoVida.save();
+
+                ocorrenciaEnderecoVida.setEnderecoVida(enderecoVida);
+
+                ocorrenciaEnderecoVida.setOcorrenciaVida(ocorrenciaVida);
+
+                ocorrenciaEnderecoVida.save();
+
+                listOcorrenciaEndereco.add(ocorrenciaEnderecoVida);
+
+                adapterEndereco.add(enderecoVida);
+                adapterEndereco.notifyDataSetChanged();
+
+                ViewUtil.modifyAll(rltvBase,true);
+
+                LimparCampos();
+
+                lstvEnderecos.performItemClick(lstvEnderecos, enderecosVidaModel.indexOf(enderecoVida),
+                        lstvEnderecos.getItemIdAtPosition(enderecosVidaModel.indexOf(enderecoVida)));
+            }
+        });
 
         spnEspacoResidencia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -521,26 +589,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                     }
                 });
 
-//                imgbAudio.setOnClickListener(new View.OnClickListener()
-//                {
-//                    @Override
-//                    public void onClick(View view) throws IllegalArgumentException,
-//                            SecurityException, IllegalStateException
-//                    {
-//
-////                        FragmentManager fm = getActivity().getFragmentManager();
-////                        dialogFragment = new AudioDialog();
-//                        Bundle bd = new Bundle();
-//                        bd.putString("Local", "conclusão");
-//                        bd.putLong("OcorrenciaId",ocorrenciaVida.getId());
-//                        bd.putString("SecaoVida", "Endereco");
-//
-//                        AudioDialog.show(getActivity(),bd);
-////                        dialogFragment.setArguments(bd);
-////                        dialogFragment.show(fm, "Seleção");
-//                    }
-//                });
-//
+
 
 
                 cxbProprietarioDesconhecido.setOnClickListener(new View.OnClickListener()
@@ -728,6 +777,105 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
             }
         );
 
+        lstvEnderecos.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (lastPosition != -1 && lastPosition != position)
+                {
+                    SalvarEndereco();
+                }
+
+                lastPosition = position;
+
+                enderecoVida = enderecosVidaModel.get(position);
+
+                if (enderecoVida== null)
+                    enderecoVida = new EnderecoVida();
+
+                LimparCampos();
+
+                CarregarEndereco();
+
+                try
+                {
+                    ocorrenciaEnderecoVida = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class, "ocorrencia_vida = ? and endereco_vida = ?", ocorrenciaVida.getId().toString(), enderecoVida.getId().toString()).get(0);
+
+                } catch (Exception e)
+                {
+                    ocorrenciaEnderecoVida= new OcorrenciaEnderecoVida();
+                }
+
+                ViewUtil.modifyAll(rltvBase, true);
+
+            }
+        });
+
+        lstvEnderecos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View v,
+                                           final int position, long id)
+            {
+                AlertDialog.Builder builder;
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Dialog_Alert);
+
+                else
+                    builder = new AlertDialog.Builder(getActivity());
+
+                builder.setTitle("Deletar Endereço")
+                        .setMessage("Você deseja deletar este Endereço?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                OcorrenciaEnderecoVida ocorrenciaEndereco = listOcorrenciaEndereco.get(position);
+
+
+                                //TODO: FAZER A MESMA COISA PRA ENVOVLIDO_ENDEREÇO
+//                                if (ColisaoTransito.find(ColisaoTransito.class, "enderecoveiculo1 = ?", ocorrenciaEndereco.getEnderecoTransito().getId().toString()).size() > 0
+//                                        || ColisaoTransito.find(ColisaoTransito.class, "enderecoveiculo2 = ?", ocorrenciaEndereco.getEnderecoTransito().getId().toString()).size() > 0)
+//                                {
+//                                    Toast.makeText(getContext(), "Não foi possível excluir! O endereço está atrelado à uma Colisão!", Toast.LENGTH_LONG).show();
+//                                    dialog.dismiss();
+//                                    return;
+//                                }
+
+                                adapterEndereco.remove(ocorrenciaEndereco.getEnderecoVida());
+
+                                ocorrenciaEndereco.getEnderecoVida().delete();
+
+                                ocorrenciaEndereco.delete();
+
+                                listOcorrenciaEndereco.remove(position);
+
+                                LimparCampos();
+
+                                if (lstvEnderecos.getAdapter().getCount() == 0)
+
+                                    ViewUtil.modifyAll(rltvBase, false);
+
+
+                                Toast.makeText(getActivity(), "Endereço Deletado com sucesso!", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
+        });
+
+
     }
 
 
@@ -907,6 +1055,12 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     public void AssociarLayout(View view)
     {
+        rltvBase = (RelativeLayout)view.findViewById(R.id.rltv_Detalhe_Endereco_Vida);
+
+        lstvEnderecos = (ListView) view.findViewById(R.id.lstv_enderecos_vida);
+
+        fabNovoEndereco = (FloatingActionButton) view.findViewById(R.id.fab_Endereco_Vida);
+
         //Dados Gerais
         edtEndereco = (EditText) view.findViewById(R.id.edt_Endereco_Vida);
         edtLatitude = (MaskedEditText) view.findViewById(R.id.edt_latitude_Vida);
@@ -1032,7 +1186,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     }
 
-    public void CarregarEndereco(EnderecoVida enderecoVida)
+    public void CarregarEndereco()
     {
         edtEndereco.setText(enderecoVida.getDescricaoEndereco());
         aucBairro.setText(enderecoVida.getBairro());

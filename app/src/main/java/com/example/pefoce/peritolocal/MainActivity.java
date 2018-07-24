@@ -49,6 +49,7 @@ import Model.Transito.VestigioTransito;
 import Model.Transito.VestigioColisao;
 import Model.Vida.EnderecoVida;
 import Model.Vida.LesaoEnvolvido;
+import Model.Vida.OcorrenciaEnderecoVida;
 import Model.Vida.OcorrenciaEnvolvidoVida;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
@@ -56,6 +57,7 @@ import Model.Vida.VestigioVidaOcorrencia;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.PaginatorOcorrencia;
+import Util.StringUtil;
 import Util.TempoUtil;
 
 
@@ -739,19 +741,23 @@ public class MainActivity extends Activity
 
         EnderecoVida enderecoVida = new EnderecoVida();
 
+        OcorrenciaEnderecoVida ocorrenciaEnderecoVida = new OcorrenciaEnderecoVida();
+
         documentoOcorrencia.save();
 
         ocorrenciaVida.setDocumento(documentoOcorrencia);
 
-        enderecoVida.setBairro(bundle.getString("bairro"));
 
-        enderecoVida.setCidade(bundle.getString("cidade"));
 
-        enderecoVida.setComplemento(bundle.getString("complemento"));
+        enderecoVida.setBairro(StringUtil.checkValue(bundle.getString("bairro"),-1,""));
 
-        enderecoVida.setTipoVia(BuscadorEnum.BuscarTipoVia(bundle.getString("tipoVia")));
+        enderecoVida.setCidade(StringUtil.checkValue(bundle.getString("cidade"),-1,""));
 
-        enderecoVida.setDescricaoEndereco(bundle.getString("endereco"));
+        enderecoVida.setComplemento(StringUtil.checkValue(bundle.getString("complemento"),-1,""));
+
+        enderecoVida.setTipoVia(BuscadorEnum.BuscarTipoVia(StringUtil.checkValue(bundle.getString("tipoVia"),-1,"")));
+
+        enderecoVida.setDescricaoEndereco(StringUtil.checkValue(bundle.getString("endereco"),-1,""));
 
         ocorrenciaVida.setNumIncidencia(bundle.getString("incidencia"));
 
@@ -773,9 +779,13 @@ public class MainActivity extends Activity
 
         ocorrenciaVida.save();
 
-        enderecoVida.setOcorrenciaId(ocorrenciaVida.getId());
-
         enderecoVida.save();
+
+        ocorrenciaEnderecoVida.setEnderecoVida(enderecoVida);
+
+        ocorrenciaEnderecoVida.setOcorrenciaVida(ocorrenciaVida);
+
+        ocorrenciaEnderecoVida.save();
 
 
         Intent it = new Intent(MainActivity.this, ManterPericiaVida.class);

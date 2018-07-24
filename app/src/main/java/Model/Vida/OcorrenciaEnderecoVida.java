@@ -6,14 +6,16 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 10/01/2018.
  */
 
-public class OcorrenciaEnvolvidoVida extends SugarRecord
+public class OcorrenciaEnderecoVida extends SugarRecord
 {
-    public OcorrenciaEnvolvidoVida()
+    public OcorrenciaEnderecoVida()
     {
+
     }
 
     OcorrenciaVida ocorrenciaVida;
-    EnvolvidoVida envolvidoVida;
+
+    EnderecoVida enderecoVida;
 
     public OcorrenciaVida getOcorrenciaVida()
     {
@@ -25,13 +27,13 @@ public class OcorrenciaEnvolvidoVida extends SugarRecord
         this.ocorrenciaVida = ocorrenciaVida;
     }
 
-    public EnvolvidoVida getEnvolvidoVida()
+    public EnderecoVida getEnderecoVida()
     {
-        return envolvidoVida;
+        return enderecoVida;
     }
 
-    public void setEnvolvidoVida(EnvolvidoVida envolvidoVida)
+    public void setEnderecoVida(EnderecoVida enderecoVida)
     {
-        this.envolvidoVida = envolvidoVida;
+        this.enderecoVida = enderecoVida;
     }
 }

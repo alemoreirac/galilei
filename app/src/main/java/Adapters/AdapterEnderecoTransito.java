@@ -18,15 +18,15 @@ import ViewHolders.ViewHolderEndereco;
  * Created by Pefoce on 28/06/2017.
  */
 
-public class AdapterEndereco extends ArrayAdapter<EnderecoTransito> implements View.OnClickListener{
+public class AdapterEnderecoTransito extends ArrayAdapter<EnderecoTransito> implements View.OnClickListener{
 
     private ArrayList<EnderecoTransito> dataSet;
 
     Context mContext;
 
-    public AdapterEndereco(ArrayList<EnderecoTransito> data, Context context)
+    public AdapterEnderecoTransito(ArrayList<EnderecoTransito> data, Context context)
     {
-        super(context, R.layout.row_ocorrencia,data);
+        super(context, R.layout.row_endereco,data);
         this.dataSet = data;
         this.mContext = context;
     }
@@ -60,7 +60,6 @@ public class AdapterEndereco extends ArrayAdapter<EnderecoTransito> implements V
         {
             viewHolder = (ViewHolderEndereco) convertView.getTag();
         }
-
 
         if(enderecoTransito.getDescricaoEndereco()!= null )
         {

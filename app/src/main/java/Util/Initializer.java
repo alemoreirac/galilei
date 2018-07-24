@@ -55,7 +55,6 @@ public class Initializer
 
         ArrayList<DadosTerritoriais> dadosTerritoriais = new ArrayList<>();
 
-
         //AIS 1
         // Cais do Porto, Vicente Pinzón, Mucuripe, Aldeota, Varjota, Praia de Iracema e Meireles.
 
@@ -83,19 +82,20 @@ public class Initializer
         //AIS 3
         // Messejana,Ancuri, Pedras, Barroso, Jangurussu, Conjunto Palmeiras,  Curió, Lagoa Redonda, Guajeru,  SãoBento, Palpina, Parque Santa Maria e Coaçu
 
-
         dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Messejana", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Barroso", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Pedras", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Ancuri", AreaIntegradaSeguranca.AIS_3));
+        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Parque Santa Maria", AreaIntegradaSeguranca.AIS_3));
+
         dadosTerritoriais.add(new DadosTerritoriais("30º Distrito Policial", "Jangurussu", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("30º Distrito Policial", "Conjunto Palmeiras", AreaIntegradaSeguranca.AIS_3));
+
         dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Curió", AreaIntegradaSeguranca.AIS_3));
-        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Ancuri", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Lagoa Redonda", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Guajeru", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "São Bento", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Paupina", AreaIntegradaSeguranca.AIS_3));
-        dadosTerritoriais.add(new DadosTerritoriais("6º Distrito Policial", "Parque Santa Maria", AreaIntegradaSeguranca.AIS_3));
         dadosTerritoriais.add(new DadosTerritoriais("35º Distrito Policial", "Coaçu", AreaIntegradaSeguranca.AIS_3));
 
         //AIS 4
@@ -256,8 +256,6 @@ public class Initializer
         dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Horto Florestal", AreaIntegradaSeguranca.AIS_1));
         dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Jereissate I", AreaIntegradaSeguranca.AIS_1));
         dadosTerritoriais.add(new DadosTerritoriais("Delegacia Metropolitana de Maracanaú", "Jereissate II", AreaIntegradaSeguranca.AIS_1));
-
-
 
 //        bairros.add(new Bairro("Acaracuzinho"));
 //        bairros.add(new Bairro("Aerolândia"));

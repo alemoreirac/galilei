@@ -583,7 +583,7 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
                             .add("tipoOcorrencia", ocorrencia.getTipoOcorrencia().getValor())
                             .add("dataOcorrencia", ocorrenciaVida.getDataHoraFormatadaAtendimento())
                             .add("usuario", ocorrencia.getPerito().getNome())
-                            .add("endereco", enderecoVida.toString())
+                            .add("endereco", enderecoVida.getEnderecoPost())
                             .add("ais", ocorrenciaVida.getAis().getValor())
                             .add("delegacia", StringUtil.checkValue(ocorrenciaVida.getOrgaoDestino(),-1,"Sem valor"))
                             .add("latitude", enderecoVida.getLatitude())

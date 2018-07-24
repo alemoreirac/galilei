@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import Adapters.AdapterEndereco;
+import Adapters.AdapterEnderecoTransito;
 import Enums.CategoriaFoto;
 import Enums.Transito.CondicaoPista;
 import Enums.IluminacaoVia;
@@ -85,7 +85,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     View mView;
     int lastPosition;
     ImageButton imgbCoordenadas = null;
-    AdapterEndereco adapterEndereco = null;
+    AdapterEnderecoTransito adapterEnderecoTransito = null;
     EnderecoTransito endereco = null;
     Spinner spnTipoVia = null;
     Spinner spnSemaforo = null;
@@ -222,7 +222,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
                 enderecoTransitoModel.add(oe.getEnderecoTransito());
         }
 
-        adapterEndereco = new AdapterEndereco(enderecoTransitoModel, getActivity());
+        adapterEnderecoTransito = new AdapterEnderecoTransito(enderecoTransitoModel, getActivity());
 
         ViewUtil.modifyAll(rltv_Endereco, false);
 
@@ -235,14 +235,13 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
                 Cidade = enderecoTransitoModel.get(0).getCidade();
         }
 
-
         nmbFaixas.setActionEnabled(ActionEnum.DECREMENT, false);
         nmbFaixas.setActionEnabled(ActionEnum.INCREMENT, false);
         nmbPistas.setActionEnabled(ActionEnum.DECREMENT, false);
         nmbPistas.setActionEnabled(ActionEnum.INCREMENT, false);
 
-        listEnderecos.setAdapter(adapterEndereco);
-        adapterEndereco.notifyDataSetChanged();
+        listEnderecos.setAdapter(adapterEnderecoTransito);
+        adapterEnderecoTransito.notifyDataSetChanged();
 
         ((ManterPericiaTransito) getActivity()).txvToolbarTitulo.setText("Endereços");
     }
@@ -404,7 +403,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         ocorrenciaEndereco.save();
 
-        adapterEndereco.notifyDataSetChanged();
+        adapterEnderecoTransito.notifyDataSetChanged();
 
     }
 
@@ -678,7 +677,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
                                     return;
                                 }
 
-                                adapterEndereco.remove(ocorrenciaEndereco.getEnderecoTransito());
+                                adapterEnderecoTransito.remove(ocorrenciaEndereco.getEnderecoTransito());
 
                                 ocorrenciaEndereco.getEnderecoTransito().delete();
 
@@ -734,7 +733,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
                 enderecoTransitoModel.add(endereco);
 
-                adapterEndereco.notifyDataSetChanged();
+                adapterEnderecoTransito.notifyDataSetChanged();
 
                 LimparCampos();
 
@@ -745,7 +744,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
                 nmbPistas.setActionEnabled(ActionEnum.DECREMENT, true);
                 nmbPistas.setActionEnabled(ActionEnum.INCREMENT, true);
 
-                listEnderecos.performItemClick(listEnderecos, BuscadorEnum.PegarPosicaoEndereco(enderecoTransitoModel, endereco), listEnderecos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoEndereco(enderecoTransitoModel, endereco)));
+                listEnderecos.performItemClick(listEnderecos, BuscadorEnum.PegarPosicaoEnderecoTransito(enderecoTransitoModel, endereco), listEnderecos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoEnderecoTransito(enderecoTransitoModel, endereco)));
 
 //                int index = enderecoTransitoModel.indexOf(endereco);
 //

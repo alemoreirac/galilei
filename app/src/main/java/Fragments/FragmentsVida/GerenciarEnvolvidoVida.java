@@ -59,6 +59,8 @@ import Enums.Vida.IndiciosTempoMorte;
 import Enums.Vida.TipoMorte;
 import Model.Foto;
 import Model.Ocorrencia;
+import Model.Vida.EnderecoVida;
+import Model.Vida.OcorrenciaEnderecoVida;
 import Model.Vida.OcorrenciaEnvolvidoVida;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.OcorrenciaVida;
@@ -89,8 +91,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
     EditText edtMesNascimento;
     EditText edtAnoNascimento;
     Spinner spnIndiciosTempoMorte;
-//    EditText edtTempoMorte;
-//    Spinner spnUnidadeTempo;
+    //    EditText edtTempoMorte;
+    Spinner spnEndereco;
     Spinner spnGenero;
     EditText edtVestimentas;
     EditText edtObservacoes;
@@ -119,6 +121,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
     ArrayList<EnvolvidoVida> envolvidoVidaModel;
     OcorrenciaEnvolvidoVida ocorrenciaEnvolvidoVida;
     public EnvolvidoVida envolvidoVida;
+
+    ArrayList<EnderecoVida> enderecos;
 
     private OnFragmentInteractionListener mListener;
 
@@ -177,14 +181,13 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         if (rltvEnvolvido.getChildAt(0).isEnabled())
             try
             {
-               if(!TempoUtil.checkValues(llDatePicker))
-               {
+                if (!TempoUtil.checkValues(llDatePicker))
+                {
                     edtDiaNascimento.setTextColor(Color.RED);
                     Toast.makeText(getContext(), "Dia inválido", Toast.LENGTH_LONG).show();
-                   VerificationError ve = new VerificationError("");
-                   return ve;
-                }
-                else
+                    VerificationError ve = new VerificationError("");
+                    return ve;
+                } else
                     SalvarEnvolvidoVida();
 
 
@@ -247,17 +250,19 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
         ((ManterPericiaVida) getActivity()).txvToolbarTitulo.setText("Envolvidos");
 
-        AssociarLayout(mView);
-        PovoarSpinners(getContext());
-        AssociarEventos();
-
-        LimparCampos();
 
         ocorrenciaVida = ((ManterPericiaVida) getActivity()).ocorrenciaVida;
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
 
         ocorrenciaEnvolvidosList = OcorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
+
+
+        AssociarLayout(mView);
+        PovoarSpinners(getContext());
+        AssociarEventos();
+
+        LimparCampos();
 
         envolvidoVidaModel = new ArrayList<>();
 
@@ -294,14 +299,12 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         llDatePicker = (LinearLayout) view.findViewById(R.id.ll_Data_Nascimento_Envolvido_Vida);
         spnGenero = (Spinner) view.findViewById(R.id.spn_Genero_Envolvido_Vida);
         spnIndiciosTempoMorte = (Spinner) view.findViewById(R.id.spn_Indicios_Tempo_Morte_Envolvido_Vida);
-//        spnUnidadeTempo = (Spinner) view.findViewById(R.id.spn_Indicios_Tempo_Morte_Envolvido_Vida);
+        spnEndereco = (Spinner) view.findViewById(R.id.spn_Endereco_Envolvido_Vida);
         spnTipoDocumento = (Spinner) view.findViewById(R.id.spn_Tipo_Documento_Envolvido_Vida);
         edtNomeEnvolvido = (EditText) view.findViewById(R.id.edt_Nome_Envolvido_Vida);
         edtVestimentas = (EditText) view.findViewById(R.id.edt_Vestimentas_Envolvido_Vida);
         edtNumDocumento = (EditText) view.findViewById(R.id.edt_NumDocumento_Envolvido_Vida);
         edtObservacoes = (EditText) view.findViewById(R.id.edt_Observacao_Envolvido_Vida);
-//        edtTempoMorte = (EditText) view.findViewById(R.id.edt_Tempo_Morte_Envolvido_Vida);
-//        txvDataNascimento = (TextView) view.findViewById(R.id.txv_Data_Nascimento_Valor_Envolvido_Vida);
         edtDiaNascimento = (EditText) view.findViewById(R.id.edt_Dia_Nascimento_Envolvido_Vida);
         edtMesNascimento = (EditText) view.findViewById(R.id.edt_Mes_Nascimento_Envolvido_Vida);
         edtAnoNascimento = (EditText) view.findViewById(R.id.edt_Ano_Nascimento_Envolvido_Vida);
@@ -327,7 +330,6 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         envolvidoVida.setPosicaoPernaEsquerda(BuscadorEnum.BuscarPosicaoPerna(bd.getString("PernaEsquerda")));
 
         envolvidoVida.setPosicaoCabeca(BuscadorEnum.BuscarPosicaoCabeca(bd.getString("Cabeca")));
-
         envolvidoVida.setPosicaoCorpo(BuscadorEnum.BuscarPosicaoTorax(bd.getString("Torax")));
     }
 
@@ -360,6 +362,18 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             generos.add(g.getValor());
 
         spnGenero.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, generos));
+
+//        List<String>
+
+
+        enderecos = new ArrayList<>();
+
+        List<OcorrenciaEnderecoVida> ocorrenciaEnderecosSpn = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
+
+        for (OcorrenciaEnderecoVida ov : ocorrenciaEnderecosSpn)
+            enderecos.add(ov.getEnderecoVida());
+
+        spnEndereco.setAdapter(new ArrayAdapter<EnderecoVida>(ctx, android.R.layout.simple_spinner_dropdown_item, enderecos));
     }
 
     public void AssociarEventos()
@@ -667,7 +681,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             @Override
             public void afterTextChanged(Editable editable)
             {
-                if(edtDiaNascimento.getCurrentTextColor() == Color.RED)
+                if (edtDiaNascimento.getCurrentTextColor() == Color.RED)
                     edtDiaNascimento.setTextColor(Color.BLACK);
             }
         });
@@ -704,9 +718,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
             @Override
             public void afterTextChanged(Editable editable)
-            {
-
-            }
+            {}
         });
 
         edtAnoNascimento.addTextChangedListener(new TextWatcher()
@@ -855,7 +867,6 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                     spnTipoDocumento.setSelection(BuscadorEnum.getIndex(spnTipoDocumento, envolvidoVida.getDocumentoTipo().getValor()));
             }
 
-
             if (envolvidoVida.getDocumentoValor() != null)
                 edtNumDocumento.setText(envolvidoVida.getDocumentoValor());
         }
@@ -866,16 +877,18 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         if (envolvidoVida.getGenero() != null)
             spnGenero.setSelection(BuscadorEnum.getIndex(spnGenero, envolvidoVida.getGenero().getValor()));
 
-        if(envolvidoVida.getIndiciosTempoMorte() != null)
-        {
+        if (envolvidoVida.getIndiciosTempoMorte() != null)
             spnIndiciosTempoMorte.setSelection(BuscadorEnum.getIndex(spnIndiciosTempoMorte, envolvidoVida.getIndiciosTempoMorte().getValor()));
-        }
 
         if (envolvidoVida.getVestes() != null)
             edtVestimentas.setText(envolvidoVida.getVestes());
 
         if (envolvidoVida.getObservacoes() != null)
             edtObservacoes.setText(envolvidoVida.getObservacoes());
+
+        if (envolvidoVida.getEnderecoId() != null)
+            spnEndereco.setSelection(BuscadorEnum.getEnderecoVidaById(spnEndereco, envolvidoVida.getId()));
+
     }
 
     public void SalvarEnvolvidoVida()
@@ -886,14 +899,12 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         envolvidoVida.setObservacoes(edtObservacoes.getText().toString());
         envolvidoVida.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
         envolvidoVida.setIndiciosTempoMorte(BuscadorEnum.BuscarIndicioTempoMorte(spnIndiciosTempoMorte.getSelectedItem().toString()));
-
-//        envolvidoVida.setDataNascimentoString(txvDataNascimento.getText().toString());
+        envolvidoVida.setEnderecoId(((EnderecoVida)spnEndereco.getSelectedItem()).getId());
 
         envolvidoVida.setVestes(edtVestimentas.getText().toString());
         envolvidoVida.setTipoMorte(BuscadorEnum.BuscarTipoMorte(spnTipoMorte.getSelectedItem().toString()));
 
-
-        if(!edtAnoNascimento.getText().toString().equals("") &&
+        if (!edtAnoNascimento.getText().toString().equals("") &&
                 !edtMesNascimento.getText().toString().equals("") &&
                 !edtDiaNascimento.getText().toString().equals(""))
         {
@@ -901,7 +912,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             {
                 envolvidoVida.setDataNascimentoString(edtDiaNascimento.getText() + "/"
                         + edtMesNascimento.getText() + "/" + edtAnoNascimento.getText().toString());
-            }catch (Exception e)
+            } catch (Exception e)
             {
                 envolvidoVida.setNascimento(null);
             }
