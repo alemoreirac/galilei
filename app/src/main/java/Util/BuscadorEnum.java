@@ -809,9 +809,9 @@ public class BuscadorEnum
     {
         for (int i = 0; i < spinner.getCount(); i++)
         {
-            if (((Veiculo) spinner.getItemAtPosition(i)).getId() != null)
+            if (((EnderecoVida) spinner.getItemAtPosition(i)).getId() != null)
             {
-                if (((Veiculo) spinner.getItemAtPosition(i)).getId().equals(id))
+                if (((EnderecoVida) spinner.getItemAtPosition(i)).getId().equals(id))
                     return i;
             }
         }

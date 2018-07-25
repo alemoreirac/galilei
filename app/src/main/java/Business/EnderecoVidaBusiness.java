@@ -19,7 +19,6 @@ public class EnderecoVidaBusiness
 
             enderecoVida.add(oev.getEnderecoVida());
 
-
         return enderecoVida;
     }
 }

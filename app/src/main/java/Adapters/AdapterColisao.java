@@ -21,11 +21,7 @@ import ViewHolders.ViewHolderColisao;
 public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements View.OnClickListener
 {
 
-//    private ArrayList<ColisaoTransito> dataSet;
-
     Context mContext;
-
-//    private int lastPosition = -1;
 
     public AdapterColisao(ArrayList<ColisaoTransito> data, Context context)
     {
@@ -38,6 +34,12 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
     public void onClick(View v)
     {
     }
+//
+//    @Override
+//    public ColisaoTransito getItem(int position)
+//    {
+//        return
+//    }
 
     public View getView(int position,View convertView,ViewGroup parent)
     {
@@ -60,8 +62,6 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
         else
         {
             viewHolder = (ViewHolderColisao) convertView.getTag();
-
-
         }
 
         switch(colisaoTransito.getAtoresColisao())
@@ -126,7 +126,8 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
 //        }
 
         if(colisaoTransito.getVeiculo1() != null)
-        viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString() + " "+ colisaoTransito.getOrdemAcontecimento());
+//        viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString() + " "+ colisaoTransito.getOrdemAcontecimento()+colisaoTransito.getId().toString());
+            viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString() + " "+colisaoTransito.getId().toString());
 
         if(colisaoTransito.getTipoInteracao() != null)
         viewHolder.getTxvTipoInteracao().setText(colisaoTransito.getTipoInteracao().getValor());

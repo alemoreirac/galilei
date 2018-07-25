@@ -311,6 +311,8 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             try
             {
                 SalvarColisao();
+                colisaoTransito = null;
+                ocorrenciaColisao = null;
             } catch (Exception e)
             {
                 return new VerificationError(e.getMessage());
@@ -374,7 +376,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
 
         adp = new AdapterColisao(colisaoTransitoModel, getActivity());
         listColisoes.setAdapter(adp);
-
+adp.notifyDataSetChanged();
 
     }
 
@@ -547,41 +549,35 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             }
         });
 
-        listColisoes.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+        listColisoes.setOnItemClickListener((parent, v, position, id) -> {
+            if (flagVisualLstv)
             {
-                if (flagVisualLstv)
-                {
-                    flagVisualLstv = false;
-                    return;
-                }
+                flagVisualLstv = false;
+                return;
+            }
 
-                if (lastPosition != -1 && lastPosition != position)
-                    SalvarColisao();
+            if (lastPosition != -1 && lastPosition != position && colisaoTransito!=null)
+                SalvarColisao();
 
-                lastPosition = position;
+            lastPosition = position;
 
-                colisaoTransito = colisaoTransitoModel.get(position);
+            colisaoTransito = colisaoTransitoModel.get(position);
 
-                HabilitarInterface(true);
+            HabilitarInterface(true);
 
-                LimparCampos();
+            LimparCampos();
 
-                CarregarColisao();
+            CarregarColisao();
 
-
-                try
-                {
-                    ocorrenciaColisao = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class,
-                            "ocorrencia_transito = ? and colisao_transito = ?",
-                            ocorrenciaTransitoColisao
-                                    .getId().toString(), colisaoTransito.getId().toString()).get(0);
-                } catch (Exception e)
-                {
-                    ocorrenciaColisao = new OcorrenciaTransitoColisao();
-                }
+            try
+            {
+                ocorrenciaColisao = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class,
+                        "ocorrencia_transito = ? and colisao_transito = ?",
+                        ocorrenciaTransitoColisao
+                                .getId().toString(), colisaoTransito.getId().toString()).get(0);
+            } catch (Exception e)
+            {
+                ocorrenciaColisao = new OcorrenciaTransitoColisao();
             }
         });
 
@@ -1019,7 +1015,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                if (ocorrenciaColisao == null)
+                if (ocorrenciaColisao == null || colisaoTransito==null)
                     return;
 
 //                adp.remove(ocorrenciaColisao.getColisaoTransito());
@@ -1299,6 +1295,8 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
         if (rbtnNenhum.isChecked())
             colisaoTransito.setAtoresColisao(AtoresColisao.NENHUM);
 
+
+
         if (rbtnOpcaoVeiculo.isChecked())
         {
             if (((Veiculo) spnVeiculo2.getSelectedItem()).getId()
@@ -1380,11 +1378,14 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
             colisaoTransito.setTipoInteracao(null);
         }
 
+//        ColisaoTransito.update(colisaoTransito);
         colisaoTransito.save();
 
         ocorrenciaColisao.setOcorrenciaTransito(ocorrenciaTransitoColisao);
         ocorrenciaColisao.setColisaoTransito(colisaoTransito);
         ocorrenciaColisao.save();
+
+//        OcorrenciaTransitoColisao.update(ocorrenciaColisao);
 
         adp.notifyDataSetChanged();
 
