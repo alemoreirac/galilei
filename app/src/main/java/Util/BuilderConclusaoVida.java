@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import Busines.DelegaciaBusiness;
+import Busines.EnderecoVidaBusiness;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.TipoLocalCrime;
-import Enums.Transito.SetorDano;
 import Enums.Vida.ParteCorpo;
-import Enums.Vida.TipoMorte;
 import Model.Ocorrencia;
-import Model.Pessoa;
-import Model.Transito.Dano;
 import Model.Vida.EnderecoVida;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.Lesao;
@@ -32,8 +30,10 @@ import Model.Vida.VestigioVidaOcorrencia;
 
 public class BuilderConclusaoVida
 {
+
+    static EnderecoVida primeiroEndereco;
     static OcorrenciaVida ocorrenciaVida;
-    static EnderecoVida enderecoVida;
+    static List<EnderecoVida> enderecosVidaList;
     static Ocorrencia ocorrencia;
     static List<EnvolvidoVida> envolvidoVidaList;
     static List<VestigioVida> vestigioVidaList;
@@ -48,7 +48,7 @@ public class BuilderConclusaoVida
 
         try
         {
-            enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
+            enderecosVidaList = EnderecoVidaBusiness.findEnderecoByOcorrenciaId(ocorrenciaVida.getId());
         } catch (Exception e)
         {
 
@@ -124,9 +124,9 @@ public class BuilderConclusaoVida
                 builderConclusao.append(ocorrencia.getPerito().getNome());
         }
 
-        if (ocorrenciaVida.getOrgaoOrigem() != null && ocorrenciaVida.getNumIncidencia() != null)
+        if (ocorrenciaVida.getOrgaoOrigemId() != null && ocorrenciaVida.getNumIncidencia() != null)
             builderConclusao.append(" para proceder ao exame acima referido, a fim de ser atendida a " +
-                    "solicitação da " + ocorrenciaVida.getOrgaoOrigem() + "com número de incidência " + ocorrencia.getOcorrenciaVida().getNumIncidencia() + ".\n");
+                    "solicitação da " + DelegaciaBusiness.findDescricaoById(ocorrenciaVida.getOrgaoOrigemId()) + " com número de incidência " + ocorrencia.getOcorrenciaVida().getNumIncidencia() + ".\n");
 
         builderConclusao.append("Findos os trabalhos o infrafirmado passa a apresentar os " +
                 "resultados dos procedimentos executados sistematicamente, à luz de princípios " +
@@ -190,17 +190,22 @@ public class BuilderConclusaoVida
         builderConclusao.append(ocorrenciaVida.getDataAtendimentoString());
         builderConclusao.append(", esta equipe pericial composta pelo técnico acima citado, compareceu na ");
 
-        builderConclusao.append(enderecoVida.getTipoVia().getValor() + " ");
-        builderConclusao.append(enderecoVida.getDescricaoEndereco() + " ");
+        if(enderecosVidaList.size()>0)
+        primeiroEndereco = enderecosVidaList.get(0);
+
+        if(primeiroEndereco.getTipoVia()!=null)
+        builderConclusao.append(primeiroEndereco.getTipoVia().getValor() + " ");
+
+        builderConclusao.append(primeiroEndereco.getDescricaoEndereco() + " ");
         builderConclusao.append("no bairro: ");
-        builderConclusao.append(enderecoVida.getBairro() + " ");
+        builderConclusao.append(primeiroEndereco.getBairro() + " ");
         builderConclusao.append("na cidade de ");
-        builderConclusao.append(enderecoVida.getCidade() + " ");
+        builderConclusao.append(primeiroEndereco.getCidade() + " ");
         builderConclusao.append("com cooordenadas ");
         builderConclusao.append("LAT: ");
-        builderConclusao.append(enderecoVida.getLatitude() + ", ");
+        builderConclusao.append(primeiroEndereco.getLatitude() + ", ");
         builderConclusao.append("LONG: ");
-        builderConclusao.append(enderecoVida.getLongitude());
+        builderConclusao.append(primeiroEndereco.getLongitude());
 
 
         if (ocorrenciaVida.getAutoridadePresente() != null)
@@ -350,104 +355,109 @@ public class BuilderConclusaoVida
 
     private static void ConstruirLocal()
     {
-        builderConclusao.append(".\n\nTrata-se de um local ");
-
-        if (enderecoVida.getLocalAberto() != null)
-            builderConclusao.append(enderecoVida.getLocalAberto().getValor());
-
-        if (enderecoVida.getTipoLocalCrime() != null)
+        for(EnderecoVida ev : enderecosVidaList)
         {
-            switch (enderecoVida.getTipoLocalCrime())
+            builderConclusao.append("\n\nTrata-se de um local ");
+
+            if (ev.getLocalAberto() != null)
+                builderConclusao.append(ev.getLocalAberto().getValor());
+
+            if (ev.getTipoLocalCrime() != null)
             {
-                case VIA_PUBLICA:
-                    builderConclusao.append(", mais precisamente, uma via pública");
-                    builderConclusao.append(", de pavimentação ");
+                switch (ev.getTipoLocalCrime())
+                {
+                    case VIA_PUBLICA:
+                        builderConclusao.append(", mais precisamente, uma via pública");
+                        builderConclusao.append(", de pavimentação ");
 
-                    if (enderecoVida.getPavimentacao() != null)
-                        builderConclusao.append(enderecoVida.getPavimentacao().getValor());
-                    break;
-                case OUTRO:
-                    if (enderecoVida.getTipoLocalCrime().equals(TipoLocalCrime.OUTRO))
-                        builderConclusao.append(", mais precisamente, um(a) " + enderecoVida.getObservacao());
-                    break;
-                case PRAIA:
-                    builderConclusao.append(", mais precisamente, na faixa litorânea em um local de ");
-                    if (enderecoVida.getLocalPraia() != null)
-                        builderConclusao.append(enderecoVida.getLocalPraia().getValor());
-                    if (enderecoVida.getTipoVegetacao() != null)
-                    {
-                        switch (enderecoVida.getTipoVegetacao())
+                        if (ev.getPavimentacao() != null)
+                            builderConclusao.append(ev.getPavimentacao().getValor());
+                        break;
+                    case OUTRO:
+                        if (ev.getTipoLocalCrime().equals(TipoLocalCrime.OUTRO))
+                            builderConclusao.append(", mais precisamente, um(a) " + ev.getObservacao());
+                        break;
+                    case PRAIA:
+                        builderConclusao.append(", mais precisamente, na faixa litorânea em um local de ");
+                        if (ev.getLocalPraia() != null)
+                            builderConclusao.append(ev.getLocalPraia().getValor());
+                        if (ev.getTipoVegetacao() != null)
                         {
-                            case SEM_VEGETACAO:
-                                builderConclusao.append(" sem vegetação.");
-                                break;
-                            case CLAREIRA:
-                                builderConclusao.append(" situado em uma clareira");
-                                break;
-                            default:
-                                builderConclusao.append(" com " + enderecoVida.getTipoVegetacao().getValor());
-                                break;
+                            switch (ev.getTipoVegetacao())
+                            {
+                                case SEM_VEGETACAO:
+                                    builderConclusao.append(" sem vegetação.");
+                                    break;
+                                case CLAREIRA:
+                                    builderConclusao.append(" situado em uma clareira");
+                                    break;
+                                default:
+                                    builderConclusao.append(" com " + ev.getTipoVegetacao().getValor());
+                                    break;
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                case RURAL:
-                    builderConclusao.append(", mais precisamente, em uma zona rural ");
+                    case RURAL:
+                        builderConclusao.append(", mais precisamente, em uma zona rural ");
 
-                    if (enderecoVida.getTipoVegetacao() != null)
-                    {
-                        switch (enderecoVida.getTipoVegetacao())
+                        if (ev.getTipoVegetacao() != null)
                         {
-                            case SEM_VEGETACAO:
-                                builderConclusao.append(" sem vegetação.");
-                                break;
-                            case CLAREIRA:
-                                builderConclusao.append(" situado em uma clareira");
-                                break;
-                            default:
-                                builderConclusao.append(" com " + enderecoVida.getTipoVegetacao().getValor().toLowerCase());
-                                break;
+                            switch (ev.getTipoVegetacao())
+                            {
+                                case SEM_VEGETACAO:
+                                    builderConclusao.append(" sem vegetação.");
+                                    break;
+                                case CLAREIRA:
+                                    builderConclusao.append(" situado em uma clareira");
+                                    break;
+                                default:
+                                    builderConclusao.append(" com " + ev.getTipoVegetacao().getValor().toLowerCase());
+                                    break;
+                            }
                         }
-                    }
 
-                    break;
+                        break;
 
-                case RESIDENCIAL:
-                    builderConclusao.append(", mais precisamente, residência ");
+                    case RESIDENCIAL:
+                        builderConclusao.append(", mais precisamente, residência ");
 
-                    if (enderecoVida.getLocalResidencia() != null)
-                        builderConclusao.append(", no lado " + enderecoVida.getLocalResidencia().getValor().toLowerCase());
+                        if (ev.getLocalResidencia() != null)
+                            builderConclusao.append(", no lado " + ev.getLocalResidencia().getValor().toLowerCase());
 
-                    if (enderecoVida.getComodo() != null)
-                        builderConclusao.append(", na parte do(a): " + enderecoVida.getLocalResidencia().getValor().toLowerCase());
-                    break;
+                        if (ev.getComodo() != null)
+                            builderConclusao.append(", na parte do(a): " + ev.getLocalResidencia().getValor().toLowerCase());
+                        break;
 
+                }
             }
+
+            builderConclusao.append(", situado(a) na ");
+
+            builderConclusao.append(ev.getTipoVia().getValor() + " ");
+            builderConclusao.append(ev.getDescricaoEndereco() + " ");
+            builderConclusao.append("no bairro: ");
+            builderConclusao.append(ev.getBairro() + " ");
+            builderConclusao.append("na cidade de ");
+            builderConclusao.append(ev.getCidade() + " ");
+
+
+            if (ev.getCondicoesClimaticas() != null)
+            {
+                builderConclusao.append("\nDurante os exames, as condições climáticas eram de: ");
+                builderConclusao.append(ev.getCondicoesClimaticas().getValor().toLowerCase());
+
+                if (ev.getTipoIluminacao() != null)
+                {
+                    builderConclusao.append(", com ");
+                    builderConclusao.append(ev.getTipoIluminacao().getValor().toLowerCase());
+                }
+                if (ev.getObservacao() != null)
+                    builderConclusao.append(", observa-se que " + ev.getObservacao());
+            }
+
         }
 
-        builderConclusao.append(", situado(a) na ");
-
-        builderConclusao.append(enderecoVida.getTipoVia().getValor() + " ");
-        builderConclusao.append(enderecoVida.getDescricaoEndereco() + " ");
-        builderConclusao.append("no bairro: ");
-        builderConclusao.append(enderecoVida.getBairro() + " ");
-        builderConclusao.append("na cidade de ");
-        builderConclusao.append(enderecoVida.getCidade() + " ");
-
-
-        if (enderecoVida.getCondicoesClimaticas() != null)
-        {
-            builderConclusao.append("\nDurante os exames, as condições climáticas eram de: ");
-            builderConclusao.append(enderecoVida.getCondicoesClimaticas().getValor().toLowerCase());
-
-            if (enderecoVida.getTipoIluminacao() != null)
-            {
-                builderConclusao.append(", com ");
-                builderConclusao.append(enderecoVida.getTipoIluminacao().getValor().toLowerCase());
-            }
-            if (enderecoVida.getObservacao() != null)
-                builderConclusao.append(", observa-se que " + enderecoVida.getObservacao());
-        }
 
     }
 }

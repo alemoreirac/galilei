@@ -106,6 +106,8 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     LocationManager locationManager;
     Spinner spnTipoVia;
 
+    int REQUEST_CODE = 1;
+
     int lastPosition;
 
     RelativeLayout rltvBase;
@@ -183,7 +185,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     private MagicalCamera magicalCamera;
     private MagicalPermissions magicalPermissions;
 
-    private OnFragmentInteractionListener mListener;
+    boolean checking;
 
     public GerenciarEnderecoVida()
     {
@@ -296,7 +298,6 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     public void onDetach()
     {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -715,64 +716,67 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
         imgbCoordenadas.setOnClickListener(new View.OnClickListener()
             {
-                boolean checking = true;
-
                 @Override
                 public void onClick(View v)
                 {
-                    pbCoordenadas.setVisibility(View.VISIBLE);
-                    imgbCoordenadas.setVisibility(View.INVISIBLE);
-                    edtLatitude.setEnabled(false);
-                    edtLongitude.setEnabled(false);
-
-                    SingleShotLocationProvider.requestSingleUpdate(getActivity(),
-                            new SingleShotLocationProvider.LocationCallback()
-                            {
-                                @Override
-                                public void onNewLocationAvailable(Double lat, Double lng)
-                                {
-                                    edtLatitude.setText(StringUtil.converterLatitude(lat));
-                                    edtLongitude.setText(StringUtil.converterLongitude(lng));
-
-                                    imgbCoordenadas.setVisibility(View.VISIBLE);
-                                    pbCoordenadas.setVisibility(View.INVISIBLE);
-                                    edtLatitude.setEnabled(true);
-                                    edtLongitude.setEnabled(true);
-                                    checking = false;
-                                }
-                            }
-                    );
-
-                    Looper myLooper = Looper.myLooper();
-
-                    final Handler myHandler = new Handler(myLooper);
-                    myHandler.postDelayed(new Runnable()
-                    {
-                        public void run()
-                        {
-                            if (checking)
-                            {
-                             try
-                             {
-                                 SingleShotLocationProvider.cancelUpdate();
-                                 Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
-
-                                 imgbCoordenadas.setVisibility(View.VISIBLE);
-                                 pbCoordenadas.setVisibility(View.INVISIBLE);
-                                 edtLatitude.setEnabled(true);
-                                 edtLongitude.setEnabled(true);
-                             }catch (Exception e)
-                             {
-                                 Toast.makeText(getActivity(),"Erro! Tente novamente",Toast.LENGTH_LONG);
-                                 imgbCoordenadas.setVisibility(View.VISIBLE);
-                                 pbCoordenadas.setVisibility(View.INVISIBLE);
-                                 edtLatitude.setEnabled(true);
-                                 edtLongitude.setEnabled(true);
-
-                             }
-                            }
-                        }
-                    }, 1000 * 120);
+                    requestPermissions( new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+//
+//                    checking = true;
+//
+//                    pbCoordenadas.setVisibility(View.VISIBLE);
+//                    imgbCoordenadas.setVisibility(View.INVISIBLE);
+//                    edtLatitude.setEnabled(false);
+//                    edtLongitude.setEnabled(false);
+//
+//                    SingleShotLocationProvider.requestSingleUpdate(getActivity(),
+//                            new SingleShotLocationProvider.LocationCallback()
+//                            {
+//                                @Override
+//                                public void onNewLocationAvailable(Double lat, Double lng)
+//                                {
+//                                    edtLatitude.setText(StringUtil.converterLatitude(lat));
+//                                    edtLongitude.setText(StringUtil.converterLongitude(lng));
+//
+//                                    imgbCoordenadas.setVisibility(View.VISIBLE);
+//                                    pbCoordenadas.setVisibility(View.INVISIBLE);
+//                                    edtLatitude.setEnabled(true);
+//                                    edtLongitude.setEnabled(true);
+//                                    checking = false;
+//                                }
+//                            }
+//                    );
+//
+//                    Looper myLooper = Looper.myLooper();
+//
+//                    final Handler myHandler = new Handler(myLooper);
+//                    myHandler.postDelayed(new Runnable()
+//                    {
+//                        public void run()
+//                        {
+//                            if (checking)
+//                            {
+//                             try
+//                             {
+//                                 SingleShotLocationProvider.cancelUpdate();
+//                                 Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
+//
+//                                 imgbCoordenadas.setVisibility(View.VISIBLE);
+//                                 pbCoordenadas.setVisibility(View.INVISIBLE);
+//                                 edtLatitude.setEnabled(true);
+//                                 edtLongitude.setEnabled(true);
+//                             }catch (Exception e)
+//                             {
+//                                 Toast.makeText(getActivity(),"Erro! Tente novamente",Toast.LENGTH_LONG);
+//                                 imgbCoordenadas.setVisibility(View.VISIBLE);
+//                                 pbCoordenadas.setVisibility(View.INVISIBLE);
+//                                 edtLatitude.setEnabled(true);
+//                                 edtLongitude.setEnabled(true);
+//
+//                             }
+//                            }
+//                        }
+//                    }, 1000 * 120);
                 }
             }
         );
@@ -883,46 +887,72 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // If this is our permission request result.
-        if (requestCode == 1)
+        if(requestCode == REQUEST_CODE)
         {
-            if (grantResults.length > 0)
+            if(grantResults.length==0)
+                return;
+
+            for(int i = 0 ; i<grantResults.length;i++)
             {
-                // Construct result message.
-                StringBuffer msgBuf = new StringBuffer();
-                int grantResult = grantResults[0];
-                if (grantResult == PackageManager.PERMISSION_GRANTED)
+                if(grantResults[i] != PackageManager.PERMISSION_GRANTED)
                 {
-                    msgBuf.append("You granted below permissions, you can do the action again to use the permission : ");
-                } else
-                {
-                    msgBuf.append("You denied below permissions : ");
+                    imgbCoordenadas.setVisibility(View.VISIBLE);
+                    pbCoordenadas.setVisibility(View.INVISIBLE);
+                    edtLatitude.setEnabled(true);
+                    edtLongitude.setEnabled(true);
+                    checking = false;
+                    return;
                 }
+            }
 
-                // Add granted permissions to the message.
-                if (permissions != null)
-                {
-                    int length = permissions.length;
-                    for (int i = 0; i < length; i++)
+            checking = true;
+
+            pbCoordenadas.setVisibility(View.VISIBLE);
+            imgbCoordenadas.setVisibility(View.INVISIBLE);
+            edtLatitude.setEnabled(false);
+            edtLongitude.setEnabled(false);
+
+            SingleShotLocationProvider.requestSingleUpdate(getActivity(),
+                    new SingleShotLocationProvider.LocationCallback()
                     {
-                        String permission = permissions[i];
-                        msgBuf.append(permission);
-
-                        if (i < length - 1)
+                        @Override
+                        public void onNewLocationAvailable(Double lat, Double lng)
                         {
-                            msgBuf.append(",");
+                            edtLatitude.setText(StringUtil.converterLatitude(lat));
+                            edtLongitude.setText(StringUtil.converterLongitude(lng));
+
+                            imgbCoordenadas.setVisibility(View.VISIBLE);
+                            pbCoordenadas.setVisibility(View.INVISIBLE);
+                            edtLatitude.setEnabled(true);
+                            edtLongitude.setEnabled(true);
+                            checking = false;
                         }
                     }
-                }
+            );
 
-                // Show result message.
-                Toast.makeText(getActivity(), msgBuf.toString(), Toast.LENGTH_LONG).show();
-            }
+            Looper myLooper = Looper.myLooper();
+
+            final Handler myHandler = new Handler(myLooper);
+            myHandler.postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    if (checking)
+                    {
+                        SingleShotLocationProvider.cancelUpdate();
+                        Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
+
+                        imgbCoordenadas.setVisibility(View.VISIBLE);
+                        pbCoordenadas.setVisibility(View.INVISIBLE);
+                        edtLatitude.setEnabled(true);
+                        edtLongitude.setEnabled(true);
+                    }
+                }
+            }, 1000 * 120);
+
+
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)

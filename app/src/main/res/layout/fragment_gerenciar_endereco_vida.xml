@@ -33,15 +33,12 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-
         <RelativeLayout
             android:id="@+id/rltv_Detalhe_Endereco_Vida"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/lista_enderecos_vida"
             android:padding="8dp">
-
-
 
     <TextView
         android:id="@+id/txv_Endereco_Vida"
@@ -58,7 +55,7 @@
 
     <EditText
         android:id="@+id/edt_Endereco_Vida"
-        android:layout_width="400dp"
+        android:layout_width="480dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/spn_TipoVia_Vida"
         android:layout_toRightOf="@id/spn_TipoVia_Vida"
@@ -95,7 +92,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/auc_Cidade_Vida"
-        android:layout_width="200dp"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txv_Cidade_Vida"
         android:imeOptions="actionNext"
@@ -129,7 +126,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignTop="@id/txv_Bairro_Vida"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/auc_Bairro_Vida"
         android:background="@drawable/pin_icon"
         android:scaleType="centerCrop" />

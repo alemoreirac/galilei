@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
@@ -82,6 +83,7 @@ import static Util.StringUtil.isNotNullAndEmpty;
 
 public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment implements Step, LocationListener
 {
+    int REQUEST_CODE = 1;
     View mView;
     int lastPosition;
     ImageButton imgbCoordenadas = null;
@@ -129,7 +131,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     EditText edtLargura;
     String Bairro;
     String Cidade;
-
+    boolean checking;
 
     public GerenciarEnderecoTransito()
     {
@@ -148,7 +150,6 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -551,6 +552,77 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
             edtLatitude.setText(endereco.getLatitude());
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        if(requestCode == REQUEST_CODE)
+        {
+
+            if(grantResults.length==0)
+                return;
+
+            for(int i = 0 ; i<grantResults.length;i++)
+            {
+                if(grantResults[i] != PackageManager.PERMISSION_GRANTED)
+                {
+                    imgbCoordenadas.setVisibility(View.VISIBLE);
+                    pbCoordenadas.setVisibility(View.INVISIBLE);
+                    edtLatitude.setEnabled(true);
+                    edtLongitude.setEnabled(true);
+                    checking = false;
+                    return;
+                }
+            }
+
+            checking = true;
+
+            pbCoordenadas.setVisibility(View.VISIBLE);
+            imgbCoordenadas.setVisibility(View.INVISIBLE);
+            edtLatitude.setEnabled(false);
+            edtLongitude.setEnabled(false);
+
+            SingleShotLocationProvider.requestSingleUpdate(getActivity(),
+                    new SingleShotLocationProvider.LocationCallback()
+                    {
+                        @Override
+                        public void onNewLocationAvailable(Double lat, Double lng)
+                        {
+                            edtLatitude.setText(StringUtil.converterLatitude(lat));
+                            edtLongitude.setText(StringUtil.converterLongitude(lng));
+
+                            imgbCoordenadas.setVisibility(View.VISIBLE);
+                            pbCoordenadas.setVisibility(View.INVISIBLE);
+                            edtLatitude.setEnabled(true);
+                            edtLongitude.setEnabled(true);
+                            checking = false;
+                        }
+                    }
+            );
+
+            Looper myLooper = Looper.myLooper();
+
+            final Handler myHandler = new Handler(myLooper);
+            myHandler.postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    if (checking)
+                    {
+                        SingleShotLocationProvider.cancelUpdate();
+                        Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
+
+                        imgbCoordenadas.setVisibility(View.VISIBLE);
+                        pbCoordenadas.setVisibility(View.INVISIBLE);
+                        edtLatitude.setEnabled(true);
+                        edtLongitude.setEnabled(true);
+                    }
+                }
+            }, 1000 * 120);
+
+
+        }
+    }
+
     private void AssociarLayout(View v)
     {
         nmbFaixas = (NumberPicker) v.findViewById(R.id.npck_Faixas);
@@ -806,53 +878,11 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         imgbCoordenadas.setOnClickListener(new View.OnClickListener()
         {
-            boolean checking = true;
-
             @Override
             public void onClick(View v)
             {
-                pbCoordenadas.setVisibility(View.VISIBLE);
-                imgbCoordenadas.setVisibility(View.INVISIBLE);
-                edtLatitude.setEnabled(false);
-                edtLongitude.setEnabled(false);
-
-                SingleShotLocationProvider.requestSingleUpdate(getActivity(),
-                    new SingleShotLocationProvider.LocationCallback()
-                    {
-                        @Override
-                        public void onNewLocationAvailable(Double lat, Double lng)
-                        {
-                            edtLatitude.setText(StringUtil.converterLatitude(lat));
-                            edtLongitude.setText(StringUtil.converterLongitude(lng));
-
-                            imgbCoordenadas.setVisibility(View.VISIBLE);
-                            pbCoordenadas.setVisibility(View.INVISIBLE);
-                            edtLatitude.setEnabled(true);
-                            edtLongitude.setEnabled(true);
-                            checking = false;
-                        }
-                    }
-                );
-
-                Looper myLooper = Looper.myLooper();
-
-                final Handler myHandler = new Handler(myLooper);
-                myHandler.postDelayed(new Runnable()
-                {
-                    public void run()
-                    {
-                        if (checking)
-                        {
-                            SingleShotLocationProvider.cancelUpdate();
-                            Toast.makeText(getContext(), "Tempo limite excedido!", Toast.LENGTH_LONG).show();
-
-                            imgbCoordenadas.setVisibility(View.VISIBLE);
-                            pbCoordenadas.setVisibility(View.INVISIBLE);
-                            edtLatitude.setEnabled(true);
-                            edtLongitude.setEnabled(true);
-                        }
-                    }
-                }, 1000 * 120);
+                requestPermissions( new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
             }

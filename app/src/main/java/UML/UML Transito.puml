@@ -10,7 +10,7 @@ class OcorrenciaTransito{
        AreaIntegradaSeguranca ais;
        EstadoSitioColisao estadoSitioColisao;
        PreservacaoLocal preservacaoLocal;
-       String orgaoOrigem;
+       String orgaoOrigemId;
        String orgaoDestino;
        Orgao orgaoPresente;
        String Viatura;

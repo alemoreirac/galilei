@@ -12,14 +12,16 @@ import com.example.pefoce.peritolocal.R;
 import com.squareup.picasso.Picasso;
 
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 
+import Busines.DelegaciaBusiness;
 import Enums.TipoOcorrencia;
 import Model.Ocorrencia;
+
 import Model.Transito.OcorrenciaTransitoEndereco;
 import Model.Vida.EnderecoVida;
 import ViewHolders.ViewHolderOcorrencia;
+
 
 /**
  * Created by Pefoce on 12/06/2017.
@@ -30,7 +32,6 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
     private ArrayList<Ocorrencia> dataSet;
 
     Context mContext;
-
 
     public AdapterOcorrencia(ArrayList<Ocorrencia> data,Context context)
     {
@@ -116,21 +117,14 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
 
             viewHolder.getTxtNumeroDoc().setText(ocorrencia.getOcorrenciaVida().getNumIncidencia()+ " - "+ ocorrencia.getOcorrenciaVida().getDataAtendimentoString());
 
-            if(ocorrencia.getOcorrenciaVida().getOrgaoOrigem() != null)
-                viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaVida().getOrgaoOrigem());
+            if(ocorrencia.getOcorrenciaVida().getOrgaoOrigemId() != null)
+                viewHolder.getTxtOrigem().setText(
+                        DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoOrigemId()));
 
-            if(ocorrencia.getOcorrenciaVida().getOrgaoDestino() != null)
-                viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaVida().getOrgaoDestino());
 
-//            Picasso.with(mContext).
+                viewHolder.getTxtDestino().setText(DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoDestinoId()));
 
-            if(ocorrencia.getOcorrenciaVida().getOrgaoDestino() != null)
-            {
-                if(!ocorrencia.getOcorrenciaVida().getOrgaoDestino().equals(""))
-                    viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaVida().getOrgaoDestino());
-                else
-                    viewHolder.getTxtDestino().setText("(Sem órgão destino)");
-            }
+                viewHolder.getTxtOrigem().setText(DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoOrigemId()));
         }
 
         return convertView;

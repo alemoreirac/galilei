@@ -13,7 +13,8 @@ public enum ConclusaoTransito
     CONVERSAO_INAPROPRIADA("à conversão em momento inapropriado"),
     RETORNO_INAPROPRIADO("à manobra de retorno em momento inapropriado"),
     ULTRAPASSAGEM_INDEVIDA("à ultrapassagem mal executada"),
-    CONTRA_MAO("ao veículo se deslocar na contra-mão");
+    CONTRA_MAO("ao veículo se deslocar na contra-mão"),
+    OUTRO("outra causa a ser definida pelo perito");
 
     String valor;
 

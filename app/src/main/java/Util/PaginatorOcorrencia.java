@@ -1,8 +1,8 @@
 package Util;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import Busines.DelegaciaBusiness;
 import Model.Ocorrencia;
 
 
@@ -75,8 +75,8 @@ public class PaginatorOcorrencia
                             if (o.getOcorrenciaVida().getNumIncidencia() != null && o.getOcorrenciaVida().getNumIncidencia().contains(filtro)
                                     || o.getOcorrenciaVida().getDataAtendimentoString() != null && o.getOcorrenciaVida().getDataAtendimentoString().contains(filtro)
                                     || o.getOcorrenciaVida().getDataChamadoString() != null && o.getOcorrenciaVida().getDataChamadoString().contains(filtro)
-                                    || o.getOcorrenciaVida().getOrgaoDestino() != null && o.getOcorrenciaVida().getOrgaoDestino().contains(filtro)
-                                    || o.getOcorrenciaVida().getOrgaoOrigem() != null && o.getOcorrenciaVida().getOrgaoOrigem().contains(filtro))
+                                    || DelegaciaBusiness.findDescricaoById(o.getOcorrenciaVida().getOrgaoDestinoId()).contains(filtro)
+                                    || DelegaciaBusiness.findDescricaoById(o.getOcorrenciaVida().getOrgaoOrigemId()).contains(filtro))
                             {
                                 if (!ocorrenciaResultado.contains(o))
                                     ocorrenciaResultado.add(o);

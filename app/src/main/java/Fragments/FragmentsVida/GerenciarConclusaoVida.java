@@ -585,7 +585,7 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
                             .add("usuario", ocorrencia.getPerito().getNome())
                             .add("endereco", enderecoVida.getEnderecoPost())
                             .add("ais", ocorrenciaVida.getAis().getValor())
-                            .add("delegacia", StringUtil.checkValue(ocorrenciaVida.getOrgaoDestino(),-1,"Sem valor"))
+//                            .add("delegacia", StringUtil.checkValue(ocorrenciaVida.getOrgaoDestino(),-1,"Sem valor"))
                             .add("latitude", enderecoVida.getLatitude())
                             .add("longitude", enderecoVida.getLongitude())
                             .add("qtdeEnvolvidos", qtdeEnvolvidos)

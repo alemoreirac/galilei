@@ -29,7 +29,7 @@
             android:value="pefoce_db.db" />
         <meta-data
             android:name="VERSION"
-            android:value="11" />
+            android:value="12" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -98,5 +98,4 @@
             android:value="689182af5a37c42cec287a8b663ff6ea0255859e" />
 
     </application>
-
 </manifest>

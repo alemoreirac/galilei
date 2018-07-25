@@ -1,3 +1,5 @@
+package Busines;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ public class EnderecoVidaBusiness
     public static List<EnderecoVida> findEnderecoByOcorrenciaId(Long id)
     {
         ArrayList<EnderecoVida> enderecoVida = new ArrayList<>();
-        List<OcorrenciaEnderecoVida> ocorrenciaEnderecoVida = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class,"ocorrencia_vida",id.toString());
+        List<OcorrenciaEnderecoVida> ocorrenciaEnderecoVida = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class,"ocorrencia_vida = ?",id.toString());
 
         for(OcorrenciaEnderecoVida oev : ocorrenciaEnderecoVida)
 

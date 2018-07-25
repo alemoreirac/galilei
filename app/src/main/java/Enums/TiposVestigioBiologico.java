@@ -12,7 +12,7 @@ public enum TiposVestigioBiologico
     SUOR("Suor"),
     SALIVA("Saliva"),
     CABELO("Cabelo"),
-    Pelo("Pêlo"),
+    PELO("Pêlo"),
     OSSO("Osso"),
     MUSCULO("Músculo"),
     CARTILAGEM("Cartilagem"),

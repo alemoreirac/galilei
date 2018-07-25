@@ -12,7 +12,7 @@
   String Viatura;
   String Comandante;
   AreaIntegradaSeguranca ais;
-  String orgaoOrigem;
+  String orgaoOrigemId;
   String orgaoDestino;
   PreservacaoLocal preservacaoLocal;
   }

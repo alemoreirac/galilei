@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    tools:context="Fragments.Fragments.GerenciarEndereco">
+    tools:context="Fragments.FragmentsTransito.GerenciarEnderecoTransito">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/lista_enderecos"
@@ -158,17 +158,16 @@
 
             <br.com.sapereaude.maskedEditText.MaskedEditText
                 android:id="@+id/medt_Latitude_Transito"
-                android:layout_width="140dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/auc_Bairro"
                 android:layout_toRightOf="@id/imgb_Coordenadas_Transito"
-                android:hint="300000000"
+                android:hint="3000"
                 android:imeOptions="actionNext"
                 android:inputType="number"
-                android:textAlignment="center"
                 android:typeface="normal"
                 mask:allowed_chars="1234567890"
-                mask:mask="#º##'#,#####&quot;S" />
+                mask:mask="#º##'#&quot;S" />
 
 
             <TextView
@@ -181,17 +180,16 @@
 
             <br.com.sapereaude.maskedEditText.MaskedEditText
                 android:id="@+id/medt_Longitude_Transito"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/auc_Bairro"
-                android:layout_alignRight="@id/edt_Complemento_End_Transito"
-                android:hint="3800000000"
+                android:layout_toRightOf="@id/medt_Latitude_Transito"
+                android:hint="38000"
                 android:imeOptions="actionDone"
                 android:textAlignment="center"
                 android:typeface="normal"
                 mask:allowed_chars="1234567890"
-
-                mask:mask="##º##'#,#####&quot;W" />
+                mask:mask="##º##'#&quot;W" />
 
             <TextView
                 android:id="@+id/txv_Semaforo"

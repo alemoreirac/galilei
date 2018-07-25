@@ -12,6 +12,7 @@ import Enums.Transito.Semaforo;
 import Enums.Transito.SinalizacaoPare;
 import Enums.Transito.TipoVia;
 import Enums.Transito.Topografia;
+import Util.StringUtil;
 
 /**
  * Created by Pefoce on 05/06/2017.
@@ -244,11 +245,7 @@ public class EnderecoTransito extends SugarRecord
     @Override
     public String toString()
     {
-        if (descricaoEndereco != null)
-
-            return descricaoEndereco;
-        else
-            return "(Sem Endereço)";
+        return StringUtil.checkValue(descricaoEndereco,20,"(Sem Endereço)");
     }
 
     public int getAngulo()

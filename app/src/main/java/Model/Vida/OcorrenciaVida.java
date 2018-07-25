@@ -24,7 +24,6 @@ public class OcorrenciaVida extends SugarRecord
 
     private Date dataAtendimento;
 
-
     private DocumentoOcorrencia documento;
 
     private String numIncidencia;
@@ -39,9 +38,9 @@ public class OcorrenciaVida extends SugarRecord
 
     private AreaIntegradaSeguranca ais;
 
-    private String orgaoOrigem;
+    private Long orgaoOrigemId;
 
-    private String orgaoDestino;
+    private Long orgaoDestinoId;
 
     private PreservacaoLocal preservacaoLocal;
 
@@ -250,24 +249,24 @@ public class OcorrenciaVida extends SugarRecord
         this.dataChamado = cSave.getTime();
     }
 
-    public String getOrgaoOrigem()
+    public Long getOrgaoOrigemId()
     {
-        return orgaoOrigem;
+        return orgaoOrigemId;
     }
 
-    public void setOrgaoOrigem(String orgaoOrigem)
+    public void setOrgaoOrigemId(Long orgaoOrigemId)
     {
-        this.orgaoOrigem = orgaoOrigem;
+        this.orgaoOrigemId = orgaoOrigemId;
     }
 
-    public String getOrgaoDestino()
+    public Long getOrgaoDestinoId()
     {
-        return orgaoDestino;
+        return orgaoDestinoId;
     }
 
-    public void setOrgaoDestino(String orgaoDestino)
+    public void setOrgaoDestinoId(Long orgaoDestinoId)
     {
-        this.orgaoDestino = orgaoDestino;
+        this.orgaoDestinoId = orgaoDestinoId;
     }
 
     public String getDelegado()
