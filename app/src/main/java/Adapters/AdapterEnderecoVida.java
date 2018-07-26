@@ -61,14 +61,50 @@ public class AdapterEnderecoVida extends ArrayAdapter<EnderecoVida> implements V
             viewHolder = (ViewHolderEndereco) convertView.getTag();
         }
 
+        if(enderecoVida.getTipoVia()!=null)
+            viewHolder.getTipoVia().setText(enderecoVida.getTipoVia().getValor());
+
             viewHolder.getEndereco().setText(StringUtil.checkValue(enderecoVida.getDescricaoEndereco(),15,"(Sem Endereço)"));
 
+
+            //utilizando o getBairro apenas para não utilizar outro viewholder
+
                 if(enderecoVida.getTipoLocalCrime()!=null)
-                viewHolder.getTipoVia().setText(enderecoVida.getTipoLocalCrime().getValor());
+                {
+                    String texto = enderecoVida.getTipoLocalCrime().getValor()+ " ";
+                    switch (enderecoVida.getTipoLocalCrime())
+                    {
+                        case VIA_PUBLICA:
+                            if(enderecoVida.getPosicaoVia()!=null)
+                           texto += enderecoVida.getPosicaoVia().getValor();
+                            break;
+
+                        case PRAIA:
+                            if(enderecoVida.getLocalPraia()!=null)
+                            texto += enderecoVida.getLocalPraia().getValor();
+                            break;
+
+                        case RESIDENCIAL:
+                            if(enderecoVida.getComodo()!=null)
+                                texto += enderecoVida.getComodo().getValor();
+                            break;
+
+                        case RURAL:
+                            if(enderecoVida.getLocalAberto()!=null)
+                            texto += enderecoVida.getLocalAberto().getValor();
+                            break;
+                        case OUTRO:
+                            texto += enderecoVida.getObservacao();
+                                    break;
+                    }
+
+                    viewHolder.getBairro().setText(texto);
+                }
+
+//                viewHolder.getBairro().setText(enderecoVida.getTipoLocalCrime().getValor());
 
 //                viewHolder.getEndereco().setText(enderecoVida.getDescricaoEndereco());
 
-        viewHolder.getEndereco().setText(StringUtil.checkValue(enderecoVida.getBairro(),15,"(Sem Bairro)"));
 
         return convertView;
 

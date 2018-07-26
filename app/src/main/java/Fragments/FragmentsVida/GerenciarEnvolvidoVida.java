@@ -887,7 +887,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
             edtObservacoes.setText(envolvidoVida.getObservacoes());
 
         if (envolvidoVida.getEnderecoId() != null)
-            spnEndereco.setSelection(BuscadorEnum.getEnderecoVidaById(spnEndereco, envolvidoVida.getId()));
+            spnEndereco.setSelection(BuscadorEnum.getEnderecoVidaById(spnEndereco, envolvidoVida.getEnderecoId()));
 
     }
 

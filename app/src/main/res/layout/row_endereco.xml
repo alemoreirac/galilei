@@ -32,6 +32,7 @@
         android:layout_alignLeft="@+id/txv_row_TipoVia"
         android:layout_below="@id/txv_row_TipoVia"
         android:text=""
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:maxLines="2"/>
 
 </RelativeLayout>

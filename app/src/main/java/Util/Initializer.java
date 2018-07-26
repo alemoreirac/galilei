@@ -43,6 +43,9 @@ public class Initializer
             Pessoa p9 = new Pessoa("leao.junior@pefoce.ce.gov.br", "Francisco Leão de Souza Jr.", date, "50327011300");
             p9.save();
 
+            Pessoa p10 = new Pessoa("leda.queiroz@pefoce.ce.gov.br", "Leda talita Afonso Ferreira de Queiroz", date, "01358455481");
+            p9.save();
+
             Pessoa p6 = new Pessoa("123", "Convidado(a)", date, "123");
             p6.save();
 

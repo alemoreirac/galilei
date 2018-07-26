@@ -402,6 +402,14 @@ public class EnderecoVida extends SugarRecord
             }
         }
 
+        if(this.veiculoEnvolvido)
+        {
+
+            value += "(Veículo) - "+ StringUtil.checkValue(this.placaVeiculo,8,"(Sem placa)");
+            if(localVeiculo!=null)
+                value += " " + this.localVeiculo.getValor();
+        }
+
         return value;
     }
 
@@ -428,7 +436,7 @@ public class EnderecoVida extends SugarRecord
 //      this.nomeProprietario = "";
 //      this.numeroDocumentoProprietario = "";
 //      this.categoriaProprietario = null;
-        this.localVeiculo = null;
+//        this.localVeiculo = null;
         this.tipoLocalCrime = null;
         this.tipoIluminacao = null;
         this.condicoesClimaticas = null;
