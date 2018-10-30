@@ -3,6 +3,9 @@ package Model.Transito;
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import Enums.Transito.AtoresColisao;
 import Enums.Transito.ConclusaoTransito;
 import Enums.Transito.LocalObjeto;
@@ -18,6 +21,8 @@ import Model.Gravacao;
 
 public class ColisaoTransito extends SugarRecord
 {
+    @Expose
+    Date dataInclusao;
     @Expose
     Veiculo veiculo1;
     @Expose
@@ -56,8 +61,8 @@ public class ColisaoTransito extends SugarRecord
     String objetoObservacao;
     @Expose
     LocalObjeto objetoPosicao;
-    @Expose
-    EnvolvidoTransito pedestre;
+//    @Expose
+//    EnvolvidoTransito pedestre;
     @Expose
     LocalPedestre posicaoPedestre;
     @Expose
@@ -147,7 +152,7 @@ public class ColisaoTransito extends SugarRecord
         this.endereco_veiculo2 = null;
         this.conclusaoVeiculo2 = null;
 
-        this.pedestre = null;
+//        this.pedestre = null;
         this.posicaoPedestre = null;
         this.distancia = 0;
 
@@ -166,6 +171,8 @@ public class ColisaoTransito extends SugarRecord
 
     public ColisaoTransito()
     {
+        dataInclusao = Calendar.getInstance().getTime();
+
         setTipoInteracao(TipoInteracao.ADERNAMENTO);
     }
 
@@ -349,15 +356,15 @@ public class ColisaoTransito extends SugarRecord
         this.objetoPosicao = objetoPosicao;
     }
 
-    public EnvolvidoTransito getPedestre()
-    {
-        return pedestre;
-    }
-
-    public void setPedestre(EnvolvidoTransito pedestre)
-    {
-        this.pedestre = pedestre;
-    }
+//    public EnvolvidoTransito getPedestre()
+//    {
+//        return pedestre;
+//    }
+//
+//    public void setPedestre(EnvolvidoTransito pedestre)
+//    {
+//        this.pedestre = pedestre;
+//    }
 
     public LocalPedestre getPosicaoPedestre()
     {
@@ -459,24 +466,4 @@ public class ColisaoTransito extends SugarRecord
         this.atoresColisao = atoresColisao;
     }
 
-    public void LimparValores()
-    {
-        setAtoresColisao(null);
-        setEndereco_veiculo2(null);
-        setVeiculo2(null);
-        setSentido_veiculo2(null);
-        setVeiculo2Causador(false);
-        setVeiculo2_Faixa(0);
-        setVeiculo2ContraMao(false);
-
-        setAtoresColisao(null);
-        setPedestre(null);
-        setPosicaoPedestre(null);
-        setDistancia(0);
-
-        setAtoresColisao(null);
-        setObjetoObservacao(null);
-        setObjetoDescricao(null);
-        setObjetoPosicao(null);
-    }
 }

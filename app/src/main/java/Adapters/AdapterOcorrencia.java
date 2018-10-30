@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import Busines.DelegaciaBusiness;
 import Enums.TipoOcorrencia;
 import Model.Ocorrencia;
 
@@ -91,19 +90,18 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
 
             viewHolder.getTxtNumeroDoc().setText(ocorrencia.getOcorrenciaTransito().getNumIncidencia()+ " - "+ ocorrencia.getOcorrenciaTransito().getDataAtendimentoString());
 
-            if(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem() != null)
-                viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem());
+            if(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem() != null && ocorrencia.getOcorrenciaTransito().getOrgaoOrigem().getDescricao()!=null)
+                viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaTransito().getOrgaoOrigem().getDescricao());
+            else
+                viewHolder.getTxtOrigem().setText("(Sem órgão origem)");
 
-            if(ocorrencia.getOcorrenciaTransito().getOrgaoDestino() != null)
-            {
-                if(!ocorrencia.getOcorrenciaTransito().getOrgaoDestino().equals(""))
-                viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaTransito().getOrgaoDestino());
-                else
-                    viewHolder.getTxtDestino().setText("(Sem órgão destino)");
-            }
+            if(ocorrencia.getOcorrenciaTransito().getOrgaoDestino() != null && ocorrencia.getOcorrenciaTransito().getOrgaoDestino().getDescricao() != null)
+                viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaTransito().getOrgaoDestino().getDescricao());
+            else
+                viewHolder.getTxtDestino().setText("(Sem órgão destino)");
         }
 
-        if(ocorrencia.getOcorrenciaVida() != null|| ocorrencia.getTipoOcorrencia() == TipoOcorrencia.VIDA)
+        if(ocorrencia.getOcorrenciaVida() != null || ocorrencia.getTipoOcorrencia() == TipoOcorrencia.VIDA)
         {
             Picasso.with(mContext).load(R.drawable.ocorrencia_vida_icon).into(viewHolder.getImgvTipoOcorrencia());
             try
@@ -115,16 +113,22 @@ public class AdapterOcorrencia extends ArrayAdapter<Ocorrencia> implements View.
                 viewHolder.getTxtEndereco().setText("Sem endereço");
             }
 
+            if(ocorrencia.getOcorrenciaVida().getNumIncidencia()!=null && ocorrencia.getOcorrenciaVida().getDataAtendimento()!=null)
             viewHolder.getTxtNumeroDoc().setText(ocorrencia.getOcorrenciaVida().getNumIncidencia()+ " - "+ ocorrencia.getOcorrenciaVida().getDataAtendimentoString());
 
-            if(ocorrencia.getOcorrenciaVida().getOrgaoOrigemId() != null)
-                viewHolder.getTxtOrigem().setText(
-                        DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoOrigemId()));
+            if(ocorrencia.getOcorrenciaVida().getOrgaoOrigem() != null &&
+                    ocorrencia.getOcorrenciaVida().getOrgaoOrigem().getDescricao()!=null)
 
+                viewHolder.getTxtOrigem().setText(ocorrencia.getOcorrenciaVida().getOrgaoOrigem().getDescricao());
 
-                viewHolder.getTxtDestino().setText(DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoDestinoId()));
+            if(ocorrencia.getOcorrenciaVida().getOrgaoDestino() != null &&
+                    ocorrencia.getOcorrenciaVida().getOrgaoDestino().getDescricao()!=null)
 
-                viewHolder.getTxtOrigem().setText(DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoOrigemId()));
+                viewHolder.getTxtDestino().setText(ocorrencia.getOcorrenciaVida().getOrgaoDestino().getDescricao());
+
+//                viewHolder.getTxtDestino().setText(DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoDestinoId()));
+
+//                viewHolder.getTxtOrigem().setText(DelegaciaBusiness.findDescricaoById(ocorrencia.getOcorrenciaVida().getOrgaoOrigemId()));
         }
 
         return convertView;

@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import Control.Transito.ColisaoBusiness;
 import Model.Transito.ColisaoTransito;
 import Util.StringUtil;
 import ViewHolders.ViewHolderColisao;
@@ -26,7 +27,6 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
     public AdapterColisao(ArrayList<ColisaoTransito> data, Context context)
     {
         super(context, R.layout.row_ocorrencia,data);
-//        this.dataSet = data;
         this.mContext = context;
     }
 
@@ -35,11 +35,6 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
     {
     }
 //
-//    @Override
-//    public ColisaoTransito getItem(int position)
-//    {
-//        return
-//    }
 
     public View getView(int position,View convertView,ViewGroup parent)
     {
@@ -71,11 +66,13 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
                         .load(R.drawable.colisao_pedestre)
                         .into(viewHolder.getImgvTipoInteracao());
 
+                viewHolder.getTxvAtor2().setText(
+                        StringUtil.checkValue(ColisaoBusiness.findAllPedestresByColisaoString(colisaoTransito.getId()),20,"(Sem envolvidos)"));
 
-                if(colisaoTransito.getPedestre() != null)
-                    viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getPedestre().getNome(),17,"(Sem nome)"));
-                else
-                    viewHolder.getTxvAtor2().setText("(Sem Nome)");
+//                if(colisaoTransito.getPedestre() != null)
+//                    viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getPedestre().getNome(),17,"(Sem nome)"));
+//                else
+//                    viewHolder.getTxvAtor2().setText("(Sem Nome)");
 
                 break;
             case VEICULO:
@@ -94,13 +91,11 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
                     viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getAnimalDescricao(),17,"(Não descrito)"));
 
 
-
                 break;
             case OBJETO:
                 Picasso.with(convertView.getContext())
                         .load(R.drawable.colisao_objeto)
                         .into(viewHolder.getImgvTipoInteracao());
-
                     viewHolder.getTxvAtor2().setText(StringUtil.checkValue(colisaoTransito.getObjetoDescricao(),17,"(Não descrito)"));
 
                 break;
@@ -112,22 +107,8 @@ public class AdapterColisao extends ArrayAdapter<ColisaoTransito> implements Vie
                 break;
         }
 
-//        if(colisaoTransito.getGravacaoObservacoes() != null)
-//        {
-//            Picasso.with(convertView.getContext())
-//                    .load(R.drawable.microfone)
-//                    .into(viewHolder.getImgvAudio());
-//        }
-//        else
-//        {
-//            Picasso.with(convertView.getContext())
-//                    .load(R.drawable.microfone_apagado)
-//                    .into(viewHolder.getImgvAudio());
-//        }
-
         if(colisaoTransito.getVeiculo1() != null)
-//        viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString() + " "+ colisaoTransito.getOrdemAcontecimento()+colisaoTransito.getId().toString());
-            viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString() + " "+colisaoTransito.getId().toString());
+            viewHolder.getTxvAtor1().setText(colisaoTransito.getVeiculo1().toString() + " "+colisaoTransito.getOrdemAcontecimento());
 
         if(colisaoTransito.getTipoInteracao() != null)
         viewHolder.getTxvTipoInteracao().setText(colisaoTransito.getTipoInteracao().getValor());

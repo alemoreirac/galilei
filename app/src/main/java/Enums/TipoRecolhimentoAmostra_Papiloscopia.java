@@ -6,11 +6,9 @@ package Enums;
 
 public enum TipoRecolhimentoAmostra_Papiloscopia
 {
-
     DECALQUE_FITA("Decalque - Fita"),
     DECALQUE_SUPORTE_ARTICULADO("Decalque - Suporte articulado"),
     MIDIA("Mídia");
-
 
     String valor;
 

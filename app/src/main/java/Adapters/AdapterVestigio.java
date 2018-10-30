@@ -88,8 +88,8 @@ public class AdapterVestigio extends ArrayAdapter<VestigioVida> implements View.
                 case BIOLOGICO:
                     Picasso.with(convertView.getContext()).load(R.drawable.vestigio_biologico).into(viewHolder.getImgvTipoVestigio());
 
-                    if (vestigioVida.getTiposVestigioBiologico() != null)
-                        viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTiposVestigioBiologico().getValor());
+                    if (vestigioVida.getTipoVestigioBiologico() != null)
+                        viewHolder.getTxvTipoVestigio().setText(vestigioVida.getTipoVestigioBiologico().getValor());
 
                     if (vestigioVida.getTipoRecolhimentoAmostraBiologica() != null)
                         viewHolder.getTxvObservacaoVestigio().setText(vestigioVida.getTipoRecolhimentoAmostraBiologica().getValor());

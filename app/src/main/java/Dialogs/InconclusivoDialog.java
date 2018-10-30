@@ -164,7 +164,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                 for(Veiculo v : veiculos)
                     veiculosString.add(v.toString());
 
-                spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, veiculosString));
+                spnEvadido.setAdapter(new ArrayAdapter<Veiculo>(activity, R.layout.support_simple_spinner_dropdown_item, veiculos));
 //                spnEvadido.getAdapter().notify();
 //                spnEvadido.setSelection(BuscadorEnum.PegarPosicaoVeiculoString(veiculos,spnEvadido.getSelectedItem().toString()));
                 spnEvadido.setSelection(veiculosString.indexOf(Veiculo.findById(Veiculo.class,veiculoId).toString()));
@@ -176,7 +176,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                 for(EnvolvidoTransito et : envolvidos)
                     envolvidosString.add(et.toString());
 
-                spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidosString));
+                spnEvadido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidos));
 
                 spnEvadido.setSelection(envolvidosString.indexOf(EnvolvidoTransito.findById(EnvolvidoTransito.class,envolvidoId).toString()));
 
@@ -215,7 +215,6 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
 
                 if (cxbInconclusivo.isChecked())
                 {
-
                     bd.putString("justificativa", spnJustificativa.getSelectedItem().toString());
 
                     if (spnJustificativa.getSelectedItem().toString().equals(TipoJustificativa_Inconclusao.CONDUTOR_EVADIU.getValor()))
@@ -250,7 +249,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                             for(EnvolvidoTransito et : envolvidos)
                                 envolvidosString.add(et.toString());
 
-                            spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidosString));
+                            spnEvadido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidos));
 
                             txvAtorEvadido.setVisibility(View.VISIBLE);
                             spnEvadido.setVisibility(View.VISIBLE);
@@ -263,7 +262,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                             for(Veiculo v : veiculos)
                                 veiculosString.add(v.toString());
 
-                            spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, veiculosString));
+                            spnEvadido.setAdapter(new ArrayAdapter<Veiculo>(activity, R.layout.support_simple_spinner_dropdown_item, veiculos));
 
                             txvAtorEvadido.setVisibility(View.VISIBLE);
                             spnEvadido.setVisibility(View.VISIBLE);
@@ -295,7 +294,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                             envolvidosString.add(et.toString());
 
 
-                        spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidosString));
+                        spnEvadido.setAdapter(new ArrayAdapter<EnvolvidoTransito>(activity, R.layout.support_simple_spinner_dropdown_item, envolvidos));
 
                         txvAtorEvadido.setVisibility(View.VISIBLE);
                         spnEvadido.setVisibility(View.VISIBLE);
@@ -307,7 +306,7 @@ public class InconclusivoDialog extends android.support.v4.app.DialogFragment
                         for(Veiculo v : veiculos)
                             veiculosString.add(v.toString());
 
-                        spnEvadido.setAdapter(new ArrayAdapter<String>(activity, R.layout.support_simple_spinner_dropdown_item, veiculosString));
+                        spnEvadido.setAdapter(new ArrayAdapter<Veiculo>(activity, R.layout.support_simple_spinner_dropdown_item, veiculos));
 
                         txvAtorEvadido.setVisibility(View.VISIBLE);
                         spnEvadido.setVisibility(View.VISIBLE);

@@ -24,6 +24,8 @@ import com.stepstone.stepper.VerificationError;
 
 import java.util.ArrayList;
 
+import Control.DadosTerritoriaisBusiness;
+import Control.DelegaciaBusiness;
 import Enums.AreaIntegradaSeguranca;
 import Enums.DocumentoSolicitacao;
 import Enums.Orgao;
@@ -198,15 +200,15 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
             {
                 ocorrenciaTransito = OcorrenciaTransito.findById(OcorrenciaTransito.class, bd.getLong("OcorrenciaId", 0));
 
-                ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrenciaID());
+                ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrencia());
 
                 CarregarValores(ocorrenciaTransito);
 
                 try
                 {
                     OcorrenciaTransitoEndereco ote = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString()).get(0);
-                    CarregarBairro(ote.getEnderecoTransito().getBairro());
-                    autocBairro.setText(ote.getEnderecoTransito().getBairro());
+                    CarregarBairro(ote.getEnderecoTransito().getBairro().getDescricao());
+                    autocBairro.setText(ote.getEnderecoTransito().getBairro().getDescricao());
                 } catch (Exception e)
                 {
                     autocBairro.setText("");
@@ -239,14 +241,14 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
         if (mOcorrenciaTransito.getNumIncidencia() != null)
             edtIncidencia.setText(mOcorrenciaTransito.getNumIncidencia());
 
-        if (mOcorrenciaTransito.getDocumentoOcorrencia().getValor() != null)
-            edtValorDocumento.setText(mOcorrenciaTransito.getDocumentoOcorrencia().getValor().toString());
+        if (mOcorrenciaTransito.getDocumento().getValor() != null)
+            edtValorDocumento.setText(mOcorrenciaTransito.getDocumento().getValor().toString());
 
         if (mOcorrenciaTransito.getPreservacaoLocal() != null)
             spnLocal.setSelection(BuscadorEnum.getIndex(spnLocal, mOcorrenciaTransito.getPreservacaoLocal().getValor()));
 
-        if (mOcorrenciaTransito.getDocumentoOcorrencia().getTipodocumento() != null)
-            spnDocumento.setSelection(BuscadorEnum.getIndex(spnDocumento, mOcorrenciaTransito.getDocumentoOcorrencia().getTipodocumento().getValor()));
+        if (mOcorrenciaTransito.getDocumento().getTipodocumento() != null)
+            spnDocumento.setSelection(BuscadorEnum.getIndex(spnDocumento, mOcorrenciaTransito.getDocumento().getTipodocumento().getValor()));
 
         if (mOcorrenciaTransito.getOrgaoPresente() != null)
             spnOrgaoPresente.setSelection(BuscadorEnum.getIndex(spnOrgaoPresente, mOcorrenciaTransito.getOrgaoPresente().getValor()));
@@ -265,12 +267,14 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
             if (mOcorrenciaTransito.getViatura().length() >= 8)
                 edtViatura.setText(mOcorrenciaTransito.getViatura());
-
         }
-        autocOrgaoOrigem.setText((mOcorrenciaTransito.getOrgaoOrigem() == null) ? "CIOPS - Coordenadoria Integrada de Operações de Segurança" : mOcorrenciaTransito.getOrgaoOrigem());
 
-        autocOrgaoDestino.setText((mOcorrenciaTransito.getOrgaoDestino() == null) ? "" : mOcorrenciaTransito.getOrgaoDestino());
+        autocOrgaoOrigem.setText((mOcorrenciaTransito.getOrgaoOrigem() != null &&
+                !StringUtil.isNotNullAndEmpty(mOcorrenciaTransito.getOrgaoOrigem().getDescricao()) ?
+                mOcorrenciaTransito.getOrgaoOrigem().getDescricao():"CIOPS - Coordenadoria Integrada de Operações de Segurança"));
 
+        autocOrgaoDestino.setText((mOcorrenciaTransito.getOrgaoDestino() != null &&
+                !StringUtil.isNotNullAndEmpty(mOcorrenciaTransito.getOrgaoDestino().getDescricao())) ?  mOcorrenciaTransito.getOrgaoDestino().getDescricao() :"");
 
     }
 
@@ -286,10 +290,10 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
         //ocorrenciaTransito.setAis(AreaIntegradaSeguranca.valueOf(AreaIntegradaSeguranca.class,spnAIS.getSelectedItem().toString()));
 
         ocorrenciaTransito.setNumIncidencia(edtIncidencia.getText().toString().trim());
-        ocorrenciaTransito.getDocumentoOcorrencia().setValor(edtValorDocumento.getText().toString());
+        ocorrenciaTransito.getDocumento().setValor(edtValorDocumento.getText().toString());
         ocorrenciaTransito.setUltimaForma(cxbUltimaForma.isChecked());
 
-        DocumentoOcorrencia docOcorrencia = DocumentoOcorrencia.findById(DocumentoOcorrencia.class, ocorrenciaTransito.getDocumentoOcorrencia().getId());
+        DocumentoOcorrencia docOcorrencia = DocumentoOcorrencia.findById(DocumentoOcorrencia.class, ocorrenciaTransito.getDocumento().getId());
 
         docOcorrencia.setValor(edtValorDocumento.getText().toString());
         docOcorrencia.setTipodocumento(BuscadorEnum.BuscarDocSolicitacao(spnDocumento.getSelectedItem().toString()));
@@ -297,7 +301,7 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
         docOcorrencia.save();
 
-        ocorrenciaTransito.setDocumentoOcorrencia(docOcorrencia);
+        ocorrenciaTransito.setDocumento(docOcorrencia);
 
         if (txvHoraAtendimento.getText().toString() != null)
             ocorrenciaTransito.setHoraAtendimento(txvHoraAtendimento.getText().toString());
@@ -312,10 +316,10 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
             ocorrenciaTransito.setHoraChamado(txvHoraChamado.getText().toString());
 
         if (autocOrgaoDestino != null)
-            ocorrenciaTransito.setOrgaoDestino(autocOrgaoDestino.getText().toString());
+            ocorrenciaTransito.setOrgaoDestino(DelegaciaBusiness.findByDescricao(autocOrgaoDestino.getText().toString()));
 
         if (autocOrgaoOrigem != null)
-            ocorrenciaTransito.setOrgaoOrigem(autocOrgaoOrigem.getText().toString());
+            ocorrenciaTransito.setOrgaoOrigem(DelegaciaBusiness.findByDescricao(autocOrgaoOrigem.getText().toString()));
 
 
         if (edtComandante != null)
@@ -412,6 +416,8 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
 
     private void AssociarLayout(View view)
     {
+        if(view ==null)
+            return;
         txvHoraChamado = (TextView) view.findViewById(R.id.txv_Hora_Chamado_Valor_Transito);
         txvHoraAtendimento = (TextView) view.findViewById(R.id.txv_Hora_Atendimento_Valor);
         txvDataAtendimento = (TextView) view.findViewById(R.id.txv_Data_Atendimento_Valor_Transito);
@@ -465,9 +471,11 @@ public class OcorrenciaTransitoFragment extends android.support.v4.app.Fragment 
     {
         try
         {
-            DadosTerritoriais dt = DadosTerritoriais.find(DadosTerritoriais.class, "bairro = ?", bairro).get(0);
-            autocOrgaoDestino.setText(dt.getDelegacia());
+            DadosTerritoriais dt = DadosTerritoriaisBusiness.findByBairro(bairro);
+
+            autocOrgaoDestino.setText(dt.getDelegacia().getDescricao());
             spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, dt.getAis().getValor()));
+
         } catch (Exception e)
         {
             Toast.makeText(getActivity(), "Bairro não encontrado", Toast.LENGTH_LONG).show();

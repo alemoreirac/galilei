@@ -1,35 +1,39 @@
 package Enums;
 
+import java.io.Serializable;
+
 /**
  * Created by Pefoce on 15/11/2017.
  */
 
-public enum Comodo
+public enum Comodo implements Serializable
 {
     AREA_SERVICO("Área de Serviço"),
     BANHEIRO("Banheiro"),
     COPA("Copa"),
-    CORREDOR("Corredor")
-    ,COZINHA("Cozinha"),
-    ESCRITORIO("Escritório")
-    ,GABINETE("Gabinete"),
-    GARAGEM("Garagem")
-    ,PORAO("Porão")
-    ,PORTARIA("Portaria")
-    ,QUARTO("Quarto"),
-    SALA("Sala de Estar")
-    ,TERRACO("Terraço"),
-
+    CORREDOR("Corredor"),
+    COZINHA("Cozinha"),
+    ESCRITORIO("Escritório"),
+    GABINETE("Gabinete"),
+    GARAGEM("Garagem"),
+    PORAO("Porão"),
+    PORTARIA("Portaria"),
+    QUARTO("Quarto"),
+    SALA("Sala de Estar"),
+    TERRACO("Terraço"),
     VARANDA("Varanda");
 
     String valor;
 
-    public String getValor() {
+
+    public String getValor()
+    {
         return valor;
     }
 
 
-    Comodo(String s) {
+    Comodo( String s)
+    {
         this.valor = s;
     }
 

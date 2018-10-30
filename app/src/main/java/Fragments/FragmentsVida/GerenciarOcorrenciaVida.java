@@ -24,12 +24,13 @@ import com.stepstone.stepper.VerificationError;
 
 import java.util.ArrayList;
 
+import Control.DadosTerritoriaisBusiness;
+import Control.DelegaciaBusiness;
 import Enums.AreaIntegradaSeguranca;
 import Enums.DocumentoSolicitacao;
 import Enums.Orgao;
 import Enums.PreservacaoLocal;
 import Model.DadosTerritoriais;
-import Model.Delegacia;
 import Model.Ocorrencia;
 import Model.Vida.EnderecoVida;
 import Model.Vida.OcorrenciaVida;
@@ -172,24 +173,9 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 
         ocorrenciaVida.setDelegado(edtDelegado.getText().toString());
 
-        try
-        {
+        ocorrenciaVida.setOrgaoOrigem(DelegaciaBusiness.findByDescricao(aucOrgaoOrigem.getText().toString()));
 
-            ocorrenciaVida.setOrgaoOrigemId(Delegacia.find(Delegacia.class, "descricao = ?", aucOrgaoOrigem.getText().toString()).get(0).getId());
-        }catch (Exception e)
-        {
-            Toast.makeText(getActivity(),"Delegacia Não encontrada!",Toast.LENGTH_LONG).show();
-            ocorrenciaVida.setOrgaoOrigemId(0l);
-        }
-        try
-        {
-            ocorrenciaVida.setOrgaoDestinoId(Delegacia.find(Delegacia.class, "descricao = ?", aucOrgaoDestino.getText().toString()).get(0).getId());
-
-        }catch (Exception e)
-        {
-            Toast.makeText(getActivity(),"Delegacia Não encontrada!",Toast.LENGTH_LONG).show();
-            ocorrenciaVida.setOrgaoDestinoId(0l);
-        }
+        ocorrenciaVida.setOrgaoDestino(DelegaciaBusiness.findByDescricao(aucOrgaoDestino.getText().toString()));
 
 //        ocorrenciaVida.setOrgaoDestino(aucOrgaoDestino.getText().toString());
 //        ocorrenciaVida.setOrgaoOrigemId(aucOrgaoOrigem.getText().toString());
@@ -232,7 +218,6 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 
         Bundle bd = getArguments();
 
-
         AssociarLayout(mView);
         PovoarSpinners(mView.getContext());
         AssociarEventos();
@@ -250,8 +235,8 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
                 try
                 {
                     EnderecoVida ev = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
-                    CarregarBairro(ev.getBairro());
-                    aucBairro.setText(ev.getBairro());
+                    CarregarBairro(ev.getBairro().getDescricao());
+                    aucBairro.setText(ev.getBairro().getDescricao());
 
                 } catch (Exception e)
                 {
@@ -380,6 +365,8 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 
     public void AssociarLayout(final View view)
     {
+        if(view==null)
+            return;
         edtComandante = (EditText) view.findViewById(R.id.edt_Autoridade_Comandante_Vida);
         edtNumDocVida = (EditText) view.findViewById(R.id.edt_NumDocVida);
         edtNumIncidencia = (EditText) view.findViewById(R.id.edt_Num_Incidencia_Vida);
@@ -432,9 +419,17 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
     {
         try
         {
-            DadosTerritoriais dt = DadosTerritoriais.find(DadosTerritoriais.class, "bairro = ?", bairro).get(0);
-            aucOrgaoDestino.setText(dt.getDelegacia());
-            spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, dt.getAis().getValor()));
+            DadosTerritoriais dt = DadosTerritoriaisBusiness.findByBairro(bairro);
+
+            if (dt != null)
+            {
+                if (dt.getDelegacia() != null && dt.getDelegacia().getDescricao() != null)
+                    aucOrgaoDestino.setText(dt.getDelegacia().getDescricao());
+
+                if (dt.getAis() != null)
+                    spnAIS.setSelection(BuscadorEnum.getIndex(spnAIS, dt.getAis().getValor()));
+            }
+
         } catch (Exception e)
         {
             Toast.makeText(getActivity(), "Bairro não encontrado", Toast.LENGTH_LONG).show();
@@ -490,20 +485,13 @@ public class GerenciarOcorrenciaVida extends android.support.v4.app.Fragment imp
 //            spnTipoOcorrenciaVida.setSelection(BuscadorEnum.getIndex(spnTipoOcorrenciaVida, ocorrenciaVida.getTipoOcorrenciaVida().getValor()));
 
 //        aucOrgaoDestino.setText(ocorrenciaVida.getOrgaoDestino());
-        try
-        {
-            aucOrgaoDestino.setText(Delegacia.findById(Delegacia.class, ocorrenciaVida.getOrgaoDestinoId()).getDescricao());
-        }catch (Exception e)
-        {
-            aucOrgaoDestino.setText("");
-        }
-        try
-        {
-            aucOrgaoOrigem.setText(Delegacia.findById(Delegacia.class,ocorrenciaVida.getOrgaoOrigemId()).getDescricao());
-        }catch (Exception e)
-        {
-            aucOrgaoOrigem.setText("");
-        }
+
+        if (ocorrenciaVida.getOrgaoDestino() != null)
+            aucOrgaoDestino.setText(ocorrenciaVida.getOrgaoDestino().getDescricao());
+
+        if (ocorrenciaVida.getOrgaoOrigem() != null)
+            aucOrgaoOrigem.setText(ocorrenciaVida.getOrgaoOrigem().getDescricao());
+
 
 //        aucOrgaoOrigem.setText((ocorrenciaVida.getOrgaoOrigemId() == null) ? "CIOPS - Coordenadoria Integrada de Operações de Segurança" : ocorrenciaVida.getOrgaoOrigemId());
 

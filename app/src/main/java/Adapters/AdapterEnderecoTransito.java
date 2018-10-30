@@ -76,8 +76,8 @@ public class AdapterEnderecoTransito extends ArrayAdapter<EnderecoTransito> impl
 
                 viewHolder.getEndereco().setText(enderecoTransito.getDescricaoEndereco());
 
-                if(enderecoTransito.getBairro()!=null)
-                viewHolder.getBairro().setText(enderecoTransito.getBairro());
+                if(enderecoTransito.getBairro()!=null&&enderecoTransito.getBairro().getDescricao()!=null)
+                viewHolder.getBairro().setText(enderecoTransito.getBairro().getDescricao());
             }
         }
 

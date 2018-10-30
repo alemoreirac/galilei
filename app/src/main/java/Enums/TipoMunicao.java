@@ -4,7 +4,7 @@ package Enums;
  * Created by Pefoce on 23/01/2018.
  */
 
-public enum TiposMunicao
+public enum TipoMunicao
 {
     NAO_DEFLAGRADA("Não deflagrada"),
     ESTOJO("Estojo"),
@@ -19,7 +19,7 @@ public enum TiposMunicao
         return valor;
     }
 
-    TiposMunicao(String s) {
+    TipoMunicao(String s) {
         this.valor = s;
     }
 }

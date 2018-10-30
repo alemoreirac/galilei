@@ -6,9 +6,9 @@ import com.orm.SugarRecord;
  * Created by Pefoce on 10/01/2018.
  */
 
-public class OcorrenciaEnderecoVida extends SugarRecord
+public class OcorrenciaVidaEndereco extends SugarRecord
 {
-    public OcorrenciaEnderecoVida()
+    public OcorrenciaVidaEndereco()
     {
 
     }

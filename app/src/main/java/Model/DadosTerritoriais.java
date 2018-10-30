@@ -12,28 +12,39 @@ import Enums.AreaIntegradaSeguranca;
 public class DadosTerritoriais extends SugarRecord
 {
        @Expose
-       String delegacia;
+       Delegacia delegacia;
        @Expose
-       String bairro;
+       Bairro bairro;
        @Expose
        AreaIntegradaSeguranca ais;
+
+       public DadosTerritoriais(Delegacia delegacia, Bairro bairro, AreaIntegradaSeguranca ais)
+       {
+              this.delegacia = delegacia;
+              this.bairro = bairro;
+              this.ais = ais;
+       }
 
        public DadosTerritoriais() {
        }
 
-       public String getDelegacia() {
+       public Delegacia getDelegacia()
+       {
               return delegacia;
        }
 
-       public void setDelegacia(String delegacia) {
+       public void setDelegacia(Delegacia delegacia)
+       {
               this.delegacia = delegacia;
        }
 
-       public String getBairro() {
+       public Bairro getBairro()
+       {
               return bairro;
        }
 
-       public void setBairro(String bairro) {
+       public void setBairro(Bairro bairro)
+       {
               this.bairro = bairro;
        }
 
@@ -45,9 +56,4 @@ public class DadosTerritoriais extends SugarRecord
               this.ais = ais;
        }
 
-       public DadosTerritoriais(String delegacia, String bairro, AreaIntegradaSeguranca ais) {
-              this.delegacia = delegacia;
-              this.bairro = bairro;
-              this.ais = ais;
-       }
 }

@@ -1,11 +1,11 @@
 @startuml
 
 class OcorrenciaTransito{
-          Long ocorrenciaID;
+          Long ocorrencia;
           Date dataChamado;
        Date dataAtendimento;
        String Observacoes;
-       DocumentoOcorrencia documentoOcorrencia;
+       DocumentoOcorrencia documento;
        String numIncidencia;
        AreaIntegradaSeguranca ais;
        EstadoSitioColisao estadoSitioColisao;

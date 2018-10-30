@@ -8,10 +8,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 import Enums.AreaIntegradaSeguranca;
-import Enums.DocumentoSolicitacao;
 import Enums.Transito.EstadoSitioColisao;
 import Enums.Orgao;
 import Enums.PreservacaoLocal;
+import Model.Delegacia;
 import Model.DocumentoOcorrencia;
 import Model.Gravacao;
 import Util.TempoUtil;
@@ -23,17 +23,14 @@ import Util.TempoUtil;
 
 public class OcorrenciaTransito extends SugarRecord
 {
-
     @Expose
-    Long ocorrenciaID;
+    Long ocorrencia;
     @Expose
     private Date dataChamado;
     @Expose
     private Date dataAtendimento;
     @Expose
-    private String Observacoes;
-    @Expose
-    private DocumentoOcorrencia documentoOcorrencia;
+    private DocumentoOcorrencia documento;
     @Expose
     private String numIncidencia;
     @Expose
@@ -43,15 +40,15 @@ public class OcorrenciaTransito extends SugarRecord
     @Expose
     private PreservacaoLocal preservacaoLocal;
     @Expose
-    private String orgaoOrigem;
+    private Delegacia orgaoOrigem;
     @Expose
-    private String orgaoDestino;
+    private Delegacia orgaoDestino;
     @Expose
     private Orgao orgaoPresente;
     @Expose
-    private String Viatura;
+    private String viatura;
     @Expose
-    private String Comandante;
+    private String comandante;
     @Expose
     public Gravacao gravacaoConclusao;
     @Expose
@@ -78,19 +75,19 @@ public class OcorrenciaTransito extends SugarRecord
     }
 
     public String getViatura() {
-        return Viatura;
+        return viatura;
     }
 
     public void setViatura(String viatura) {
-        Viatura = viatura;
+        this.viatura = viatura;
     }
 
     public String getComandante() {
-        return Comandante;
+        return comandante;
     }
 
     public void setComandante(String comandante) {
-        Comandante = comandante;
+        this.comandante = comandante;
     }
 
     public Gravacao getGravacaoConclusao() {
@@ -106,16 +103,9 @@ public class OcorrenciaTransito extends SugarRecord
             this.dataAtendimento =  Calendar.getInstance().getTime();
             this.dataChamado =  Calendar.getInstance().getTime();
             this.setViatura("");
-
     }
 
-    public String getOrgaoDestino() {
-        return orgaoDestino;
-    }
 
-    public void setOrgaoDestino(String orgaoDestino) {
-        this.orgaoDestino = orgaoDestino;
-    }
 
     public Date getDataAtendimento() {
         return dataAtendimento;
@@ -249,22 +239,12 @@ public class OcorrenciaTransito extends SugarRecord
     }
 
 
-    public String getObservacoes() {
-        return Observacoes;
+    public DocumentoOcorrencia getDocumento() {
+        return documento;
     }
 
-    public void setObservacoes(String observacoes) {
-        Observacoes = observacoes;
-    }
-
-
-
-    public DocumentoOcorrencia getDocumentoOcorrencia() {
-        return documentoOcorrencia;
-    }
-
-    public void setDocumentoOcorrencia(DocumentoOcorrencia documentoOcorrencia) {
-        this.documentoOcorrencia = documentoOcorrencia;
+    public void setDocumento(DocumentoOcorrencia documento) {
+        this.documento = documento;
     }
 
 
@@ -282,17 +262,27 @@ public class OcorrenciaTransito extends SugarRecord
 
     public void setPreservacaoLocal(PreservacaoLocal preservacaoLocal) {
         this.preservacaoLocal = preservacaoLocal;}
-    
-    public String getOrgaoOrigem() {
+
+    public Delegacia getOrgaoOrigem()
+    {
         return orgaoOrigem;
     }
 
-    public void setOrgaoOrigem(String orgaoOrigem) {
+    public void setOrgaoOrigem(Delegacia orgaoOrigem)
+    {
         this.orgaoOrigem = orgaoOrigem;
     }
 
-    public void setEstadoSitioColisao(DocumentoSolicitacao documentoSolicitacao) {
+    public Delegacia getOrgaoDestino()
+    {
+        return orgaoDestino;
     }
+
+    public void setOrgaoDestino(Delegacia orgaoDestino)
+    {
+        this.orgaoDestino = orgaoDestino;
+    }
+
 
     public String getNumIncidencia() {
         return numIncidencia;
@@ -310,12 +300,12 @@ public class OcorrenciaTransito extends SugarRecord
         this.ais = ais;
     }
 
-    public Long getOcorrenciaID() {
-        return ocorrenciaID;
+    public Long getOcorrencia() {
+        return ocorrencia;
     }
 
-    public void setOcorrenciaID(Long ocorrenciaID) {
-        this.ocorrenciaID = ocorrenciaID;
+    public void setOcorrencia(Long ocorrencia) {
+        this.ocorrencia = ocorrencia;
     }
 
 }

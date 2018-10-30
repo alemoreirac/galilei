@@ -1,6 +1,10 @@
 package Model.Vida;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import Enums.Comodo;
 import Enums.IluminacaoArtificial;
@@ -15,7 +19,9 @@ import Enums.Transito.Pavimentacao;
 import Enums.Transito.TipoCNH;
 import Enums.Transito.TipoVia;
 import Enums.Vida.TipoAberturaLocal;
+import Model.Bairro;
 import Model.Gravacao;
+import Model.Municipio;
 import Util.StringUtil;
 
 /**
@@ -24,9 +30,12 @@ import Util.StringUtil;
 
 public class EnderecoVida extends SugarRecord
 {
-    private String cidade;
+    @Expose
+    Date dataInclusao;
 
-    private String bairro;
+    private Municipio municipio;
+
+    private Bairro bairro;
 
     private String complemento;
 
@@ -88,25 +97,7 @@ public class EnderecoVida extends SugarRecord
         return localPraia;
     }
 
-    public String getCidade()
-    {
-        return cidade;
-    }
 
-    public void setCidade(String cidade)
-    {
-        this.cidade = cidade;
-    }
-
-    public String getBairro()
-    {
-        return bairro;
-    }
-
-    public void setBairro(String bairro)
-    {
-        this.bairro = bairro;
-    }
 
     public String getDescricaoEndereco()
     {
@@ -216,6 +207,16 @@ public class EnderecoVida extends SugarRecord
     public void setCategoriaProprietario(TipoCNH categoriaProprietario)
     {
         this.categoriaProprietario = categoriaProprietario;
+    }
+
+    public Bairro getBairro()
+    {
+        return bairro;
+    }
+
+    public void setBairro(Bairro bairro)
+    {
+        this.bairro = bairro;
     }
 
     public Pavimentacao getPavimentacao()
@@ -343,6 +344,16 @@ public class EnderecoVida extends SugarRecord
         this.tipoVegetacao = tipoVegetacao;
     }
 
+    public Municipio getMunicipio()
+    {
+        return municipio;
+    }
+
+    public void setMunicipio(Municipio municipio)
+    {
+        this.municipio = municipio;
+    }
+
     public TipoAberturaLocal getLocalAberto()
     {
         return localAberto;
@@ -394,10 +405,10 @@ public class EnderecoVida extends SugarRecord
                         value += tipoVegetacao.getValor()+ " ";
                     break;
                 case VIA_PUBLICA:
-                    if(posicaoVia!=null)
-                        value += posicaoVia.getValor()+ " ";
                     if(pavimentacao!=null)
-                        value += pavimentacao.getValor()+ " ";
+                        value += ", pavimentação: "+pavimentacao.getValor().toLowerCase()+ " ";
+                    if(posicaoVia!=null)
+                        value += ", no(a): " + posicaoVia.getValor();
                     break;
             }
         }
@@ -405,7 +416,7 @@ public class EnderecoVida extends SugarRecord
         if(this.veiculoEnvolvido)
         {
 
-            value += "(Veículo) - "+ StringUtil.checkValue(this.placaVeiculo,8,"(Sem placa)");
+            value += ", veículo - "+ StringUtil.checkValue(this.placaVeiculo.toUpperCase(),8,"(Sem placa)");
             if(localVeiculo!=null)
                 value += " " + this.localVeiculo.getValor();
         }
@@ -423,8 +434,8 @@ public class EnderecoVida extends SugarRecord
         this.tipoIluminacao = null;
         this.observacao = "";
 
-        this.bairro = "";
-        this.cidade = "";
+        this.bairro = null;
+        this.municipio = null;
         this.descricaoEndereco = "";
 
         this.localResidencia = null;
@@ -458,9 +469,14 @@ public class EnderecoVida extends SugarRecord
         if(bairro!=null)
             value += bairro+ " ";
 
-        if(cidade!=null)
-            value += cidade;
+        if(municipio !=null)
+            value += municipio;
 
         return value;
+    }
+
+    public EnderecoVida()
+    {
+        dataInclusao = Calendar.getInstance().getTime();
     }
 }

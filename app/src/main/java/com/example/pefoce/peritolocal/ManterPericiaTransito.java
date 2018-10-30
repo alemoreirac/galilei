@@ -101,7 +101,7 @@ public class ManterPericiaTransito extends AppCompatActivity implements StepperL
                     {
 
                         Intent it = new Intent(getApplicationContext(),MainActivity.class);
-                        Ocorrencia ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaTransito.getOcorrenciaID());
+                        Ocorrencia ocorrencia = Ocorrencia.findById(Ocorrencia.class,ocorrenciaTransito.getOcorrencia());
                         if(ocorrencia!=null)
                             it.putExtra("PeritoId",ocorrencia.getPerito().getId());
                         startActivity(it);

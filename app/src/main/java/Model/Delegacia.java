@@ -10,19 +10,37 @@ import com.orm.SugarRecord;
 public  class Delegacia extends SugarRecord
 {
     public String getDescricao() {
-        return Descricao;
+        return descricao;
     }
 
     public void setDescricao(String descricao) {
-        Descricao = descricao;
+        this.descricao = descricao;
+    }
+
+    public Long getIdGalileu()
+    {
+        return idGalileu;
+    }
+
+    public void setIdGalileu(Long idGalileu)
+    {
+        this.idGalileu = idGalileu;
     }
 
     public Delegacia() {
     }
 
     public Delegacia(String descricao) {
-        Descricao = descricao;
+        this.descricao = descricao;
     }
 
-    String Descricao;
+    String descricao;
+
+    Long idGalileu;
+
+    public Delegacia(String descricao, Long idGalileu)
+    {
+        this.descricao = descricao;
+        this.idGalileu = idGalileu;
+    }
 }

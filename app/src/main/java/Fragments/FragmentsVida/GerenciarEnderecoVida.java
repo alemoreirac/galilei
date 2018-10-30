@@ -1,14 +1,12 @@
 package Fragments.FragmentsVida;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -18,9 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +53,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import Adapters.AdapterEnderecoVida;
+import Control.BairroBusiness;
+import Control.MunicipioBusiness;
 import Dialogs.AudioDialog;
-import Dialogs.MapDialog;
 import Dialogs.TipoFotoDialog;
 import Enums.CategoriaFoto;
 import Enums.Comodo;
@@ -77,10 +74,9 @@ import Enums.Vida.TipoAberturaLocal;
 import Model.Foto;
 import Model.Ocorrencia;
 import Model.Vida.EnderecoVida;
-import Model.Vida.OcorrenciaEnderecoVida;
+import Model.Vida.OcorrenciaVidaEndereco;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
-import Util.AndroidDatabaseManager;
 import Util.AutoCompleteUtil;
 import Util.BuscadorEnum;
 import Util.SingleShotLocationProvider;
@@ -88,9 +84,6 @@ import Util.StringUtil;
 import Util.ViewUtil;
 import br.com.sapereaude.maskedEditText.MaskedEditText;
 import info.hoang8f.android.segmented.SegmentedGroup;
-import io.fabric.sdk.android.services.common.SafeToast;
-
-import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -163,7 +156,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     Ocorrencia ocorrencia;
     OcorrenciaVida ocorrenciaVida;
-    OcorrenciaEnderecoVida ocorrenciaEnderecoVida;
+    OcorrenciaVidaEndereco ocorrenciaVidaEndereco;
     EnderecoVida enderecoVida;
 
     LinearLayout llVeiculo;
@@ -178,7 +171,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     FloatingActionButton fabNovoEndereco;
     ListView lstvEnderecos;
     ArrayList<EnderecoVida> enderecosVidaModel;
-    List<OcorrenciaEnderecoVida> listOcorrenciaEndereco;
+    List<OcorrenciaVidaEndereco> listOcorrenciaEndereco;
     AdapterEnderecoVida adapterEndereco;
 
     private static final int RESIZE_PHOTO_PIXELS_PERCENTAGE = 50;
@@ -195,21 +188,20 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     public void SalvarEndereco()
     {
-
         enderecoVida.AnularCampos();
 
         enderecoVida.setDescricaoEndereco(edtEndereco.getText().toString());
-        enderecoVida.setCidade(aucCidade.getText().toString());
-        enderecoVida.setBairro(aucBairro.getText().toString());
+
+        enderecoVida.setMunicipio(MunicipioBusiness.findByDescricao(aucCidade.getText().toString()));
+        enderecoVida.setBairro(BairroBusiness.findByDescricao(aucBairro.getText().toString()));
+
         enderecoVida.setComplemento(edtComplemento.getText().toString());
 
         enderecoVida.setTipoVia(BuscadorEnum.BuscarTipoVia(spnTipoVia.getSelectedItem().toString()));
 
-
         enderecoVida.setLatitude(edtLatitude.getText().toString());
         enderecoVida.setLongitude(edtLongitude.getText().toString());
 
-        //enderecoVida.setTipoLocalCrime(BuscadorEnum.BuscarTipoLocalCrime(spnTipoLocal.getSelectedItem().toString()));
         if (rbtnViaPublica.isChecked())
             enderecoVida.setTipoLocalCrime(TipoLocalCrime.VIA_PUBLICA);
 
@@ -340,11 +332,11 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
 //                    enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
 
-                    listOcorrenciaEndereco = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class,"ocorrencia_vida = ?",ocorrenciaVida.getId().toString());
+                    listOcorrenciaEndereco = OcorrenciaVidaEndereco.find(OcorrenciaVidaEndereco.class,"ocorrencia_vida = ?",ocorrenciaVida.getId().toString());
 
                     enderecosVidaModel = new ArrayList<>();
 
-                    for(OcorrenciaEnderecoVida oev : listOcorrenciaEndereco)
+                    for(OcorrenciaVidaEndereco oev : listOcorrenciaEndereco)
                         enderecosVidaModel.add(oev.getEnderecoVida());
 
                     adapterEndereco = new AdapterEnderecoVida(enderecosVidaModel,getActivity());
@@ -379,17 +371,17 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
                 enderecoVida = new EnderecoVida();
 
-                ocorrenciaEnderecoVida = new OcorrenciaEnderecoVida();
+                ocorrenciaVidaEndereco = new OcorrenciaVidaEndereco();
 
                 enderecoVida.save();
 
-                ocorrenciaEnderecoVida.setEnderecoVida(enderecoVida);
+                ocorrenciaVidaEndereco.setEnderecoVida(enderecoVida);
 
-                ocorrenciaEnderecoVida.setOcorrenciaVida(ocorrenciaVida);
+                ocorrenciaVidaEndereco.setOcorrenciaVida(ocorrenciaVida);
 
-                ocorrenciaEnderecoVida.save();
+                ocorrenciaVidaEndereco.save();
 
-                listOcorrenciaEndereco.add(ocorrenciaEnderecoVida);
+                listOcorrenciaEndereco.add(ocorrenciaVidaEndereco);
 
                 adapterEndereco.add(enderecoVida);
                 adapterEndereco.notifyDataSetChanged();
@@ -749,11 +741,11 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
                 try
                 {
-                    ocorrenciaEnderecoVida = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class, "ocorrencia_vida = ? and endereco_vida = ?", ocorrenciaVida.getId().toString(), enderecoVida.getId().toString()).get(0);
+                    ocorrenciaVidaEndereco = OcorrenciaVidaEndereco.find(OcorrenciaVidaEndereco.class, "ocorrencia_vida = ? and endereco_vida = ?", ocorrenciaVida.getId().toString(), enderecoVida.getId().toString()).get(0);
 
                 } catch (Exception e)
                 {
-                    ocorrenciaEnderecoVida= new OcorrenciaEnderecoVida();
+                    ocorrenciaVidaEndereco = new OcorrenciaVidaEndereco();
                 }
 
                 ViewUtil.modifyAll(rltvBase, true);
@@ -781,7 +773,7 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                OcorrenciaEnderecoVida ocorrenciaEndereco = listOcorrenciaEndereco.get(position);
+                                OcorrenciaVidaEndereco ocorrenciaEndereco = listOcorrenciaEndereco.get(position);
 
 
                                 //TODO: FAZER A MESMA COISA PRA ENVOVLIDO_ENDEREÇO
@@ -835,8 +827,13 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
         if(requestCode == REQUEST_CODE)
         {
             if(grantResults.length==0)
+            {
+                imgbCoordenadas.setVisibility(View.VISIBLE);
+                pbCoordenadas.setVisibility(View.INVISIBLE);
+                edtLatitude.setEnabled(true);
+                edtLongitude.setEnabled(true);
                 return;
-
+            }
             for(int i = 0 ; i<grantResults.length;i++)
             {
                 if(grantResults[i] != PackageManager.PERMISSION_GRANTED)
@@ -1030,6 +1027,9 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
 
     public void AssociarLayout(View view)
     {
+
+        if(view==null)
+            return;
         rltvBase = (RelativeLayout)view.findViewById(R.id.rltv_Detalhe_Endereco_Vida);
 
         lstvEnderecos = (ListView) view.findViewById(R.id.lstv_enderecos_vida);
@@ -1164,8 +1164,13 @@ public class GerenciarEnderecoVida extends android.support.v4.app.Fragment imple
     public void CarregarEndereco()
     {
         edtEndereco.setText(enderecoVida.getDescricaoEndereco());
-        aucBairro.setText(enderecoVida.getBairro());
-        aucCidade.setText(enderecoVida.getCidade());
+
+        if(enderecoVida.getBairro()!=null && enderecoVida.getBairro().getDescricao()!=null)
+        aucBairro.setText(enderecoVida.getBairro().getDescricao());
+
+        if(enderecoVida.getMunicipio()!=null && enderecoVida.getMunicipio().getDescricao()!=null)
+        aucCidade.setText(enderecoVida.getMunicipio().getDescricao());
+
         edtComplemento.setText(enderecoVida.getComplemento());
 
         edtLatitude.setText(enderecoVida.getLatitude());

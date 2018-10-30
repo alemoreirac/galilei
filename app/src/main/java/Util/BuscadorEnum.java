@@ -18,8 +18,8 @@ import Enums.TipoLocalCrime;
 import Enums.Meteorologia;
 import Enums.TipoRecolhimentoAmostra_Papiloscopia;
 import Enums.TipoVegetacao;
-import Enums.TiposMunicao;
-import Enums.TiposVestigioBiologico;
+import Enums.TipoVestigioBiologico;
+import Enums.TipoMunicao;
 import Enums.Transito.AtoresColisao;
 import Enums.CategoriaFoto;
 import Enums.Transito.ConclusaoTransito;
@@ -30,7 +30,7 @@ import Enums.DocumentoSolicitacao;
 import Enums.Transito.EstadoSitioColisao;
 import Enums.Genero;
 import Enums.IluminacaoVia;
-import Enums.Transito.Lesao;
+import Enums.Transito.LesaoTransito;
 import Enums.Transito.LocalObjeto;
 import Enums.Transito.LocalPedestre;
 import Enums.Orgao;
@@ -67,7 +67,7 @@ import Enums.Vida.PresencaEnvolvido;
 import Enums.Vida.Secao;
 import Enums.Vida.TipoAberturaLocal;
 import Enums.Vida.TipoMorte;
-import Enums.Vida.TipoRecolhimentoAmostra_Biologica;
+import Enums.TipoRecolhimentoAmostra_Biologica;
 import Enums.Vida.TipoVestigioVida;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.EnderecoTransito;
@@ -304,9 +304,9 @@ public class BuscadorEnum
         return null;
     }
 
-    public static TiposMunicao BuscarTipoMunicao(String valor)
+    public static TipoMunicao BuscarTipoMunicao(String valor)
     {
-        for (TiposMunicao item : TiposMunicao.values())
+        for (TipoMunicao item : TipoMunicao.values())
         {
             if (item.getValor() == valor)
                 return item;
@@ -401,9 +401,9 @@ public class BuscadorEnum
         return null;
     }
 
-    public static Lesao BuscarLesao(String valor)
+    public static LesaoTransito BuscarLesao(String valor)
     {
-        for (Lesao item : Lesao.values())
+        for (LesaoTransito item : LesaoTransito.values())
         {
             if (item.getValor() == valor)
                 return item;
@@ -634,9 +634,9 @@ public class BuscadorEnum
         return null;
     }
 
-    public static TiposVestigioBiologico BuscarVestigioBiologico(String valor)
+    public static TipoVestigioBiologico BuscarVestigioBiologico(String valor)
     {
-        for (TiposVestigioBiologico item : TiposVestigioBiologico.values())
+        for (TipoVestigioBiologico item : TipoVestigioBiologico.values())
         {
             if (item.getValor() == valor)
                 return item;

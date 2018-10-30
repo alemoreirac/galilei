@@ -1,5 +1,7 @@
 package Model.Vida;
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -7,6 +9,7 @@ import java.util.Date;
 import Enums.AreaIntegradaSeguranca;
 import Enums.Orgao;
 import Enums.PreservacaoLocal;
+import Model.Delegacia;
 import Model.DocumentoOcorrencia;
 import Util.TempoUtil;
 
@@ -20,35 +23,48 @@ public class OcorrenciaVida extends SugarRecord
 {
     private Long ocorrenciaID;
 
+    @Expose
     private Date dataChamado;
 
+    @Expose
     private Date dataAtendimento;
 
+    @Expose
     private DocumentoOcorrencia documento;
 
+    @Expose
     private String numIncidencia;
 
+    @Expose
     private String delegado;
 
+    @Expose
     private Orgao autoridadePresente;
 
-    private String Viatura;
+    @Expose
+    private String viatura;
 
-    private String Comandante;
+    @Expose
+    private String comandante;
 
+    @Expose
     private AreaIntegradaSeguranca ais;
 
-    private Long orgaoOrigemId;
+    @Expose
+    private Delegacia orgaoOrigem;
 
-    private Long orgaoDestinoId;
+    @Expose
+    private Delegacia orgaoDestino;
 
+    @Expose
     private PreservacaoLocal preservacaoLocal;
+
 
     public OcorrenciaVida()
     {
         this.ais = AIS_1;
         this.preservacaoLocal =PreservacaoLocal.NAO_PRESERVADO;
-        this.Comandante = "";
+        this.comandante = "";
         this.numIncidencia = "";
         this.documento = new DocumentoOcorrencia();
         this.ocorrenciaID = 0l;
@@ -110,22 +126,22 @@ public class OcorrenciaVida extends SugarRecord
 
     public String getViatura()
     {
-        return Viatura;
+        return viatura;
     }
 
     public void setViatura(String viatura)
     {
-        Viatura = viatura;
+        this.viatura = viatura;
     }
 
     public String getComandante()
     {
-        return Comandante;
+        return comandante;
     }
 
     public void setComandante(String comandante)
     {
-        Comandante = comandante;
+        this.comandante = comandante;
     }
 
     public AreaIntegradaSeguranca getAis()
@@ -249,24 +265,24 @@ public class OcorrenciaVida extends SugarRecord
         this.dataChamado = cSave.getTime();
     }
 
-    public Long getOrgaoOrigemId()
+    public Delegacia getOrgaoOrigem()
     {
-        return orgaoOrigemId;
+        return orgaoOrigem;
     }
 
-    public void setOrgaoOrigemId(Long orgaoOrigemId)
+    public void setOrgaoOrigem(Delegacia orgaoOrigem)
     {
-        this.orgaoOrigemId = orgaoOrigemId;
+        this.orgaoOrigem = orgaoOrigem;
     }
 
-    public Long getOrgaoDestinoId()
+    public Delegacia getOrgaoDestino()
     {
-        return orgaoDestinoId;
+        return orgaoDestino;
     }
 
-    public void setOrgaoDestinoId(Long orgaoDestinoId)
+    public void setOrgaoDestino(Delegacia orgaoDestino)
     {
-        this.orgaoDestinoId = orgaoDestinoId;
+        this.orgaoDestino = orgaoDestino;
     }
 
     public String getDelegado()

@@ -1,14 +1,18 @@
 package Model.Vida;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import Enums.Calibre;
 import Enums.DocumentoPessoa;
 import Enums.TipoArma;
 import Enums.TipoRecolhimentoAmostra_Papiloscopia;
-import Enums.TiposMunicao;
-import Enums.TiposVestigioBiologico;
-import Enums.Vida.TipoRecolhimentoAmostra_Biologica;
+import Enums.TipoVestigioBiologico;
+import Enums.TipoMunicao;
+import Enums.TipoRecolhimentoAmostra_Biologica;
 import Enums.Vida.TipoVestigioVida;
 
 /**
@@ -17,6 +21,8 @@ import Enums.Vida.TipoVestigioVida;
 
 public class VestigioVida extends SugarRecord
 {
+    @Expose
+    Date dataInclusao;
     TipoVestigioVida tipoVestigio;
     String observacao;
 
@@ -29,9 +35,8 @@ public class VestigioVida extends SugarRecord
     String objetoRecolhidoPapiloscopia;
 
     //Características de Biológicos
-    TiposVestigioBiologico tiposVestigioBiologico;
+    TipoVestigioBiologico tipoVestigioBiologico;
     TipoRecolhimentoAmostra_Biologica tipoRecolhimentoAmostraBiologica;
-
 
     //Características armas de Fogo
     TipoArma tipoArma;
@@ -42,7 +47,7 @@ public class VestigioVida extends SugarRecord
     int quantidadeMunicao;
     Calibre calibreMunicao;
     boolean condicaoMunicao;
-    TiposMunicao tipoMunicao;
+    TipoMunicao tipoMunicao;
 
 
     //Características MISCELANIA
@@ -50,6 +55,7 @@ public class VestigioVida extends SugarRecord
 
     public VestigioVida()
     {
+        dataInclusao = Calendar.getInstance().getTime();
     }
 
     public TipoRecolhimentoAmostra_Papiloscopia getTipoRecolhimentoAmostraPapiloscopia()
@@ -142,14 +148,14 @@ public class VestigioVida extends SugarRecord
         this.objetoRecolhidoPapiloscopia = objetoRecolhidoPapiloscopia;
     }
 
-    public TiposVestigioBiologico getTiposVestigioBiologico()
+    public TipoVestigioBiologico getTipoVestigioBiologico()
     {
-        return tiposVestigioBiologico;
+        return tipoVestigioBiologico;
     }
 
-    public void setTiposVestigioBiologico(TiposVestigioBiologico tiposVestigioBiologico)
+    public void setTipoVestigioBiologico(TipoVestigioBiologico tipoVestigioBiologico)
     {
-        this.tiposVestigioBiologico = tiposVestigioBiologico;
+        this.tipoVestigioBiologico = tipoVestigioBiologico;
     }
 
     public String getNumeracaoArma()
@@ -207,14 +213,14 @@ public class VestigioVida extends SugarRecord
         return condicaoMunicao;
     }
 
-    public TiposMunicao getTipoMunicao()
+    public TipoMunicao getTipoMunicao()
     {
         return tipoMunicao;
     }
 
-    public void setTipoMunicao(TiposMunicao tiposMunicao)
+    public void setTipoMunicao(TipoMunicao tipoMunicao)
     {
-        this.tipoMunicao = tiposMunicao;
+        this.tipoMunicao = tipoMunicao;
     }
 
     public void LimparCampos()
@@ -225,7 +231,7 @@ public class VestigioVida extends SugarRecord
         tipoDocumento = null;
         tipoRecolhimentoAmostraPapiloscopia = null;
         objetoRecolhidoPapiloscopia = null;
-        tiposVestigioBiologico = null;
+        tipoVestigioBiologico = null;
         tipoRecolhimentoAmostraBiologica = null;
         tipoArma = null;
         numeracaoArma = null;
@@ -246,8 +252,8 @@ public class VestigioVida extends SugarRecord
                 return "Arma de fogo do tipo: " + getTipoArma().getValor().toLowerCase() + " de calibre " + getCalibreArma().getValor() + " de numeração " + getNumeracaoArma();
 
             case BIOLOGICO:
-                if(getTiposVestigioBiologico() != null && getTipoRecolhimentoAmostraBiologica()!= null)
-                return "Vestígio biológico do tipo: " + getTiposVestigioBiologico().getValor().toLowerCase() + " coletado com: " + getTipoRecolhimentoAmostraBiologica();
+                if(getTipoVestigioBiologico() != null && getTipoRecolhimentoAmostraBiologica()!= null)
+                return "Vestígio biológico do tipo: " + getTipoVestigioBiologico().getValor().toLowerCase() + " coletado com: " + getTipoRecolhimentoAmostraBiologica();
 
             case DOCUMENTO:
                 if(getTipoDocumento() != null && getNumDocumento()!= null)

@@ -15,6 +15,10 @@ public class EnvolvidoColisao extends SugarRecord
 
     ColisaoTransito colisaoTransito;
 
+    boolean culpaCondutor;
+
+    boolean culpaEnvolvido;
+
     public EnvolvidoColisao(EnvolvidoTransito envolvido, ColisaoTransito colisao)
     {
         this.envolvidoTransito = envolvido;

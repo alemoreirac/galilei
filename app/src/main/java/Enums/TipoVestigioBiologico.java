@@ -4,7 +4,7 @@ package Enums;
  * Created by Pefoce on 24/11/2017.
  */
 
-public enum TiposVestigioBiologico
+public enum TipoVestigioBiologico
 {
     SANGUE("Sangue"),
     URINA("Urina"),
@@ -25,7 +25,7 @@ public enum TiposVestigioBiologico
 
     String valor;
 
-    TiposVestigioBiologico(String s)
+    TipoVestigioBiologico(String s)
     {
         this.valor = s;
     }

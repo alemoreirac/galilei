@@ -3,15 +3,19 @@ package Model.Transito;
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import Enums.Transito.CondicaoPista;
 import Enums.IluminacaoVia;
-import Enums.Transito.Logradouro;
 import Enums.OrientacaoGeograficaComposta;
 import Enums.Transito.Pavimentacao;
 import Enums.Transito.Semaforo;
 import Enums.Transito.SinalizacaoPare;
 import Enums.Transito.TipoVia;
 import Enums.Transito.Topografia;
+import Model.Bairro;
+import Model.Municipio;
 import Util.StringUtil;
 
 /**
@@ -21,10 +25,12 @@ import Util.StringUtil;
 public class EnderecoTransito extends SugarRecord
 {
     @Expose
-    private String cidade;
+    Date dataInclusao;
     @Expose
-    private String bairro;
-
+    private Municipio municipio;
+    @Expose
+    private Bairro bairro;
+    @Expose
     private String complemento;
     @Expose
     private String descricaoEndereco;
@@ -32,8 +38,6 @@ public class EnderecoTransito extends SugarRecord
     private TipoVia tipoVia;
     @Expose
     private Topografia topografia;
-    @Expose
-    private Logradouro logradouro;
     @Expose
     private Pavimentacao pavimentacao;
     @Expose
@@ -47,7 +51,7 @@ public class EnderecoTransito extends SugarRecord
     @Expose
     private OrientacaoGeograficaComposta sentidoVia;
     @Expose
-    private int Angulo;
+    private int anguloInclinacao;
     @Expose
     private boolean isMaoDupla;
     @Expose
@@ -69,7 +73,7 @@ public class EnderecoTransito extends SugarRecord
     @Expose
     private boolean meioFio;
     @Expose
-    Long largura;
+    Float largura;
 
 
     public boolean getMeioFio()
@@ -102,15 +106,6 @@ public class EnderecoTransito extends SugarRecord
         this.topografia = topografia;
     }
 
-    public Logradouro getLogradouro()
-    {
-        return logradouro;
-    }
-
-    public void setLogradouro(Logradouro logradouro)
-    {
-        this.logradouro = logradouro;
-    }
 
     public Pavimentacao getPavimentacao()
     {
@@ -167,22 +162,22 @@ public class EnderecoTransito extends SugarRecord
         return isPreferencial;
     }
 
-    public String getCidade()
+    public Municipio getMunicipio()
     {
-        return cidade;
+        return municipio;
     }
 
-    public void setCidade(String cidade)
+    public void setMunicipio(Municipio municipio)
     {
-        this.cidade = cidade;
+        this.municipio = municipio;
     }
 
-    public String getBairro()
+    public Bairro getBairro()
     {
         return bairro;
     }
 
-    public void setBairro(String bairro)
+    public void setBairro(Bairro bairro)
     {
         this.bairro = bairro;
     }
@@ -245,17 +240,17 @@ public class EnderecoTransito extends SugarRecord
     @Override
     public String toString()
     {
-        return StringUtil.checkValue(descricaoEndereco,20,"(Sem Endereço)");
+        return StringUtil.checkValue(descricaoEndereco, 20, "(Sem Endereço)");
     }
 
-    public int getAngulo()
+    public int getAnguloInclinacao()
     {
-        return Angulo;
+        return anguloInclinacao;
     }
 
-    public void setAngulo(int angulo)
+    public void setAnguloInclinacao(int anguloInclinacao)
     {
-        Angulo = angulo;
+        this.anguloInclinacao = anguloInclinacao;
     }
 
     public boolean isMaoDupla()
@@ -320,15 +315,26 @@ public class EnderecoTransito extends SugarRecord
 
     public String toStringDoc()
     {
-        return this.tipoVia.getValor() + " " + descricaoEndereco;
+        String endereco = "";
+
+        if(tipoVia.getValor()!=null)
+            endereco += tipoVia.getValor();
+
+        if (descricaoEndereco != null)
+            endereco += " " + descricaoEndereco;
+
+        if(endereco.isEmpty())
+            return "(sem endereço)";
+
+        return endereco;
     }
 
-    public Long getLargura()
+    public Float getLargura()
     {
         return largura;
     }
 
-    public void setLargura(Long largura)
+    public void setLargura(Float largura)
     {
         this.largura = largura;
     }
@@ -342,7 +348,7 @@ public class EnderecoTransito extends SugarRecord
 
         EnderecoTransito that = (EnderecoTransito) o;
 
-        if (Angulo != that.Angulo) return false;
+        if (anguloInclinacao != that.anguloInclinacao) return false;
         if (isMaoDupla != that.isMaoDupla) return false;
         if (isPreferencial != that.isPreferencial) return false;
         if (isCurva != that.isCurva) return false;
@@ -350,13 +356,13 @@ public class EnderecoTransito extends SugarRecord
         if (isComposta != that.isComposta) return false;
         if (numFaixas != that.numFaixas) return false;
         if (numPistas != that.numPistas) return false;
-        if (cidade != null ? !cidade.equals(that.cidade) : that.cidade != null) return false;
+        if (municipio != null ? !municipio.equals(that.municipio) : that.municipio != null)
+            return false;
         if (bairro != null ? !bairro.equals(that.bairro) : that.bairro != null) return false;
         if (descricaoEndereco != null ? !descricaoEndereco.equals(that.descricaoEndereco) : that.descricaoEndereco != null)
             return false;
         if (tipoVia != that.tipoVia) return false;
         if (topografia != that.topografia) return false;
-        if (logradouro != that.logradouro) return false;
         if (pavimentacao != that.pavimentacao) return false;
         if (condicao != that.condicao) return false;
         if (iluminacao != that.iluminacao) return false;
@@ -373,19 +379,18 @@ public class EnderecoTransito extends SugarRecord
     @Override
     public int hashCode()
     {
-        int result = cidade != null ? cidade.hashCode() : 0;
+        int result = municipio != null ? municipio.hashCode() : 0;
         result = 31 * result + (bairro != null ? bairro.hashCode() : 0);
         result = 31 * result + (descricaoEndereco != null ? descricaoEndereco.hashCode() : 0);
         result = 31 * result + (tipoVia != null ? tipoVia.hashCode() : 0);
         result = 31 * result + (topografia != null ? topografia.hashCode() : 0);
-        result = 31 * result + (logradouro != null ? logradouro.hashCode() : 0);
         result = 31 * result + (pavimentacao != null ? pavimentacao.hashCode() : 0);
         result = 31 * result + (condicao != null ? condicao.hashCode() : 0);
         result = 31 * result + (iluminacao != null ? iluminacao.hashCode() : 0);
         result = 31 * result + (sinalizacaoPare != null ? sinalizacaoPare.hashCode() : 0);
         result = 31 * result + (semaforo != null ? semaforo.hashCode() : 0);
         result = 31 * result + (sentidoVia != null ? sentidoVia.hashCode() : 0);
-        result = 31 * result + Angulo;
+        result = 31 * result + anguloInclinacao;
         result = 31 * result + (isMaoDupla ? 1 : 0);
         result = 31 * result + (isPreferencial ? 1 : 0);
         result = 31 * result + (isCurva ? 1 : 0);
@@ -397,5 +402,10 @@ public class EnderecoTransito extends SugarRecord
         result = 31 * result + (longitude != null ? longitude.hashCode() : 0);
         result = 31 * result + (largura != null ? largura.hashCode() : 0);
         return result;
+    }
+
+    public EnderecoTransito()
+    {
+        dataInclusao = Calendar.getInstance().getTime();
     }
 }

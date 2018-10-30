@@ -47,7 +47,7 @@ import Dialogs.TipoFotoDialog;
 import Enums.CategoriaFoto;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
-import Enums.Transito.Lesao;
+import Enums.Transito.LesaoTransito;
 import Enums.Transito.TipoEnvolvidoTransito;
 import Enums.Vida.PresencaEnvolvido;
 import Model.Transito.ColisaoTransito;
@@ -61,7 +61,6 @@ import Model.Transito.OcorrenciaTransito;
 import Model.Transito.OcorrenciaTransitoVeiculo;
 import Model.Transito.Veiculo;
 import Util.BuscadorEnum;
-import Util.TempoUtil;
 import Util.ViewUtil;
 
 
@@ -126,7 +125,7 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
 
         ocorrenciaTransitoEnvolvido = ((ManterPericiaTransito) getActivity()).ocorrenciaTransito;
 
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoEnvolvido.getOcorrenciaID());
+        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoEnvolvido.getOcorrencia());
 
         ocorrenciaEnvolvidos = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class, "ocorrencia_transito = ?", ocorrenciaTransitoEnvolvido.getId().toString());
 
@@ -255,33 +254,35 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
     }
 
 
-    private void AssociarLayout(View v)
+    private void AssociarLayout(View view)
     {
-        //   cxbCondutor = (CheckBox) v.findViewById(R.id.cxb_Envolvido_Condutor);
-        edtNome = (EditText) v.findViewById(R.id.edt_NomeEnvolvido);
-        edtNumDocumento = (EditText) v.findViewById(R.id.edt_NumDocEnvolvido);
-        spnTipoDocumento = (Spinner) v.findViewById(R.id.spn_TipoDocumentoEnvolvido);
-        spnGenero = (Spinner) v.findViewById(R.id.spn_EnvolvidoGenero);
-        spnVeiculo = (Spinner) v.findViewById(R.id.spn_Veiculo_Envolvido);
-        spnTipoEnvolvido = (Spinner) v.findViewById(R.id.spn_Tipo_Envolvido);
-        spnPresencaEnvolvido = (Spinner) v.findViewById(R.id.spn_Presenca);
+        if(view ==null)
+            return;
 
-        llDataNascimento = (LinearLayout) v.findViewById(R.id.ll_Data_Nascimento_Envolvido_Transito);
-        //cxbFatal = (CheckBox) v.findViewById(R.id.cxb_EnvolvidoFatal);
-        spnLesao = (Spinner) v.findViewById(R.id.spn_Lesao);
+        edtNome = (EditText) view.findViewById(R.id.edt_NomeEnvolvido);
+        edtNumDocumento = (EditText) view.findViewById(R.id.edt_NumDocEnvolvido);
+        spnTipoDocumento = (Spinner) view.findViewById(R.id.spn_TipoDocumentoEnvolvido);
+        spnGenero = (Spinner) view.findViewById(R.id.spn_EnvolvidoGenero);
+        spnVeiculo = (Spinner) view.findViewById(R.id.spn_Veiculo_Envolvido);
+        spnTipoEnvolvido = (Spinner) view.findViewById(R.id.spn_Tipo_Envolvido);
+        spnPresencaEnvolvido = (Spinner) view.findViewById(R.id.spn_Presenca);
+
+        llDataNascimento = (LinearLayout) view.findViewById(R.id.ll_Data_Nascimento_Envolvido_Transito);
+        //cxbFatal = (CheckBox) view.findViewById(R.id.cxb_EnvolvidoFatal);
+        spnLesao = (Spinner) view.findViewById(R.id.spn_Lesao);
 //        spnLesao.toString();
-        txvVeiculo = (TextView) v.findViewById(R.id.txv_Envolvido_Veiculo);
+        txvVeiculo = (TextView) view.findViewById(R.id.txv_Envolvido_Veiculo);
 
-        edtDiaNascimento = (EditText) v.findViewById(R.id.edt_Dia_Nascimento_Envolvido_Transito);
-        edtMesNascimento = (EditText) v.findViewById(R.id.edt_Mes_Nascimento_Envolvido_Transito);
-        edtAnoNascimento = (EditText) v.findViewById(R.id.edt_Ano_Nascimento_Envolvido_Transito);
-        rltv_Envolvido = (RelativeLayout) v.findViewById(R.id.rltv_Detalhe_Envolvido);
-        lstvEnvolvidos = (ListView) v.findViewById(R.id.lstv_Envolvidos);
-        fabEnvolvido = (FloatingActionButton) v.findViewById(R.id.fab_Envolvido);
-        fabFotoEnvolvido = (FloatingActionButton) v.findViewById(R.id.fab_Foto_Envolvido);
-//        btnCancel = (Button) v.findViewById(R.id.btn_Cancelar_Envolvido);
-//        btnSave = (Button) v.findViewById(R.id.btn_Salvar_Envolvido);
-        cxbDesconhecido = (CheckBox) v.findViewById(R.id.cxb_Envolvido_Desconhecido);
+        edtDiaNascimento = (EditText) view.findViewById(R.id.edt_Dia_Nascimento_Envolvido_Transito);
+        edtMesNascimento = (EditText) view.findViewById(R.id.edt_Mes_Nascimento_Envolvido_Transito);
+        edtAnoNascimento = (EditText) view.findViewById(R.id.edt_Ano_Nascimento_Envolvido_Transito);
+        rltv_Envolvido = (RelativeLayout) view.findViewById(R.id.rltv_Detalhe_Envolvido);
+        lstvEnvolvidos = (ListView) view.findViewById(R.id.lstv_Envolvidos);
+        fabEnvolvido = (FloatingActionButton) view.findViewById(R.id.fab_Envolvido);
+        fabFotoEnvolvido = (FloatingActionButton) view.findViewById(R.id.fab_Foto_Envolvido);
+//        btnCancel = (Button) view.findViewById(R.id.btn_Cancelar_Envolvido);
+//        btnSave = (Button) view.findViewById(R.id.btn_Salvar_Envolvido);
+        cxbDesconhecido = (CheckBox) view.findViewById(R.id.cxb_Envolvido_Desconhecido);
     }
 
     private void PovoarSpinner(Context ctx)
@@ -314,7 +315,7 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
 
         ArrayList<String> lesoes = new ArrayList<>();
 
-        for (Lesao l : Lesao.values())
+        for (LesaoTransito l : LesaoTransito.values())
             lesoes.add(l.getValor());
 
 
@@ -413,8 +414,8 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
 //        if (envolvido.getDocumentoTipo() != null)
 //            spnTipoDocumento.setSelection(BuscadorEnum.getIndex(spnTipoDocumento, envolvido.getDocumentoTipo().getValor()));
 
-        if (envolvido.getLesao() != null)
-            spnLesao.setSelection(BuscadorEnum.getIndex(spnLesao, envolvido.getLesao().getValor()));
+        if (envolvido.getLesaoTransito() != null)
+            spnLesao.setSelection(BuscadorEnum.getIndex(spnLesao, envolvido.getLesaoTransito().getValor()));
 
         if (!(envolvido.getTipoEnvolvido().equals(TipoEnvolvidoTransito.NAO_IDENTIFICADO) || envolvido.getTipoEnvolvido().equals(TipoEnvolvidoTransito.PEDESTRE)))
         {
@@ -432,13 +433,11 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
     {
         envolvido.setNome(edtNome.getText().toString());
         envolvido.setDocumentoValor(edtNumDocumento.getText().toString());
-        //envolvido.setCondutor(cxbCondutor.isChecked());
-//        envolvido.setDataNascimentoString(txvNascimento.getText().toString());
 
         envolvido.setVeiculoEnvolvido((Veiculo) spnVeiculo.getSelectedItem());
         envolvido.setDocumentoTipo(BuscadorEnum.BuscarTipoDocumento(spnTipoDocumento.getSelectedItem().toString()));
         envolvido.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
-        envolvido.setLesao(BuscadorEnum.BuscarLesao(spnLesao.getSelectedItem().toString()));
+        envolvido.setLesaoTransito(BuscadorEnum.BuscarLesao(spnLesao.getSelectedItem().toString()));
         envolvido.setTipoEnvolvido(BuscadorEnum.BuscarTipoEnvolvido(spnTipoEnvolvido.getSelectedItem().toString()));
         envolvido.setPresencaEnvolvido(BuscadorEnum.BuscarPresencaEnvolvido(spnPresencaEnvolvido.getSelectedItem().toString()));
 
@@ -451,11 +450,6 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
                     + edtMesNascimento.getText() + "/" + edtAnoNascimento.getText().toString());
 
 
-        //
-//        envolvido.setDocumentoTipo(DocumentoPessoa.valueOf(DocumentoPessoa.class,spnTipoDocumento.getSelectedItem().toString()));
-//        envolvido.setGenero(Genero.valueOf(Genero.class,spnGenero.getSelectedItem().toString()));
-//        envolvido.setLesao(Lesao.valueOf(Lesao.class,spnLesao.getSelectedItem().toString()));
-//        envolvido.setTipoEnvolvido(TipoEnvolvidoTransito.valueOf(TipoEnvolvidoTransito.class,spnTipoEnvolvido.getSelectedItem().toString()));
         envolvido.save();
 
         ocorrenciaEnvolvido.setOcorrenciaTransito(ocorrenciaTransitoEnvolvido);
@@ -708,7 +702,7 @@ public class GerenciarEnvolvidoTransito extends android.support.v4.app.Fragment 
                     builder = new AlertDialog.Builder(getActivity());
 
                 builder.setTitle("Deletar Ocorrência")
-                        .setMessage("Você deseja deletar esta Ocorrência?")
+                        .setMessage("Você deseja deletar este Envolvido?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
                         {
                             public void onClick(DialogInterface dialog, int which)

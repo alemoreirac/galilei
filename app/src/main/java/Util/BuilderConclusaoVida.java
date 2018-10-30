@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import Busines.DelegaciaBusiness;
-import Busines.EnderecoVidaBusiness;
+import Control.Vida.EnderecoVidaBusiness;
+import Control.Vida.EnvolvidoVidaBusiness;
+import Control.Vida.LesaoBusiness;
+import Control.Vida.VestigioVidaBusiness;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
 import Enums.TipoLocalCrime;
@@ -37,9 +39,8 @@ public class BuilderConclusaoVida
     static Ocorrencia ocorrencia;
     static List<EnvolvidoVida> envolvidoVidaList;
     static List<VestigioVida> vestigioVidaList;
-    static List<VestigioVidaOcorrencia> vestigioVidaOcorrenciaList;
     static List<Lesao> lesaoList;
-    static List<LesaoEnvolvido> lesaoEnvolvido;
+//    static List<LesaoEnvolvido> lesaoEnvolvido;
     static StringBuilder builderConclusao;
 
     public static String ConstruirLaudo(OcorrenciaVida ov)
@@ -48,7 +49,7 @@ public class BuilderConclusaoVida
 
         try
         {
-            enderecosVidaList = EnderecoVidaBusiness.findEnderecoByOcorrenciaId(ocorrenciaVida.getId());
+            enderecosVidaList = EnderecoVidaBusiness.findEnderecosByOcorrenciaId(ocorrenciaVida.getId());
         } catch (Exception e)
         {
 
@@ -57,8 +58,9 @@ public class BuilderConclusaoVida
 
         ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaVida.getOcorrenciaID());
 
+        envolvidoVidaList = EnvolvidoVidaBusiness.findEnvolvidosByOcorrenciaId(ocorrenciaVida.getId());
+        vestigioVidaList = VestigioVidaBusiness.findVestigioByOcorrenciaId(ocorrenciaVida.getId());
 
-        InstanciarListas();
         try
         {
             ConstruirTexto();
@@ -87,28 +89,6 @@ public class BuilderConclusaoVida
 
     }
 
-    public static void InstanciarListas()
-    {
-        lesaoList = new ArrayList<>();
-        envolvidoVidaList = new ArrayList<>();
-        vestigioVidaList = new ArrayList<>();
-
-
-        List<OcorrenciaEnvolvidoVida> oev = OcorrenciaEnvolvidoVida.find(OcorrenciaEnvolvidoVida.class,
-                "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
-
-        for (OcorrenciaEnvolvidoVida ocorrenciaEnvolvidoVida : oev)
-            envolvidoVidaList.add(ocorrenciaEnvolvidoVida.getEnvolvidoVida());
-
-
-        List<VestigioVidaOcorrencia> vvo = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class,
-                "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
-
-        for (VestigioVidaOcorrencia vestigioVidaOcorrencia : vvo)
-            vestigioVidaList.add(vestigioVidaOcorrencia.getVestigioVida());
-
-        vestigioVidaOcorrenciaList = VestigioVidaOcorrencia.find(VestigioVidaOcorrencia.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
-    }
 
     private static void ConstruirPreambulo()
     {
@@ -124,9 +104,9 @@ public class BuilderConclusaoVida
                 builderConclusao.append(ocorrencia.getPerito().getNome());
         }
 
-        if (ocorrenciaVida.getOrgaoOrigemId() != null && ocorrenciaVida.getNumIncidencia() != null)
+        if (ocorrenciaVida.getOrgaoOrigem() != null && ocorrenciaVida.getNumIncidencia() != null)
             builderConclusao.append(" para proceder ao exame acima referido, a fim de ser atendida a " +
-                    "solicitação da " + DelegaciaBusiness.findDescricaoById(ocorrenciaVida.getOrgaoOrigemId()) + " com número de incidência " + ocorrencia.getOcorrenciaVida().getNumIncidencia() + ".\n");
+                    "solicitação da " + ocorrenciaVida.getOrgaoOrigem().getDescricao() + " com número de incidência " + ocorrencia.getOcorrenciaVida().getNumIncidencia() + ".\n");
 
         builderConclusao.append("Findos os trabalhos o infrafirmado passa a apresentar os " +
                 "resultados dos procedimentos executados sistematicamente, à luz de princípios " +
@@ -146,7 +126,7 @@ public class BuilderConclusaoVida
                 if (ev.getNome().equals("Desconhecido(a)"))
                     builderConclusao.append("\nA vítima desconhecida");
                 else
-                    builderConclusao.append("\n" + ev.getNome());
+                    builderConclusao.append("\n" + StringUtil.checkValue(ev.getNome(),-1,"(sem nome)"));
             } else
                 builderConclusao.append("\nA vítima desconhecida");
 
@@ -198,21 +178,36 @@ public class BuilderConclusaoVida
 
         builderConclusao.append(primeiroEndereco.getDescricaoEndereco() + " ");
         builderConclusao.append("no bairro: ");
-        builderConclusao.append(primeiroEndereco.getBairro() + " ");
+        if(primeiroEndereco.getBairro()!=null)
+        builderConclusao.append(primeiroEndereco.getBairro().getDescricao() + " ");
+        else
+            builderConclusao.append("(sem bairro) ");
         builderConclusao.append("na cidade de ");
-        builderConclusao.append(primeiroEndereco.getCidade() + " ");
+        if(primeiroEndereco.getMunicipio()!=null)
+        builderConclusao.append(primeiroEndereco.getMunicipio().getDescricao() + " ");
+        else
+            builderConclusao.append("(sem município) ");
         builderConclusao.append("com cooordenadas ");
         builderConclusao.append("LAT: ");
+        if(primeiroEndereco.getLatitude()!=null)
         builderConclusao.append(primeiroEndereco.getLatitude() + ", ");
+        else
+            builderConclusao.append("- ");
+
         builderConclusao.append("LONG: ");
-        builderConclusao.append(primeiroEndereco.getLongitude());
+        if(primeiroEndereco.getLongitude()!=null)
+            builderConclusao.append(primeiroEndereco.getLongitude()+".");
+        else
+            builderConclusao.append("- ");
 
 
         if (ocorrenciaVida.getAutoridadePresente() != null)
         {
-            builderConclusao.append(".\n\nQuando da chegada da perícia, o local estava guarnecido por agentes da ");
-            builderConclusao.append(ocorrenciaVida.getAutoridadePresente().getValor());
-            builderConclusao.append(", sendo comandados pelo(a) " + ocorrenciaVida.getComandante());
+            builderConclusao.append("\n\nQuando da chegada da perícia, o local estava guarnecido por agentes da ");
+            builderConclusao.append(StringUtil.checkValue(ocorrenciaVida.getAutoridadePresente().getValor(),-1,"(Sem autoridade)"));
+            if(ocorrenciaVida.getComandante()!=null)
+            builderConclusao.append(", sendo comandados pelo(a) " + StringUtil.checkValue(ocorrenciaVida.getComandante(),-1,"(Sem comandante)"));
+            if(ocorrenciaVida.getViatura()!=null)
             builderConclusao.append(". com prefixo de viatura " + ocorrenciaVida.getViatura());
         } else
             builderConclusao.append(".\nQuando da chegada da perícia, o local não estava guarnecido por agentes da lei.");
@@ -237,7 +232,7 @@ public class BuilderConclusaoVida
         {
             builderConclusao.append("\nDa posição");
             builderConclusao.append("\nJazia na posição " + envolvidoVida.getPosicaoCorpo().getValor().toLowerCase());
-            builderConclusao.append(", com a cabeça na posição " + envolvidoVida.getPosicaoCorpo().getValor().toLowerCase());
+            builderConclusao.append(", com a cabeça na posição " + envolvidoVida.getPosicaoCabeca().getValor().toLowerCase());
             builderConclusao.append(", com o braço esquerdo " + envolvidoVida.getPosicaoBracoEsquerdo().getValor().toLowerCase());
             builderConclusao.append(", com o braço direito " + envolvidoVida.getPosicaoBracoDireito().getValor().toLowerCase());
             builderConclusao.append(", com a perna esquerda " + envolvidoVida.getPosicaoPernaEsquerda().getValor().toLowerCase());
@@ -280,7 +275,7 @@ public class BuilderConclusaoVida
             }
 
             if (envolvidoVida.getIndiciosTempoMorte() != null)
-                builderConclusao.append(", os indícios encontrados no cadáver serão listados a seguir, indicando uma estimativa aproxiamda de tempo de morte: " + envolvidoVida.getIndiciosTempoMorte().getValor()+".");
+                builderConclusao.append(", os indícios encontrados no cadáver serão listados a seguir, indicando uma estimativa aproximada de tempo de morte: " + envolvidoVida.getIndiciosTempoMorte().getValor()+".");
 
             if (envolvidoVida.getVestes() != null)
             {
@@ -297,13 +292,10 @@ public class BuilderConclusaoVida
                     builderConclusao.append("\nObservações gerais: " + envolvidoVida.getObservacoes());
             }
 
-            lesaoEnvolvido = LesaoEnvolvido.find(LesaoEnvolvido.class, "envolvido_vida = ?", envolvidoVida.getId().toString());
+            lesaoList = LesaoBusiness.findLesaoByEnvolvido(envolvidoVida.getId());
 
             hmLesoes = new HashMap<ParteCorpo, ArrayList<Lesao>>();
 
-
-            for (LesaoEnvolvido le : lesaoEnvolvido)
-                lesaoList.add(le.getLesao());
 
             if (lesaoList.size() > 0)
             {
@@ -341,12 +333,11 @@ public class BuilderConclusaoVida
         if (vestigioVidaList.size() == 0)
             return;
 
-        builderConclusao.append(".\n\nDos vestígios ");
-        builderConclusao.append(".\nForam encontados os seguintes vestígios: ");
+        builderConclusao.append(".\n\nDos vestígios\n");
+        builderConclusao.append("\nForam encontados os seguintes vestígios: ");
 
-
-        for (VestigioVidaOcorrencia vvo : vestigioVidaOcorrenciaList)
-            vestigioVidaList.add(vvo.getVestigioVida());
+//        for (VestigioVidaOcorrencia vvo : vestigioVidaOcorrenciaList)
+//            vestigioVidaList.add(vvo.getVestigioVida());
 
         for (VestigioVida v : vestigioVidaList)
             builderConclusao.append("\n" + v.toString());
@@ -428,7 +419,6 @@ public class BuilderConclusaoVida
                         if (ev.getComodo() != null)
                             builderConclusao.append(", na parte do(a): " + ev.getLocalResidencia().getValor().toLowerCase());
                         break;
-
                 }
             }
 
@@ -437,10 +427,15 @@ public class BuilderConclusaoVida
             builderConclusao.append(ev.getTipoVia().getValor() + " ");
             builderConclusao.append(ev.getDescricaoEndereco() + " ");
             builderConclusao.append("no bairro: ");
-            builderConclusao.append(ev.getBairro() + " ");
+            if(primeiroEndereco.getBairro()!=null)
+                builderConclusao.append(primeiroEndereco.getBairro().getDescricao() + " ");
+            else
+                builderConclusao.append("(sem bairro) ");
             builderConclusao.append("na cidade de ");
-            builderConclusao.append(ev.getCidade() + " ");
-
+            if(primeiroEndereco.getMunicipio()!=null)
+                builderConclusao.append(primeiroEndereco.getMunicipio().getDescricao() + " ");
+            else
+                builderConclusao.append("(sem município) ");
 
             if (ev.getCondicoesClimaticas() != null)
             {

@@ -3,6 +3,9 @@ package Model.Transito;
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import Enums.Cor;
 import Enums.Transito.TipoCNH;
 import Enums.Transito.TipoVeiculo;
@@ -12,6 +15,8 @@ import Util.StringUtil;
 public class Veiculo extends SugarRecord
 
 {
+    @Expose
+    Date dataInclusao;
     @Expose
     TipoVeiculo tipoVeiculo;
     @Expose
@@ -46,11 +51,15 @@ public class Veiculo extends SugarRecord
 
     public Veiculo(String placa)
     {
+        dataInclusao = Calendar.getInstance().getTime();
         this.placa = placa;
     }
 
     public Veiculo()
     {
+
+        dataInclusao = Calendar.getInstance().getTime();
+
         this.modelo = "";
         this.anoModelo = 0;
         this.anoFabricacao = 0;
@@ -180,7 +189,18 @@ public class Veiculo extends SugarRecord
     @Override
     public String toString()
     {
-        return StringUtil.checkValue(this.modelo, -1, "(Sem modelo)") + " " + StringUtil.checkValue(this.placa, -1, "(Sem placa)");
+        String valor = "";
+
+        if(modelo == "" && (placa == "-" || placa == ""))
+            return "(Sem modelo e sem placa)";
+
+        valor += StringUtil.checkValue(modelo,-1,"sem modelo");
+        if(placa != "-")
+        valor += " " + placa;
+        else valor += ", sem placa";
+
+        return valor;
+
     }
 
     public String getModelo()

@@ -3,6 +3,9 @@ package Model.Transito;
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import Enums.Transito.SetorDano;
 import Enums.Transito.TercoDano;
 import Enums.Transito.TipoDano;
@@ -10,6 +13,8 @@ import Enums.Transito.TipoDano;
 
 public class Dano extends SugarRecord
 {
+    @Expose
+    Date dataInclusao;
     @Expose
     public TipoDano tipo;
     @Expose
@@ -61,13 +66,14 @@ public class Dano extends SugarRecord
         this.compatibilidade = compatibilidade;
     }
 
-
     public Dano()
     {
+        dataInclusao = Calendar.getInstance().getTime();
     }
 
     public Dano(TipoDano tipod, TercoDano tercod, SetorDano setord, Boolean compatibilidade)
     {
+        dataInclusao = Calendar.getInstance().getTime();
         this.setor = setord;
         this.tipo = tipod;
         this.terco = tercod;

@@ -12,8 +12,7 @@ public class LesaoEnvolvido extends SugarRecord
     EnvolvidoVida envolvidoVida;
 
     public LesaoEnvolvido()
-    {
-    }
+    {}
 
     public LesaoEnvolvido(Lesao lesao, EnvolvidoVida envolvidoVida)
     {

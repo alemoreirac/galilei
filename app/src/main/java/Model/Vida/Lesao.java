@@ -1,6 +1,10 @@
 package Model.Vida;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import Enums.Vida.LocalizacaoLesao;
 import Enums.Vida.NaturezaLesao;
@@ -13,18 +17,22 @@ import Enums.Vida.Secao;
 
 public class Lesao extends SugarRecord
 {
+    @Expose
+    Date dataInclusao;
+    @Expose
     LocalizacaoLesao localizacaoLesao;
+    @Expose
     boolean compatibilidade;
+    @Expose
     NaturezaLesao natureza;
+    @Expose
     Secao secaoLesao;
+    @Expose
     ParteCorpo parteCorpo;
 
     public Lesao()
     {
-//        secaoLesao = Secao.AURICULAR_DIREITA;
-//        localizacaoLesao = LocalizacaoLesao.FRONTAL;
-//        natureza = NaturezaLesao.BALISTICA;
-//        parteCorpo = ParteCorpo.CABECA;
+        dataInclusao = Calendar.getInstance().getTime();
     }
 
     public ParteCorpo getParteCorpo()

@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +75,7 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
   static public EnderecoVida enderecoVida;
   static public OcorrenciaVida ocorrenciaVida;
   static String secaoVida;
+  static ImageButton btnFechar;
 
     public static void show(Activity a,Bundle bundle)
     {
@@ -238,14 +241,11 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
                                 txvPath.setText("Não há arquivo");
                                 buttonPlayLastRecordAudio.setEnabled(false);
                             }
-
                             break;
                     }
-
                     break;
             }
         }
-
     }
 
     private static void AssociarLayout(Dialog d)
@@ -256,6 +256,7 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
         buttonPlayLastRecordAudio = (LinearLayout) d.findViewById(R.id.btn_dialog_Play);
         buttonStopPlayingRecording = (LinearLayout) d.findViewById(R.id.btn_dialog_Stop_Reproduction);
         txvPath = (TextView) d.findViewById(R.id.txv_Gravacao_Path);
+        btnFechar = (ImageButton) d.findViewById(R.id.btn_fechar_dialog_audio);
 
         buttonStop.setEnabled(false);
         buttonPlayLastRecordAudio.setEnabled(false);
@@ -266,6 +267,20 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
 
     private static void AssociarEventos()
     {
+        btnFechar.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(buttonStopPlayingRecording.isEnabled())
+                    buttonStopPlayingRecording.performClick();
+
+                if(buttonStop.isEnabled())
+                buttonStop.performClick();
+
+                dialog.dismiss();
+            }
+        });
         buttonStart.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -322,7 +337,6 @@ public class AudioDialog implements ActivityCompat.OnRequestPermissionsResultCal
             @Override
             public void onClick(View view)
             {
-
                 mediaRecorder.stop();
                 mediaRecorder.reset();
                 mediaRecorder.release();

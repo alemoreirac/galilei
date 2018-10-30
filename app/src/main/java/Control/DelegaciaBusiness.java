@@ -1,4 +1,4 @@
-package Busines;
+package Control;
 
 import Model.Delegacia;
 
@@ -20,4 +20,16 @@ public class DelegaciaBusiness
             return "(Sem Delegacia)";
         }
     }
+    public static Delegacia findByDescricao(String descricao)
+    {
+        try
+        {
+            return Delegacia.find(Delegacia.class,"descricao = ?", descricao).get(0);
+        }
+        catch (Exception e )
+        {
+            return null;
+        }
+    }
+
 }

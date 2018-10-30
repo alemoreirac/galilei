@@ -1,4 +1,4 @@
-package Enums.Vida;
+package Enums;
 
 /**
  * Created by Pefoce on 22/01/2018.

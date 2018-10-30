@@ -489,28 +489,31 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
     }
 
 
-    private void AssociarLayout(View v)
+    private void AssociarLayout(View view)
     {
-        txvConclusao = (TextView) v.findViewById(R.id.txv_Conclusao_Vida_Text);
 
-        rbtnImagem = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Imagens_Vida);
-        rbtnLaudo = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Laudo_Vida);
+        if(view==null)
+            return;
+        txvConclusao = (TextView) view.findViewById(R.id.txv_Conclusao_Vida_Text);
+
+        rbtnImagem = (RadioButton) view.findViewById(R.id.rbtn_Opcao_Imagens_Vida);
+        rbtnLaudo = (RadioButton) view.findViewById(R.id.rbtn_Opcao_Laudo_Vida);
 
 //        imgvCabecaDireita = (ImageView) v.findViewById(R.id.imgv_Cabeca_Direita_Conclusao);
 //        imgvCabecaEsquerda = (ImageView) v.findViewById(R.id.imgv_Cabeca_Esquerda_Conclusao);
 //        imgvAnterior = (ImageView) v.findViewById(R.id.imgv_Frente_Conclusao);
 //        imgvPosterior = (ImageView) v.findViewById(R.id.imgv_Costas_Conclusao);
-        rltvGaleria = (RelativeLayout) v.findViewById(R.id.rltv_Galeria_Conclusao);
-        lstvEnvolvidos = (ListView) v.findViewById(R.id.lstv_Envolvidos_Conclusao);
+        rltvGaleria = (RelativeLayout) view.findViewById(R.id.rltv_Galeria_Conclusao);
+        lstvEnvolvidos = (ListView) view.findViewById(R.id.lstv_Envolvidos_Conclusao);
 
 //        txvProgress = (TextView) v.findViewById(R.id.txv_Progress_Imagens);
 
-        progressBar = (ProgressBar) v.findViewById(R.id.pgb_Carregando);
-        txvPath = (TextView) v.findViewById(R.id.txv_Arquivos_Path_Vida);
-        sgmtLaudoImagens = (SegmentedGroup) v.findViewById(R.id.sgm_Conclusao_Vida);
-        ll_GerarODT = (LinearLayout) v.findViewById(R.id.ll_Gerar_ODT_Vida);
+        progressBar = (ProgressBar) view.findViewById(R.id.pgb_Carregando);
+        txvPath = (TextView) view.findViewById(R.id.txv_Arquivos_Path_Vida);
+        sgmtLaudoImagens = (SegmentedGroup) view.findViewById(R.id.sgm_Conclusao_Vida);
+        ll_GerarODT = (LinearLayout) view.findViewById(R.id.ll_Gerar_ODT_Vida);
 
-        scrlvTexto = (ScrollView) v.findViewById(R.id.scrlv_Conclusao_Vida);
+        scrlvTexto = (ScrollView) view.findViewById(R.id.scrlv_Conclusao_Vida);
     }
 
 
@@ -561,7 +564,6 @@ public class GerenciarConclusaoVida extends android.support.v4.app.Fragment impl
 
         @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, String> asyncTask2 = new AsyncTask<Void, Void, String>()
         {
-
 
             @Override
             protected String doInBackground(Void... params)

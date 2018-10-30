@@ -9,7 +9,7 @@ import java.util.Date;
 
 import Enums.DocumentoPessoa;
 import Enums.Genero;
-import Enums.Transito.Lesao;
+import Enums.Transito.LesaoTransito;
 import Enums.Transito.TipoEnvolvidoTransito;
 import Enums.Vida.PresencaEnvolvido;
 import Util.TempoUtil;
@@ -35,7 +35,11 @@ public class EnvolvidoTransito extends SugarRecord
     Date nascimento;
     @Expose
     Genero genero;
-
+    @Expose
+    Date dataInclusao;
+    @Expose
+    LesaoTransito lesaoTransito;
+    @Expose
     Veiculo veiculoEnvolvido;
 
     public Veiculo getVeiculoEnvolvido()
@@ -48,17 +52,16 @@ public class EnvolvidoTransito extends SugarRecord
         this.veiculoEnvolvido = veiculoEnvolvido;
     }
 
-    public Lesao getLesao()
+    public LesaoTransito getLesaoTransito()
     {
-        return lesao;
+        return lesaoTransito;
     }
 
-    public void setLesao(Lesao lesao)
+    public void setLesaoTransito(LesaoTransito lesaoTransito)
     {
-        this.lesao = lesao;
+        this.lesaoTransito = lesaoTransito;
     }
 
-    Lesao lesao;
 
     public Genero getGenero()
     {
@@ -73,7 +76,8 @@ public class EnvolvidoTransito extends SugarRecord
 
     public EnvolvidoTransito()
     {
-        this.setLesao(Lesao.LEVE);
+        dataInclusao = Calendar.getInstance().getTime();
+        this.setLesaoTransito(LesaoTransito.LEVE);
         this.setNome("");
         this.setGenero(Genero.NAO_IDENTIFICADO);
         this.setTipoEnvolvido(TipoEnvolvidoTransito.PEDESTRE);
@@ -173,11 +177,11 @@ public class EnvolvidoTransito extends SugarRecord
     @Override
     public String toString()
     {
-        if (this.lesao.equals(Lesao.FATAL))
+        if (this.lesaoTransito.equals(LesaoTransito.FATAL))
             return this.nome + "\n" + this.getNascimentoString() + "\n" + "Vítima Fatal";
-        if (this.lesao.equals(Lesao.GRAVE))
+        if (this.lesaoTransito.equals(LesaoTransito.GRAVE))
             return this.nome + "\n" + this.getNascimentoString() + "\n" + "Ferido Gravemente";
-        if (this.lesao.equals(Lesao.LEVE))
+        if (this.lesaoTransito.equals(LesaoTransito.LEVE))
             return this.nome + "\n" + this.getNascimentoString() + "\n" + "Ferido Levemente";
         return "";
     }
@@ -194,11 +198,11 @@ public class EnvolvidoTransito extends SugarRecord
 
     //    public String toStringDoc()
 //    {
-//        if(this.lesao.equals(Lesao.FATAL))
+//        if(this.lesaoTransito.equals(LesaoTransito.FATAL))
 //            return this.nome + " " + this.documentoTipo.getValor() + " " + this.documentoValor + " "+"Vítima Fatal";
-//        if(this.lesao.equals(Lesao.GRAVE))
+//        if(this.lesaoTransito.equals(LesaoTransito.GRAVE))
 //            return this.nome + " " + this.documentoTipo.getValor() + " " + this.documentoValor + " " +"Ferido Gravemente";
-//        if(this.lesao.equals(Lesao.LEVE))
+//        if(this.lesaoTransito.equals(LesaoTransito.LEVE))
 //            return this.nome + " " + this.documentoTipo.getValor() + " " + this.documentoValor + " " +"Ferido Levemente";
 //        return "";
 //    }

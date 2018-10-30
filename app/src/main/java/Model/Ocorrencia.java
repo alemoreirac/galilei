@@ -26,14 +26,15 @@ public class Ocorrencia extends SugarRecord  implements Comparable<Ocorrencia> {
 
     OcorrenciaVida ocorrenciaVida;
 
-    @Expose
-    private Pessoa perito;
+    private Usuario perito;
 
-    @Expose
     private Date dataChamado;
+
+    private Date dataInclusao;
 
     public Ocorrencia()
     {
+        dataInclusao = Calendar.getInstance().getTime();
         this.dataChamado= TempoUtil.stringToDate("01/01/2000");
     }
 
@@ -117,11 +118,11 @@ public class Ocorrencia extends SugarRecord  implements Comparable<Ocorrencia> {
     public void setDataChamado(Date dataChamado) {
         this.dataChamado = dataChamado;
     }
-    public Pessoa getPerito() {
+    public Usuario getPerito() {
         return perito;
     }
 
-    public void setPerito(Pessoa perito) {
+    public void setPerito(Usuario perito) {
         this.perito = perito;
     }
 

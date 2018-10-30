@@ -7,14 +7,14 @@ import com.orm.SugarRecord;
  */
 
 public class VestigioColisao extends SugarRecord
-    {
+{
 
-    Long vestigioId;
+    VestigioTransito vestigio;
     ColisaoTransito colisaoTransito;
 
-    public VestigioColisao(Long vId, ColisaoTransito colisaoTransito)
+    public VestigioColisao(VestigioTransito vest, ColisaoTransito colisaoTransito)
     {
-        this.vestigioId = vId;
+        this.vestigio = vest;
         this.colisaoTransito = colisaoTransito;
     }
 
@@ -33,13 +33,13 @@ public class VestigioColisao extends SugarRecord
         this.colisaoTransito = colisaoTransito;
     }
 
-    public Long getVestigioId()
+    public VestigioTransito getVestigio()
     {
-        return vestigioId;
+        return vestigio;
     }
 
-    public void setVestigioId(Long vestigioId)
+    public void setVestigio(VestigioTransito vestigio)
     {
-        this.vestigioId = vestigioId;
+        this.vestigio = vestigio;
     }
 }

@@ -2,7 +2,6 @@ package Util;
 
 import java.util.ArrayList;
 
-import Busines.DelegaciaBusiness;
 import Model.Ocorrencia;
 
 
@@ -60,8 +59,8 @@ public class PaginatorOcorrencia
                             if (o.getOcorrenciaTransito().getNumIncidencia() != null && o.getOcorrenciaTransito().getNumIncidencia().contains(filtro)
                                     || o.getOcorrenciaTransito().getDataAtendimentoString() != null && o.getOcorrenciaTransito().getDataAtendimentoString().contains(filtro)
                                     || o.getOcorrenciaTransito().getDataChamadoString() != null && o.getOcorrenciaTransito().getDataChamadoString().contains(filtro)
-                                    || o.getOcorrenciaTransito().getOrgaoDestino() != null && o.getOcorrenciaTransito().getOrgaoDestino().contains(filtro)
-                                    || o.getOcorrenciaTransito().getOrgaoOrigem() != null && o.getOcorrenciaTransito().getOrgaoOrigem().contains(filtro))
+                                    || o.getOcorrenciaTransito().getOrgaoDestino() != null && o.getOcorrenciaTransito().getOrgaoDestino().getDescricao() != null && o.getOcorrenciaTransito().getOrgaoDestino().getDescricao().contains(filtro)
+                                    || o.getOcorrenciaTransito().getOrgaoOrigem() != null && o.getOcorrenciaTransito().getOrgaoOrigem().getDescricao() != null && o.getOcorrenciaTransito().getOrgaoOrigem().getDescricao().contains(filtro))
                             {
                                 if (!ocorrenciaResultado.contains(o))
                                     ocorrenciaResultado.add(o);
@@ -75,8 +74,10 @@ public class PaginatorOcorrencia
                             if (o.getOcorrenciaVida().getNumIncidencia() != null && o.getOcorrenciaVida().getNumIncidencia().contains(filtro)
                                     || o.getOcorrenciaVida().getDataAtendimentoString() != null && o.getOcorrenciaVida().getDataAtendimentoString().contains(filtro)
                                     || o.getOcorrenciaVida().getDataChamadoString() != null && o.getOcorrenciaVida().getDataChamadoString().contains(filtro)
-                                    || DelegaciaBusiness.findDescricaoById(o.getOcorrenciaVida().getOrgaoDestinoId()).contains(filtro)
-                                    || DelegaciaBusiness.findDescricaoById(o.getOcorrenciaVida().getOrgaoOrigemId()).contains(filtro))
+                                    || o.getOcorrenciaVida().getOrgaoOrigem()!=null && o.getOcorrenciaVida().getOrgaoOrigem().getDescricao().contains(filtro)
+                                    || o.getOcorrenciaVida().getOrgaoDestino()!=null && o.getOcorrenciaVida().getOrgaoDestino().getDescricao().contains(filtro))
+//                                    || DelegaciaBusiness.findDescricaoById(o.getOcorrenciaVida().getOrgaoDestinoId()).contains(filtro)
+//                                    || DelegaciaBusiness.findDescricaoById(o.getOcorrenciaVida().getOrgaoOrigemId()).contains(filtro))
                             {
                                 if (!ocorrenciaResultado.contains(o))
                                     ocorrenciaResultado.add(o);

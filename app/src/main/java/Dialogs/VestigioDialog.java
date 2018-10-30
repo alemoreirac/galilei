@@ -60,6 +60,7 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
     public static void show(Fragment f, Context ctx)
     {
         fragment = f;
+        activity = (Activity)ctx;
 
         colisaoTransito = ((GerenciarColisoesTransito)fragment).colisaoTransito;
         ocorrenciaTransito = ((ManterPericiaTransito)activity).ocorrenciaTransito;
@@ -109,7 +110,7 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
         vestigioModel = new ArrayList<VestigioTransito>();
 
         for (VestigioColisao vc : vestigioColisaoModel)
-            vestigioModel.add(VestigioTransito.findById(VestigioTransito.class,vc.getVestigioId()));
+            vestigioModel.add(vc.getVestigio());
 
         adapterVestigio = new ArrayAdapter<VestigioTransito>(activity, android.R.layout.simple_spinner_dropdown_item, vestigioModel);
 
@@ -173,13 +174,10 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
                 VestigioTransito vestigioDelete;
                 for (VestigioColisao vc : vestigioColisaoModel)
                 {
-                    if(vc.getVestigioId()!=null)
-                    //vc.getVestigio().delete();
+                    if(vc.getVestigio()!=null)
                     {
-                        vestigioDelete = VestigioTransito.findById(VestigioTransito.class, vc.getVestigioId());
-
-                        if(vestigioDelete!=null)
-                            vestigioDelete.delete();
+                        vestigioDelete = vc.getVestigio();
+                        vestigioDelete.delete();
                     }
                     vc.delete();
                 }
@@ -193,7 +191,7 @@ public class VestigioDialog //extends  android.support.v4.app.DialogFragment
                     vestigio.setDeterminante(adapterVestigio.getItem(i).isDeterminante());
                     vestigio.setTipoVestigio(adapterVestigio.getItem(i).getTipoVestigio());
                     vestigio.save();
-                    vestigioColisao = new VestigioColisao(vestigio.getId(), colisaoTransito);
+                    vestigioColisao = new VestigioColisao(vestigio, colisaoTransito);
                     vestigio.save();
                     vestigioColisao.save();
                 }

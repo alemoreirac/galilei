@@ -16,10 +16,10 @@
             android:id="@+id/lstv_enderecos_vida"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="50dp"
             android:choiceMode="singleChoice"
-            android:listSelector="@drawable/selector">
-        </ListView>
+            android:listSelector="@drawable/selector"></ListView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_Endereco_Vida"
@@ -126,7 +126,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignTop="@id/txv_Bairro_Vida"
-        android:layout_marginLeft="8dp"
+
         android:layout_toRightOf="@id/auc_Bairro_Vida"
         android:background="@drawable/pin_icon"
         android:scaleType="centerCrop" />
@@ -141,15 +141,15 @@
 
     <br.com.sapereaude.maskedEditText.MaskedEditText
         android:id="@+id/edt_latitude_Vida"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imgb_Coordenadas_Vida"
         android:layout_toRightOf="@id/imgb_Coordenadas_Vida"
         mask:allowed_chars="1234567890"
         android:imeOptions="actionNext"
         android:typeface="normal"
-        android:hint="3000"
-        mask:mask="#º##'#&quot;S"/>
+        android:hint="30000"
+        mask:mask="#º##'##&quot;S"/>
 
     <TextView
         android:id="@+id/txv_Coordenadas_Vida"
@@ -161,15 +161,15 @@
 
     <br.com.sapereaude.maskedEditText.MaskedEditText
         android:id="@+id/edt_longitude_Vida"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imgb_Coordenadas_Vida"
         android:layout_toRightOf="@id/edt_latitude_Vida"
         mask:allowed_chars="1234567890"
         android:imeOptions="actionDone"
         android:typeface="normal"
-        android:hint="38000"
-        mask:mask="##º##'#&quot;W"/>
+        android:hint="3800000"
+        mask:mask="##º##'##&quot;W"/>
 
     <View
         android:id="@+id/view_endereco_divisoria_Vida"
@@ -271,7 +271,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/txv_Vegetacao_Rural"
             android:layout_toRightOf="@id/spn_Vegetacao_Rural"
-            android:text="Localidade" />
+            android:text="Tipo Espaço" />
 
         <Spinner
             android:id="@+id/spn_Tipo_Localidade_Rural"
@@ -412,7 +412,7 @@
     <RelativeLayout
         android:id="@+id/rltv_Endereco_Vida_Residencia"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/sgm_Local_Vida"
         android:layout_marginTop="30dp"
         android:visibility="visible">
@@ -505,12 +505,11 @@
 
     <RelativeLayout
         android:id="@+id/rltv_Condicoes_Climaticas"
-        android:layout_width="400dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/edt_latitude_Vida"
-        android:layout_alignTop="@id/rltv_Endereco_Vida_Praia"
-        android:layout_marginTop="10dp"
-        android:visibility="invisible">
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/rltv_Endereco_Vida_Residencia"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/txv_Iluminacao_Vida"
@@ -529,9 +528,8 @@
             android:id="@+id/txv_Condicoes_Climaticas_Vida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/spn_Iluminacao_Vida"
-            android:layout_below="@id/spn_Iluminacao_Vida"
-            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/spn_Iluminacao_Vida"
+            android:layout_marginLeft="20dp"
             android:hint="Condições Climáticas" />
 
         <Spinner
@@ -576,11 +574,10 @@
         style="@android:style/Widget.Button"
         android:layout_width="115dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/rltv_Condicoes_Climaticas"
-        android:layout_below="@id/rltv_Condicoes_Climaticas"
-        android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/veiculo_icon"
-        android:gravity="center">
+        android:layout_toRightOf="@id/rltv_Condicoes_Climaticas"
+        android:layout_marginLeft="30dp"
+        android:layout_alignTop="@id/rltv_Condicoes_Climaticas"
+        android:drawableLeft="@drawable/veiculo_icon">
 
         <ImageView
             android:layout_width="21dp"

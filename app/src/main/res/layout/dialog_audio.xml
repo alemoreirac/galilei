@@ -123,6 +123,23 @@
             android:textColor="@android:color/black" />
 
     </LinearLayout>
+
+
+    <ImageButton
+        android:id="@+id/btn_fechar_dialog_audio"
+        android:background="@drawable/x"
+        android:layout_alignParentRight="true"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:scaleType="fitCenter"/>
+
+    <!--<Button-->
+        <!--android:text="Fechar"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" -->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="45dp"-->
+        <!--android:layout_below="@id/btn_dialog_Stop_Reproduction"/>-->
     <!--
         <Button
             android:layout_width="wrap_content"

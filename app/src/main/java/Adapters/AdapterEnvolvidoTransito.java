@@ -9,10 +9,9 @@ import android.widget.TextView;
 
 import com.example.pefoce.peritolocal.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import Enums.Transito.Lesao;
+import Enums.Transito.LesaoTransito;
 import Model.Transito.EnvolvidoTransito;
 
 /**
@@ -55,14 +54,14 @@ public class AdapterEnvolvidoTransito extends ArrayAdapter<EnvolvidoTransito>  i
             nome.setText(envolvido.getNome());
         }
 
-        if(envolvido.getLesao().equals(Lesao.LEVE))
+        if(envolvido.getLesaoTransito().equals(LesaoTransito.LEVE))
             fatalidade.setText("Lesão Leve");
 
-        if(envolvido.getLesao().equals(Lesao.GRAVE))
+        if(envolvido.getLesaoTransito().equals(LesaoTransito.GRAVE))
             fatalidade.setText("Lesão Grave");
 
 
-        if(envolvido.getLesao().equals(Lesao.FATAL))
+        if(envolvido.getLesaoTransito().equals(LesaoTransito.FATAL))
             fatalidade.setText("Vítima Fatal");
 
 

@@ -113,7 +113,6 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-
         return inflater.inflate(R.layout.fragment_gerenciar_fotos_transito, container, false);
     }
 
@@ -167,7 +166,7 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
 
         ((ManterPericiaTransito) getActivity()).txvToolbarTitulo.setText("Fotos");
 
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoFoto.getOcorrenciaID());
+        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoFoto.getOcorrencia());
 
         ocorrenciaFotos = OcorrenciaTransitoFoto.find(OcorrenciaTransitoFoto.class, "ocorrencia_transito = ?", ocorrenciaTransitoFoto.getId().toString());
 //        ocorrenciaFotos = Select.from(OcorrenciaTransitoFoto.class)
@@ -310,14 +309,16 @@ public class GerenciarFotosTransito extends android.support.v4.app.Fragment impl
         void onFragmentInteraction(Uri uri);
     }
 
-    private void AssociarLayout(View v)
+    private void AssociarLayout(View view)
     {
-        rltvFotos = (RelativeLayout) v.findViewById(R.id.rltv_Detalhe_Foto);
-        imgvDetalhe = (ImageView) v.findViewById(R.id.imgv_Foto_Detalhe);
-        edtDetalhe = (EditText) v.findViewById(R.id.edt_Foto_Titulo);
-        fabFoto = (FloatingActionButton) v.findViewById(R.id.fab_Foto);
-        lstvImagens = (ListView) v.findViewById(R.id.lstv_Fotos);
-        spnCategoriaFoto = (Spinner) v.findViewById(R.id.spn_Categoria_Foto);
+        if(view ==null)
+            return;
+        rltvFotos = (RelativeLayout) view.findViewById(R.id.rltv_Detalhe_Foto);
+        imgvDetalhe = (ImageView) view.findViewById(R.id.imgv_Foto_Detalhe);
+        edtDetalhe = (EditText) view.findViewById(R.id.edt_Foto_Titulo);
+        fabFoto = (FloatingActionButton) view.findViewById(R.id.fab_Foto);
+        lstvImagens = (ListView) view.findViewById(R.id.lstv_Fotos);
+        spnCategoriaFoto = (Spinner) view.findViewById(R.id.spn_Categoria_Foto);
 
         ArrayList<String> categorias = new ArrayList<>();
         for (CategoriaFoto cf : CategoriaFoto.values())

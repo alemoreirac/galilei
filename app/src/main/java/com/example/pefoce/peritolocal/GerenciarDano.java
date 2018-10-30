@@ -1,10 +1,14 @@
 package com.example.pefoce.peritolocal;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -143,14 +147,60 @@ public class GerenciarDano extends AppCompatActivity
 
     public void NovoDano(final View viewLado)
     {
-        if (!isCompativel ||
-                (!isDanoPerfurante && !isDanoFriccao && !isDanoCortante && !isDanoContuso)
-              ||(!isTercoMedio && !isTercoInferior && !isTercoSuperior))
+        if (!isDanoPerfurante && !isDanoFriccao && !isDanoCortante && !isDanoContuso)
+
         {
-            Toast.makeText(this, "O dano está classificado como incompatível", Toast.LENGTH_LONG).show();
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            if(v!=null)
+            v.vibrate(1000);
+
+
+            cxbDanoCortante.setTextColor(Color.RED);
+            cxbDanoPerfurante.setTextColor(Color.RED);
+            cxbDanoContuso.setTextColor(Color.RED);
+            cxbDanoFriccao.setTextColor(Color.RED);
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    cxbDanoCortante.setTextColor(Color.BLACK);
+                    cxbDanoPerfurante.setTextColor(Color.BLACK);
+                    cxbDanoContuso.setTextColor(Color.BLACK);
+                    cxbDanoFriccao.setTextColor(Color.BLACK);
+                }
+            }, 2000);
+
+
+            Toast.makeText(this, "Selecione um tipo de dano.", Toast.LENGTH_LONG).show();
             return;
         }
 
+        if(!isTercoMedio && !isTercoInferior && !isTercoSuperior)
+        {
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            if(v!=null)
+                v.vibrate(1000);
+
+            cxbTercoInferior.setTextColor(Color.RED);
+            cxbTercoMedio.setTextColor(Color.RED);
+            cxbTercoSuperior.setTextColor(Color.RED);
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                       cxbTercoInferior.setTextColor(Color.BLACK);
+                       cxbTercoMedio.setTextColor(Color.BLACK);
+                       cxbTercoSuperior.setTextColor(Color.BLACK);
+                }
+            }, 2000);
+
+            Toast.makeText(this, "Selecione um terço para o dano.", Toast.LENGTH_LONG).show();
+            return;
+        }
         final TextView txv = (TextView) viewLado;
         txv.setTextColor(Color.RED);
 

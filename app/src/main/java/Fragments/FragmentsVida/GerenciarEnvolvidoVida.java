@@ -54,19 +54,17 @@ import Dialogs.TipoFotoDialog;
 import Enums.CategoriaFoto;
 import Enums.DocumentoPessoa;
 import Enums.Genero;
-import Enums.UnidadeTempo;
 import Enums.Vida.IndiciosTempoMorte;
 import Enums.Vida.TipoMorte;
 import Model.Foto;
 import Model.Ocorrencia;
 import Model.Vida.EnderecoVida;
-import Model.Vida.OcorrenciaEnderecoVida;
+import Model.Vida.OcorrenciaVidaEndereco;
 import Model.Vida.OcorrenciaEnvolvidoVida;
 import Model.Vida.EnvolvidoVida;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
 import Util.BuscadorEnum;
-import Util.StringUtil;
 import Util.TempoUtil;
 import Util.ViewUtil;
 
@@ -296,6 +294,9 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
     public void AssociarLayout(View view)
     {
+        if(view==null)
+            return;
+
         llDatePicker = (LinearLayout) view.findViewById(R.id.ll_Data_Nascimento_Envolvido_Vida);
         spnGenero = (Spinner) view.findViewById(R.id.spn_Genero_Envolvido_Vida);
         spnIndiciosTempoMorte = (Spinner) view.findViewById(R.id.spn_Indicios_Tempo_Morte_Envolvido_Vida);
@@ -368,9 +369,9 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
 
         enderecos = new ArrayList<>();
 
-        List<OcorrenciaEnderecoVida> ocorrenciaEnderecosSpn = OcorrenciaEnderecoVida.find(OcorrenciaEnderecoVida.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
+        List<OcorrenciaVidaEndereco> ocorrenciaEnderecosSpn = OcorrenciaVidaEndereco.find(OcorrenciaVidaEndereco.class, "ocorrencia_vida = ?", ocorrenciaVida.getId().toString());
 
-        for (OcorrenciaEnderecoVida ov : ocorrenciaEnderecosSpn)
+        for (OcorrenciaVidaEndereco ov : ocorrenciaEnderecosSpn)
             enderecos.add(ov.getEnderecoVida());
 
         spnEndereco.setAdapter(new ArrayAdapter<EnderecoVida>(ctx, android.R.layout.simple_spinner_dropdown_item, enderecos));
@@ -603,6 +604,9 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
                         cxbDesconhecido.setEnabled(true);
                         cxbDesconhecido.setChecked(false);
                         cxbDesconhecido.performClick();
+                    }
+                    else{
+
                     }
                 }
             }
@@ -886,8 +890,8 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         if (envolvidoVida.getObservacoes() != null)
             edtObservacoes.setText(envolvidoVida.getObservacoes());
 
-        if (envolvidoVida.getEnderecoId() != null)
-            spnEndereco.setSelection(BuscadorEnum.getEnderecoVidaById(spnEndereco, envolvidoVida.getEnderecoId()));
+        if (envolvidoVida.getEndereco() != null)
+            spnEndereco.setSelection(BuscadorEnum.getEnderecoVidaById(spnEndereco, envolvidoVida.getEndereco().getId()));
 
     }
 
@@ -899,7 +903,7 @@ public class GerenciarEnvolvidoVida extends android.support.v4.app.Fragment impl
         envolvidoVida.setObservacoes(edtObservacoes.getText().toString());
         envolvidoVida.setGenero(BuscadorEnum.BuscarGenero(spnGenero.getSelectedItem().toString()));
         envolvidoVida.setIndiciosTempoMorte(BuscadorEnum.BuscarIndicioTempoMorte(spnIndiciosTempoMorte.getSelectedItem().toString()));
-        envolvidoVida.setEnderecoId(((EnderecoVida)spnEndereco.getSelectedItem()).getId());
+        envolvidoVida.setEndereco((EnderecoVida)spnEndereco.getSelectedItem());
 
         envolvidoVida.setVestes(edtVestimentas.getText().toString());
         envolvidoVida.setTipoMorte(BuscadorEnum.BuscarTipoMorte(spnTipoMorte.getSelectedItem().toString()));

@@ -3,7 +3,6 @@ package Fragments.FragmentsVida;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -33,9 +32,9 @@ import Enums.Calibre;
 import Enums.DocumentoPessoa;
 import Enums.TipoArma;
 import Enums.TipoRecolhimentoAmostra_Papiloscopia;
-import Enums.TiposMunicao;
-import Enums.TiposVestigioBiologico;
-import Enums.Vida.TipoRecolhimentoAmostra_Biologica;
+import Enums.TipoMunicao;
+import Enums.TipoVestigioBiologico;
+import Enums.TipoRecolhimentoAmostra_Biologica;
 import Enums.Vida.TipoVestigioVida;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.VestigioVida;
@@ -225,6 +224,9 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
 
     public void AssociarLayout(View view)
     {
+        if(view==null)
+            return;
+
         rltvVestigioDetalhe = (RelativeLayout) view.findViewById(R.id.rltv_Detalhe_Vestigio_Vida);
         edtNumDocumentoVestigio = (EditText) view.findViewById(R.id.edt_NumDoc_Vestigio_Vida);
         edtObservacoesDocumentoVestigio = (EditText) view.findViewById(R.id.edt_Observacoes_Vestigio_Documento);
@@ -292,7 +294,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
 
         List<String> tiposVestigiosBiologicos = new ArrayList<>();
 
-        for (TiposVestigioBiologico tvb : TiposVestigioBiologico.values())
+        for (TipoVestigioBiologico tvb : TipoVestigioBiologico.values())
             tiposVestigiosBiologicos.add(tvb.getValor());
 
         spnTipoVestigioBiologico.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, tiposVestigiosBiologicos));
@@ -319,7 +321,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
 
         List<String> tiposMunicao = new ArrayList<>();
 
-        for (TiposMunicao tm : TiposMunicao.values())
+        for (TipoMunicao tm : TipoMunicao.values())
             tiposMunicao.add(tm.getValor());
 
         spnTipoMunicao.setAdapter(new ArrayAdapter<String>(ctx, R.layout.support_simple_spinner_dropdown_item, tiposMunicao));
@@ -416,7 +418,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                     builder = new AlertDialog.Builder(getActivity());
 
                 builder.setTitle("Deletar Envolvido")
-                        .setMessage("Você deseja deletar este envolvido?")
+                        .setMessage("Você deseja deletar este vestígio?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
                         {
                             public void onClick(DialogInterface dialog, int which)
@@ -518,8 +520,8 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                     break;
 
                 case BIOLOGICO:
-                    if (vestigioVida.getTiposVestigioBiologico() != null)
-                        spnTipoVestigioBiologico.setSelection(BuscadorEnum.getIndex(spnTipoVestigioBiologico, vestigioVida.getTiposVestigioBiologico().getValor()));
+                    if (vestigioVida.getTipoVestigioBiologico() != null)
+                        spnTipoVestigioBiologico.setSelection(BuscadorEnum.getIndex(spnTipoVestigioBiologico, vestigioVida.getTipoVestigioBiologico().getValor()));
 
                     if (vestigioVida.getTipoRecolhimentoAmostraBiologica() != null)
                         spnRecolhimentoVestigioBiologico.setSelection(BuscadorEnum.getIndex(spnRecolhimentoVestigioBiologico, vestigioVida.getTipoRecolhimentoAmostraBiologica().getValor()));
@@ -600,7 +602,7 @@ public class GerenciarVestigioVida extends android.support.v4.app.Fragment imple
                 break;
 
             case BIOLOGICO:
-                vestigioVida.setTiposVestigioBiologico(BuscadorEnum.BuscarVestigioBiologico(spnTipoVestigioBiologico.getSelectedItem().toString()));
+                vestigioVida.setTipoVestigioBiologico(BuscadorEnum.BuscarVestigioBiologico(spnTipoVestigioBiologico.getSelectedItem().toString()));
                 vestigioVida.setTipoRecolhimentoAmostraBiologica(BuscadorEnum.BuscarRecolhimentoAmostraBiologica(spnRecolhimentoVestigioBiologico.getSelectedItem().toString()));
                 vestigioVida.setObservacao(edtObservacoesVestigioBiologico.getText().toString());
                 break;

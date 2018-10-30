@@ -47,7 +47,6 @@ public class GerenciarCorpo extends AppCompatActivity
     RelativeLayout rltvCorpoFeminino;
     RelativeLayout rltvCorpoMasculino;
 
-
     TextView txvCabecaFeminina;
     TextView txvToraxFeminino;
 

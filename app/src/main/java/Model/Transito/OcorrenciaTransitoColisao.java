@@ -3,6 +3,9 @@ package Model.Transito;
 import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by Pefoce on 29/08/2017.
  */
@@ -26,6 +29,8 @@ public class OcorrenciaTransitoColisao extends SugarRecord
     }
 
     public OcorrenciaTransitoColisao() {
+
+        dataInclusao = Calendar.getInstance().getTime();
     }
 
     public OcorrenciaTransitoColisao(OcorrenciaTransito ocorrenciaTransito, ColisaoTransito colisaoTransito) {
@@ -38,4 +43,7 @@ public class OcorrenciaTransitoColisao extends SugarRecord
 
     @Expose
     ColisaoTransito colisaoTransito;
+
+    @Expose
+    Date dataInclusao;
 }

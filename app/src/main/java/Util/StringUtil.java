@@ -55,20 +55,31 @@ public class StringUtil
         }
 
         return tokens;
-
     }
 
     public static String converterLatitude(double latitude)
     {
         StringBuilder builderLatitude = new StringBuilder();
         String latitudeDegrees = Location.convert(Math.abs(latitude), Location.FORMAT_SECONDS);
+        //latitudesplit quebra as coordenadas em graus, minutos e segundos.
         String[] latitudeSplit = latitudeDegrees.split(":");
+
+        //[0] contem os graus
         builderLatitude.append(latitudeSplit[0]);
         builderLatitude.append("°");
+
+        //[1] contem os minutos
         builderLatitude.append(latitudeSplit[1]);
         builderLatitude.append("'");
-        builderLatitude.append(latitudeSplit[2].charAt(0));
-        builderLatitude.append("\"");
+
+        //[2] precisa de tratamento para arredondar o formato 6,5438" para 06"
+        latitudeSplit[2] = latitudeSplit[2].substring(0,latitudeSplit[2].indexOf(','));
+
+        if(latitudeSplit[2].length()==1)
+            latitudeSplit[2] = "0" + latitudeSplit[2];
+
+        builderLatitude.append(latitudeSplit[2]);
+        builderLatitude.append(Character.toString ((char) 34));
 
         if (latitude < 0)
             builderLatitude.append("S");
@@ -87,13 +98,26 @@ public class StringUtil
         StringBuilder builderLongitude = new StringBuilder();
 
         String longitudeDegrees = Location.convert(Math.abs(longitude), Location.FORMAT_SECONDS);
+
+        //longitudesplit quebra as coordenadas em graus, minutos e segundos.
         String[] longitudeSplit = longitudeDegrees.split(":");
+
+        //[0] contem os graus
         builderLongitude.append(longitudeSplit[0]);
         builderLongitude.append("°");
+
+        //[1] contem os minutos
         builderLongitude.append(longitudeSplit[1]);
         builderLongitude.append("'");
-        builderLongitude.append(longitudeSplit[2].charAt(0));
-        builderLongitude.append("\"");
+
+        //[2] precisa de tratamento para arredondar o formato 6,5438" para 06"
+        longitudeSplit[2] = longitudeSplit[2].substring(0,longitudeSplit[2].indexOf(','));
+
+        if(longitudeSplit[2].length()==1)
+            longitudeSplit[2] = "0" + longitudeSplit[2];
+
+        builderLongitude.append(longitudeSplit[2]);
+        builderLongitude.append(Character.toString ((char) 34));
 
         if (longitude < 0)
         {

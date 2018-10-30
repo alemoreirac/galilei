@@ -53,6 +53,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import Adapters.AdapterVeiculo;
+import Control.Transito.DanoBusiness;
 import Enums.CategoriaFoto;
 import Enums.Cor;
 import Enums.Transito.TipoCNH;
@@ -61,7 +62,6 @@ import Enums.UF;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.Dano;
 import Model.Transito.DanoVeiculo;
-import Model.Transito.EnderecoVeiculo;
 import Model.Foto;
 import Model.Ocorrencia;
 import Model.Transito.OcorrenciaTransitoFoto;
@@ -113,7 +113,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
     Veiculo veiculo = null;
     OcorrenciaTransitoVeiculo ocorrenciaVeiculo = null;
-    EnderecoVeiculo enderecoVeiculo = null;
 
     List<DanoVeiculo> danosVeiculo = null;
 
@@ -207,7 +206,7 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
         ocorrenciaTransitoVeiculo = ((ManterPericiaTransito) getActivity()).ocorrenciaTransito;
 
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoVeiculo.getOcorrenciaID());
+        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoVeiculo.getOcorrencia());
 
         ocorrenciaVeiculos = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class, "ocorrencia_transito = ?", ocorrenciaTransitoVeiculo.getId().toString());
 
@@ -240,21 +239,12 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
                 Veiculo veiculoIndex = Veiculo.findById(Veiculo.class, bd.getLong("VeiculoId"));
                 lstvVeiculos.performItemClick(lstvVeiculos, BuscadorEnum.PegarPosicaoVeiculo(veiculosModel, veiculoIndex), lstvVeiculos.getItemIdAtPosition(BuscadorEnum.PegarPosicaoVeiculo(veiculosModel, veiculoIndex)));
             } catch (Exception e)
-            {
-            }
+            {}
         }
 
         if (bd.getLong("VeiculoId") != 0 && !bd.getBoolean("DiretoParaVeiculo"))
         {
             veiculo = Veiculo.findById(Veiculo.class, bd.getLong("VeiculoId"));
-
-            try
-            {
-                enderecoVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class, "veiculo = ?", veiculo.getId().toString()).get(0);
-            } catch (Exception e)
-            {
-                enderecoVeiculo = new EnderecoVeiculo();
-            }
 
             carregarDadosVeiculo();
         }
@@ -399,6 +389,7 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
         //  if(enderecoVeiculo.getEnderecoTransito()!=null)
         //      spnEnderecoVeiculo.setSelection(BuscadorEnum.getIndex(spnEnderecoVeiculo,enderecoVeiculo.getEnderecoTransito().getEnderecoTransito().getDescricaoEndereco()));
 
+        danosTotais = DanoBusiness.findDanosByVeiculo(veiculo.getId());
 
         adapterDano = new ArrayAdapter<Dano>(getContext(), android.R.layout.simple_spinner_dropdown_item, danosTotais);
 
@@ -574,13 +565,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
                 {
                     ocorrenciaVeiculo = new OcorrenciaTransitoVeiculo();
                 }
-                try
-                {
-                    enderecoVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class, "veiculo = ?", veiculo.getId().toString()).get(0);
-                } catch (Exception e)
-                {
-                    enderecoVeiculo = new EnderecoVeiculo();
-                }
 
                 danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", veiculo.getId().toString());
 
@@ -636,8 +620,6 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
                                         dv.delete();
                                     }
 
-                                    enderecoVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class, "veiculo = ?", ocorrenciaVeiculo.getVeiculo().getId().toString()).get(0);
-                                    enderecoVeiculo.delete();
                                 } catch (Exception ignored)
                                 {
 
@@ -1153,35 +1135,38 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
     }
 
-    private void AssociarLayout(View v)
+    private void AssociarLayout(View view)
     {
-        edtModeloVeiculo = (EditText) v.findViewById(R.id.edt_Modelo_Veiculo);
-        edtMarcaVeiculo = (EditText) v.findViewById(R.id.edt_Marca_Veiculo);
-        edtPlaca_Numeros = (EditText) v.findViewById(R.id.edt_PlacaNumeros_Envolvido);
-        edtPlaca_Letras = (EditText) v.findViewById(R.id.edt_PlacaLetras_Envolvido);
-        lstvVeiculos = (ListView) v.findViewById(R.id.lstv_Veiculos);
+        if(view ==null)
+            return;
 
-        edtMunicipio = (EditText) v.findViewById(R.id.edt_Municipio_Veiculo);
-        spnUF = (Spinner) v.findViewById(R.id.spn_UF_Placa_Veiculo);
+        edtModeloVeiculo = (EditText) view.findViewById(R.id.edt_Modelo_Veiculo);
+        edtMarcaVeiculo = (EditText) view.findViewById(R.id.edt_Marca_Veiculo);
+        edtPlaca_Numeros = (EditText) view.findViewById(R.id.edt_PlacaNumeros_Envolvido);
+        edtPlaca_Letras = (EditText) view.findViewById(R.id.edt_PlacaLetras_Envolvido);
+        lstvVeiculos = (ListView) view.findViewById(R.id.lstv_Veiculos);
 
-        fabVeiculo = (FloatingActionButton) v.findViewById(R.id.fab_Veiculo);
-        fabFotoVeiculo = (FloatingActionButton) v.findViewById(R.id.fab_Foto_Veiculo);
-        txvProprietarioNumero = (TextView) v.findViewById(R.id.txv_Proprietario_Documento);
-        txvProprietarioNome = (TextView) v.findViewById(R.id.txv_Proprietario_Nome);
+        edtMunicipio = (EditText) view.findViewById(R.id.edt_Municipio_Veiculo);
+        spnUF = (Spinner) view.findViewById(R.id.spn_UF_Placa_Veiculo);
 
-        txvCondutorNome = (TextView) v.findViewById(R.id.txv_Condutor_Nome);
-        txvCondutorNumero = (TextView) v.findViewById(R.id.txv_Condutor_Documento);
+        fabVeiculo = (FloatingActionButton) view.findViewById(R.id.fab_Veiculo);
+        fabFotoVeiculo = (FloatingActionButton) view.findViewById(R.id.fab_Foto_Veiculo);
+        txvProprietarioNumero = (TextView) view.findViewById(R.id.txv_Proprietario_Documento);
+        txvProprietarioNome = (TextView) view.findViewById(R.id.txv_Proprietario_Nome);
 
-        spnAnoFabricacao = (Spinner) v.findViewById(R.id.spn_Ano_Veiculo_Fabricacao);
-        spnAnoVeiculo = (Spinner) v.findViewById(R.id.spn_Ano_Veiculo_Modelo);
+        txvCondutorNome = (TextView) view.findViewById(R.id.txv_Condutor_Nome);
+        txvCondutorNumero = (TextView) view.findViewById(R.id.txv_Condutor_Documento);
+
+        spnAnoFabricacao = (Spinner) view.findViewById(R.id.spn_Ano_Veiculo_Fabricacao);
+        spnAnoVeiculo = (Spinner) view.findViewById(R.id.spn_Ano_Veiculo_Modelo);
         //   spnEnderecoVeiculo = (Spinner) v.findViewById(R.id.spn_EnderecoVeiculo);
-        spnTipoVeiculo = (Spinner) v.findViewById(R.id.spn_TipoVeiculo);
-        spnCor = (Spinner) v.findViewById(R.id.spn_Cor_Veiculo);
+        spnTipoVeiculo = (Spinner) view.findViewById(R.id.spn_TipoVeiculo);
+        spnCor = (Spinner) view.findViewById(R.id.spn_Cor_Veiculo);
 
-        cxbVeiculoDesconhecido = (CheckBox) v.findViewById(R.id.cxb_Veiculo_Desconhecido);
-        rltv_Veiculo = (RelativeLayout) v.findViewById(R.id.rltv_Detalhe_Veiculo);
+        cxbVeiculoDesconhecido = (CheckBox) view.findViewById(R.id.cxb_Veiculo_Desconhecido);
+        rltv_Veiculo = (RelativeLayout) view.findViewById(R.id.rltv_Detalhe_Veiculo);
 
-        addDano = (LinearLayout) v.findViewById(R.id.btn_Add_Dano);
+        addDano = (LinearLayout) view.findViewById(R.id.btn_Add_Dano);
 
 
         InputFilter filter = new InputFilter()
@@ -1202,9 +1187,9 @@ public class GerenciarVeiculoTransito extends android.support.v4.app.Fragment im
 
         danosTotais = new ArrayList<>();
 
-        lstvDanos = (ListView) v.findViewById(R.id.lstv_Danos_Veiculo);
+        lstvDanos = (ListView) view.findViewById(R.id.lstv_Danos_Veiculo);
 
-        rltvProprietario = (RelativeLayout) v.findViewById(R.id.rltv_Proprietario_Condutor);
+        rltvProprietario = (RelativeLayout) view.findViewById(R.id.rltv_Proprietario_Condutor);
 
         edtMarcaVeiculo.setNextFocusForwardId(edtModeloVeiculo.getId());
         edtModeloVeiculo.setNextFocusForwardId(edtPlaca_Letras.getId());

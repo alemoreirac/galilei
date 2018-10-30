@@ -31,12 +31,13 @@ import java.util.Collections;
 import java.util.List;
 
 import Adapters.AdapterOcorrencia;
+import Control.BairroBusiness;
+import Control.MunicipioBusiness;
 import Enums.TipoOcorrencia;
 import Enums.Transito.TipoVia;
 import Model.Transito.DanoVeiculo;
 import Model.DocumentoOcorrencia;
 import Model.Transito.EnderecoTransito;
-import Model.Transito.EnderecoVeiculo;
 import Model.Ocorrencia;
 import Model.Transito.OcorrenciaTransitoColisao;
 import Model.Transito.OcorrenciaTransitoEndereco;
@@ -44,12 +45,12 @@ import Model.Transito.OcorrenciaTransitoEnvolvido;
 import Model.Transito.OcorrenciaTransitoFoto;
 import Model.Transito.OcorrenciaTransito;
 import Model.Transito.OcorrenciaTransitoVeiculo;
-import Model.Pessoa;
+import Model.Usuario;
 import Model.Transito.VestigioTransito;
 import Model.Transito.VestigioColisao;
 import Model.Vida.EnderecoVida;
 import Model.Vida.LesaoEnvolvido;
-import Model.Vida.OcorrenciaEnderecoVida;
+import Model.Vida.OcorrenciaVidaEndereco;
 import Model.Vida.OcorrenciaEnvolvidoVida;
 import Model.Vida.OcorrenciaVida;
 import Model.Vida.OcorrenciaVidaFoto;
@@ -65,7 +66,7 @@ public class MainActivity extends Activity
 {
     Button btnLogout = null;
     ArrayList<Ocorrencia> ocorrencias = null;
-    Pessoa perito = null;
+    Usuario perito = null;
     FloatingActionButton fabOcorrencia;
     ImageButton imgbBusca = null;
     ListView lstvOcorrencias = null;
@@ -103,7 +104,7 @@ public class MainActivity extends Activity
         }
 
         //Busca o perito pelo id passado e depois busca as ocorrências relacionadas a ele
-        perito = Pessoa.findById(Pessoa.class, peritoId);
+        perito = Usuario.findById(Usuario.class, peritoId);
 
         if (perito != null && perito.getNome() != null)
             txvPerito.setText(perito.getNome());
@@ -157,13 +158,11 @@ public class MainActivity extends Activity
                         lstvOcorrencias.setAdapter(adapter);
 
                         if (paginaAtual == maximoPaginas)
-
                             btnProxima.setEnabled(false);
 
                         btnAnterior.setEnabled(true);
 
                         txvPaginas.setText("Página " + paginaAtual + " de " + maximoPaginas);
-
                     }
                 });
 
@@ -554,7 +553,7 @@ public class MainActivity extends Activity
     {
         OcorrenciaTransito ocorrenciaTransito = ocorrencias.get(position).getOcorrenciaTransito();
 
-        Ocorrencia ocorrenciaDelete = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrenciaID());
+        Ocorrencia ocorrenciaDelete = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransito.getOcorrencia());
 
         adapter.remove((Ocorrencia) lstvOcorrencias.getAdapter().getItem(position));
         adapter.notifyDataSetChanged();
@@ -563,20 +562,8 @@ public class MainActivity extends Activity
 
         List<OcorrenciaTransitoEndereco> ocorrenciaEnderecos = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransito.getId().toString());
 
-        List<EnderecoVeiculo> enderecosVeiculo = null;
-
         for (int i = 0; i < ocorrenciaEnderecos.size(); i++)
         {
-            try
-            {
-                enderecosVeiculo = EnderecoVeiculo.find(EnderecoVeiculo.class, "endereco = ?", ocorrenciaEnderecos.get(i).getEnderecoTransito().getId().toString());
-            } catch (Exception e)
-            {
-                continue;
-            }
-            for (EnderecoVeiculo ev : enderecosVeiculo)
-                ev.delete();
-
             ocorrenciaEnderecos.get(i).delete();
         }
 
@@ -627,9 +614,9 @@ public class MainActivity extends Activity
             vestigioColisoes = VestigioColisao.find(VestigioColisao.class, "colisao_transito = ?", oc.getColisaoTransito().getId().toString());
             for (VestigioColisao vc : vestigioColisoes)
             {
-                if (vc.getVestigioId() != null)
+                if (vc.getVestigio() != null)
                 {
-                    VestigioTransito v = VestigioTransito.findById(VestigioTransito.class, vc.getVestigioId());
+                    VestigioTransito v = vc.getVestigio();
                     v.delete();
                 }
                 vc.delete();
@@ -741,17 +728,17 @@ public class MainActivity extends Activity
 
         EnderecoVida enderecoVida = new EnderecoVida();
 
-        OcorrenciaEnderecoVida ocorrenciaEnderecoVida = new OcorrenciaEnderecoVida();
+        OcorrenciaVidaEndereco ocorrenciaVidaEndereco = new OcorrenciaVidaEndereco();
 
         documentoOcorrencia.save();
 
         ocorrenciaVida.setDocumento(documentoOcorrencia);
 
+        enderecoVida.setMunicipio(MunicipioBusiness.findByDescricao(bundle.getString("municipio")));
 
-
-        enderecoVida.setBairro(StringUtil.checkValue(bundle.getString("bairro"),-1,""));
-
-        enderecoVida.setCidade(StringUtil.checkValue(bundle.getString("cidade"),-1,""));
+//        enderecoVida.setBairro(StringUtil.checkValue(bundle.getString("bairro"),-1,""));
+//
+//        enderecoVida.setMunicipio(StringUtil.checkValue(bundle.getString("cidade"),-1,""));
 
         enderecoVida.setComplemento(StringUtil.checkValue(bundle.getString("complemento"),-1,""));
 
@@ -781,17 +768,18 @@ public class MainActivity extends Activity
 
         enderecoVida.save();
 
-        ocorrenciaEnderecoVida.setEnderecoVida(enderecoVida);
+        ocorrenciaVidaEndereco.setEnderecoVida(enderecoVida);
 
-        ocorrenciaEnderecoVida.setOcorrenciaVida(ocorrenciaVida);
+        ocorrenciaVidaEndereco.setOcorrenciaVida(ocorrenciaVida);
 
-        ocorrenciaEnderecoVida.save();
+        ocorrenciaVidaEndereco.save();
 
 
         Intent it = new Intent(MainActivity.this, ManterPericiaVida.class);
 
         it.putExtra("OcorrenciaId", ocorrenciaVida.getId());
-        it.putExtra("Bairro", enderecoVida.getBairro());
+        if(enderecoVida.getBairro()!=null)
+        it.putExtra("Bairro", enderecoVida.getBairro().getDescricao());
         it.putExtra("FragmentPicker", "Ocorrência");
 
         startActivity(it);
@@ -809,11 +797,11 @@ public class MainActivity extends Activity
 
         documentoOcorrencia.save();
 
-        ocorrenciaTransito.setDocumentoOcorrencia(documentoOcorrencia);
+        ocorrenciaTransito.setDocumento(documentoOcorrencia);
 
-        enderecoTransito.setCidade(bundle.getString("cidade"));
+        enderecoTransito.setMunicipio(MunicipioBusiness.findByDescricao(bundle.getString("cidade")));
 
-        enderecoTransito.setBairro(bundle.getString("bairro"));
+        enderecoTransito.setBairro(BairroBusiness.findByDescricao(bundle.getString("bairro")));
 
         enderecoTransito.setComplemento(bundle.getString("complemento"));
 
@@ -839,7 +827,7 @@ public class MainActivity extends Activity
 
         ocorrenciaNova.save();
 
-        ocorrenciaTransito.setOcorrenciaID(ocorrenciaNova.getId());
+        ocorrenciaTransito.setOcorrencia(ocorrenciaNova.getId());
 
         ocorrenciaTransito.save();
 
@@ -848,14 +836,18 @@ public class MainActivity extends Activity
         OcorrenciaTransitoEndereco ocorrenciaTransitoEndereco = new OcorrenciaTransitoEndereco();
 
         ocorrenciaTransitoEndereco.setOcorrencia(ocorrenciaTransito);
+
         ocorrenciaTransitoEndereco.setEndereco(enderecoTransito);
 
         ocorrenciaTransitoEndereco.save();
 
         Intent it = new Intent(MainActivity.this, ManterPericiaTransito.class);
 
+        if(ocorrenciaTransito!=null && ocorrenciaTransito.getId()!=null)
         it.putExtra("OcorrenciaId", ocorrenciaTransito.getId());
-        it.putExtra("Bairro", enderecoTransito.getBairro());
+
+        if(enderecoTransito!=null && enderecoTransito.getBairro()!=null && enderecoTransito.getBairro().getDescricao()!=null)
+        it.putExtra("Bairro", enderecoTransito.getBairro().getDescricao());
 
         startActivity(it);
     }

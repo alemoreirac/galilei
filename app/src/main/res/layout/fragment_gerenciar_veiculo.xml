@@ -6,7 +6,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Fragments.Fragments.GerenciarEndereco">
+    tools:context="GerenciarVeiculoTransito">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/lista_veiculos"
@@ -74,7 +74,6 @@
                 android:text="@string/modelo_carro"
                 android:textSize="15dp" />
 
-
             <EditText
                 android:id="@+id/edt_Modelo_Veiculo"
                 android:layout_width="250dp"
@@ -84,7 +83,6 @@
                 android:imeOptions="actionNext"
                 android:inputType="textCapWords"
                 android:maxLines="1" />
-
 
             <TextView
                 android:id="@+id/txv_Placa_Veiculo"
@@ -96,7 +94,6 @@
                 android:textSize="15dp" />
 
             <EditText
-
                 android:id="@+id/edt_PlacaLetras_Envolvido"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"

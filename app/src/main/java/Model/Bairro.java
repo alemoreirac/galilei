@@ -10,21 +10,37 @@ public class Bairro extends SugarRecord
 {
 
     public String getDescricao() {
-        return Descricao;
+        return descricao;
     }
 
     public void setDescricao(String descricao) {
-        Descricao = descricao;
+        this.descricao = descricao;
     }
 
-    String Descricao;
+    public Long getIdGalileu()
+    {
+        return idGalileu;
+    }
+
+    public void setIdGalileu(Long idGalileu)
+    {
+        this.idGalileu = idGalileu;
+    }
+
+    String descricao;
+
+    Long idGalileu;
 
     public Bairro()
-    {
+    {}
 
+    public Bairro(String descricao, Long idGalileu)
+    {
+        this.descricao = descricao;
+        this.idGalileu = idGalileu;
     }
 
     public Bairro(String descricao) {
-        Descricao = descricao;
+        this.descricao = descricao;
     }
 }

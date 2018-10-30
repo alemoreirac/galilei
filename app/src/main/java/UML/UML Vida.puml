@@ -1,7 +1,7 @@
 @startuml
 
  class OcorrenciaVida{
-  Long ocorrenciaID;
+  Long ocorrencia;
   Date dataChamado;
   Date dataAtendimento;
   TipoOcorrenciaVida tipoOcorrenciaVida;
@@ -80,7 +80,7 @@
       DocumentoPessoa tipoDocumento;
       TipoRecolhimentoAmostra_Papiloscopia tipoRecolhimentoAmostraPapiloscopia;
       String objetoRecolhidoPapiloscopia;
-      TiposVestigioBiologico tiposVestigioBiologico;
+      TiposVestigioBiologico tipoVestigioBiologico;
       TipoRecolhimentoAmostra_Biologica tipoRecolhimentoAmostraBiologica;
       TipoArma tipoArma;
       String numeracaoArma;
@@ -88,7 +88,7 @@
       int quantidadeMunicao;
       Calibre calibreMunicao;
       boolean condicaoMunicao;
-      TiposMunicao tiposMunicao;
+      TiposMunicao tipoMunicao;
       String objetoRecolhido;
   }
 

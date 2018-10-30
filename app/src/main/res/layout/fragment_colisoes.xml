@@ -340,10 +340,9 @@
                 <com.thomashaertel.widget.MultiSpinner
                     android:id="@+id/mspn_Envolvido_Dinamica"
                     android:layout_width="400dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_alignLeft="@id/txv_Envolvido_Dinamica"
                     android:layout_below="@+id/txv_Envolvido_Dinamica"
-
                     android:layout_marginTop="5dp" />
 
                 <TextView

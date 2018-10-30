@@ -1,11 +1,12 @@
 package com.example.pefoce.peritolocal;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,27 +19,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import Model.Pessoa;
-import Model.Vida.EnderecoVida;
-import Model.Vida.OcorrenciaEnvolvidoVida;
+import Control.Transito.ColisaoBusiness;
+import Control.usuarioBusiness;
+import Model.Ocorrencia;
+import Model.Usuario;
 import Util.AutoCompleteUtil;
-import Util.CryptUtil;
 import Util.Initializer;
 
 import com.crashlytics.android.Crashlytics;
 
-
-import Util.StringUtil;
+import Util.UpdateUtil;
 import io.fabric.sdk.android.Fabric;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
-/**
- *
- */
+
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -55,6 +48,15 @@ public class LoginActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        EnviarDados();
+
+//        ColisaoBusiness.findAllPedestresByColisaoString(1l);
+
+       // UpdateUtil.construirPacoteTransito(Ocorrencia.listAll(Ocorrencia.class).get(0));
+
+//          UpdateUtil.construirPacoteVida(Ocorrencia.listAll(Ocorrencia.class).get(1));
+
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
 
@@ -62,7 +64,7 @@ public class LoginActivity extends AppCompatActivity
 
         if (sharedpreferences.getBoolean(PrimeiroUso, true))
         {
-            Initializer.InicializarPessoas();
+            Initializer.Popular();
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putBoolean(PrimeiroUso, false);
             editor.commit();
@@ -76,33 +78,40 @@ public class LoginActivity extends AppCompatActivity
         {
             public void onClick(View v)
             {
-                Pessoa pessoaLogin = null;
-                if (aucLogin.getText().toString().length() > 0 && edtSenha.getText().toString().length() > 0)
+                Usuario usuarioLogin = usuarioBusiness.loginUsuario(aucLogin.getText().toString(),edtSenha.getText().toString());
+
+                if(usuarioLogin!=null)
                 {
-                    try
-                    {
-                        pessoaLogin = Pessoa.find(Pessoa.class, "login = ? AND senha = ?", aucLogin.getText().toString().trim(), edtSenha.getText().toString().trim()).get(0);
-                    } catch (Exception e)
-                    {
-                        Toast.makeText(LoginActivity.this, "Usuário Não encontrado!", Toast.LENGTH_LONG);
-                    }
+                    Intent it = new Intent(getBaseContext(), MainActivity.class);
+                    it.putExtra("PeritoId", usuarioLogin.getId());
+                    startActivity(it);
                 }
                 else
                     Toast.makeText(getBaseContext(), "Verifique os dados inseridos!", Toast.LENGTH_LONG);
-
-                if (pessoaLogin != null)
-                {
-                    Intent it = new Intent(getBaseContext(), MainActivity.class);
-                    it.putExtra("PeritoId", pessoaLogin.getId());
-                    startActivity(it);
-                } else
-                    Toast.makeText(getBaseContext(), "Verifique os dados inseridos!", Toast.LENGTH_LONG);
+//                if (aucLogin.getText().toString().length() > 0 && edtSenha.getText().toString().length() > 0)
+//                {
+//                    try
+//                    {
+//                        usuarioLogin = Usuario.find(Usuario.class, "email = ? AND password = ?", aucLogin.getText().toString().trim(), edtSenha.getText().toString().trim()).get(0);
+//                    } catch (Exception e)
+//                    {
+//                        Toast.makeText(LoginActivity.this, "Usuário Não encontrado!", Toast.LENGTH_LONG);
+//                    }
+//                }
+//                else
+//                    Toast.makeText(getBaseContext(), "Verifique os dados inseridos!", Toast.LENGTH_LONG);
+//
+//                if (usuarioLogin != null)
+//                {
+//
+//                } else
+//
             }
         });
 
-        aucLogin.setText("123");
-        edtSenha.setText("123");
-        btnLogin.performClick();
+//        aucLogin.setText("123");
+//        edtSenha.setText("123");
+//        btnLogin.performClick();
     }
 
     private void AssociarLayout()
@@ -153,63 +162,15 @@ public class LoginActivity extends AppCompatActivity
 
     public void onBackPressed()
     {}
-
-
-    /**
-     *
-     */
-    public void checarVersao()
+    public void EnviarDados()
     {
 
-        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, String> asyncTask2 = new AsyncTask<Void, Void, String>()
-        {
+        DownloadManager mManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request mRqRequest = new DownloadManager.Request(
+                Uri.parse("https://docs.google.com/uc?export=download&id=1Wrt-ny-aiE-r5gFiBxP_PRtvjF_FI2ro"));
+        mRqRequest.setDescription("Atualização");
+
+        long idDownLoad=mManager.enqueue(mRqRequest);
 
 
-            @Override
-            protected String doInBackground(Void... params)
-            {
-                try
-                {
-//                    EnderecoVida enderecoVida = EnderecoVida.find(EnderecoVida.class, "ocorrencia_id = ?", ocorrenciaVida.getId().toString()).get(0);
-
-                    String android_id = Settings.Secure.getString(getContentResolver(),
-                            Settings.Secure.ANDROID_ID);
-
-
-                    OkHttpClient client = new OkHttpClient();
-                    RequestBody requestBody = new FormBody.Builder().build();
-
-                    Request request = new Request.Builder()
-                            .addHeader("senha", CryptUtil.MD5_Hash("123456"))
-                            .url("http://189.90.160.48:7070/galileiWebService/cliente/formOcorrencia")
-                            .post(requestBody)
-                            .build();
-
-                    Response response = client.newCall(request).execute();
-
-
-                    return response.body().string();
-
-                } catch (Exception e)
-                {
-                    return e.toString();
-                }
-            }
-
-            @Override
-            protected void onPostExecute(String s)
-            {
-                super.onPostExecute(s);
-                if (s != null)
-                {
-//                    txvVersao.
-                    //todo: atualizar as cidades, delegacias e usuários
-                }
-            }
-        };
-
-        asyncTask2.execute();
-
-
-    }
-}
+}}

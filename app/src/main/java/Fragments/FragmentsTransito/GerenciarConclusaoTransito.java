@@ -3,7 +3,6 @@ package Fragments.FragmentsTransito;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -109,7 +108,7 @@ public class GerenciarConclusaoTransito extends android.support.v4.app.Fragment 
 
         ocorrenciaTransitoConclusao = ((ManterPericiaTransito) getActivity()).ocorrenciaTransito;
 
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoConclusao.getOcorrenciaID());
+        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoConclusao.getOcorrencia());
 
         conclusao = BuilderConclusaoTransito.ConstruirConclusao(ocorrenciaTransitoConclusao);
 
@@ -127,15 +126,17 @@ public class GerenciarConclusaoTransito extends android.support.v4.app.Fragment 
 
     }
 
-
-    private void AssociarLayout(View v)
+    private void AssociarLayout(View view)
     {
-        txvConclusao = (TextView) v.findViewById(R.id.txv_Conclusao_Text);
+        if(view ==null)
+            return;
+
+        txvConclusao = (TextView) view.findViewById(R.id.txv_Conclusao_Text);
         txvConclusao.setMovementMethod(new ScrollingMovementMethod());
 
-        txvPath = (TextView) v.findViewById(R.id.txv_Arquivos_Path);
+        txvPath = (TextView) view.findViewById(R.id.txv_Arquivos_Path);
 
-        ll_GerarODT = (LinearLayout) v.findViewById(R.id.ll_Gerar_ODT);
+        ll_GerarODT = (LinearLayout) view.findViewById(R.id.ll_Gerar_ODT);
 
         ll_GerarODT.setOnClickListener(new View.OnClickListener()
         {
@@ -143,7 +144,6 @@ public class GerenciarConclusaoTransito extends android.support.v4.app.Fragment 
             public void onClick(View v)
             {
                 generateNoteOnSD(getContext(), "Laudo_" + ocorrenciaTransitoConclusao.getNumIncidencia(), conclusao);
-
             }
         });
     }

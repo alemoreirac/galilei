@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pefoce.peritolocal">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
@@ -29,7 +30,7 @@
             android:value="pefoce_db.db" />
         <meta-data
             android:name="VERSION"
-            android:value="12" />
+            android:value="23" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

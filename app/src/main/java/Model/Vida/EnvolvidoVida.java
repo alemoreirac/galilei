@@ -1,5 +1,6 @@
 package Model.Vida;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +31,9 @@ import Util.TempoUtil;
 
 public class EnvolvidoVida extends SugarRecord
 {
+    @Expose
+    Date dataInclusao;
+
     private String nome;
 
     private DocumentoPessoa documentoTipo;
@@ -50,7 +54,7 @@ public class EnvolvidoVida extends SugarRecord
 
     private TipoMorte tipoMorte;
 
-    private Long enderecoId;
+    private EnderecoVida endereco;
 
     private PosicaoBraco posicaoBracoEsquerdo;
 
@@ -96,7 +100,7 @@ public class EnvolvidoVida extends SugarRecord
 
     public EnvolvidoVida()
     {
-//        final Calendar cSave = Calendar.getInstance();
+        dataInclusao = Calendar.getInstance().getTime();
         this.nascimento = null;
         this.setNome("");
         this.setObservacoes("");
@@ -110,14 +114,24 @@ public class EnvolvidoVida extends SugarRecord
         this.posicaoPernaEsquerda = PosicaoPerna.ESTENDIDO;
     }
 
-    public Long getEnderecoId()
+    public Date getDataInclusao()
     {
-        return enderecoId;
+        return dataInclusao;
     }
 
-    public void setEnderecoId(Long enderecoId)
+    public void setDataInclusao(Date dataInclusao)
     {
-        this.enderecoId = enderecoId;
+        this.dataInclusao = dataInclusao;
+    }
+
+    public EnderecoVida getEndereco()
+    {
+        return endereco;
+    }
+
+    public void setEndereco(EnderecoVida endereco)
+    {
+        this.endereco = endereco;
     }
 
     public String getDocumentoValor()

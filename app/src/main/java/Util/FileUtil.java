@@ -3,9 +3,11 @@ package Util;
 import android.os.Environment;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,6 +93,24 @@ public static void deleteAll(String path)
             new File(dir, children[i]).delete();
         }
     }
+}
+
+public static byte[] toByteArray(File f)
+{
+    int size = (int) f.length();
+    byte[] bytes = new byte[size];
+    try {
+        BufferedInputStream buf = new BufferedInputStream(new FileInputStream(f));
+        buf.read(bytes, 0, bytes.length);
+        buf.close();
+    } catch (FileNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    return bytes;
 }
 
 

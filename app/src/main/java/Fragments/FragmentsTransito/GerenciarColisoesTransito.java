@@ -167,6 +167,7 @@ public class GerenciarColisoesTransito extends android.support.v4.app.Fragment i
     EnvolvidoTransito envolvidoEvadido;
     TipoJustificativa_Inconclusao tipoJustificativa_inconclusao;
     boolean inconclusivo;
+    boolean ignoreNovaColisao = false;
 
     public GerenciarColisoesTransito()
     {
@@ -415,84 +416,87 @@ adp.notifyDataSetChanged();
         void onFragmentInteraction(Uri uri);
     }
 
-    private void AssociarLayout(View v)
+    private void AssociarLayout(View view)
     {
-        spnEndereco1 = (Spinner) v.findViewById(R.id.spn_Endereco_Veiculo1);
-        spnEndereco2 = (Spinner) v.findViewById(R.id.spn_Endereco_Veiculo2);
 
-        spnFaixa1 = (Spinner) v.findViewById(R.id.spn_Faixa_Veiculo1);
-        spnFaixa2 = (Spinner) v.findViewById(R.id.spn_Faixa_Veiculo2);
+        if(view==null)
+            return;
+        spnEndereco1 = (Spinner) view.findViewById(R.id.spn_Endereco_Veiculo1);
+        spnEndereco2 = (Spinner) view.findViewById(R.id.spn_Endereco_Veiculo2);
 
-        spnSentido1 = (Spinner) v.findViewById(R.id.spn_Sentido_Veiculo1);
-        spnSentido2 = (Spinner) v.findViewById(R.id.spn_Sentido_Veiculo2);
+        spnFaixa1 = (Spinner) view.findViewById(R.id.spn_Faixa_Veiculo1);
+        spnFaixa2 = (Spinner) view.findViewById(R.id.spn_Faixa_Veiculo2);
 
-        spnVeiculo1 = (Spinner) v.findViewById(R.id.spn_Veiculo1);
-        spnVeiculo2 = (Spinner) v.findViewById(R.id.spn_Veiculo2);
-        spnJustificativaInconclusao = (Spinner) v.findViewById(R.id.spn_dialog_Justificativa);
-        spnEnvolvidosAtropelados = (MultiSpinner) v.findViewById(R.id.mspn_Envolvido_Dinamica);
-        spnEnvolvido_Local = (Spinner) v.findViewById(R.id.spn_Envolvido_Posicao);
-        edtEnvolvido_Observacao = (EditText) v.findViewById(R.id.edt_Envolvido_Distancia);
+        spnSentido1 = (Spinner) view.findViewById(R.id.spn_Sentido_Veiculo1);
+        spnSentido2 = (Spinner) view.findViewById(R.id.spn_Sentido_Veiculo2);
 
-        spnObjeto_Local = (Spinner) v.findViewById(R.id.spn_Objeto_Posicao);
-        spnAnimal_Local = (Spinner) v.findViewById(R.id.spn_Animal_Posicao);
+        spnVeiculo1 = (Spinner) view.findViewById(R.id.spn_Veiculo1);
+        spnVeiculo2 = (Spinner) view.findViewById(R.id.spn_Veiculo2);
+        spnJustificativaInconclusao = (Spinner) view.findViewById(R.id.spn_dialog_Justificativa);
+        spnEnvolvidosAtropelados = (MultiSpinner) view.findViewById(R.id.mspn_Envolvido_Dinamica);
+        spnEnvolvido_Local = (Spinner) view.findViewById(R.id.spn_Envolvido_Posicao);
+        edtEnvolvido_Observacao = (EditText) view.findViewById(R.id.edt_Envolvido_Distancia);
 
-        spnTipoInteracao = (Spinner) v.findViewById(R.id.spn_Tipo_Interacao);
+        spnObjeto_Local = (Spinner) view.findViewById(R.id.spn_Objeto_Posicao);
+        spnAnimal_Local = (Spinner) view.findViewById(R.id.spn_Animal_Posicao);
 
-        cxbContraMaoVeiculo1 = (CheckBox) v.findViewById(R.id.cxb_Veiculo1_ContraMao);
+        spnTipoInteracao = (Spinner) view.findViewById(R.id.spn_Tipo_Interacao);
+
+        cxbContraMaoVeiculo1 = (CheckBox) view.findViewById(R.id.cxb_Veiculo1_ContraMao);
 //        cxbCulpadoVeiculo1 = (CheckBox) v.findViewById(R.id.cxb_Veiculo1_Culpado);
 
-        cxbContraMaoVeiculo2 = (CheckBox) v.findViewById(R.id.cxb_Veiculo2_ContraMao);
+        cxbContraMaoVeiculo2 = (CheckBox) view.findViewById(R.id.cxb_Veiculo2_ContraMao);
 //        cxbCulpadoVeiculo2 = (CheckBox) v.findViewById(R.id.cxb_Veiculo2_Culpado);
 
-        imgbGravar_Colisao = (ImageButton) v.findViewById(R.id.imgb_Audio_Veiculo_Vida);
+        imgbGravar_Colisao = (ImageButton) view.findViewById(R.id.imgb_Audio_Veiculo_Vida);
 
-        edtObservacoes = (EditText) v.findViewById(R.id.edt_Observacao_Colisao);
-        edtDistancia = (EditText) v.findViewById(R.id.edt_Envolvido_Distancia);
+        edtObservacoes = (EditText) view.findViewById(R.id.edt_Observacao_Colisao);
+        edtDistancia = (EditText) view.findViewById(R.id.edt_Envolvido_Distancia);
 
-        rbtnNenhum = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Nenhum);
-        rbtnOpcaoObjeto = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Objeto);
-        rbtnOpcaoVeiculo = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Veiculo);
-        rbtnOpcaoPedestre = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Pedestre);
-        rbtnOpcaoAnimal = (RadioButton) v.findViewById(R.id.rbtn_Opcao_Animal);
+        rbtnNenhum = (RadioButton) view.findViewById(R.id.rbtn_Opcao_Nenhum);
+        rbtnOpcaoObjeto = (RadioButton) view.findViewById(R.id.rbtn_Opcao_Objeto);
+        rbtnOpcaoVeiculo = (RadioButton) view.findViewById(R.id.rbtn_Opcao_Veiculo);
+        rbtnOpcaoPedestre = (RadioButton) view.findViewById(R.id.rbtn_Opcao_Pedestre);
+        rbtnOpcaoAnimal = (RadioButton) view.findViewById(R.id.rbtn_Opcao_Animal);
 
-        sgOpcoes = (SegmentedGroup) v.findViewById(R.id.sgm_Dinamica);
+        sgOpcoes = (SegmentedGroup) view.findViewById(R.id.sgm_Dinamica);
         sgOpcoes.setTintColor(Color.GRAY);
 
-        rltvBlock_Veiculo1 = (RelativeLayout) v.findViewById(R.id.rltv_block_Veiculo1);
-        rltvBlock_Veiculo2 = (RelativeLayout) v.findViewById(R.id.rltv_block_Veiculo2);
-        rltvBlock_Animal = (RelativeLayout) v.findViewById(R.id.rltv_block_Animal);
-        rltvBlock_Objeto = (RelativeLayout) v.findViewById(R.id.rltv_block_Objeto);
-        rltvBlock_Envolvido = (RelativeLayout) v.findViewById(R.id.rltv_block_Envolvido);
+        rltvBlock_Veiculo1 = (RelativeLayout) view.findViewById(R.id.rltv_block_Veiculo1);
+        rltvBlock_Veiculo2 = (RelativeLayout) view.findViewById(R.id.rltv_block_Veiculo2);
+        rltvBlock_Animal = (RelativeLayout) view.findViewById(R.id.rltv_block_Animal);
+        rltvBlock_Objeto = (RelativeLayout) view.findViewById(R.id.rltv_block_Objeto);
+        rltvBlock_Envolvido = (RelativeLayout) view.findViewById(R.id.rltv_block_Envolvido);
 
-        rltvObjeto = (RelativeLayout) v.findViewById(R.id.rltv_Objeto);
-        rltvPedestre = (RelativeLayout) v.findViewById(R.id.rltv_Envolvido);
-        rltvVeiculo2 = (RelativeLayout) v.findViewById(R.id.rltv_Veiculo2);
-        rltvVeiculo1 = (RelativeLayout) v.findViewById(R.id.rltv_Veiculo1);
-        rltvNenhum = (RelativeLayout) v.findViewById(R.id.rltv_Nenhum);
-        rltvAnimal = (RelativeLayout) v.findViewById(R.id.rltv_Animal);
+        rltvObjeto = (RelativeLayout) view.findViewById(R.id.rltv_Objeto);
+        rltvPedestre = (RelativeLayout) view.findViewById(R.id.rltv_Envolvido);
+        rltvVeiculo2 = (RelativeLayout) view.findViewById(R.id.rltv_Veiculo2);
+        rltvVeiculo1 = (RelativeLayout) view.findViewById(R.id.rltv_Veiculo1);
+        rltvNenhum = (RelativeLayout) view.findViewById(R.id.rltv_Nenhum);
+        rltvAnimal = (RelativeLayout) view.findViewById(R.id.rltv_Animal);
 
-        edtAnimalDescricao = (EditText) v.findViewById(R.id.edt_Animal_Descricao);
-        edtAnimalObservacao = (EditText) v.findViewById(R.id.edt_Animal_Observacao);
-        edtObjetoDescricao = (EditText) v.findViewById(R.id.edt_Objeto_Descricao);
-        edtObjetoObservacao = (EditText) v.findViewById(R.id.edt_Objeto_Observacao);
+        edtAnimalDescricao = (EditText) view.findViewById(R.id.edt_Animal_Descricao);
+        edtAnimalObservacao = (EditText) view.findViewById(R.id.edt_Animal_Observacao);
+        edtObjetoDescricao = (EditText) view.findViewById(R.id.edt_Objeto_Descricao);
+        edtObjetoObservacao = (EditText) view.findViewById(R.id.edt_Objeto_Observacao);
 
-        rltvBase = (RelativeLayout) v.findViewById(R.id.rltv_Base);
+        rltvBase = (RelativeLayout) view.findViewById(R.id.rltv_Base);
 
-        fabColisoes = (FloatingActionButton) v.findViewById(R.id.fab_Colisao);
-        listColisoes = (ListView) v.findViewById(R.id.lstv_Colisoes);
+        fabColisoes = (FloatingActionButton) view.findViewById(R.id.fab_Colisao);
+        listColisoes = (ListView) view.findViewById(R.id.lstv_Colisoes);
 
-        spnOrdem = (Spinner) v.findViewById(R.id.spn_Ordem_Interacao);
-        spnVeiculo1Causa = (Spinner) v.findViewById(R.id.spn_Causa_Veiculo1);
+        spnOrdem = (Spinner) view.findViewById(R.id.spn_Ordem_Interacao);
+        spnVeiculo1Causa = (Spinner) view.findViewById(R.id.spn_Causa_Veiculo1);
 
-        spnVeiculo2Causa = (Spinner) v.findViewById(R.id.spn_Causa_Veiculo2);
+        spnVeiculo2Causa = (Spinner) view.findViewById(R.id.spn_Causa_Veiculo2);
 
-        cxbCausaVeiculo1 = (CheckBox) v.findViewById(R.id.cxb_Veiculo1_Culpado);
-        cxbCausaVeiculo2 = (CheckBox) v.findViewById(R.id.cxb_Veiculo2_Culpado);
+        cxbCausaVeiculo1 = (CheckBox) view.findViewById(R.id.cxb_Veiculo1_Culpado);
+        cxbCausaVeiculo2 = (CheckBox) view.findViewById(R.id.cxb_Veiculo2_Culpado);
 
-        cxbCausaPedestre = (CheckBox) v.findViewById(R.id.cxb_Envolvido_Culpado);
+        cxbCausaPedestre = (CheckBox) view.findViewById(R.id.cxb_Envolvido_Culpado);
 
-        ll_Inconclusao = (LinearLayout) v.findViewById(R.id.ll_Inconclusao);
-        ll_Vestigio = (LinearLayout) v.findViewById(R.id.ll_Vestigio);
+        ll_Inconclusao = (LinearLayout) view.findViewById(R.id.ll_Inconclusao);
+        ll_Vestigio = (LinearLayout) view.findViewById(R.id.ll_Vestigio);
 
         spnVeiculo1Causa.setEnabled(false);
         spnVeiculo2Causa.setEnabled(false);
@@ -912,7 +916,7 @@ adp.notifyDataSetChanged();
                 bd.putString("Local", "conclusão");
                 bd.putBoolean("Colisao", true);
                 bd.putLong("ColisaoId", colisaoTransito.getId());
-                bd.putLong("OcorrenciaId", ocorrenciaTransitoColisao.getOcorrenciaID());
+                bd.putLong("OcorrenciaId", ocorrenciaTransitoColisao.getOcorrencia());
 
                 AudioDialog.show(getActivity(), bd);
 
@@ -1018,6 +1022,10 @@ adp.notifyDataSetChanged();
                 if (ocorrenciaColisao == null || colisaoTransito==null)
                     return;
 
+                if(ignoreNovaColisao) {
+                    ignoreNovaColisao = false;
+                    return;
+                }
 //                adp.remove(ocorrenciaColisao.getColisaoTransito());
 //                adp.insert(colisaoTransito,position);
 //
@@ -1310,7 +1318,9 @@ adp.notifyDataSetChanged();
             }
             colisaoTransito.setAtoresColisao(AtoresColisao.VEICULO);
             colisaoTransito.setEndereco_veiculo2((EnderecoTransito) spnEndereco2.getSelectedItem());
+            if(spnVeiculo2!=null && spnVeiculo2.getSelectedItem()!=null)
             colisaoTransito.setVeiculo2((Veiculo) spnVeiculo2.getSelectedItem());
+            if(spnSentido2!=null && spnSentido2.getSelectedItem()!=null)
             colisaoTransito.setSentido_veiculo2(BuscadorEnum.BuscarOrientacaoComposta(spnSentido2.getSelectedItem().toString()));
             colisaoTransito.setVeiculo2Causador(cxbCausaVeiculo2.isChecked());
             colisaoTransito.setVeiculo2_Faixa(spnFaixa2.getSelectedItemPosition() + 1);
@@ -1806,6 +1816,7 @@ adp.notifyDataSetChanged();
 
             adp.add(colisaoTransito);
             adp.notifyDataSetChanged();
+            ignoreNovaColisao = true;
             listColisoes.performItemClick(listColisoes, BuscadorEnum.PegarPosicaoColisao(colisaoTransitoModel, colisaoTransito), listColisoes.getItemIdAtPosition(BuscadorEnum.PegarPosicaoColisao(colisaoTransitoModel, colisaoTransito)));
 
         }

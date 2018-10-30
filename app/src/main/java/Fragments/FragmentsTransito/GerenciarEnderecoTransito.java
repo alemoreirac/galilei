@@ -53,6 +53,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import Adapters.AdapterEnderecoTransito;
+import Control.BairroBusiness;
+import Control.MunicipioBusiness;
 import Enums.CategoriaFoto;
 import Enums.Transito.CondicaoPista;
 import Enums.IluminacaoVia;
@@ -62,6 +64,8 @@ import Enums.Transito.Semaforo;
 import Enums.Transito.SinalizacaoPare;
 import Enums.Transito.TipoVia;
 import Enums.Transito.Topografia;
+import Model.Bairro;
+import Model.Municipio;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.EnderecoTransito;
 import Model.Foto;
@@ -117,7 +121,6 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     ArrayList<EnderecoTransito> enderecoTransitoModel = null;
     OcorrenciaTransito ocorrenciaTransitoEndereco = null;
     OcorrenciaTransitoEndereco ocorrenciaEndereco = null;
-
     MaskedEditText edtLatitude = null;
     MaskedEditText edtLongitude = null;
     RelativeLayout rltv_Endereco = null;
@@ -129,8 +132,8 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     Ocorrencia ocorrencia;
     private String pathImagem;
     EditText edtLargura;
-    String Bairro;
-    String Cidade;
+    Bairro Bairro;
+    Municipio Municipio;
     boolean checking;
 
     public GerenciarEnderecoTransito()
@@ -161,14 +164,36 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         mView = root;
         return root;
     }
-
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+    }
 
     @Override
-    public void onAttach(Context context)
+    public void onDestroy()
     {
-        super.onAttach(context);
-
+        super.onDestroy();
     }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+    }
+
 
 
     @Override
@@ -200,8 +225,8 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        Cidade = "";
-        Bairro = "";
+        Municipio = new Municipio();
+        Bairro = new Bairro();
 
         AssociarLayout(mView);
         PovoarSpinner(getContext());
@@ -211,7 +236,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         ocorrenciaTransitoEndereco = ((ManterPericiaTransito) getActivity()).ocorrenciaTransito;
 
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoEndereco.getOcorrenciaID());
+        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoEndereco.getOcorrencia());
 
         ocorrenciaEnderecos = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class, "ocorrencia_transito = ?", ocorrenciaTransitoEndereco.getId().toString());
 
@@ -229,11 +254,13 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         if (enderecoTransitoModel.size() > 0)
         {
-            if (isNotNullAndEmpty(enderecoTransitoModel.get(0).getBairro()))
+            if (enderecoTransitoModel.get(0).getBairro() != null &&
+                    isNotNullAndEmpty(enderecoTransitoModel.get(0).getBairro().getDescricao()))
                 Bairro = enderecoTransitoModel.get(0).getBairro();
 
-            if (isNotNullAndEmpty(enderecoTransitoModel.get(0).getCidade()))
-                Cidade = enderecoTransitoModel.get(0).getCidade();
+            if (enderecoTransitoModel.get(0).getMunicipio() != null &&
+                    isNotNullAndEmpty(enderecoTransitoModel.get(0).getMunicipio().getDescricao()))
+                Municipio = enderecoTransitoModel.get(0).getMunicipio();
         }
 
         nmbFaixas.setActionEnabled(ActionEnum.DECREMENT, false);
@@ -353,13 +380,13 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         if (endereco.getTopografia() != Topografia.RETA_PLANA)
             try
             {
-                endereco.setAngulo(Integer.parseInt(edtAngulo.getText().toString()));
+                endereco.setAnguloInclinacao(Integer.parseInt(edtAngulo.getText().toString()));
             } catch (Exception e)
             {
-                endereco.setAngulo(0);
+                endereco.setAnguloInclinacao(0);
             }
         else
-            endereco.setAngulo(0);
+            endereco.setAnguloInclinacao(0);
 
         endereco.setCurva(cxbCurva.isChecked());
         endereco.setMolhada(cxbHumidade.isChecked());
@@ -373,10 +400,10 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         {
             try
             {
-                endereco.setLargura(Long.valueOf(edtLargura.getText().toString()));
+                endereco.setLargura(Float.valueOf(edtLargura.getText().toString()));
             } catch (Exception e)
             {
-                endereco.setLargura(1l);
+                endereco.setLargura(1f);
             }
         }
         if (cxbComposta.isChecked())
@@ -394,8 +421,24 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
         endereco.setDescricaoEndereco(edtEndereco.getText().toString());
         endereco.setComplemento(edtComplemento.getText().toString());
-        endereco.setCidade(aucCidade.getText().toString());
-        endereco.setBairro(aucBairro.getText().toString());
+
+        try
+        {
+            endereco.setMunicipio(Municipio.find(Municipio.class, "descricao = ?", aucCidade.getText().toString()).get(0));
+        } catch (Exception e)
+        {
+            e.toString();
+        }
+        try
+        {
+            endereco.setBairro(Bairro.find(Bairro.class, "descricao = ?", aucBairro.getText().toString()).get(0));
+        } catch (Exception e)
+        {
+            e.toString();
+        }
+
+//        endereco.setMunicipio(aucCidade.getText().toString());
+//        endereco.setBairro(aucBairro.getText().toString());
 
         endereco.save();
 
@@ -405,7 +448,6 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         ocorrenciaEndereco.save();
 
         adapterEnderecoTransito.notifyDataSetChanged();
-
     }
 
     private void LimparCampos()
@@ -459,13 +501,11 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     {
         LimparCampos();
 
+        if (endereco.getMunicipio() != null && endereco.getMunicipio().getDescricao() != null)
+            aucCidade.setText(endereco.getMunicipio().getDescricao());
 
-
-        if (endereco.getCidade() != null)
-            aucCidade.setText(endereco.getCidade());
-
-        if (endereco.getBairro() != null)
-            aucBairro.setText(endereco.getBairro());
+        if (endereco.getBairro() != null && endereco.getBairro().getDescricao() != null)
+            aucBairro.setText(endereco.getBairro().getDescricao());
 
         if (endereco.getDescricaoEndereco() != null)
             edtEndereco.setText(endereco.getDescricaoEndereco());
@@ -473,16 +513,16 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         if (endereco.getLargura() != null)
             edtLargura.setText(endereco.getLargura().toString());
 
-        if (endereco.getAngulo() == 0)
+        if (endereco.getAnguloInclinacao() == 0)
             edtAngulo.setEnabled(false);
 
         else
         {
             edtAngulo.setEnabled(true);
-            edtAngulo.setText(String.valueOf(endereco.getAngulo()));
+            edtAngulo.setText(String.valueOf(endereco.getAnguloInclinacao()));
         }
 
-        if(endereco.getComplemento()!=null)
+        if (endereco.getComplemento() != null)
             edtComplemento.setText(endereco.getComplemento());
 
         cxbPreferencial.setChecked(endereco.isPreferencial());
@@ -555,15 +595,19 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
-        if(requestCode == REQUEST_CODE)
+        if (requestCode == REQUEST_CODE)
         {
-
-            if(grantResults.length==0)
-                return;
-
-            for(int i = 0 ; i<grantResults.length;i++)
+            if (grantResults.length == 0)
             {
-                if(grantResults[i] != PackageManager.PERMISSION_GRANTED)
+                imgbCoordenadas.setVisibility(View.VISIBLE);
+                pbCoordenadas.setVisibility(View.INVISIBLE);
+                edtLatitude.setEnabled(true);
+                edtLongitude.setEnabled(true);
+                return;
+            }
+            for (int i = 0; i < grantResults.length; i++)
+            {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED)
                 {
                     imgbCoordenadas.setVisibility(View.VISIBLE);
                     pbCoordenadas.setVisibility(View.INVISIBLE);
@@ -623,50 +667,53 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
         }
     }
 
-    private void AssociarLayout(View v)
+    private void AssociarLayout(View view)
     {
-        nmbFaixas = (NumberPicker) v.findViewById(R.id.npck_Faixas);
-        nmbPistas = (NumberPicker) v.findViewById(R.id.npck_Pistas);
+        if(view ==null)
+            return;
 
-        spnTipoVia = (Spinner) v.findViewById(R.id.spn_TipoVia);
-        spnSemaforo = (Spinner) v.findViewById(R.id.spn_Semaforo);
-        spnTopografia = (Spinner) v.findViewById(R.id.spn_Topografia);
-        spnCondicaoVia = (Spinner) v.findViewById(R.id.spn_CondicaoVia);
-        spnIluminacaoVia = (Spinner) v.findViewById(R.id.spn_Iluminacao);
-        spnSinalizacaoPare = (Spinner) v.findViewById(R.id.spn_SinalPare);
-        spnPavimentacao = (Spinner) v.findViewById(R.id.spn_Pavimentacao);
-        spnSentido_Direcao = (Spinner) v.findViewById(R.id.spn_SentidoVia_Direcao);
+        nmbFaixas = (NumberPicker) view.findViewById(R.id.npck_Faixas);
+        nmbPistas = (NumberPicker) view.findViewById(R.id.npck_Pistas);
 
-        cxbCurva = (CheckBox) v.findViewById(R.id.cxb_Tracado);
-        cxbHumidade = (CheckBox) v.findViewById(R.id.cxb_Umidade);
-        cxbMaoDupla = (CheckBox) v.findViewById(R.id.cxb_MaoDupla);
-        cxbMeioFio = (CheckBox) v.findViewById(R.id.cxb_MeioFio);
-        cxbComposta = (CheckBox) v.findViewById(R.id.cxb_ViaComposta);
-        cxbPreferencial = (CheckBox) v.findViewById(R.id.cxb_Preferencial);
+        spnTipoVia = (Spinner) view.findViewById(R.id.spn_TipoVia);
+        spnSemaforo = (Spinner) view.findViewById(R.id.spn_Semaforo);
+        spnTopografia = (Spinner) view.findViewById(R.id.spn_Topografia);
+        spnCondicaoVia = (Spinner) view.findViewById(R.id.spn_CondicaoVia);
+        spnIluminacaoVia = (Spinner) view.findViewById(R.id.spn_Iluminacao);
+        spnSinalizacaoPare = (Spinner) view.findViewById(R.id.spn_SinalPare);
+        spnPavimentacao = (Spinner) view.findViewById(R.id.spn_Pavimentacao);
+        spnSentido_Direcao = (Spinner) view.findViewById(R.id.spn_SentidoVia_Direcao);
 
-        pbCoordenadas = (ProgressBar) v.findViewById(R.id.pgb_Carregar_Coordenadas_Transito);
+        cxbCurva = (CheckBox) view.findViewById(R.id.cxb_Tracado);
+        cxbHumidade = (CheckBox) view.findViewById(R.id.cxb_Umidade);
+        cxbMaoDupla = (CheckBox) view.findViewById(R.id.cxb_MaoDupla);
+        cxbMeioFio = (CheckBox) view.findViewById(R.id.cxb_MeioFio);
+        cxbComposta = (CheckBox) view.findViewById(R.id.cxb_ViaComposta);
+        cxbPreferencial = (CheckBox) view.findViewById(R.id.cxb_Preferencial);
+
+        pbCoordenadas = (ProgressBar) view.findViewById(R.id.pgb_Carregar_Coordenadas_Transito);
 
 //        btnSave = (Button) v.findViewById(R.id.btn_Salvar_Endereco);
 //        btnCancel = (Button) v.findViewById(R.id.btn_Cancelar_Endereco);
 
-        listEnderecos = (ListView) v.findViewById(R.id.lstv_Enderecos);
+        listEnderecos = (ListView) view.findViewById(R.id.lstv_Enderecos);
 
-        edtEndereco = (EditText) v.findViewById(R.id.edt_Endereco);
-        edtComplemento = (EditText)v.findViewById(R.id.edt_Complemento_End_Transito);
-        edtAngulo = (EditText) v.findViewById(R.id.edt_Topografia_Angulo);
+        edtEndereco = (EditText) view.findViewById(R.id.edt_Endereco);
+        edtComplemento = (EditText) view.findViewById(R.id.edt_Complemento_End_Transito);
+        edtAngulo = (EditText) view.findViewById(R.id.edt_Topografia_Angulo);
 
-        aucBairro = (AutoCompleteTextView) v.findViewById(R.id.auc_Bairro);
-        aucCidade = (AutoCompleteTextView) v.findViewById(R.id.auc_Cidade);
+        aucBairro = (AutoCompleteTextView) view.findViewById(R.id.auc_Bairro);
+        aucCidade = (AutoCompleteTextView) view.findViewById(R.id.auc_Cidade);
 
-        imgbCoordenadas = (ImageButton) v.findViewById(R.id.imgb_Coordenadas_Transito);
+        imgbCoordenadas = (ImageButton) view.findViewById(R.id.imgb_Coordenadas_Transito);
 
-        edtLatitude = (MaskedEditText) v.findViewById(R.id.medt_Latitude_Transito);
-        edtLongitude = (MaskedEditText) v.findViewById(R.id.medt_Longitude_Transito);
-        edtLargura = (EditText) v.findViewById(R.id.edt_Largura_Via);
+        edtLatitude = (MaskedEditText) view.findViewById(R.id.medt_Latitude_Transito);
+        edtLongitude = (MaskedEditText) view.findViewById(R.id.medt_Longitude_Transito);
+        edtLargura = (EditText) view.findViewById(R.id.edt_Largura_Via);
 
-        fabNovoEndereco = (FloatingActionButton) v.findViewById(R.id.fab_Endereco);
+        fabNovoEndereco = (FloatingActionButton) view.findViewById(R.id.fab_Endereco);
 
-        fabFotoEndereco = (FloatingActionButton) v.findViewById(R.id.fab_Foto_Endereco);
+        fabFotoEndereco = (FloatingActionButton) view.findViewById(R.id.fab_Foto_Endereco);
 
         nmbFaixas.setActionEnabled(ActionEnum.DECREMENT, false);
         nmbFaixas.setActionEnabled(ActionEnum.INCREMENT, false);
@@ -824,15 +871,15 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
 
                 //Ao criar um novo endereço, preenche automáticamente o bairro e cidade de acordo com o primeiro endereço cadastrado
 
-                if (isNotNullAndEmpty(Bairro))
+                if (isNotNullAndEmpty(Bairro.getDescricao()))
                 {
 //                    endereco.setBairro(Bairro);
-                    aucBairro.setText(Bairro);
+                    aucBairro.setText(Bairro.getDescricao());
                 }
-                if (isNotNullAndEmpty(Cidade))
+                if (isNotNullAndEmpty(Municipio.getDescricao()))
                 {
-                    aucCidade.setText(Cidade);
-//                    endereco.setCidade(Cidade);
+                    aucCidade.setText(Municipio.getDescricao());
+//                    endereco.setMunicipio(Municipio);
                 }
             }
         });
@@ -881,7 +928,7 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
             @Override
             public void onClick(View v)
             {
-                requestPermissions( new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                         android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
@@ -893,6 +940,37 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
     {
         aucCidade.setAdapter(AutoCompleteUtil.getCidades(ctx));
         aucBairro.setAdapter(AutoCompleteUtil.getBairros(ctx));
+
+
+        aucCidade.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (!hasFocus)
+                {
+                    if (MunicipioBusiness.findByDescricao(aucCidade.getText().toString()) == null)
+                    {
+                        aucCidade.setText("");
+                        aucCidade.setHint("Inválido");
+                    }
+                }
+            }
+        });
+
+        aucBairro.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (!hasFocus)
+                {
+                    if (BairroBusiness.findByDescricao(aucBairro.getText().toString()) == null)
+                    {
+                        aucBairro.setText("");
+                        aucBairro.setHint("Inválido");
+                    }
+                }
+            }
+        });
 
         ArrayList<String> tipoViaAdapter = new ArrayList<String>();
 
@@ -998,15 +1076,19 @@ public class GerenciarEnderecoTransito extends android.support.v4.app.Fragment i
             {
                 if (spnSemaforo.getSelectedItem().equals("Ativo"))
                 {
-                    spnSinalizacaoPare.setSelection(BuscadorEnum.getIndex(spnSinalizacaoPare,"Ausente"));
+                    spnSinalizacaoPare.setSelection(BuscadorEnum.getIndex(spnSinalizacaoPare, "Ausente"));
                     spnSinalizacaoPare.setEnabled(false);
+                } else
+
+                {   //Quando o usuário acessa o fragment de endereco transito, o on item selected dispara após o disable da interface, deixando este único spinner habilitado
+                    if (!rltv_Endereco.isEnabled())
+                    {
+                        spnSinalizacaoPare.setSelection(0);
+                        spnSinalizacaoPare.setEnabled(true);
+                    }
                 }
 
-                else
-                {
-                    spnSinalizacaoPare.setSelection(0);
-                    spnSinalizacaoPare.setEnabled(true);
-                }
+                spnSinalizacaoPare.setEnabled(false);
             }
 
             @Override

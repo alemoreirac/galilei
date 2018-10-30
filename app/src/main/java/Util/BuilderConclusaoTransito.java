@@ -9,13 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import Control.Transito.ColisaoBusiness;
+import Control.Transito.EnderecoTransitoBusiness;
+import Control.Transito.EnvolvidoTransitoBusiness;
+import Control.Transito.VeiculoBusiness;
 import Enums.DocumentoPessoa;
 import Enums.Transito.AtoresColisao;
 import Enums.Transito.ConclusaoTransito;
 import Enums.IluminacaoVia;
 import Enums.Transito.SetorDano;
 import Enums.Transito.TipoCNH;
-import Enums.Transito.TipoJustificativa_Inconclusao;
 import Enums.Transito.Topografia;
 import Model.Transito.ColisaoTransito;
 import Model.Transito.Dano;
@@ -23,11 +26,7 @@ import Model.Transito.DanoVeiculo;
 import Model.Transito.EnderecoTransito;
 import Model.Transito.EnvolvidoTransito;
 import Model.Ocorrencia;
-import Model.Transito.OcorrenciaTransitoColisao;
-import Model.Transito.OcorrenciaTransitoEndereco;
-import Model.Transito.OcorrenciaTransitoEnvolvido;
 import Model.Transito.OcorrenciaTransito;
-import Model.Transito.OcorrenciaTransitoVeiculo;
 import Model.Transito.Veiculo;
 import Model.Transito.VestigioTransito;
 import Model.Transito.VestigioColisao;
@@ -50,7 +49,7 @@ public class BuilderConclusaoTransito
 
         builderConclusao = new StringBuilder();
 
-        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoConclusao.getOcorrenciaID());
+        ocorrencia = Ocorrencia.findById(Ocorrencia.class, ocorrenciaTransitoConclusao.getOcorrencia());
 
         InstanciarListas();
         try
@@ -92,37 +91,37 @@ public class BuilderConclusaoTransito
     private static void InstanciarListas()
     {
 
-        veiculos = new ArrayList<>();
-        colisoes = new ArrayList<>();
-        envolvidos = new ArrayList<>();
-        enderecos = new ArrayList<>();
-
-        List<OcorrenciaTransitoEndereco> oen = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class,
-                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
-
-        for (OcorrenciaTransitoEndereco enderecoTransito : oen)
-        {
-            enderecos.add(enderecoTransito.getEnderecoTransito());
-        }
-
-        List<OcorrenciaTransitoVeiculo> ov = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class,
-                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
-        for (OcorrenciaTransitoVeiculo ocorrenciaVeiculo : ov)
-        {
-            veiculos.add(ocorrenciaVeiculo.getVeiculo());
-        }
-        List<OcorrenciaTransitoColisao> oc = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class,
-                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
-        for (OcorrenciaTransitoColisao ocorrenciaColisao : oc)
-        {
-            colisoes.add(ocorrenciaColisao.getColisaoTransito());
-        }
-        List<OcorrenciaTransitoEnvolvido> oe = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,
-                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
-        for (OcorrenciaTransitoEnvolvido ocorrenciaEnvolvido : oe)
-        {
-            envolvidos.add(ocorrenciaEnvolvido.getEnvolvidoTransito());
-        }
+        veiculos = VeiculoBusiness.findVeiculosByOcorrenciaId(ocorrenciaTransitoConclusao.getId());
+        colisoes = ColisaoBusiness.findColisoesByOcorrenciaId(ocorrenciaTransitoConclusao.getId());
+        envolvidos = EnvolvidoTransitoBusiness.findEnvolvidoByOcorrenciaId(ocorrenciaTransitoConclusao.getId());
+        enderecos = EnderecoTransitoBusiness.findEnderecoByOcorrenciaId(ocorrenciaTransitoConclusao.getId());
+//
+//        List<OcorrenciaTransitoEndereco> oen = OcorrenciaTransitoEndereco.find(OcorrenciaTransitoEndereco.class,
+//                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
+//
+//        for (OcorrenciaTransitoEndereco enderecoTransito : oen)
+//        {
+//            enderecos.add(enderecoTransito.getEnderecoTransito());
+//        }
+//
+//        List<OcorrenciaTransitoVeiculo> ov = OcorrenciaTransitoVeiculo.find(OcorrenciaTransitoVeiculo.class,
+//                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
+//        for (OcorrenciaTransitoVeiculo ocorrenciaVeiculo : ov)
+//        {
+//            veiculos.add(ocorrenciaVeiculo.getVeiculo());
+//        }
+//        List<OcorrenciaTransitoColisao> oc = OcorrenciaTransitoColisao.find(OcorrenciaTransitoColisao.class,
+//                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
+//        for (OcorrenciaTransitoColisao ocorrenciaColisao : oc)
+//        {
+//            colisoes.add(ocorrenciaColisao.getColisaoTransito());
+//        }
+//        List<OcorrenciaTransitoEnvolvido> oe = OcorrenciaTransitoEnvolvido.find(OcorrenciaTransitoEnvolvido.class,
+//                "ocorrencia_transito = ?", ocorrenciaTransitoConclusao.getId().toString());
+//        for (OcorrenciaTransitoEnvolvido ocorrenciaEnvolvido : oe)
+//        {
+//            envolvidos.add(ocorrenciaEnvolvido.getEnvolvidoTransito());
+//        }
     }
 
     private static void ConstruirUltimaForma()
@@ -142,12 +141,15 @@ public class BuilderConclusaoTransito
             if (enderecos.get(0).getDescricaoEndereco() != null)
                 builderConclusao.append(enderecos.get(0).getDescricaoEndereco() + " ");
             builderConclusao.append("na cidade de ");
-            builderConclusao.append(enderecos.get(0).getCidade() + " ");
+            if (enderecos.get(0).getMunicipio() != null && enderecos.get(0).getMunicipio().getDescricao() != null)
+                builderConclusao.append(enderecos.get(0).getMunicipio().getDescricao() + " ");
+            else
+                builderConclusao.append("(sem cidade) ");
             builderConclusao.append("com cooordenadas ");
             builderConclusao.append("LAT: ");
-            builderConclusao.append(enderecos.get(0).getLatitude() + ", ");
+            builderConclusao.append(enderecos.get(0).getLatitude() + "\", ");
             builderConclusao.append("LONG: ");
-            builderConclusao.append(enderecos.get(0).getLongitude());
+            builderConclusao.append(enderecos.get(0).getLongitude()+"\"");
         }
 
         builderConclusao.append(". \nOnde segundo informações da CIOPS havia uma ocorrência de " +
@@ -192,7 +194,7 @@ public class BuilderConclusaoTransito
             builderConclusao.append(enderecos.get(0).getTipoVia().getValor() + " ");
             builderConclusao.append(enderecos.get(0).getDescricaoEndereco() + " ");
             builderConclusao.append("na cidade de ");
-            builderConclusao.append(enderecos.get(0).getCidade() + " ");
+            builderConclusao.append(enderecos.get(0).getMunicipio().getDescricao() + " ");
             builderConclusao.append("com cooordenadas ");
             builderConclusao.append("LAT: ");
             builderConclusao.append(enderecos.get(0).getLatitude() + ", ");
@@ -225,9 +227,24 @@ public class BuilderConclusaoTransito
                 return;
 
             if (envolvido.getNome() != null && !envolvido.getNome().equals("Desconhecido(a)"))
+            {
                 builderConclusao.append("\n" + StringUtil.checkValue(envolvido.getNome(), -1, "(Sem nome)"));
-
-            else
+                if (envolvido.getGenero() != null)
+                {
+                    switch (envolvido.getGenero())
+                    {
+                        case FEMININO:
+                            builderConclusao.append(", do sexo feminino, ");
+                            break;
+                        case MASCULINO:
+                            builderConclusao.append(", do sexo masculino, ");
+                            break;
+                        case NAO_IDENTIFICADO:
+                            builderConclusao.append(", sem gênero identificado, ");
+                            break;
+                    }
+                }
+            } else
             {
                 if (envolvido.getGenero() != null)
                 {
@@ -246,12 +263,12 @@ public class BuilderConclusaoTransito
                 }
             }
 
-            if (envolvido.getDocumentoTipo() != null && !envolvido.getTipoEnvolvido().equals(DocumentoPessoa.NP))
-                builderConclusao.append("identificado(a) com " + envolvido.getDocumentoTipo().getValor() + " de nº: "
+            if (envolvido.getDocumentoTipo() != null && !envolvido.getDocumentoTipo().equals(DocumentoPessoa.NP))
+                builderConclusao.append(" identificado(a) com " + envolvido.getDocumentoTipo().getValor() + " de nº: "
                         + StringUtil.checkValue(envolvido.getDocumentoValor(), -1, "") + " ");
 
             else
-                builderConclusao.append("que não possui identificação");
+                builderConclusao.append(" que não possui identificação");
 
 
             if (envolvido.getTipoEnvolvido() != null)
@@ -263,14 +280,14 @@ public class BuilderConclusaoTransito
                         if (envolvido.getVeiculoEnvolvido() != null)
                         {
                             builderConclusao.append(", que conduzia o veículo ");
-                            builderConclusao.append(envolvido.getVeiculoEnvolvido().toString());
+                            builderConclusao.append(StringUtil.checkValue(envolvido.getVeiculoEnvolvido().toString(),-1,"(Não identificado)"));
                         }
                         break;
                     case PASSAGEIRO:
                         if (envolvido.getVeiculoEnvolvido() != null)
                         {
                             builderConclusao.append(", que era passageiro no veículo ");
-                            builderConclusao.append(envolvido.getVeiculoEnvolvido().toString());
+                            builderConclusao.append(StringUtil.checkValue(envolvido.getVeiculoEnvolvido().toString(),-1,"(Não identificado)"));
                         }
                         break;
                     case PEDESTRE:
@@ -282,9 +299,9 @@ public class BuilderConclusaoTransito
                 }
             }
 
-            if (envolvido.getLesao() != null)
+            if (envolvido.getLesaoTransito() != null)
             {
-                switch (envolvido.getLesao())
+                switch (envolvido.getLesaoTransito())
                 {
                     case GRAVE:
                         builderConclusao.append(", com lesões graves.");
@@ -297,13 +314,12 @@ public class BuilderConclusaoTransito
                         break;
                 }
             }
-
         }
     }
 
     private static void ConstruirVeiculos()
     {
-        builderConclusao.append("\n\nDOS VEÌCULOS ENVOLVIDOS \n");
+        builderConclusao.append("\n\nDOS VEÍCULOS ENVOLVIDOS \n");
         for (Veiculo veiculo : veiculos)
         {
             if (veiculo == null)
@@ -311,40 +327,35 @@ public class BuilderConclusaoTransito
 
             builderConclusao.append("\nVeículo V" + (1 + veiculos.indexOf(veiculo)) + ": ");
 
-            builderConclusao.append(", modelo: " + StringUtil.checkValue(veiculo.getModelo(), -1, "(Sem modelo)"));
+            builderConclusao.append("modelo: " + StringUtil.checkValue(veiculo.getModelo(), -1, "(Sem modelo)"));
 
             if (veiculo.getAnoModelo() != 0)
                 builderConclusao.append(", ano do modelo: " + StringUtil.checkValue(String.valueOf(veiculo.getAnoModelo()), -1, "(Sem ano)"));
 
-
             if (veiculo.getAnoFabricacao() != 0)
                 builderConclusao.append(", ano de fabricação: " + StringUtil.checkValue(String.valueOf(veiculo.getAnoFabricacao()), -1, "(Sem ano)"));
-
 
             if (veiculo.getCor() != null)
                 builderConclusao.append(", cor " + veiculo.getCor().getValor());
 
             if (veiculo.getPlaca().equals("-"))
-                builderConclusao.append(", sem placa.");
+                builderConclusao.append(", sem placa");
             else
                 builderConclusao.append(", de placa: " + veiculo.getPlaca());
 
-
             if (veiculo.getNomeProprietario().equals("Desconhecido(a)"))
-                builderConclusao.append(", Cujo proprietário não foi identificado.");
+                builderConclusao.append(", cujo proprietário não foi identificado");
 
             else
             {
-                builderConclusao.append(", Registrado em Nome de: " + veiculo.getNomeProprietario());
+                builderConclusao.append(", registrado em nome de: " + veiculo.getNomeProprietario());
                 if (!veiculo.getCategoriaProprietario().equals(TipoCNH.NP))
                 {
                     builderConclusao.append(", habilitado com CNH de nº: " + veiculo.getNumeroDocumentoProprietario());
                     builderConclusao.append(", de Categoria: " + veiculo.getCategoriaProprietario());
                 } else
                     builderConclusao.append(" que não possui habilitação");
-
             }
-
 
             if (veiculo.getNomeCondutor().equals("Desconhecido(a)"))
                 builderConclusao.append(", cujo condutor não foi identificado.");
@@ -365,9 +376,7 @@ public class BuilderConclusaoTransito
                     builderConclusao.append(", de Categoria: " + veiculo.getCategoriaCondutor());
                 } else
                     builderConclusao.append(" que não possui habilitação.");
-
             }
-
         }
     }
 
@@ -381,24 +390,19 @@ public class BuilderConclusaoTransito
             return;
         }
 
-
         if (enderecos.size() == 1)
-
-            builderConclusao.append("\nO local do evento é composto pelo logradouro a seguir: \n");
+            builderConclusao.append("\nO local do evento é composto pelo logradouro a seguir:");
 
         else
-
-
-            builderConclusao.append("\nO local do evento é composto pela interseção entre as vias a seguir:  \n");
+            builderConclusao.append("\nO local do evento é composto pela interseção entre as vias a seguir:");
 
         for (EnderecoTransito endereco : enderecos)
         {
-            if(endereco==null)
+            if (endereco == null)
                 return;
 
             if (endereco.getTipoVia() != null)
-
-                builderConclusao.append("A " + endereco.getTipoVia().getValor() + " " + endereco.getDescricaoEndereco());
+                builderConclusao.append("\n\nA " + endereco.getTipoVia().getValor() + " " + endereco.getDescricaoEndereco());
 
             if (StringUtil.isNotNullAndEmpty(endereco.getComplemento()))
                 builderConclusao.append(" complemento: " + endereco.getComplemento());
@@ -409,14 +413,13 @@ public class BuilderConclusaoTransito
                 builderConclusao.append(" por " + endereco.getNumFaixas() + " faixa(s)");
                 builderConclusao.append(" e " + endereco.getNumPistas() + " pista(s)");
             } else
-                builderConclusao.append(", é um lgoradouro simples");
+                builderConclusao.append(", é um logradouro simples");
 
-            //builderConclusao.append(", de topografia "+enderecos.get(0).getTopografia().getValor());
 
             if ((endereco.getTopografia() == Topografia.ACLIVE
                     || endereco.getTopografia() == Topografia.DECLIVE)
-                    && endereco.getAngulo() != 0)
-                builderConclusao.append("com " + endereco.getTopografia().getValor() + ", com angulação de " + endereco.getAngulo() + " graus");
+                    && endereco.getAnguloInclinacao() != 0)
+                builderConclusao.append("com " + endereco.getTopografia().getValor() + ", com angulação de " + endereco.getAnguloInclinacao() + " graus");
             else
                 builderConclusao.append(", plano");
 
@@ -468,10 +471,10 @@ public class BuilderConclusaoTransito
             if (veiculo == null)
                 return;
             builderConclusao.append("\n\nO veículo ");
-            builderConclusao.append(veiculo.getModelo());
+            builderConclusao.append(StringUtil.checkValue(veiculo.getModelo(),-1,"(Sem modelo)"));
 
             danosVeiculo = DanoVeiculo.find(DanoVeiculo.class, "veiculo = ?", veiculo.getId().toString());
-            if (danosVeiculo.size() > 0)
+            if (danosVeiculo!=null && danosVeiculo.size() > 0)
             {
                 builderConclusao.append(" apresentava danos nos setores a seguir:\n");
 
@@ -479,8 +482,7 @@ public class BuilderConclusaoTransito
 
                 for (DanoVeiculo dv : danosVeiculo)
                 {
-                    if(hmDanos.containsKey(dv.getDano().getSetor()))
-
+                    if (hmDanos.containsKey(dv.getDano().getSetor()))
                         hmDanos.get(dv.getDano().getSetor()).add(dv.getDano());
                     else
                     {
@@ -492,13 +494,13 @@ public class BuilderConclusaoTransito
                 Set set = hmDanos.entrySet();
                 Iterator iterator = set.iterator();
 
-                while(iterator.hasNext())
+                while (iterator.hasNext())
                 {
-                    Map.Entry entry = (Map.Entry)iterator.next();
+                    Map.Entry entry = (Map.Entry) iterator.next();
 
-                    builderConclusao.append("\n\n " +((SetorDano)entry.getKey()).getValor()+": ");
+                    builderConclusao.append("\n\n " + ((SetorDano) entry.getKey()).getValor() + ": ");
 
-                    for(Dano d : (ArrayList<Dano>)entry.getValue())
+                    for (Dano d : (ArrayList<Dano>) entry.getValue())
                     {
                         builderConclusao.append(d.exportarLaudo());
                     }
@@ -516,65 +518,71 @@ public class BuilderConclusaoTransito
     {
         builderConclusao.append("\n\nDINÂMICA DA OCORRÊNCIA\n");
 
+        if(colisoes.size()>0)
         builderConclusao.append("\nCom base nos elementos do conjunto estático do local, pode o perito informar que o acidente de tráfego obedeceu à seguinte mecânica:\n");
 
+        else
+        {
+            builderConclusao.append("\nNão foram coletadas informações sobre a dinãmica do ocorrido.\n");
+            return;
+        }
         for (int i = 0; i < colisoes.size(); i++)
         {
-            if(colisoes.get(i)== null)
+            if (colisoes.get(i) == null)
                 return;
 
             List<VestigioColisao> vestigiosColisao = VestigioColisao.find(VestigioColisao.class, "colisao_transito = ?", colisoes.get(i).getId().toString());
 
             ArrayList<VestigioTransito> vestigios = new ArrayList<>();
 
-
             for (VestigioColisao vc : vestigiosColisao)
-                if (vc.getVestigioId() != null)
-                    vestigios.add(VestigioTransito.findById(VestigioTransito.class, vc.getVestigioId()));
+                if (vc.getVestigio() != null)
+                    vestigios.add(vc.getVestigio());
 
             if (i == 0 && EncontrarInconclusivo())
                 builderConclusao.append("\n\nPelos motivos que serão citados a seguir, não foi possível que o perito pudesse concluir sobre todas as interações do caso supracitado.");
-
-            else
-                builderConclusao.append("\n\nCom base nos elementos do conjunto estático do local, pode o perito informar que o acidente de tráfego obedeceu à seguinte mecânica:\n");
+//            else
+//                builderConclusao.append("\n\nCom base nos elementos do conjunto estático do local, pode o perito informar que o acidente de tráfego obedeceu à seguinte mecânica:\n");
 
             if (!colisoes.get(i).getInconclusivo())
             {
-                builderConclusao.append("O veículo " + colisoes.get(i).getVeiculo1().getModelo());
+                builderConclusao.append("O veículo " + StringUtil.checkValue(colisoes.get(i).getVeiculo1().getModelo(),-1,"(Sem modelo)"));
 
                 builderConclusao.append(" trafegava na " + colisoes.get(i).getEndereco_veiculo1().toStringDoc());
 
+                if(colisoes.get(i).getEndereco_veiculo1()!=null &&colisoes.get(i).getEndereco_veiculo1().getSentidoVia()!=null && colisoes.get(i).getEndereco_veiculo1().getSentidoVia().getValor()!=null)
                 builderConclusao.append(" no sentido " + colisoes.get(i).getEndereco_veiculo1().getSentidoVia().getValor());
 
                 switch (colisoes.get(i).getAtoresColisao())
                 {
                     case VEICULO:
-                        builderConclusao.append("O veículo " + colisoes.get(i).getVeiculo2().getModelo());
+                        builderConclusao.append("O veículo " + StringUtil.checkValue(colisoes.get(i).getVeiculo2().getModelo(),-1,"(Sem modelo)"));
                         builderConclusao.append(" trafegava na " + colisoes.get(i).getEndereco_veiculo2().toStringDoc());
+
+                        if(colisoes.get(i).getEndereco_veiculo2()!=null &&colisoes.get(i).getEndereco_veiculo2().getSentidoVia()!=null && colisoes.get(i).getEndereco_veiculo2().getSentidoVia().getValor()!=null)
                         builderConclusao.append(" no sentido " + colisoes.get(i).getEndereco_veiculo2().getSentidoVia().getValor());
                         break;
                     case PEDESTRE:
-
-                        if (colisoes.get(i).getPedestre() == null)
-
+//                        if (colisoes.get(i).getPedestre() == null)
+                        if (ColisaoBusiness.findAllPedestresByColisao(colisoes.get(i).getId()).size() == 0)
                             return;
 
-                        builderConclusao.append(" O pedestre " + colisoes.get(i).getPedestre().getNome());
+                        builderConclusao.append(" O(s) pedestre(s): " + ColisaoBusiness.findAllPedestresByColisaoString(colisoes.get(i).getId()));
                         //builderConclusao.append(" se encontrava " + colisoes.get(i).getPosicaoPedestre().getValor());
                         switch (colisoes.get(i).getPosicaoPedestre())
                         {
                             case PROXIMO_FAIXA:
                             case PROXIMO_PASSARELA:
-                                builderConclusao.append(" encontrava-se a " + colisoes.get(i).getDistancia() + " metros da " + colisoes.get(i).getPosicaoPedestre().getValor().substring(9));
+                                builderConclusao.append(" encontrava(m)-se a " + colisoes.get(i).getDistancia() + " metros da " + colisoes.get(i).getPosicaoPedestre().getValor().substring(9));
                                 break;
                             case SEM_FAIXA:
-                                builderConclusao.append(" encontrava-se em um local sem faixa de pedestres.");
+                                builderConclusao.append(" encontrava(m)-se em um local sem faixa de pedestres.");
                                 break;
                             case PASSARELA:
-                                builderConclusao.append(" encontrava-se na passarela da pista.");
+                                builderConclusao.append(" encontrava(m)-se na passarela da pista.");
                                 break;
                             case SOBRE_FAIXA:
-                                builderConclusao.append(" encontrava-se sobre a faixa de pedestres.");
+                                builderConclusao.append(" encontrava(m)-se sobre a faixa de pedestres.");
                                 break;
                         }
                         break;
@@ -652,7 +660,8 @@ public class BuilderConclusaoTransito
                     builderConclusao.append("o(a) " + colisoes.get(i).getObjetoDescricao() + " ocorreu de uma forma em que");
 
                 if (colisoes.get(i).getAtoresColisao() == AtoresColisao.PEDESTRE)
-                    builderConclusao.append("o(a) pedestre " + colisoes.get(i).getPedestre().getNome() + " ocorreu de uma forma em que");
+                    builderConclusao.append("o(s) pedestre(s): " + ColisaoBusiness.findAllPedestresByColisaoString(colisoes.get(i).getId()) + " ocorreu de uma forma em que");
+                //                    builderConclusao.append("o(a) pedestre " + colisoes.get(i).getPedestre().getNome() + " ocorreu de uma forma em que");
 
                 switch (colisoes.get(i).getJustificativaInconclusao())
                 {
@@ -754,39 +763,52 @@ public class BuilderConclusaoTransito
                     break;
                 case PEDESTRE:
 
-                    builderConclusao.append("\n\nSobre o atropelamento: O(A) condutor(a) do veículo " + colisao.getVeiculo1().toString()+", " );
+                    builderConclusao.append("\n\nSobre o atropelamento: O(A) condutor(a) do veículo " + colisao.getVeiculo1().toString() + ", ");
 
-                    if (colisao.isVeiculo1Causador() && !colisao.getCulpaPedestre())
+                    if (colisao.isVeiculo1Causador())
                     {
-                        //V1 culpado apenas
                         builderConclusao.append("devido " + colisao.getConclusaoVeiculo1().getValor());
-                        builderConclusao.append(" e acabou atingindo " + colisao.getPedestre().getNome());
-                    }
-                    if (colisao.isVeiculo1Causador() && colisao.getCulpaPedestre())
-                    {
-                        //culpas concorrentes
-                        builderConclusao.append("devido " + colisao.getConclusaoVeiculo1().getValor());
-                        builderConclusao.append(" e acabou atingindo " + colisao.getPedestre().getNome());
-                        builderConclusao.append(" que por sua vez também possui responsabilidade no ocorrido, caracterizando culpas concorrentes.");
+                        builderConclusao.append(" e acabou atingindo: " + ColisaoBusiness.findAllPedestresByColisaoString(colisao.getId()));
                     }
                     if (!colisao.isVeiculo1Causador() && colisao.getCulpaPedestre())
                     {
-                        //colisao_pedestre culpado apenas
+//                        //colisao_pedestre culpado apenas
                         builderConclusao.append(colisao.getConclusaoVeiculo1().getValor());
-                        builderConclusao.append(" e acabou atingindo " + colisao.getPedestre().getNome());
-                        builderConclusao.append(", que por sua vez possui total responsabilidade pelo fato ocorrido.");
+                        builderConclusao.append(" e acabou atingindo: " + ColisaoBusiness.findAllPedestresByColisaoString(colisao.getId()));
+//                        builderConclusao.append(", que por sua vez possui total responsabilidade pelo fato ocorrido.");
                     }
+//                    if (colisao.isVeiculo1Causador() && !colisao.getCulpaPedestre())
+//                    {
+//                        //V1 culpado apenas
+//                        builderConclusao.append("devido " + colisao.getConclusaoVeiculo1().getValor());
+//                        builderConclusao.append(" e acabou atingindo " + StringUtil.checkValue(colisao.getPedestre().getNome(),-1,"(Sem nome)"));
+//                    }
+//                    if (colisao.isVeiculo1Causador() && colisao.getCulpaPedestre())
+//                    {
+//                        //culpas concorrentes
+//                        builderConclusao.append("devido " + colisao.getConclusaoVeiculo1().getValor());
+//                        builderConclusao.append(" e acabou atingindo " + StringUtil.checkValue(colisao.getPedestre().getNome(),-1,"(Sem nome)"));
+//                        builderConclusao.append(" que por sua vez também possui responsabilidade no ocorrido, caracterizando culpas concorrentes.");
+//                    }
+//                    if (!colisao.isVeiculo1Causador() && colisao.getCulpaPedestre())
+//                    {
+//                        //colisao_pedestre culpado apenas
+//                        builderConclusao.append(colisao.getConclusaoVeiculo1().getValor());
+//                        builderConclusao.append(" e acabou atingindo " + colisao.getPedestre().getNome());
+//                        builderConclusao.append(", que por sua vez possui total responsabilidade pelo fato ocorrido.");
+//                    }
                     break;
                 case OBJETO:
 
-                    builderConclusao.append("\n\nSobre o choque: O(A) condutor(a) do veículo " + colisao.getVeiculo1().toString()+", "+ colisao.getVeiculo1().toString());
+//                    builderConclusao.append("\n\nSobre o choque: O(A) condutor(a) do veículo " + colisao.getVeiculo1().toString() + ", " + colisao.getVeiculo1().toString());
+                    builderConclusao.append("\n\nSobre o choque: O(A) condutor(a) do veículo " + colisao.getVeiculo1().toString());
 
                     if (colisao.isVeiculo1Causador())
                     {
                         // V1 Causador
 
                         builderConclusao.append(", devido " + colisao.getConclusaoVeiculo1().getValor());
-                        builderConclusao.append(" e acabou atingindo " + colisao.getObjetoDescricao());
+                        builderConclusao.append(", acabou atingindo o(a): " + colisao.getObjetoDescricao());
                     } else
                     {
                         // V1 Isento de culpa
@@ -807,12 +829,10 @@ public class BuilderConclusaoTransito
                     }
                     break;
             }
-
-
-            if (colisao.getInconclusivo())
-            {
-
-            }
+//            if (colisao.getInconclusivo())
+//            {
+//
+//            }
         }
         builderConclusao.append("\n\nNada mais havendo a lavrar, fica encerrado o presente laudo.");
     }

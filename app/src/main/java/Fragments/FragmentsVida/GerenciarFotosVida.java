@@ -339,36 +339,17 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
             }
         });
 
-//        btnCancelarFoto.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                Picasso.with(getContext()).load(new File(foto.getArquivo())).error(R.drawable.placeholder_error).placeholder(R.drawable.placeholder).into(imgvFotoDetalhe);
-//                edtDetalhe.setText(foto.getDescricao());
-//            }
-//        });
-//
-//        btnSalvarFoto.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                SalvarFoto();
-//            }
-//        });
-
     }
 
     private void SalvarFoto()
     {
-        if (!foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
-            foto.setCategoriaFoto(BuscadorEnum.BuscarCategoriaFoto(spnCategoriaFoto.getSelectedItem().toString()));
+        //items de desenho não podem ser alterados, apenas criados pela outra activity ou deletados
+        if(foto.getCategoriaFoto() != null && foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
+            return;
 
-        if (foto.getCategoriaFoto() != null
-                && !foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
-
+        if (foto.getCategoriaFoto() != null)
         {
+            foto.setCategoriaFoto(BuscadorEnum.BuscarCategoriaFoto(spnCategoriaFoto.getSelectedItem().toString()));
             foto.setDescricao(edtDetalhe.getText().toString());
             foto.setArquivo(pathImagem);
         }
@@ -402,15 +383,15 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
         {
             if (!foto.getCategoriaFoto().getValor().equals(CategoriaFoto.DESENHO.getValor()))
             {
-                if (!spnCategoriaFoto.isEnabled())
-                {
+//                if (!spnCategoriaFoto.isEnabled())
+//                {
                     if(categorias.contains(CategoriaFoto.DESENHO.getValor()))
                     {
                         categorias.remove(CategoriaFoto.DESENHO.getValor());
                         spnCategoriaFoto.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, categorias));
                     }
                     spnCategoriaFoto.setEnabled(true);
-                }
+//                }
                 spnCategoriaFoto.setSelection(BuscadorEnum.getIndex(spnCategoriaFoto, foto.getCategoriaFoto().getValor()));
                 edtDetalhe.setText(foto.getDescricao());
 
@@ -493,8 +474,9 @@ public class GerenciarFotosVida extends android.support.v4.app.Fragment implemen
 
     public void AssociarLayout(View view)
     {
-//        btnCancelarFoto = (Button) view.findViewById(R.id.btn_Cancelar_Foto_Vida);
-//        btnSalvarFoto = (Button) view.findViewById(R.id.btn_Salvar_Foto_Vida);
+        if(view==null)
+            return;
+
         edtDetalhe = (EditText) view.findViewById(R.id.edt_Foto_Titulo_Vida);
         lstvFOtos = (ListView) view.findViewById(R.id.lstv_Fotos_Vida);
         fabFotos = (FloatingActionButton) view.findViewById(R.id.fab_Foto_Vida);

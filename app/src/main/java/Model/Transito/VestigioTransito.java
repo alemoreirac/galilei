@@ -1,6 +1,10 @@
 package Model.Transito;
 
+import com.google.gson.annotations.Expose;
 import com.orm.SugarRecord;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import Enums.Transito.TipoVestigioTransito;
 
@@ -11,11 +15,16 @@ import Enums.Transito.TipoVestigioTransito;
 public class VestigioTransito extends SugarRecord
 
 {
-
+    @Expose
     private TipoVestigioTransito tipoVestigio;
+    @Expose
     private Float Distancia;
+    @Expose
     private Float Area;
+    @Expose
     private boolean determinante;
+    @Expose
+    Date dataInclusao;
 
 
     public TipoVestigioTransito getTipoVestigio()
@@ -60,6 +69,8 @@ public class VestigioTransito extends SugarRecord
 
     public VestigioTransito()
     {
+        dataInclusao = Calendar.getInstance().getTime();
+
         setArea(0f);
         setDistancia(0f);
         setDeterminante(false);
